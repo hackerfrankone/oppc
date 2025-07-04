@@ -1,1 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA Network+</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background-color: black;
+      font-family: monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      position: relative;
+    }
 
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .question {
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      max-width: 700px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .choice:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .feedback {
+      margin-top: 2rem;
+      font-size: 1.8rem;
+      min-height: 2.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back-button">← Back</a>
+
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+const questions = [
+  {
+    question: "Which device is used to connect multiple network segments?",
+    choices: ["Router", "Switch", "Modem", "Firewall"],
+    answer: "Switch"
+  },
+  {
+    question: "What does DHCP stand for?",
+    choices: ["Dynamic Host Configuration Protocol", "Data Host Control Protocol", "Direct Host Configuration Process", "Dynamic Host Control Process"],
+    answer: "Dynamic Host Configuration Protocol"
+  },
+  {
+    question: "Which layer of the OSI model is responsible for routing?",
+    choices: ["Physical", "Data Link", "Network", "Transport"],
+    answer: "Network"
+  },
+  {
+    question: "What port does HTTPS use by default?",
+    choices: ["80", "443", "21", "25"],
+    answer: "443"
+  },
+  {
+    question: "What is the purpose of a subnet mask?",
+    choices: ["To identify the network and host portions of an IP address", "To assign IP addresses dynamically", "To encrypt network traffic", "To route traffic between VLANs"],
+    answer: "To identify the network and host portions of an IP address"
+  },
+  {
+    question: "Which protocol is used to send email?",
+    choices: ["FTP", "SMTP", "DNS", "HTTP"],
+    answer: "SMTP"
+  },
+  {
+    question: "What is the main function of a firewall?",
+    choices: ["Filter incoming and outgoing traffic", "Route traffic between networks", "Assign IP addresses", "Translate domain names"],
+    answer: "Filter incoming and outgoing traffic"
+  },
+  {
+    question: "What does NAT stand for?",
+    choices: ["Network Address Translation", "Network Access Terminal", "Network Allocation Table", "Node Address Transfer"],
+    answer: "Network Address Translation"
+  },
+  {
+    question: "Which of the following is a Class C IP address?",
+    choices: ["192.168.1.1", "10.0.0.1", "172.16.0.1", "224.0.0.1"],
+    answer: "192.168.1.1"
+  },
+  {
+    question: "What is a MAC address?",
+    choices: ["Physical hardware address", "Logical IP address", "Subnet mask", "Port number"],
+    answer: "Physical hardware address"
+  },
+  {
+    question: "Which cable type is used for long-distance data transmission?",
+    choices: ["Twisted pair", "Coaxial", "Fiber optic", "USB"],
+    answer: "Fiber optic"
+  },
+  {
+    question: "Which device regenerates and retransmits signals on a network?",
+    choices: ["Switch", "Hub", "Repeater", "Router"],
+    answer: "Repeater"
+  },
+  {
+    question: "What does SSL stand for?",
+    choices: ["Secure Sockets Layer", "Simple Secure Link", "Secure System Layer", "System Sockets Layer"],
+    answer: "Secure Sockets Layer"
+  },
+  {
+    question: "What is the default subnet mask for a Class B network?",
+    choices: ["255.255.255.0", "255.255.0.0", "255.0.0.0", "255.255.255.255"],
+    answer: "255.255.0.0"
+  },
+  {
+    question: "Which protocol translates domain names to IP addresses?",
+    choices: ["DHCP", "DNS", "FTP", "SMTP"],
+    answer: "DNS"
+  },
+  {
+    question: "What is the maximum length of a CAT5 cable segment?",
+    choices: ["100 meters", "50 meters", "200 meters", "10 meters"],
+    answer: "100 meters"
+  },
+  {
+    question: "Which of these is a private IP address range?",
+    choices: ["192.168.0.0 - 192.168.255.255", "8.8.8.8", "172.217.0.0 - 172.217.255.255", "198.51.100.0 - 198.51.100.255"],
+    answer: "192.168.0.0 - 192.168.255.255"
+  },
+  {
+    question: "Which protocol is used to securely transfer files over the internet?",
+    choices: ["FTP", "SFTP", "HTTP", "Telnet"],
+    answer: "SFTP"
+  },
+  {
+    question: "What port does FTP use by default?",
+    choices: ["20 and 21", "22", "80", "443"],
+    answer: "20 and 21"
+  },
+  {
+    question: "Which topology connects all devices to a central hub or switch?",
+    choices: ["Bus", "Ring", "Star", "Mesh"],
+    answer: "Star"
+  },
+  {
+    question: "What does the acronym VLAN stand for?",
+    choices: ["Virtual Local Area Network", "Variable Local Area Network", "Verified LAN Access Node", "Virtual Link Access Network"],
+    answer: "Virtual Local Area Network"
+  },
+  {
+    question: "What is the main purpose of ICMP?",
+    choices: ["Error reporting and diagnostics", "File transfer", "Email sending", "Name resolution"],
+    answer: "Error reporting and diagnostics"
+  },
+  {
+    question: "Which device uses MAC addresses to forward data?",
+    choices: ["Router", "Switch", "Hub", "Repeater"],
+    answer: "Switch"
+  },
+  {
+    question: "What type of attack involves intercepting communication between two systems?",
+    choices: ["Phishing", "Man-in-the-middle", "DDoS", "Spoofing"],
+    answer: "Man-in-the-middle"
+  },
+  {
+    question: "Which wireless encryption standard is considered the most secure?",
+    choices: ["WEP", "WPA", "WPA2", "WPS"],
+    answer: "WPA2"
+  },
+  {
+    question: "What protocol is used to dynamically assign IP addresses?",
+    choices: ["DNS", "DHCP", "FTP", "SMTP"],
+    answer: "DHCP"
+  },
+  {
+    question: "What is the purpose of a DMZ in a network?",
+    choices: ["To isolate and protect internal network resources", "To encrypt data", "To route traffic between VLANs", "To store backups"],
+    answer: "To isolate and protect internal network resources"
+  },
+  {
+    question: "Which layer of the OSI model encrypts data?",
+    choices: ["Physical", "Network", "Presentation", "Session"],
+    answer: "Presentation"
+  },
+  {
+    question: "What does PoE stand for?",
+    choices: ["Power over Ethernet", "Protocol over Ethernet", "Port on Ethernet", "Packet over Ethernet"],
+    answer: "Power over Ethernet"
+  },
+  {
+    question: "Which tool would you use to check the physical layer of a network?",
+    choices: ["Ping", "Cable tester", "Traceroute", "Wireshark"],
+    answer: "Cable tester"
+  },
+  {
+    question: "Which protocol uses UDP for faster transmission?",
+    choices: ["HTTP", "FTP", "DNS", "TCP"],
+    answer: "DNS"
+  },
+  {
+    question: "What is a default gateway?",
+    choices: ["A device that routes traffic to other networks", "A firewall", "A DNS server", "An IP address assigned to a host"],
+    answer: "A device that routes traffic to other networks"
+  },
+  {
+    question: "Which IP address version uses 128-bit addresses?",
+    choices: ["IPv4", "IPv5", "IPv6", "IPv7"],
+    answer: "IPv6"
+  },
+  {
+    question: "What is the primary function of ARP?",
+    choices: ["Map IP addresses to MAC addresses", "Assign IP addresses", "Encrypt traffic", "Route traffic"],
+    answer: "Map IP addresses to MAC addresses"
+  },
+  {
+    question: "Which type of cable is most resistant to EMI?",
+    choices: ["Twisted pair", "Coaxial", "Fiber optic", "USB"],
+    answer: "Fiber optic"
+  },
+  {
+    question: "What does SIP stand for in networking?",
+    choices: ["Session Initiation Protocol", "Secure Internet Protocol", "Simple Internet Process", "Service Interface Protocol"],
+    answer: "Session Initiation Protocol"
+  },
+  {
+    question: "Which command is used to display IP configuration on Windows?",
+    choices: ["ifconfig", "ipconfig", "netstat", "ping"],
+    answer: "ipconfig"
+  },
+  {
+    question: "Which port is used for SSH?",
+    choices: ["22", "21", "80", "443"],
+    answer: "22"
+  },
+  {
+    question: "Which device connects different networks and directs traffic?",
+    choices: ["Switch", "Hub", "Router", "Bridge"],
+    answer: "Router"
+  },
+  {
+    question: "What is the function of a proxy server?",
+    choices: ["Filter requests and cache content", "Assign IP addresses", "Translate domain names", "Encrypt data"],
+    answer: "Filter requests and cache content"
+  },
+  {
+    question: "Which wireless standard operates on the 5 GHz band only?",
+    choices: ["802.11a", "802.11b", "802.11g", "802.11n"],
+    answer: "802.11a"
+  },
+  {
+    question: "What is the purpose of SNMP?",
+    choices: ["Network management and monitoring", "File transfer", "Email sending", "Name resolution"],
+    answer: "Network management and monitoring"
+  },
+  {
+    question: "Which device operates at the Data Link layer?",
+    choices: ["Router", "Switch", "Hub", "Repeater"],
+    answer: "Switch"
+  },
+  {
+    question: "What is the port number for DNS?",
+    choices: ["53", "80", "25", "110"],
+    answer: "53"
+  },
+  {
+    question: "Which protocol provides connectionless communication?",
+    choices: ["TCP", "UDP", "FTP", "HTTP"],
+    answer: "UDP"
+  },
+  {
+    question: "What does VPN stand for?",
+    choices: ["Virtual Private Network", "Virtual Public Network", "Verified Private Network", "Variable Private Network"],
+    answer: "Virtual Private Network"
+  },
+  {
+    question: "What does the traceroute command do?",
+    choices: ["Shows the path packets take to a destination", "Tests connectivity", "Displays IP configuration", "Maps MAC addresses"],
+    answer: "Shows the path packets take to a destination"
+  },
+  {
+    question: "Which cable type is typically used for telephone lines?",
+    choices: ["Twisted pair", "Coaxial", "Fiber optic", "USB"],
+    answer: "Twisted pair"
+  }
+];
+
+    let current = 0;
+
+    const questionEl = document.getElementById("question");
+    const choicesEl = document.getElementById("choices");
+    const feedbackEl = document.getElementById("feedback");
+
+    function showQuestion() {
+      const q = questions[current];
+      questionEl.textContent = q.question;
+      feedbackEl.textContent = "";
+      choicesEl.innerHTML = "";
+
+      q.choices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesEl.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[current].answer;
+      feedbackEl.textContent = selected === correct
+        ? "✅ Correct!"
+        : `❌ Incorrect. Correct: ${correct}`;
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+      });
+
+      setTimeout(() => {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          questionEl.textContent = "Quiz Complete";
+          choicesEl.innerHTML = "";
+          feedbackEl.textContent = "";
+        }
+      }, 5000);
+    }
+
+    // Optional: Shuffle questions every refresh
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+
+</body>
+</html>

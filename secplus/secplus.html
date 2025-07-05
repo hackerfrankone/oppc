@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>CompTIA Security+</title>
+  <title>CompTIA Security+ Quiz</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -47,8 +51,8 @@
     }
 
     .quiz-content {
-      width: 700px; /* Fixed width to prevent shifting */
-      max-width: 90%; /* Responsive for smaller screens */
+      width: 700px;
+      max-width: 90%;
     }
 
     .question {
@@ -64,7 +68,7 @@
       width: 100%;
       max-width: 500px;
       margin: 0 auto;
-      min-height: 300px; /* Prevent layout shift when choices change */
+      min-height: 300px;
     }
 
     .choice {
@@ -74,7 +78,7 @@
       cursor: pointer;
       transition: background-color 0.2s, color 0.2s;
       user-select: none;
-      text-align: left; /* Ensure consistent text alignment */
+      text-align: left;
     }
 
     .choice:hover {
@@ -95,7 +99,6 @@
   </style>
 </head>
 <body>
-
   <a href="../index.html" class="back-button">← Back</a>
 
   <div class="quiz-content">
@@ -132,220 +135,232 @@
         answer: "Layer 3 - Network"
       },
       {
-    question: "Administrator receives multiple failed login attempt alerts on a DC. What should be the administrator's **first** action?",
-    choices: [
-      "Shut down the domain controller",
-      "Disable the affected user accounts",
-      "Review the security logs for source IP addresses",
-      "Reset all user passwords immediately"
-    ],
-    answer: "Review the security logs for source IP addresses"
-  },
-  {
-    question: "During a red team exercise, the testers gain access to sensitive HR data without triggering alerts. Which control failed?",
-    choices: [
-      "Preventive control",
-      "Deterrent control",
-      "Corrective control",
-      "Detective control"
-    ],
-    answer: "Detective control"
-  },
-  {
-    question: "An attacker uses a compromised IoT device to pivot through the internal network. Which security principle was violated?",
-    choices: [
-      "Least functionality",
-      "Implicit deny",
-      "Segmentation",
-      "Multifactor authentication"
-    ],
-    answer: "Segmentation"
-  },
-  {
-    question: "You discover that employees are storing unencrypted customer data on local machines. What policy needs improvement?",
-    choices: [
-      "Acceptable use policy",
-      "Data classification policy",
-      "Business continuity plan",
-      "Password policy"
-    ],
-    answer: "Data classification policy"
-  },
-  {
-    question: "After applying a patch, users report application crashes. What process was likely skipped?",
-    choices: [
-      "Vulnerability scan",
-      "Backup and restore",
-      "Patch validation testing",
-      "Access review"
-    ],
-    answer: "Patch validation testing"
-  },
-  {
-    question: "An organization wants to ensure that its backups are not compromised during a ransomware attack. What is the best approach?",
-    choices: [
-      "Encrypt all backup files",
-      "Store backups offsite and offline",
-      "Use cloud-based antivirus",
-      "Run daily vulnerability scans"
-    ],
-    answer: "Store backups offsite and offline"
-  },
-  {
-    question: "A security analyst detects outbound traffic to a known malicious domain. What type of threat is most likely?",
-    choices: [
-      "Insider threat",
-      "Phishing attack",
-      "Command and control communication",
-      "Denial-of-service attack"
-    ],
-    answer: "Command and control communication"
-  },
-  {
-    question: "What should be done **first** when a user reports a suspected phishing email?",
-    choices: [
-      "Delete the email",
-      "Open the attachment in a sandbox",
-      "Report the incident to the security team",
-      "Block the sender in the mail client"
-    ],
-    answer: "Report the incident to the security team"
-  },
-  {
-    question: "You are asked to restrict access to payroll systems to only HR staff. What is the **best** access control method?",
-    choices: [
-      "Mandatory Access Control (MAC)",
-      "Role-Based Access Control (RBAC)",
-      "Discretionary Access Control (DAC)",
-      "Attribute-Based Access Control (ABAC)"
-    ],
-    answer: "Role-Based Access Control (RBAC)"
-  },
-  {
-    question: "An employee plugs a personal device into the corporate network. What should be in place to prevent this?",
-    choices: [
-      "Firewall rules",
-      "Endpoint DLP",
-      "Network Access Control (NAC)",
-      "SIEM correlation rules"
-    ],
-    answer: "Network Access Control (NAC)"
-  },
-  {
-    question: "What type of malware modifies core operating system files and hides from antivirus tools?",
-    choices: [
-      "Spyware",
-      "Worm",
-      "Rootkit",
-      "Adware"
-    ],
-    answer: "Rootkit"
-  },
-  {
-    question: "A company wants to ensure only authorized software runs on employee laptops. Which technology should they use?",
-    choices: [
-      "SIEM",
-      "Application whitelisting",
-      "Patch management",
-      "UEFI secure boot"
-    ],
-    answer: "Application whitelisting"
-  },
-  {
-    question: "A forensic analyst needs to preserve the integrity of a USB drive seized from a suspect. What should be done first?",
-    choices: [
-      "Create a hash of the USB contents",
-      "Run antivirus scans",
-      "Open files to inspect",
-      "Mount the drive as writable"
-    ],
-    answer: "Create a hash of the USB contents"
-  },
-  {
-    question: "An attacker intercepts encrypted traffic but cannot read the contents. Which security principle is preserved?",
-    choices: [
-      "Availability",
-      "Obfuscation",
-      "Integrity",
-      "Confidentiality"
-    ],
-    answer: "Confidentiality"
-  },
-  {
-    question: "After a security breach, an incident response team identifies how the attacker entered the network. What phase is this?",
-    choices: [
-      "Containment",
-      "Identification",
-      "Eradication",
-      "Recovery"
-    ],
-    answer: "Identification"
-  },
-  {
-    question: "Which of the following provides the best evidence that a user accessed sensitive data they shouldn’t have?",
-    choices: [
-      "Firewall logs",
-      "Access control list",
-      "SIEM audit logs",
-      "Antivirus scan results"
-    ],
-    answer: "SIEM audit logs"
-  },
-  {
-    question: "A system is found to have an expired SSL certificate. What risk does this introduce?",
-    choices: [
-      "Availability issues",
-      "Data corruption",
-      "Man-in-the-middle attacks",
-      "Cross-site scripting"
-    ],
-    answer: "Man-in-the-middle attacks"
-  },
-  {
-    question: "A company needs to ensure compliance with GDPR. What type of control is a privacy notice on their website?",
-    choices: [
-      "Physical control",
-      "Administrative control",
-      "Technical control",
-      "Compensating control"
-    ],
-    answer: "Administrative control"
-  },
-  {
-    question: "Which is the most **secure** way to destroy sensitive data on a solid-state drive (SSD)?",
-    choices: [
-      "Quick format",
-      "Zero-fill wipe",
-      "Physical shredding",
-      "Delete files and empty trash"
-    ],
-    answer: "Physical shredding"
-  },
-  {
-    question: "A user reports slow system performance. You find unauthorized cryptocurrency mining software. What’s the type of malware?",
-    choices: [
-      "Ransomware",
-      "Trojan",
-      "Crypto-jacking",
-      "Keylogger"
-    ],
-    answer: "Crypto-jacking"
-  }
-];
+        question: "Administrator receives multiple failed login attempt alerts on a DC. What should be the administrator's **first** action?",
+        choices: [
+          "Shut down the domain controller",
+          "Disable the affected user accounts",
+          "Review the security logs for source IP addresses",
+          "Reset all user passwords immediately"
+        ],
+        answer: "Review the security logs for source IP addresses"
+      },
+      {
+        question: "During a red team exercise, the testers gain access to sensitive HR data without triggering alerts. Which control failed?",
+        choices: [
+          "Preventive control",
+          "Deterrent control",
+          "Corrective control",
+          "Detective control"
+        ],
+        answer: "Detective control"
+      },
+      {
+        question: "An attacker uses a compromised IoT device to pivot through the internal network. Which security principle was violated?",
+        choices: [
+          "Least functionality",
+          "Implicit deny",
+          "Segmentation",
+          "Multifactor authentication"
+        ],
+        answer: "Segmentation"
+      },
+      {
+        question: "You discover that employees are storing unencrypted customer data on local machines. What policy needs improvement?",
+        choices: [
+          "Acceptable use policy",
+          "Data classification policy",
+          "Business continuity plan",
+          "Password policy"
+        ],
+        answer: "Data classification policy"
+      },
+      {
+        question: "After applying a patch, users report application crashes. What process was likely skipped?",
+        choices: [
+          "Vulnerability scan",
+          "Backup and restore",
+          "Patch validation testing",
+          "Access review"
+        ],
+        answer: "Patch validation testing"
+      },
+      {
+        question: "An organization wants to ensure that its backups are not compromised during a ransomware attack. What is the best approach?",
+        choices: [
+          "Encrypt all backup files",
+          "Store backups offsite and offline",
+          "Use cloud-based antivirus",
+          "Run daily vulnerability scans"
+        ],
+        answer: "Store backups offsite and offline"
+      },
+      {
+        question: "A security analyst detects outbound traffic to a known malicious domain. What type of threat is most likely?",
+        choices: [
+          "Insider threat",
+          "Phishing attack",
+          "Command and control communication",
+          "Denial-of-service attack"
+        ],
+        answer: "Command and control communication"
+      },
+      {
+        question: "What should be done **first** when a user reports a suspected phishing email?",
+        choices: [
+          "Delete the email",
+          "Open the attachment in a sandbox",
+          "Report the incident to the security team",
+          "Block the sender in the mail client"
+        ],
+        answer: "Report the incident to the security team"
+      },
+      {
+        question: "You are asked to restrict access to payroll systems to only HR staff. What is the **best** access control method?",
+        choices: [
+          "Mandatory Access Control (MAC)",
+          "Role-Based Access Control (RBAC)",
+          "Discretionary Access Control (DAC)",
+          "Attribute-Based Access Control (ABAC)"
+        ],
+        answer: "Role-Based Access Control (RBAC)"
+      },
+      {
+        question: "An employee plugs a personal device into the corporate network. What should be in place to prevent this?",
+        choices: [
+          "Firewall rules",
+          "Endpoint DLP",
+          "Network Access Control (NAC)",
+          "SIEM correlation rules"
+        ],
+        answer: "Network Access Control (NAC)"
+      },
+      {
+        question: "What type of malware modifies core operating system files and hides from antivirus tools?",
+        choices: [
+          "Spyware",
+          "Worm",
+          "Rootkit",
+          "Adware"
+        ],
+        answer: "Rootkit"
+      },
+      {
+        question: "A company wants to ensure only authorized software runs on employee laptops. Which technology should they use?",
+        choices: [
+          "SIEM",
+          "Application whitelisting",
+          "Patch management",
+          "UEFI secure boot"
+        ],
+        answer: "Application whitelisting"
+      },
+      {
+        question: "A forensic analyst needs to preserve the integrity of a USB drive seized from a suspect. What should be done first?",
+        choices: [
+          "Create a hash of the USB contents",
+          "Run antivirus scans",
+          "Open files to inspect",
+          "Mount the drive as writable"
+        ],
+        answer: "Create a hash of the USB contents"
+      },
+      {
+        question: "An attacker intercepts encrypted traffic but cannot read the contents. Which security principle is preserved?",
+        choices: [
+          "Availability",
+          "Obfuscation",
+          "Integrity",
+          "Confidentiality"
+        ],
+        answer: "Confidentiality"
+      },
+      {
+        question: "After a security breach, an incident response team identifies how the attacker entered the network. What phase is this?",
+        choices: [
+          "Containment",
+          "Identification",
+          "Eradication",
+          "Recovery"
+        ],
+        answer: "Identification"
+      },
+      {
+        question: "Which of the following provides the best evidence that a user accessed sensitive data they shouldn’t have?",
+        choices: [
+          "Firewall logs",
+          "Access control list",
+          "SIEM audit logs",
+          "Antivirus scan results"
+        ],
+        answer: "SIEM audit logs"
+      },
+      {
+        question: "A system is found to have an expired SSL certificate. What risk does this introduce?",
+        choices: [
+          "Availability issues",
+          "Data corruption",
+          "Man-in-the-middle attacks",
+          "Cross-site scripting"
+        ],
+        answer: "Man-in-the-middle attacks"
+      },
+      {
+        question: "A company needs to ensure compliance with GDPR. What type of control is a privacy notice on their website?",
+        choices: [
+          "Physical control",
+          "Administrative control",
+          "Technical control",
+          "Compensating control"
+        ],
+        answer: "Administrative control"
+      },
+      {
+        question: "Which is the most **secure** way to destroy sensitive data on a solid-state drive (SSD)?",
+        choices: [
+          "Quick format",
+          "Zero-fill wipe",
+          "Physical shredding",
+          "Delete files and empty trash"
+        ],
+        answer: "Physical shredding"
+      },
+      {
+        question: "A user reports slow system performance. You find unauthorized cryptocurrency mining software. What’s the type of malware?",
+        choices: [
+          "Ransomware",
+          "Trojan",
+          "Crypto-jacking",
+          "Keylogger"
+        ],
+        answer: "Crypto-jacking"
+      }
+    ];
 
     let currentQuestion = 0;
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
 
+    // Shuffle array elements (for questions or choices)
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // Display the current question and its shuffled choices
     function showQuestion() {
-      const questionElement = document.getElementById("question");
-      const choicesElement = document.getElementById("choices");
-      const feedbackElement = document.getElementById("feedback");
+      const q = questions[currentQuestion];
+      questionElement.textContent = q.question;
       feedbackElement.textContent = "";
-
-      const current = questions[currentQuestion];
-      questionElement.textContent = current.question;
-
       choicesElement.innerHTML = "";
-      current.choices.forEach(choice => {
+
+      // Shuffle choices for the current question
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
         const button = document.createElement("div");
         button.className = "choice";
         button.textContent = choice;
@@ -354,9 +369,9 @@
       });
     }
 
+    // Handle answer selection and provide feedback
     function handleAnswer(selected, button) {
       const correct = questions[currentQuestion].answer;
-      const feedbackElement = document.getElementById("feedback");
       const choices = document.querySelectorAll(".choice");
 
       choices.forEach(choice => {
@@ -368,12 +383,11 @@
         }
       });
 
-      if (selected === correct) {
-        feedbackElement.textContent = "✅ Correct!";
-      } else {
-        feedbackElement.textContent = `❌ Incorrect! Answer: ${correct}`;
-      }
+      feedbackElement.textContent = selected === correct
+        ? "✅ Correct!"
+        : `❌ Incorrect! Answer: ${correct}`;
 
+      // Move to next question after 5 seconds
       setTimeout(() => {
         currentQuestion++;
         if (currentQuestion < questions.length) {
@@ -381,9 +395,11 @@
         } else {
           document.querySelector(".quiz-content").innerHTML = "<div>🎉 Quiz complete!</div>";
         }
-      }, 5000); // 5-second delay
+      }, 5000);
     }
 
+    // Randomize question order at start
+    shuffle(questions);
     showQuestion();
   </script>
 </body>

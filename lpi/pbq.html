@@ -18,7 +18,7 @@
     #terminal {
       background: #0b0b0b;
       padding: 40px 15px 15px 15px;
-      flex-grow: 1;
+      flex-grow: 2;
       overflow-y: auto;
       white-space: pre-wrap;
     }
@@ -95,7 +95,6 @@
     <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
     <button onclick="submitCommand()">Submit</button>
     <button onclick="clearTerminal()">Clear</button>
-    <button onclick="showQuestion()">Show Question</button>
     <button onclick="showAnswer()">Show Answer</button>
   </div>
 
@@ -144,17 +143,11 @@
     function clearTerminal() {
       terminalOutput.innerHTML = `student@lpi:${currentPath}$\n`;
       answerBox.innerText = "";
-      questionBox.innerHTML = "";
+      questionBox.innerHTML = `PBQ ${currentPBQ + 1}: ${pbqs[currentPBQ].question}`;
     }
 
     function goBack() {
       window.history.back();
-    }
-
-    function showQuestion() {
-      const pbq = pbqs[currentPBQ];
-      questionBox.innerHTML = `PBQ ${currentPBQ + 1}: ${pbq.question}`;
-      answerBox.innerText = "";
     }
 
     function showAnswer() {
@@ -176,7 +169,6 @@
         setTimeout(() => {
           currentPBQ = (currentPBQ + 1) % pbqs.length;
           clearTerminal();
-          showQuestion();
         }, 1000);
       } else {
         printToTerminal("❌ Incorrect. Try again.");

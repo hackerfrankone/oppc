@@ -5,107 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
   <title>LPI Linux Professional Institute Quiz</title>
-  <style>
-    * {
-      box-sizing: border-box;
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    background-color: black;
+    font-family: monospace;
+    color: #00FF00;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+  }
+
+  .back-button,
+  .pbq-button {
+    position: absolute;
+    top: 20px;
+    background-color: transparent;
+    color: #00FF00;
+    border: 2px solid #00FF00;
+    padding: 8px 16px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+  }
+
+  .back-button:hover,
+  .pbq-button:hover {
+    background-color: #00FF00;
+    color: black;
+  }
+
+  .back-button {
+    left: 20px;
+  }
+
+  .pbq-button {
+    left: 110px;
+  }
+
+  .quiz-content {
+    width: 100%;
+    max-width: 90%;
+    padding: 0 1rem;
+  }
+
+  .question {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-align: center;
+  }
+
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 300px;
+  }
+
+  .choice {
+    border: 2px solid #00FF00;
+    border-radius: 5px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    user-select: none;
+    text-align: left;
+  }
+
+  .choice:hover {
+    background-color: #00FF00;
+    color: black;
+  }
+
+  .choice.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .feedback {
+    margin-top: 2rem;
+    font-size: 1.8rem;
+    min-height: 2.2rem;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 1.5rem;
+      padding: 1rem;
     }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background-color: black;
-      font-family: monospace;
-      color: #00FF00;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      position: relative;
+    .question {
+      font-size: 1.8rem;
     }
 
     .back-button,
     .pbq-button {
-      position: absolute;
-      top: 20px;
-      background-color: transparent;
-      color: #00FF00;
-      border: 2px solid #00FF00;
-      padding: 8px 16px;
-      font-size: 1rem;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      user-select: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
     }
+  }
 
-    .back-button:hover,
-    .pbq-button:hover {
-      background-color: #00FF00;
-      color: black;
-    }
-
-    .back-button {
-      left: 20px;
-    }
-
-    .pbq-button {
-      left: 110px;
-    }
-
-    .quiz-content {
-      width: 700px;
-      max-width: 90%;
-    }
-
+  @media (max-width: 480px) {
     .question {
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      max-width: 700px;
+      font-size: 1.5rem;
     }
 
     .choices {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      min-height: 300px;
+      max-width: 100%;
     }
-
-    .choice {
-      border: 2px solid #00FF00;
-      border-radius: 5px;
-      padding: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s, color 0.2s;
-      user-select: none;
-      text-align: left;
-    }
-
-    .choice:hover {
-      background-color: #00FF00;
-      color: black;
-    }
-
-    .choice.disabled {
-      pointer-events: none;
-      opacity: 0.6;
-    }
-
-    .feedback {
-      margin-top: 2rem;
-      font-size: 1.8rem;
-      min-height: 2.2rem;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>

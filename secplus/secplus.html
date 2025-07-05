@@ -46,6 +46,11 @@
       color: black;
     }
 
+    .quiz-content {
+      width: 700px; /* Fixed width to prevent shifting */
+      max-width: 90%; /* Responsive for smaller screens */
+    }
+
     .question {
       margin-bottom: 2rem;
       font-size: 2.5rem;
@@ -59,6 +64,7 @@
       width: 100%;
       max-width: 500px;
       margin: 0 auto;
+      min-height: 300px; /* Prevent layout shift when choices change */
     }
 
     .choice {
@@ -68,6 +74,7 @@
       cursor: pointer;
       transition: background-color 0.2s, color 0.2s;
       user-select: none;
+      text-align: left; /* Ensure consistent text alignment */
     }
 
     .choice:hover {
@@ -374,7 +381,7 @@
         } else {
           document.querySelector(".quiz-content").innerHTML = "<div>🎉 Quiz complete!</div>";
         }
-      }, 1500);
+      }, 5000); // 5-second delay
     }
 
     showQuestion();

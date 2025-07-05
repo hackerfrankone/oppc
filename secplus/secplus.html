@@ -99,308 +99,32 @@
 
   <script>
     const questions = [
-  // --- Original 30 ---
-  {
-    question: "What does CIA stand for in cybersecurity?",
-    choices: ["Confidentiality, Integrity, Availability", "Control, Inspection, Authorization", "Confidentiality, Identification, Access", "Control, Integrity, Access"],
-    answer: "Confidentiality, Integrity, Availability"
-  },
-  {
-    question: "Which protocol is used to securely browse the web?",
-    choices: ["HTTP", "FTP", "HTTPS", "SMTP"],
-    answer: "HTTPS"
-  },
-  {
-    question: "What type of attack involves overwhelming a system with traffic?",
-    choices: ["Phishing", "DDoS", "Spoofing", "Man-in-the-middle"],
-    answer: "DDoS"
-  },
-  {
-    question: "What does a digital signature provide?",
-    choices: ["Confidentiality", "Availability", "Authentication", "Obfuscation"],
-    answer: "Authentication"
-  },
-  {
-    question: "Which layer of the OSI model does a firewall primarily operate on?",
-    choices: ["Layer 1 - Physical", "Layer 3 - Network", "Layer 5 - Session", "Layer 7 - Application"],
-    answer: "Layer 3 - Network"
-  },
-  {
-    question: "What is the strongest form of multifactor authentication?",
-    choices: ["Password and PIN", "Password and security questions", "Biometrics and smart card", "Username and password"],
-    answer: "Biometrics and smart card"
-  },
-  {
-    question: "Which tool is used for packet analysis?",
-    choices: ["Nmap", "Wireshark", "Metasploit", "John the Ripper"],
-    answer: "Wireshark"
-  },
-  {
-    question: "What kind of attack is spear phishing?",
-    choices: ["Targeted phishing", "Brute force", "DNS poisoning", "Privilege escalation"],
-    answer: "Targeted phishing"
-  },
-  {
-    question: "Which protocol is used to encrypt email?",
-    choices: ["SMTP", "POP3", "IMAP", "S/MIME"],
-    answer: "S/MIME"
-  },
-  {
-    question: "Which port is used by HTTPS?",
-    choices: ["80", "443", "21", "25"],
-    answer: "443"
-  },
-  {
-    question: "Which algorithm is symmetric encryption?",
-    choices: ["RSA", "ECC", "AES", "DSA"],
-    answer: "AES"
-  },
-  {
-    question: "What does the principle of least privilege enforce?",
-    choices: ["Unlimited access", "Admin access by default", "Minimal access required to perform tasks", "Full control for all users"],
-    answer: "Minimal access required to perform tasks"
-  },
-  {
-    question: "What kind of malware pretends to be legitimate software?",
-    choices: ["Worm", "Trojan", "Rootkit", "Ransomware"],
-    answer: "Trojan"
-  },
-  {
-    question: "What is the purpose of a VPN?",
-    choices: ["To block malware", "To scan for viruses", "To create a secure tunnel over an untrusted network", "To store backups"],
-    answer: "To create a secure tunnel over an untrusted network"
-  },
-  {
-    question: "Which concept ensures data has not been altered?",
-    choices: ["Availability", "Integrity", "Confidentiality", "Obfuscation"],
-    answer: "Integrity"
-  },
-  {
-    question: "Which type of test simulates an attack without prior knowledge?",
-    choices: ["White box", "Black box", "Gray box", "Penetration scan"],
-    answer: "Black box"
-  },
-  {
-    question: "What is a zero-day vulnerability?",
-    choices: ["A flaw known for years", "A vulnerability with a patch available", "A newly discovered vulnerability with no fix", "A phishing scam"],
-    answer: "A newly discovered vulnerability with no fix"
-  },
-  {
-    question: "What is the purpose of hashing?",
-    choices: ["Encrypt data", "Transmit data", "Validate data integrity", "Compress data"],
-    answer: "Validate data integrity"
-  },
-  {
-    question: "Which protocol replaces Telnet for secure remote administration?",
-    choices: ["FTP", "SSH", "RDP", "SCP"],
-    answer: "SSH"
-  },
-  {
-    question: "Which control is a firewall an example of?",
-    choices: ["Administrative", "Physical", "Technical", "Deterrent"],
-    answer: "Technical"
-  },
-  {
-    question: "What does a security information and event management (SIEM) system do?",
-    choices: ["Blocks traffic", "Backs up data", "Aggregates and analyzes security events", "Encrypts traffic"],
-    answer: "Aggregates and analyzes security events"
-  },
-  {
-    question: "Which method verifies user identity based on behavior or attributes?",
-    choices: ["Token", "Biometrics", "Password", "PIN"],
-    answer: "Biometrics"
-  },
-  {
-    question: "Which of the following is a form of social engineering?",
-    choices: ["DDoS", "Phishing", "Ransomware", "Man-in-the-middle"],
-    answer: "Phishing"
-  },
-  {
-    question: "What is port 22 used for?",
-    choices: ["HTTP", "FTP", "SSH", "SMTP"],
-    answer: "SSH"
-  },
-  {
-    question: "What is a honeypot?",
-    choices: ["Malware protection tool", "Backup device", "Decoy system to attract attackers", "Firewall"],
-    answer: "Decoy system to attract attackers"
-  },
-  {
-    question: "Which protocol uses asymmetric encryption for key exchange?",
-    choices: ["AES", "RSA", "SHA-256", "MD5"],
-    answer: "RSA"
-  },
-  {
-    question: "Which tool is used for vulnerability scanning?",
-    choices: ["John the Ripper", "Wireshark", "Nessus", "Burp Suite"],
-    answer: "Nessus"
-  },
-  {
-    question: "What kind of attack captures and alters communications between two parties?",
-    choices: ["Replay attack", "Phishing", "Man-in-the-middle", "Trojan"],
-    answer: "Man-in-the-middle"
-  },
-  {
-    question: "What is an air gap in security?",
-    choices: ["Wi-Fi security protocol", "A physical separation of systems", "Encrypted connection", "Virtual firewall"],
-    answer: "A physical separation of systems"
-  },
-  {
-    question: "Which standard focuses on credit card transaction security?",
-    choices: ["HIPAA", "PCI DSS", "SOX", "FISMA"],
-    answer: "PCI DSS"
-  },
-  {
-    question: "What type of malware locks files and demands payment?",
-    choices: ["Adware", "Spyware", "Rootkit", "Ransomware"],
-    answer: "Ransomware"
-  },
-  {
-    question: "Which wireless protocol is considered the most secure?",
-    choices: ["WEP", "WPA", "WPA2", "WPA3"],
-    answer: "WPA3"
-  },
-  {
-    question: "Which security model uses labels like 'Confidential' and 'Top Secret'?",
-    choices: ["Discretionary Access Control", "Mandatory Access Control", "Role-Based Access Control", "Attribute-Based Access Control"],
-    answer: "Mandatory Access Control"
-  },
-  {
-    question: "What is the main purpose of a DMZ in networking?",
-    choices: ["Block internal traffic", "Isolate sensitive servers", "Separate public-facing services from the internal network", "Encrypt traffic"],
-    answer: "Separate public-facing services from the internal network"
-  },
-  {
-    question: "Which cryptographic function turns data into a fixed-length output?",
-    choices: ["Symmetric encryption", "Asymmetric encryption", "Hashing", "Obfuscation"],
-    answer: "Hashing"
-  },
-  {
-    question: "Which type of penetration test provides no knowledge to the tester?",
-    choices: ["Gray box", "Black box", "White box", "Blue box"],
-    answer: "Black box"
-  },
-  {
-    question: "What does UTM stand for?",
-    choices: ["Universal Threat Monitor", "Unified Threat Management", "User Token Manager", "User Traffic Monitor"],
-    answer: "Unified Threat Management"
-  },
-  {
-    question: "Which law protects healthcare data in the U.S.?",
-    choices: ["SOX", "FERPA", "HIPAA", "FISMA"],
-    answer: "HIPAA"
-  },
-  {
-    question: "Which attack targets SQL databases through input fields?",
-    choices: ["XSS", "SQL Injection", "Buffer Overflow", "LDAP Injection"],
-    answer: "SQL Injection"
-  },
-  {
-    question: "Which port is used for DNS?",
-    choices: ["53", "80", "443", "110"],
-    answer: "53"
-  },
-  {
-    question: "What is the purpose of a sandbox in cybersecurity?",
-    choices: ["User authentication", "Password storage", "Testing untrusted code safely", "Encrypting files"],
-    answer: "Testing untrusted code safely"
-  },
-  {
-    question: "Which tool is used for password cracking?",
-    choices: ["Wireshark", "Burp Suite", "Nmap", "John the Ripper"],
-    answer: "John the Ripper"
-  },
-  {
-    question: "Which term describes a false positive in security alerts?",
-    choices: ["An actual threat", "A missed threat", "A harmless event flagged as malicious", "A silent breach"],
-    answer: "A harmless event flagged as malicious"
-  },
-  {
-    question: "What is a logic bomb?",
-    choices: ["A virus inside a CPU", "Code triggered by a specific condition", "Unpatched vulnerability", "Encrypted malware"],
-    answer: "Code triggered by a specific condition"
-  },
-  {
-    question: "Which concept involves dividing networks into smaller segments for security?",
-    choices: ["Subnetting", "Virtualization", "Microsegmentation", "Tunneling"],
-    answer: "Microsegmentation"
-  },
-  {
-    question: "What does IDS stand for?",
-    choices: ["Identity Detection System", "Intrusion Detection System", "Internal Defense Server", "Information Defense System"],
-    answer: "Intrusion Detection System"
-  },
-  {
-    question: "What is the goal of obfuscation?",
-    choices: ["Encrypt data", "Make code hard to understand", "Delete malware", "Create backups"],
-    answer: "Make code hard to understand"
-  },
-  {
-    question: "Which technology verifies software before it executes?",
-    choices: ["Sandboxing", "Code signing", "Hashing", "BIOS"],
-    answer: "Code signing"
-  },
-  {
-    question: "Which authentication method uses time-based codes?",
-    choices: ["Biometric", "TOTP", "LDAP", "SSO"],
-    answer: "TOTP"
-  },
-  {
-    question: "Which attack involves exploiting an unpatched software bug?",
-    choices: ["Brute force", "Zero-day", "Phishing", "MITM"],
-    answer: "Zero-day"
-  },
-  {
-    question: "Which of the following is an asymmetric encryption algorithm?",
-    choices: ["RSA", "AES", "3DES", "Blowfish"],
-    answer: "RSA"
-  },
-  {
-    question: "Which process removes unnecessary software or features from a system?",
-    choices: ["Hardening", "Patching", "Obfuscation", "Logging"],
-    answer: "Hardening"
-  },
-  {
-    question: "What is the default port for HTTP?",
-    choices: ["443", "22", "25", "80"],
-    answer: "80"
-  },
-  {
-    question: "Which record type in DNS resolves a name to an IP address?",
-    choices: ["MX", "TXT", "A", "CNAME"],
-    answer: "A"
-  },
-  {
-    question: "What does a CSR (Certificate Signing Request) relate to?",
-    choices: ["Hashing", "Firewalls", "PKI", "NAC"],
-    answer: "PKI"
-  },
-  {
-    question: "What’s the purpose of endpoint detection and response (EDR)?",
-    choices: ["Block all ports", "Encrypt traffic", "Real-time monitoring of endpoints", "Scan web traffic"],
-    answer: "Real-time monitoring of endpoints"
-  },
-  {
-    question: "Which of the following is a deterrent control?",
-    choices: ["Alarm system", "Firewall", "Biometric scanner", "SIEM"],
-    answer: "Alarm system"
-  },
-  {
-    question: "Which device provides NAT, firewall, and router functions?",
-    choices: ["Load balancer", "Proxy server", "UTM", "Switch"],
-    answer: "UTM"
-  },
-  {
-    question: "Which attack tricks a user into revealing information?",
-    choices: ["DDoS", "Brute Force", "Social Engineering", "Backdoor"],
-    answer: "Social Engineering"
-  },
-  {
-    question: "Which of the following is used to establish a secure VPN tunnel?",
-    choices: ["TLS", "IPSec", "DNS", "WAF"],
-    answer: "IPSec"
-  }
-  {
+      {
+        question: "What does CIA stand for in cybersecurity?",
+        choices: ["Confidentiality, Integrity, Availability", "Control, Inspection, Authorization", "Confidentiality, Identification, Access", "Control, Integrity, Access"],
+        answer: "Confidentiality, Integrity, Availability"
+      },
+      {
+        question: "Which protocol is used to securely browse the web?",
+        choices: ["HTTP", "FTP", "HTTPS", "SMTP"],
+        answer: "HTTPS"
+      },
+      {
+        question: "What type of attack involves overwhelming a system with traffic?",
+        choices: ["Phishing", "DDoS", "Spoofing", "Man-in-the-middle"],
+        answer: "DDoS"
+      },
+      {
+        question: "What does a digital signature provide?",
+        choices: ["Confidentiality", "Availability", "Authentication", "Obfuscation"],
+        answer: "Authentication"
+      },
+      {
+        question: "Which layer of the OSI model does a firewall primarily operate on?",
+        choices: ["Layer 1 - Physical", "Layer 3 - Network", "Layer 5 - Session", "Layer 7 - Application"],
+        answer: "Layer 3 - Network"
+      },
+      {
     question: "A system administrator receives alerts about multiple failed login attempts on a domain controller. What should be the administrator's **first** action?",
     choices: [
       "Shut down the domain controller",
@@ -602,61 +326,58 @@
   }
 ];
 
-    let current = 0;
-
-    const questionEl = document.getElementById("question");
-    const choicesEl = document.getElementById("choices");
-    const feedbackEl = document.getElementById("feedback");
+    let currentQuestion = 0;
 
     function showQuestion() {
-      const q = questions[current];
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      choicesEl.innerHTML = "";
+      const questionElement = document.getElementById("question");
+      const choicesElement = document.getElementById("choices");
+      const feedbackElement = document.getElementById("feedback");
+      feedbackElement.textContent = "";
 
-      q.choices.forEach(choice => {
-        const div = document.createElement("div");
-        div.textContent = choice;
-        div.classList.add("choice");
-        div.onclick = () => handleAnswer(choice);
-        choicesEl.appendChild(div);
+      const current = questions[currentQuestion];
+      questionElement.textContent = current.question;
+
+      choicesElement.innerHTML = "";
+      current.choices.forEach(choice => {
+        const button = document.createElement("div");
+        button.className = "choice";
+        button.textContent = choice;
+        button.onclick = () => handleAnswer(choice, button);
+        choicesElement.appendChild(button);
       });
     }
 
-    function handleAnswer(selected) {
-      const correct = questions[current].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
+    function handleAnswer(selected, button) {
+      const correct = questions[currentQuestion].answer;
+      const feedbackElement = document.getElementById("feedback");
+      const choices = document.querySelectorAll(".choice");
 
-      const choiceDivs = document.querySelectorAll(".choice");
-      choiceDivs.forEach(div => {
-        div.classList.add("disabled");
-        div.onclick = null;
+      choices.forEach(choice => {
+        choice.classList.add("disabled");
+        if (choice.textContent === correct) {
+          choice.style.borderColor = "#00FF00";
+        } else if (choice.textContent === selected) {
+          choice.style.borderColor = "red";
+        }
       });
 
-      setTimeout(() => {
-        current++;
-        if (current < questions.length) {
-          function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
+      if (selected === correct) {
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        feedbackElement.textContent = `❌ Incorrect! Answer: ${correct}`;
+      }
 
-shuffle(questions);
-showQuestion();
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
         } else {
-          questionEl.textContent = "Quiz Complete";
-          choicesEl.innerHTML = "";
-          feedbackEl.textContent = "";
+          document.querySelector(".quiz-content").innerHTML = "<div>🎉 Quiz complete!</div>";
         }
-      }, 5000);
+      }, 1500);
     }
 
     showQuestion();
   </script>
-
 </body>
 </html>

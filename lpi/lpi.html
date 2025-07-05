@@ -10,312 +10,6 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: monospace;
-      background-color: black;
-      color: #00FF00;
-      font-size: 2rem;
-      font-weight: bold;
-      overflow: hidden;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      user-select: none;
-      position: relative;
-    }
-
-    .back-button,
-    .pbq-button {
-      position: absolute;
-      top: 20px;
-      background-color: transparent;
-      color: #00FF00;
-      border: 2px solid #00FF00;
-      padding: 8px 16px;
-      font-size: 1rem;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      user-select: none;
-      z-index: 10;
-    }
-
-    .back-button:hover,
-    .pbq-button:hover {
-      background-color: #00FF00;
-      color: black;
-    }
-
-    .back-button {
-      left: 20px;
-    }
-
-    .pbq-button {
-      left: 120px;
-    }
-
-    .quiz-content {
-      width: 100%;
-      max-width: 800px;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .question {
-      margin-bottom: 2rem;
-      font-size: 2rem;
-      width: 100%;
-      overflow-wrap: break-word;
-    }
-
-    .choices {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      min-height: 300px;
-    }
-
-    .choice {
-      border: 2px solid #00FF00;
-      border-radius: 5px;
-      padding: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s, color 0.2s;
-      user-select: none;
-      text-align: left;
-    }
-
-    .choice:hover {
-      background-color: #00FF00;
-      color: black;
-    }
-
-    .choice.disabled {
-      pointer-events: none;
-      opacity: 0.6;
-    }
-
-    .feedback {
-      margin-top: 2rem;
-      font-size: 1.8rem;
-      min-height: 2.2rem;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        font-size: 1.5rem;
-        padding: 1rem;
-      }
-
-      .question {
-        font-size: 1.6rem;
-      }
-
-      .back-button,
-      .pbq-button {
-        font-size: 0.9rem;
-        padding: 6px 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .question {
-        font-size: 1.4rem;
-      }
-
-      .choices {
-        max-width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-  <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq.html" class="pbq-button">PBQ</a>
-
-  <div class="quiz-content">
-    <div class="question" id="question"></div>
-    <div class="choices" id="choices"></div>
-    <div class="feedback" id="feedback"></div>
-  </div>
-
-  <script>
-    const questions = [
-      { question: "What command lists files in a directory?", choices: ["ls", "cd", "mkdir", "rm"], answer: "ls" },
-      { question: "Which file contains user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"], answer: "/etc/passwd" },
-      { question: "What does the 'chmod' command do?", choices: ["Changes file permissions", "Changes file owner", "Changes file name", "Changes directory"], answer: "Changes file permissions" },
-      { question: "Which init system is most commonly used in modern Linux distributions?", choices: ["systemd", "SysVinit", "Upstart", "OpenRC"], answer: "systemd" },
-      { question: "What port does SSH use by default?", choices: ["22", "80", "443", "21"], answer: "22" },
-      { question: "Which command displays the current directory?", choices: ["pwd", "whoami", "ls", "cd"], answer: "pwd" },
-      { question: "Which file stores network interface configuration?", choices: ["/etc/network/interfaces", "/etc/hosts", "/etc/resolv.conf", "/etc/fstab"], answer: "/etc/network/interfaces" },
-      { question: "What is the primary purpose of the 'cron' daemon?", choices: ["Schedule jobs", "Manage services", "Handle logging", "Control user access"], answer: "Schedule jobs" },
-      { question: "Which command shows running processes?", choices: ["ps", "ls", "kill", "top"], answer: "ps" },
-      { question: "Which command is used to search for text within files?", choices: ["grep", "find", "awk", "sed"], answer: "grep" },
-      { question: "What does the 'tar' command do?", choices: ["Archives files", "Changes permissions", "Copies files", "Deletes files"], answer: "Archives files" },
-      { question: "Which file contains kernel parameters at boot?", choices: ["/boot/grub/grub.cfg", "/etc/fstab", "/etc/hostname", "/etc/hosts"], answer: "/boot/grub/grub.cfg" },
-      { question: "What does the 'df' command display?", choices: ["Disk space usage", "Memory usage", "CPU usage", "Network statistics"], answer: "Disk space usage" },
-      { question: "Which command is used to update package lists on Debian-based systems?", choices: ["apt-get update", "yum update", "pacman -Syu", "zypper refresh"], answer: "apt-get update" },
-      { question: "What is the superuser account called in Linux?", choices: ["root", "admin", "super", "sudo"], answer: "root" },
-      { question: "What command changes the owner of a file?", choices: ["chown", "chmod", "chgrp", "passwd"], answer: "chown" },
-      { question: "Which file defines system hostname?", choices: ["/etc/hostname", "/etc/hosts", "/etc/resolv.conf", "/etc/network/interfaces"], answer: "/etc/hostname" },
-      { question: "Which command is used to display manual pages?", choices: ["man", "help", "info", "doc"], answer: "man" },
-      { question: "What does the 'ps aux' command do?", choices: ["Lists all running processes", "Shows network interfaces", "Lists open files", "Displays disk usage"], answer: "Lists all running processes" },
-      { question: "Which file contains user password hashes?", choices: ["/etc/shadow", "/etc/passwd", "/etc/group", "/etc/gshadow"], answer: "/etc/shadow" },
-      { question: "What is the default shell for most Linux users?", choices: ["bash", "zsh", "sh", "csh"], answer: "bash" },
-      { question: "Which command is used to reboot a Linux system?", choices: ["reboot", "shutdown", "halt", "init"], answer: "reboot" },
-      { question: "What does the 'kill' command do?", choices: ["Terminates processes", "Starts services", "Changes permissions", "Schedules jobs"], answer: "Terminates processes" },
-      { question: "Which directory contains user home directories?", choices: ["/home", "/root", "/usr", "/var"], answer: "/home" },
-      { question: "What is the purpose of the 'sudo' command?", choices: ["Run commands as another user", "Change passwords", "Modify files", "Schedule tasks"], answer: "Run commands as another user" },
-      { question: "Which command shows network connections?", choices: ["netstat", "ping", "traceroute", "ifconfig"], answer: "netstat" },
-      { question: "What is the package manager for Red Hat-based distributions?", choices: ["yum", "apt", "pacman", "zypper"], answer: "yum" },
-      { question: "Which file contains DNS resolver configuration?", choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/nsswitch.conf", "/etc/network/interfaces"], answer: "/etc/resolv.conf" },
-      { question: "What does the 'mount' command do?", choices: ["Mounts filesystems", "Changes ownership", "Checks disk usage", "Starts services"], answer: "Mounts filesystems" },
-      { question: "Which command shows disk partitions?", choices: ["fdisk -l", "df -h", "mount", "lsblk"], answer: "fdisk -l" },
-      { question: "What does the 'uname -r' command show?", choices: ["Kernel version", "Hostname", "User ID", "CPU info"], answer: "Kernel version" },
-      { question: "Which directory contains system log files?", choices: ["/var/log", "/etc/log", "/usr/log", "/log"], answer: "/var/log" },
-      { question: "What does the 'ifconfig' command do?", choices: ["Displays network interfaces", "Displays disk usage", "Shows running processes", "Edits files"], answer: "Displays network interfaces" },
-      { question: "Which command is used to change file timestamps?", choices: ["touch", "chmod", "chown", "date"], answer: "touch" },
-      { question: "What is the main configuration file for sudo?", choices: ["/etc/sudoers", "/etc/passwd", "/etc/shadow", "/etc/group"], answer: "/etc/sudoers" },
-      { question: "Which command is used to download files from the internet?", choices: ["wget", "curl", "ftp", "scp"], answer: "wget" },
-      { question: "What does the 'ps -ef' command show?", choices: ["Full format list of all processes", "Network interfaces", "Disk usage", "Open files"], answer: "Full format list of all processes" },
-      { question: "Which command changes the system date and time?", choices: ["date", "time", "clock", "timedatectl"], answer: "date" },
-      { question: "Which of the following is a Linux text editor?", choices: ["vim", "notepad", "nano", "emacs"], answer: "vim" },
-      { question: "Which runlevel is used for multi-user graphical mode?", choices: ["5", "3", "1", "0"], answer: "5" },
-      { question: "Which command displays the first lines of a file?", choices: ["head", "tail", "less", "cat"], answer: "head" },
-      { question: "What is the purpose of the '/etc/fstab' file?", choices: ["Filesystem mount points", "Network settings", "User accounts", "Boot loader configuration"], answer: "Filesystem mount points" },
-      { question: "Which command is used to change group ownership of a file?", choices: ["chgrp", "chown", "chmod", "grpmod"], answer: "chgrp" },
-      { question: "Which Linux distribution uses the Pacman package manager?", choices: ["Arch Linux", "Ubuntu", "Fedora", "Debian"], answer: "Arch Linux" },
-      { question: "What command shows disk free space?", choices: ["df", "du", "ls", "mount"], answer: "df" },
-      { question: "Which command displays user login history?", choices: ["last", "who", "w", "users"], answer: "last" },
-      { question: "What does the 'env' command do?", choices: ["Shows environment variables", "Changes file permissions", "Starts services", "Schedules jobs"], answer: "Shows environment variables" },
-      { question: "Which command is used to extract tar archives?", choices: ["tar -xvf", "tar -cvf", "tar -tf", "tar -rvf"], answer: "tar -xvf" },
-      { question: "Which Linux directory contains binaries for user programs?", choices: ["/usr/bin", "/bin", "/sbin", "/lib"], answer: "/usr/bin" },
-      { question: "What is the command to switch to the root user?", choices: ["su", "sudo", "login", "root"], answer: "su" },
-      { question: "Which command is used to display free and used memory?", choices: ["free", "top", "vmstat", "ps"], answer: "free" },
-      { question: "Which system file controls services at boot time?", choices: ["/etc/systemd/system", "/etc/init.d", "/etc/rc.d", "/etc/init"], answer: "/etc/systemd/system" },
-      { question: "What is the command to check open ports?", choices: ["netstat -tuln", "ifconfig", "ipconfig", "ping"], answer: "netstat -tuln" },
-      { question: "What is the default runlevel for system shutdown?", choices: ["0", "6", "1", "3"], answer: "0" },
-      { question: "Which command edits text files in the terminal?", choices: ["nano", "gedit", "vim", "emacs"], answer: "nano" },
-      // New difficult LPI questions
-      { question: "Which command loads a kernel module with specific parameters?", choices: ["modprobe", "insmod", "lsmod", "rmmod"], answer: "modprobe" },
-      { question: "What is the purpose of the 'setuid' bit on an executable?", choices: ["Runs with the permissions of the file owner", "Restricts execution to root", "Allows group execution only", "Enables sticky bit"], answer: "Runs with the permissions of the file owner" },
-      { question: "Which file configures the systemd journal storage settings?", choices: ["/etc/systemd/journald.conf", "/etc/syslog.conf", "/etc/logrotate.conf", "/var/log/journal.conf"], answer: "/etc/systemd/journald.conf" },
-      { question: "What command displays the routing table on a Linux system?", choices: ["ip route", "netstat -r", "route -n", "ip addr"], answer: "ip route" },
-      { question: "Which command creates a software RAID array?", choices: ["mdadm", "mkfs", "parted", "fdisk"], answer: "mdadm" },
-      { question: "What does the 'nofail' option in /etc/fstab do?", choices: ["Allows boot to continue if the filesystem fails to mount", "Forces filesystem check on boot", "Prevents unmounting", "Enables read-only mount"], answer: "Allows boot to continue if the filesystem fails to mount" },
-      { question: "Which command displays detailed kernel module information?", choices: ["modinfo", "lsmod", "modprobe", "insmod"], answer: "modinfo" },
-      { question: "What is the purpose of the 'chage' command?", choices: ["Manages user password aging", "Changes file ownership", "Modifies group membership", "Edits cron schedules"], answer: "Manages user password aging" },
-      { question: "Which file specifies the order of name resolution?", choices: ["/etc/nsswitch.conf", "/etc/resolv.conf", "/etc/hosts", "/etc/network/interfaces"], answer: "/etc/nsswitch.conf" },
-      { question: "What command restores a system from a tar backup?", choices: ["tar -xvf", "tar -cvf", "tar -tvf", "tar -rvf"], answer: "tar -xvf" },
-      { question: "Which systemd command reloads unit files without interrupting services?", choices: ["systemctl daemon-reload", "systemctl reload", "systemctl restart", "systemctl enable"], answer: "systemctl daemon-reload" },
-      { question: "What is the purpose of the 'iptables -F' command?", choices: ["Flushes all firewall rules", "Forwards packets", "Filters specific ports", "Saves firewall rules"], answer: "Flushes all firewall rules" },
-      { question: "Which command checks filesystem integrity?", choices: ["fsck", "mkfs", "fdisk", "parted"], answer: "fsck" },
-      { question: "What does the 'GRUB_TIMEOUT' parameter in /etc/default/grub control?", choices: ["Boot menu display time", "Kernel load time", "Filesystem check interval", "System shutdown delay"], answer: "Boot menu display time" },
-      { question: "Which command lists open files for a specific process ID?", choices: ["lsof -p", "netstat -p", "ps -p", "top -p"], answer: "lsof -p" },
-      { question: "What is the purpose of the '/proc/sys/kernel' directory?", choices: ["Stores kernel parameters", "Contains user binaries", "Logs system events", "Manages systemd services"], answer: "Stores kernel parameters" },
-      { question: "Which command configures a static IP address on a modern Linux system?", choices: ["ip addr add", "ifconfig", "netplan apply", "nmcli"], answer: "nmcli" },
-      { question: "What does the 'nice' command do when running a process?", choices: ["Sets process priority", "Kills a process", "Monitors CPU usage", "Schedules a process"], answer: "Sets process priority" },
-      { question: "Which file is used to configure log rotation?", choices: ["/etc/logrotate.conf", "/etc/syslog.conf", "/etc/journald.conf", "/etc/rsyslog.conf"], answer: "/etc/logrotate.conf" },
-      { question: "What command is used to enter a chroot environment?", choices: ["chroot", "su", "sudo", "pivot_root"], answer: "chroot" }
-    ];
-
-    let currentQuestion = 0;
-    const questionEl = document.getElementById("question");
-    const choicesEl = document.getElementById("choices");
-    const feedbackEl = document.getElementById("feedback");
-
-    // Shuffle array elements (used for questions and choices)
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    // Display the current question and its choices
-    function showQuestion() {
-      const q = questions[currentQuestion];
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      choicesEl.innerHTML = "";
-
-      // Shuffle choices for the current question
-      const shuffledChoices = [...q.choices];
-      shuffle(shuffledChoices);
-
-      shuffledChoices.forEach(choice => {
-        const div = document.createElement("div");
-        div.textContent = choice;
-        div.classList.add("choice");
-        div.onclick = () => handleAnswer(choice);
-        choicesEl.appendChild(div);
-      });
-    }
-
-    // Handle answer selection and provide feedback
-    function handleAnswer(selected) {
-      const correct = questions[currentQuestion].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
-
-      // Disable all choices and highlight correct/incorrect
-      const choiceDivs = document.querySelectorAll(".choice");
-      choiceDivs.forEach(div => {
-        div.classList.add("disabled");
-        div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
-      });
-
-      // Move to next question after 5 seconds
-      setTimeout(() => {
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionEl.textContent = "🎉 Quiz Complete!";
-          choicesEl.innerHTML = "";
-          feedbackEl.textContent = "";
-        }
-      }, 5000);
-    }
-
-    // Randomize question order and start quiz
-    shuffle(questions);
-    showQuestion();
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>LPI Linux Professional Institute Quiz</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       height: 100vh;
@@ -334,10 +28,10 @@
       position: relative;
     }
 
-    .back-button,
-    .pbq-button {
+    .back-button {
       position: absolute;
       top: 20px;
+      left: 20px;
       background-color: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
@@ -349,20 +43,12 @@
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
       user-select: none;
+      z-index: 10;
     }
 
-    .back-button:hover,
-    .pbq-button:hover {
+    .back-button:hover {
       background-color: #00FF00;
       color: black;
-    }
-
-    .back-button {
-      left: 20px;
-    }
-
-    .pbq-button {
-      left: 110px;
     }
 
     .quiz-content {
@@ -374,6 +60,7 @@
       margin-bottom: 2rem;
       font-size: 2.5rem;
       max-width: 700px;
+      word-wrap: break-word;
     }
 
     .choices {
@@ -415,7 +102,6 @@
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq.html" class="pbq-button">PBQ</a>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
@@ -423,7 +109,7 @@
     <div class="feedback" id="feedback"></div>
   </div>
 
-  <script>
+<script>
     const questions = [
       { question: "What command lists files in a directory?", choices: ["ls", "cd", "mkdir", "rm"], answer: "ls" },
       { question: "Which file contains user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"], answer: "/etc/passwd" },
@@ -503,73 +189,49 @@
       { question: "What command is used to enter a chroot environment?", choices: ["chroot", "su", "sudo", "pivot_root"], answer: "chroot" }
     ];
 
-    let currentQuestion = 0;
+    let current = 0;
+
     const questionEl = document.getElementById("question");
     const choicesEl = document.getElementById("choices");
     const feedbackEl = document.getElementById("feedback");
 
-    // Shuffle array elements (used for questions and choices)
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    // Display the current question and its choices
     function showQuestion() {
-      const q = questions[currentQuestion];
+      const q = questions[current];
       questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
       choicesEl.innerHTML = "";
+      feedbackEl.textContent = "";
 
-      // Shuffle choices for the current question
-      const shuffledChoices = [...q.choices];
-      shuffle(shuffledChoices);
-
-      shuffledChoices.forEach(choice => {
-        const div = document.createElement("div");
-        div.textContent = choice;
-        div.classList.add("choice");
-        div.onclick = () => handleAnswer(choice);
-        choicesEl.appendChild(div);
+      q.choices.forEach(choice => {
+        const btn = document.createElement("div");
+        btn.className = "choice";
+        btn.textContent = choice;
+        btn.onclick = () => handleAnswer(btn, q.answer);
+        choicesEl.appendChild(btn);
       });
     }
 
-    // Handle answer selection and provide feedback
-    function handleAnswer(selected) {
-      const correct = questions[currentQuestion].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
-
-      // Disable all choices and highlight correct/incorrect
-      const choiceDivs = document.querySelectorAll(".choice");
-      choiceDivs.forEach(div => {
-        div.classList.add("disabled");
-        div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
+    function handleAnswer(selected, correct) {
+      const buttons = document.querySelectorAll(".choice");
+      buttons.forEach(btn => {
+        btn.classList.add("disabled");
+        if (btn.textContent === correct) {
+          btn.style.borderColor = "#00FF00";
         }
       });
 
-      // Move to next question after 5 seconds
+      if (selected.textContent === correct) {
+        feedbackEl.textContent = "Correct!";
+      } else {
+        feedbackEl.textContent = "Incorrect.";
+        selected.style.borderColor = "red";
+      }
+
       setTimeout(() => {
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionEl.textContent = "🎉 Quiz Complete!";
-          choicesEl.innerHTML = "";
-          feedbackEl.textContent = "";
-        }
-      }, 5000);
+        current = (current + 1) % questions.length;
+        showQuestion();
+      }, 2000);
     }
 
-    // Randomize question order and start quiz
-    shuffle(questions);
     showQuestion();
   </script>
 </body>

@@ -3,29 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>LPI Linux Professional Institute Quiz</title>
+  <title>LPI Quiz</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      height: 100vh;
       background-color: black;
-      font-family: monospace;
       color: #00FF00;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-      font-size: 2rem;
-      font-weight: bold;
-      text-align: center;
-      position: relative;
+      font-family: monospace, monospace;
+      margin: 0;
+      padding: 20px;
     }
 
     .back-button {
@@ -43,73 +28,65 @@
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
       user-select: none;
-      z-index: 10;
+      z-index: 1000;
     }
-
     .back-button:hover {
       background-color: #00FF00;
       color: black;
     }
 
-    .quiz-content {
-      width: 700px;
-      max-width: 90%;
+    .quiz-container {
+      max-width: 600px;
+      margin: 80px auto 0; /* leave space for back button */
     }
 
-    .question {
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      max-width: 700px;
-      word-wrap: break-word;
+    #question {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
     }
 
-    .choices {
+    #choices {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      min-height: 300px;
+      gap: 12px;
     }
 
     .choice {
+      background-color: black;
       border: 2px solid #00FF00;
-      border-radius: 5px;
-      padding: 1rem;
+      padding: 12px;
       cursor: pointer;
-      transition: background-color 0.2s, color 0.2s;
+      border-radius: 5px;
       user-select: none;
-      text-align: left;
+      transition: background-color 0.3s, border-color 0.3s;
     }
-
-    .choice:hover {
-      background-color: #00FF00;
-      color: black;
+    .choice:hover:not(.disabled) {
+      background-color: #003300;
     }
-
     .choice.disabled {
-      pointer-events: none;
-      opacity: 0.6;
+      cursor: default;
+      opacity: 0.7;
     }
 
-    .feedback {
-      margin-top: 2rem;
-      font-size: 1.8rem;
-      min-height: 2.2rem;
+    #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+      min-height: 24px;
     }
   </style>
 </head>
 <body>
-  <a href="../index.html" class="back-button">← Back</a>
+  <a href="pbq.html" class="back-button">Back</a>
 
-  <div class="quiz-content">
-    <div class="question" id="question"></div>
-    <div class="choices" id="choices"></div>
-    <div class="feedback" id="feedback"></div>
+  <div class="quiz-container">
+    <div id="question">Question text here</div>
+    <div id="choices"></div>
+    <div id="feedback"></div>
   </div>
 
-<script>
+  <script>
+    const questions = [
+     <script>
     const questions = [
       { question: "What command lists files in a directory?", choices: ["ls", "cd", "mkdir", "rm"], answer: "ls" },
       { question: "Which file contains user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"], answer: "/etc/passwd" },
@@ -187,6 +164,7 @@
       { question: "What does the 'nice' command do when running a process?", choices: ["Sets process priority", "Kills a process", "Monitors CPU usage", "Schedules a process"], answer: "Sets process priority" },
       { question: "Which file is used to configure log rotation?", choices: ["/etc/logrotate.conf", "/etc/syslog.conf", "/etc/journald.conf", "/etc/rsyslog.conf"], answer: "/etc/logrotate.conf" },
       { question: "What command is used to enter a chroot environment?", choices: ["chroot", "su", "sudo", "pivot_root"], answer: "chroot" }
+    ];
     ];
 
     let current = 0;

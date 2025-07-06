@@ -109,9 +109,11 @@
 
     const pbqs = [
       { question: "How do you view the current files in the directory?", answer: "ls" },
-      { question: "Create a new user named brandon with a home directory and bash shell.", answer: "sudo useradd -m -s /bin/bash brandon" },
-      { question: "Change permissions of 'script.sh' to rwxr-xr--.", answer: "chmod 754 script.sh" },
       { question: "Display the contents of the /etc/passwd file.", answer: "cat /etc/passwd" },
+      { question: "Create a new user named brandon with a home directory and bash shell.", answer: "sudo useradd -m -s /bin/bash brandon" },
+      { question: "Change permissions of 'script.sh' to -rwxr-xr--", answer: "chmod 754 script.sh" },
+      { question: "Change permissions of 'script.txt' to -rwxrwxrwx", answer: "chmod 777 script.txt" },
+      { question: "Change permissions of 'myfolder' to dr-xr-xr-x", answer: "chmod 555 myfolder" },
       { question: "Switch to the root user.", answer: "sudo su" },
       { question: "Navigate to the Downloads directory from /home/student.", answer: "cd Downloads" },
       { question: "Create an empty file named 'log.txt' in the Documents directory.", answer: "touch Documents/log.txt" },

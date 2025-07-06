@@ -170,7 +170,7 @@
         setTimeout(() => {
           currentPBQ = (currentPBQ + 1) % pbqs.length;
           clearTerminal();
-        }, 1000);
+        }, 5000);  // 5-second delay before next question
       } else {
         printToTerminal("❌ Incorrect. Try again.");
       }

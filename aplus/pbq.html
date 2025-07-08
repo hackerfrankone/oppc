@@ -217,9 +217,7 @@
       });
 
       document.querySelectorAll('.description-box').forEach(box => {
-        box.addEventListener('dragover', e => {
-          e.preventDefault();
-        });
+        box.addEventListener('dragover', e => e.preventDefault());
 
         box.addEventListener('drop', e => {
           e.preventDefault();
@@ -279,7 +277,7 @@
       nextButton.disabled = false;
     }
 
-    function clearAnswersRetainFeedback() {
+    function clearAnswersFully() {
       clearIcons();
       document.querySelectorAll('.description-box').forEach(box => {
         const tool = box.querySelector('.tool');
@@ -287,19 +285,11 @@
           toolsContainer.appendChild(tool);
           tool.classList.remove('placed');
         }
-
-        // If answer was correct before submit, show icon
-        if (submitted) {
-          const answerId = box.dataset.answer;
-          const icon = document.createElement('span');
-          icon.className = 'result-icon';
-          icon.textContent = '✔';
-          icon.style.color = 'lime';
-          box.appendChild(icon);
-          box.classList.add('correct');
-        }
       });
+      submitted = false;
+      feedback.textContent = '';
       submitButton.disabled = true;
+      nextButton.disabled = true;
     }
 
     function resetEverything() {
@@ -313,7 +303,7 @@
     }
 
     submitButton.addEventListener('click', checkAnswers);
-    clearButton.addEventListener('click', clearAnswersRetainFeedback);
+    clearButton.addEventListener('click', clearAnswersFully);
     nextButton.addEventListener('click', resetEverything);
 
     resetEverything();

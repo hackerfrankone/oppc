@@ -153,6 +153,13 @@
     <div id="stepsTarget" class="order-container"></div>
   </div>
 
+  <!-- PBQ 3 -->
+  <div id="pbq3" class="hidden">
+    <div class="instructions">PBQ 3: Drag the A+ troubleshooting steps into the correct order</div>
+    <div id="theoryStepsPool" class="tools-container"></div>
+    <div id="theoryStepsTarget" class="order-container"></div>
+  </div>
+
   <div class="buttons">
     <button id="back" class="hidden">⬅ Back</button>
     <button id="clear">Clear</button>
@@ -183,10 +190,22 @@
     "Educate the end user"
   ];
 
+  const theorySteps = [
+    "Identify the problem",
+    "Establish a theory of probable cause",
+    "Test the theory to determine cause",
+    "Establish a plan of action to resolve the problem",
+    "Implement the solution or escalate as necessary",
+    "Verify full system functionality and implement preventive measures",
+    "Document findings, actions, and outcomes"
+  ];
+
   const toolsContainer = document.getElementById('tools1');
   const descriptionsContainer = document.getElementById('descriptions1');
   const stepsPool = document.getElementById('stepsPool');
   const stepsTarget = document.getElementById('stepsTarget');
+  const theoryStepsPool = document.getElementById('theoryStepsPool');
+  const theoryStepsTarget = document.getElementById('theoryStepsTarget');
   const feedback = document.getElementById('feedback');
 
   const submitBtn = document.getElementById('submit');
@@ -255,6 +274,39 @@
     backBtn.classList.remove('hidden');
   }
 
+  function renderPBQ3() {
+    theoryStepsPool.innerHTML = '';
+    theoryStepsTarget.innerHTML = '';
+
+    shuffle(theorySteps).forEach(step => {
+      const div = document.createElement('div');
+      div.className = 'step';
+      div.draggable = true;
+      div.textContent = step;
+      div.dataset.step = step;
+      theoryStepsPool.appendChild(div);
+    });
+
+    theorySteps.forEach((_, i) => {
+      const target = document.createElement('div');
+      target.className = 'description-box';
+      target.dataset.index = i;
+
+      const number = document.createElement('div');
+      number.className = 'step-number';
+      number.textContent = `${i + 1}.`;
+
+      const holder = document.createElement('div');
+      holder.className = 'step-box';
+      holder.appendChild(number);
+
+      target.appendChild(holder);
+      theoryStepsTarget.appendChild(target);
+    });
+
+    backBtn.classList.remove('hidden');
+  }
+
   function setupDragDrop() {
     document.querySelectorAll('[draggable="true"]').forEach(el => {
       el.addEventListener('dragstart', e => {
@@ -284,12 +336,21 @@
           target.appendChild(dragging);
         }
 
+        if (type === 'step' && currentPBQ === 3 && target.classList.contains('description-box')) {
+          target.querySelector('.step')?.remove();
+          target.appendChild(dragging);
+        }
+
         if (type === 'tool' && currentPBQ === 1 && target.classList.contains('tools-container')) {
           toolsContainer.appendChild(dragging);
         }
 
         if (type === 'step' && currentPBQ === 2 && target.classList.contains('tools-container')) {
           stepsPool.appendChild(dragging);
+        }
+
+        if (type === 'step' && currentPBQ === 3 && target.classList.contains('tools-container')) {
+          theoryStepsPool.appendChild(dragging);
         }
 
         enableSubmitIfReady();
@@ -304,6 +365,10 @@
       submitBtn.disabled = !allFilled;
     } else if (currentPBQ === 2) {
       const allFilled = [...document.querySelectorAll('#stepsTarget .description-box')]
+        .every(box => box.querySelector('.step'));
+      submitBtn.disabled = !allFilled;
+    } else if (currentPBQ === 3) {
+      const allFilled = [...document.querySelectorAll('#theoryStepsTarget .description-box')]
         .every(box => box.querySelector('.step'));
       submitBtn.disabled = !allFilled;
     }
@@ -335,7 +400,7 @@
     });
     feedback.textContent = correct === toolsData.length
       ? '✅ All correct!'
-      : '❌ Try again or click Next.';
+      : '❌ Clear to try again or click Next.';
     nextBtn.disabled = false;
   }
 
@@ -358,17 +423,42 @@
     });
     feedback.textContent = correct === malwareSteps.length
       ? '✅ Steps in perfect order!'
-      : '❌ Try again.';
+      : '❌ Clear to try again or click Next.';
+    nextBtn.disabled = false;
+  }
+
+  function checkPBQ3() {
+    clearIcons();
+    let correct = 0;
+    document.querySelectorAll('#theoryStepsTarget .description-box').forEach((box, idx) => {
+      const step = box.querySelector('.step');
+      const icon = document.createElement('span');
+      icon.className = 'result-icon';
+      if (step && step.dataset.step === theorySteps[idx]) {
+        icon.textContent = '✔';
+        box.classList.add('correct');
+        correct++;
+      } else {
+        icon.textContent = '✖';
+        box.classList.add('incorrect');
+      }
+      box.appendChild(icon);
+    });
+    feedback.textContent = correct === theorySteps.length
+      ? '✅ Steps in perfect order!'
+      : '❌ Clear to try again.';
   }
 
   submitBtn.addEventListener('click', () => {
     if (currentPBQ === 1) checkPBQ1();
-    else checkPBQ2();
+    else if (currentPBQ === 2) checkPBQ2();
+    else if (currentPBQ === 3) checkPBQ3();
   });
 
   clearBtn.addEventListener('click', () => {
     if (currentPBQ === 1) renderPBQ1();
-    else renderPBQ2();
+    else if (currentPBQ === 2) renderPBQ2();
+    else if (currentPBQ === 3) renderPBQ3();
     feedback.textContent = '';
     submitBtn.disabled = true;
     nextBtn.disabled = true;
@@ -386,19 +476,41 @@
       submitBtn.disabled = true;
       nextBtn.disabled = true;
       backBtn.classList.remove('hidden');
+    } else if (currentPBQ === 2) {
+      document.getElementById('pbq2').classList.add('hidden');
+      document.getElementById('pbq3').classList.remove('hidden');
+      currentPBQ = 3;
+      renderPBQ3();
+      setupDragDrop();
+      feedback.textContent = '';
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+      backBtn.classList.remove('hidden');
     }
   });
 
   backBtn.addEventListener('click', () => {
-    document.getElementById('pbq2').classList.add('hidden');
-    document.getElementById('pbq1').classList.remove('hidden');
-    currentPBQ = 1;
-    renderPBQ1();
-    setupDragDrop();
-    backBtn.classList.add('hidden');
-    feedback.textContent = '';
-    submitBtn.disabled = true;
-    nextBtn.disabled = true;
+    if (currentPBQ === 2) {
+      document.getElementById('pbq2').classList.add('hidden');
+      document.getElementById('pbq1').classList.remove('hidden');
+      currentPBQ = 1;
+      renderPBQ1();
+      setupDragDrop();
+      backBtn.classList.add('hidden');
+      feedback.textContent = '';
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+    } else if (currentPBQ === 3) {
+      document.getElementById('pbq3').classList.add('hidden');
+      document.getElementById('pbq2').classList.remove('hidden');
+      currentPBQ = 2;
+      renderPBQ2();
+      setupDragDrop();
+      feedback.textContent = '';
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+      backBtn.classList.remove('hidden');
+    }
   });
 
   topBackBtn.addEventListener('click', () => {

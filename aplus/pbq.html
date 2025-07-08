@@ -406,7 +406,7 @@
     });
     feedback.textContent = correct === toolsData.length
       ? '✅ All correct!'
-      : '❌ Try again or click Next.';
+      : '❌ Clear to try again or click Next.';
     nextBtn.disabled = false;
   }
 
@@ -429,7 +429,7 @@
     });
     feedback.textContent = correct === malwareSteps.length
       ? '✅ Steps in perfect order!'
-      : '❌ Try again or click Next.';
+      : '❌ Clear to try again or click Next.';
     nextBtn.disabled = false;
   }
 
@@ -452,7 +452,7 @@
     });
     feedback.textContent = correct === theorySteps.length
       ? '✅ Steps in perfect order!'
-      : '❌ Try again.';
+      : '❌ Clear to try again or click Next.';
   }
 
   submitBtn.addEventListener('click', () => {

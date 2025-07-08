@@ -167,7 +167,6 @@
   </div>
 
   <div class="buttons">
-    <button id="back" class="hidden">⬅ Back</button>
     <button id="clear">Clear</button>
     <button id="submit" disabled>Submit</button>
     <button id="next" disabled>Next ➡</button>
@@ -217,7 +216,6 @@
   const submitBtn = document.getElementById('submit');
   const clearBtn = document.getElementById('clear');
   const nextBtn = document.getElementById('next');
-  const backBtn = document.getElementById('back');
   const topBackBtn = document.getElementById('topBack');
 
   let currentPBQ = 1;
@@ -276,8 +274,6 @@
       target.appendChild(holder);
       stepsTarget.appendChild(target);
     });
-
-    backBtn.classList.remove('hidden');
   }
 
   function renderPBQ3() {
@@ -309,8 +305,6 @@
       target.appendChild(holder);
       theoryStepsTarget.appendChild(target);
     });
-
-    backBtn.classList.remove('hidden');
   }
 
   function setupDragDrop() {
@@ -475,13 +469,12 @@
     if (currentPBQ === 1) {
       document.getElementById('pbq1').classList.add('hidden');
       document.getElementById('pbq2').classList.remove('hidden');
-      currentPBQ = 2;
+      currentPBQ2 = 2;
       renderPBQ2();
       setupDragDrop();
       feedback.textContent = '';
       submitBtn.disabled = true;
       nextBtn.disabled = true;
-      backBtn.classList.remove('hidden');
     } else if (currentPBQ === 2) {
       document.getElementById('pbq2').classList.add('hidden');
       document.getElementById('pbq3').classList.remove('hidden');
@@ -489,37 +482,12 @@
       renderPBQ3();
       setupDragDrop();
       feedback.textContent = '';
-      submitBtn.disabled = true;
+    submitBtn.disabled = true;
       nextBtn.disabled = true;
-      backBtn.classList.remove('hidden');
     }
   });
 
-  backBtn.addEventListener('click', () => {
-    if (currentPBQ === 2) {
-      document.getElementById('pbq2').classList.add('hidden');
-      document.getElementById('pbq1').classList.remove('hidden');
-      currentPBQ = 1;
-      renderPBQ1();
-      setupDragDrop();
-      backBtn.classList.add('hidden');
-      feedback.textContent = '';
-      submitBtn.disabled = true;
-      nextBtn.disabled = true;
-    } else if (currentPBQ === 3) {
-      document.getElementById('pbq3').classList.add('hidden');
-      document.getElementById('pbq2').classList.remove('hidden');
-      currentPBQ = 2;
-      renderPBQ2();
-      setupDragDrop();
-      feedback.textContent = '';
-      submitBtn.disabled = true;
-      nextBtn.disabled = true;
-      backBtn.classList.remove('hidden');
-    }
-  });
-
-  topBackBtn.addEventListener('click', () => {
+topBackBtn.addEventListener('click', () => {
     window.location.href = 'aplus.html';
   });
 

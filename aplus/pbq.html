@@ -314,43 +314,79 @@
         e.dataTransfer.setData('type', e.target.classList.contains('tool') ? 'tool' : 'step');
         e.target.classList.add('dragging');
       });
+      el.addEventListener('dragend', e => {
+        e.target.classList.remove('dragging');
+      });
     });
 
     document.querySelectorAll('.description-box, .tools-container, .order-container').forEach(target => {
-      target.addEventListener('dragover', e => e.preventDefault());
+      target.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
 
       target.addEventListener('drop', e => {
         e.preventDefault();
         const type = e.dataTransfer.getData('type');
         const data = e.dataTransfer.getData('text/plain');
-        const dragging = document.querySelector(`.${type}[data-id="${data}"], .${type}[data-step="${data}"]`);
+        let dragging = null;
+        if (type === 'tool') {
+          dragging = document.querySelector(`.tool[data-id="${data}"]`);
+        } else if (type === 'step') {
+          dragging = document.querySelector(`.step[data-step="${data}"]`);
+        }
         if (!dragging) return;
 
+        // Clone the dragged element to preserve the original in the pool
+        const clone = dragging.cloneNode(true);
+        clone.draggable = true;
+        clone.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', clone.dataset.id || clone.dataset.step);
+          e.dataTransfer.setData('type', clone.classList.contains('tool') ? 'tool' : 'step');
+          clone.classList.add('dragging');
+        });
+        clone.addEventListener('dragend', e => {
+          clone.classList.remove('dragging');
+        });
+
+        // PBQ 1: Tools to descriptions
         if (type === 'tool' && currentPBQ === 1 && target.classList.contains('description-box')) {
+          if (target.querySelector('.tool')) {
+            feedback.textContent = 'This description already has a tool. Remove it first.';
+            return;
+          }
           target.querySelector('.tool')?.remove();
-          target.appendChild(dragging);
+          target.appendChild(clone);
         }
 
+        // PBQ 2: Malware steps to order
         if (type === 'step' && currentPBQ === 2 && target.classList.contains('description-box')) {
+          if (target.querySelector('.step')) {
+            feedback.textContent = 'This step slot is already filled. Remove it first.';
+            return;
+          }
           target.querySelector('.step')?.remove();
-          target.appendChild(dragging);
+          target.querySelector('.step-box').appendChild(clone);
         }
 
+        // PBQ 3: Troubleshooting steps to order
         if (type === 'step' && currentPBQ === 3 && target.classList.contains('description-box')) {
+          if (target.querySelector('.step')) {
+            feedback.textContent = 'This step slot is already filled. Remove it first.';
+            return;
+          }
           target.querySelector('.step')?.remove();
-          target.appendChild(dragging);
+          target.querySelector('.step-box').appendChild(clone);
         }
 
+        // Return to pool
         if (type === 'tool' && currentPBQ === 1 && target.classList.contains('tools-container')) {
-          toolsContainer.appendChild(dragging);
+          toolsContainer.appendChild(clone);
         }
-
         if (type === 'step' && currentPBQ === 2 && target.classList.contains('tools-container')) {
-          stepsPool.appendChild(dragging);
+          stepsPool.appendChild(clone);
         }
-
         if (type === 'step' && currentPBQ === 3 && target.classList.contains('tools-container')) {
-          theoryStepsPool.appendChild(dragging);
+          theoryStepsPool.appendChild(clone);
         }
 
         enableSubmitIfReady();
@@ -447,6 +483,7 @@
     feedback.textContent = correct === theorySteps.length
       ? '✅ Steps in perfect order!'
       : '❌ Clear to try again or click Next.';
+    nextBtn.disabled = false;
   }
 
   submitBtn.addEventListener('click', () => {
@@ -469,7 +506,7 @@
     if (currentPBQ === 1) {
       document.getElementById('pbq1').classList.add('hidden');
       document.getElementById('pbq2').classList.remove('hidden');
-      currentPBQ2 = 2;
+      currentPBQ = 2;
       renderPBQ2();
       setupDragDrop();
       feedback.textContent = '';
@@ -482,12 +519,12 @@
       renderPBQ3();
       setupDragDrop();
       feedback.textContent = '';
-    submitBtn.disabled = true;
+      submitBtn.disabled = true;
       nextBtn.disabled = true;
     }
   });
 
-topBackBtn.addEventListener('click', () => {
+  topBackBtn.addEventListener('click', () => {
     window.location.href = 'aplus.html';
   });
 

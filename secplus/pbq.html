@@ -48,6 +48,30 @@
       color: black;
     }
 
+    .next-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      font-family: monospace;
+      display: none;
+    }
+
+    .next-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
     .pbq-content {
       width: 600px;
       max-width: 90%;
@@ -106,40 +130,69 @@
       font-size: 0.9rem;
       border-radius: 5px;
     }
+
+    .submit-button {
+      background-color: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      font-family: monospace;
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .submit-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
   <a href="secplus.html" class="back-button">← Back</a>
+  <a href="pbq2.html" class="next-button" id="next-button">Next →</a>
 
   <div class="pbq-content">
     <div class="pbq-scenario">
-      Scenario: You are a security administrator configuring a firewall to secure a corporate network. The network must allow specific traffic while blocking unauthorized access. Configure the firewall rules below to:
+       A security administrator is configuring a firewall to secure a corporate network. Allow specific traffic while blocking unauthorized access. Configure the firewall:
       <ul>
-        <li>Allow HTTP (port 80) and HTTPS (port 443) outbound traffic.</li>
-        <li>Allow SSH (port 22) inbound to a specific server (192.168.1.10).</li>
-        <li>Block all other inbound traffic.</li>
+        <li>Allow port 80 & 443 outbound traffic</li>
+        <li>Allow port 22 inbound to  192.168.1.10</li>
+        <li>Block all other inbound traffic</li>
       </ul>
     </div>
     <div class="firewall-rules" id="firewall-rules"></div>
+    <button class="submit-button" id="submit-button">Submit</button>
     <div class="feedback" id="feedback"></div>
   </div>
 
   <script>
     const firewallRules = [
       {
-        description: "HTTP (port 80) outbound",
+        description: "Port 80 outbound",
         correctAction: "Allow",
       },
       {
-        description: "HTTPS (port 443) outbound",
+        description: "Port 443 outbound",
         correctAction: "Allow",
       },
       {
-        description: "SSH (port 22) inbound to 192.168.1.10",
+        description: "Port 22 inbound to 192.168.1.10",
         correctAction: "Allow",
       },
       {
-        description: "FTP (port 21) inbound",
+        description: "Port 21 inbound",
         correctAction: "Block",
       },
       {
@@ -150,6 +203,8 @@
 
     const rulesElement = document.getElementById("firewall-rules");
     const feedbackElement = document.getElementById("feedback");
+    const submitButton = document.getElementById("submit-button");
+    const nextButton = document.getElementById("next-button");
 
     function loadRules() {
       rulesElement.innerHTML = "";
@@ -158,7 +213,7 @@
         ruleDiv.classList.add("rule");
         ruleDiv.innerHTML = `
           <span>${rule.description}</span>
-          <select id="rule-${index}" onchange="checkRule(${index})">
+          <select id="rule-${index}">
             <option value="">Select Action</option>
             <option value="Allow">Allow</option>
             <option value="Block">Block</option>
@@ -168,32 +223,40 @@
       });
     }
 
-    function checkRule(index) {
-      const select = document.getElementById(`rule-${index}`);
-      const selectedAction = select.value;
-      const rule = firewallRules[index];
-      if (selectedAction === rule.correctAction) {
-        feedbackElement.textContent = `✅ Correct: ${rule.description} should be ${rule.correctAction}.`;
-        select.parentElement.style.borderColor = "#00FF00";
+    function checkAllRules() {
+      let allCorrect = true;
+      let feedbackMessages = [];
+
+      firewallRules.forEach((rule, index) => {
+        const select = document.getElementById(`rule-${index}`);
+        const selectedAction = select.value;
         select.disabled = true;
         select.parentElement.classList.add("disabled");
-      } else if (selectedAction !== "") {
-        feedbackElement.textContent = `❌ Incorrect: ${rule.description} should be ${rule.correctAction}.`;
-        select.parentElement.style.borderColor = "red";
+
+        if (selectedAction === "") {
+          feedbackMessages.push(`Please select an action for ${rule.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allCorrect = false;
+        } else if (selectedAction === rule.correctAction) {
+          feedbackMessages.push(`✅ Correct: ${rule.description} should be ${rule.correctAction}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${rule.description} should be ${rule.correctAction}.`);
+          select.parentElement.style.borderColor = "red";
+          allCorrect = false;
+        }
+      });
+
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allCorrect) {
+        feedbackElement.innerHTML = "All rules configured correctly! Firewall setup complete.";
+        nextButton.style.display = "block";
       }
-      checkCompletion();
     }
 
-    function checkCompletion() {
-      const allCorrect = firewallRules.every((rule, index) => {
-        const select = document.getElementById(`rule-${index}`);
-        return select.value === rule.correctAction;
-      });
-      if (allCorrect) {
-        feedbackElement.textContent = "All rules configured correctly! Firewall setup complete.";
-        document.querySelectorAll(".rule").forEach(rule => rule.classList.add("disabled"));
-      }
-    }
+    submitButton.addEventListener("click", checkAllRules);
 
     loadRules();
   </script>

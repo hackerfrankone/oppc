@@ -336,57 +336,45 @@
         }
         if (!dragging) return;
 
-        // Clone the dragged element to preserve the original in the pool
-        const clone = dragging.cloneNode(true);
-        clone.draggable = true;
-        clone.addEventListener('dragstart', e => {
-          e.dataTransfer.setData('text/plain', clone.dataset.id || clone.dataset.step);
-          e.dataTransfer.setData('type', clone.classList.contains('tool') ? 'tool' : 'step');
-          clone.classList.add('dragging');
-        });
-        clone.addEventListener('dragend', e => {
-          clone.classList.remove('dragging');
-        });
-
         // PBQ 1: Tools to descriptions
         if (type === 'tool' && currentPBQ === 1 && target.classList.contains('description-box')) {
           if (target.querySelector('.tool')) {
-            feedback.textContent = 'This description already has a tool. Remove it first.';
-            return;
+            // Move existing tool back to pool
+            const existingTool = target.querySelector('.tool');
+            toolsContainer.appendChild(existingTool);
           }
-          target.querySelector('.tool')?.remove();
-          target.appendChild(clone);
+          target.appendChild(dragging);
         }
 
         // PBQ 2: Malware steps to order
         if (type === 'step' && currentPBQ === 2 && target.classList.contains('description-box')) {
           if (target.querySelector('.step')) {
-            feedback.textContent = 'This step slot is already filled. Remove it first.';
-            return;
+            // Move existing step back to pool
+            const existingStep = target.querySelector('.step');
+            stepsPool.appendChild(existingStep);
           }
-          target.querySelector('.step')?.remove();
-          target.querySelector('.step-box').appendChild(clone);
+          target.querySelector('.step-box').appendChild(dragging);
         }
 
         // PBQ 3: Troubleshooting steps to order
         if (type === 'step' && currentPBQ === 3 && target.classList.contains('description-box')) {
           if (target.querySelector('.step')) {
-            feedback.textContent = 'This step slot is already filled. Remove it first.';
-            return;
+            // Move existing step back to pool
+            const existingStep = target.querySelector('.step');
+            theoryStepsPool.appendChild(existingStep);
           }
-          target.querySelector('.step')?.remove();
-          target.querySelector('.step-box').appendChild(clone);
+          target.querySelector('.step-box').appendChild(dragging);
         }
 
         // Return to pool
         if (type === 'tool' && currentPBQ === 1 && target.classList.contains('tools-container')) {
-          toolsContainer.appendChild(clone);
+          toolsContainer.appendChild(dragging);
         }
         if (type === 'step' && currentPBQ === 2 && target.classList.contains('tools-container')) {
-          stepsPool.appendChild(clone);
+          stepsPool.appendChild(dragging);
         }
         if (type === 'step' && currentPBQ === 3 && target.classList.contains('tools-container')) {
-          theoryStepsPool.appendChild(clone);
+          theoryStepsPool.appendChild(dragging);
         }
 
         enableSubmitIfReady();

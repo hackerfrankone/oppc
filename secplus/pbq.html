@@ -12,35 +12,35 @@
 
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       background-color: black;
-      font-family: monospace;
+      font-family: 'Courier New', monospace;
       color: #00FF00;
       user-select: none;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 2rem;
+      padding: 1rem;
       position: relative;
     }
 
     .back-button {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background-color: transparent;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
-      padding: 8px 16px;
-      font-size: 1rem;
-      font-weight: bold;
-      text-decoration: none;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
       border-radius: 5px;
       cursor: pointer;
+      text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
-      user-select: none;
-      font-family: monospace;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .back-button:hover {
@@ -48,75 +48,51 @@
       color: black;
     }
 
-    .next-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: transparent;
-      color: #00FF00;
-      border: 2px solid #00FF00;
-      padding: 8px 16px;
-      font-size: 1rem;
-      font-weight: bold;
-      text-decoration: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      user-select: none;
-      font-family: monospace;
-      display: none;
-    }
-
-    .next-button:hover {
-      background-color: #00FF00;
-      color: black;
-    }
-
-    .pbq-content {
-      width: 600px;
-      max-width: 90%;
+    .pbq-container {
+      width: 100%;
+      max-width: 600px;
       text-align: left;
-      font-size: 1.1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
     .pbq-scenario {
-      margin-bottom: 1.5rem;
-      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
     }
 
-    .firewall-rules {
+    .firewall-rules, .threat-scenarios, .log-entries {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 0.6rem;
       width: 100%;
       max-width: 500px;
       margin: 0 auto;
     }
 
-    .rule {
+    .rule, .scenario, .log {
       border: 2px solid #00FF00;
       border-radius: 5px;
-      padding: 0.8rem;
-      cursor: pointer;
-      transition: background-color 0.2s, color 0.2s;
+      padding: 0.6rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      min-height: 3rem;
+      touch-action: manipulation;
     }
 
-    .rule:hover {
+    .rule:hover, .scenario:hover, .log:hover {
       background-color: #00FF00;
       color: black;
     }
 
-    .rule.disabled {
+    .rule.disabled, .scenario.disabled, .log.disabled {
       pointer-events: none;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
     .feedback {
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
       min-height: 2rem;
       text-align: center;
     }
@@ -125,86 +101,157 @@
       background-color: black;
       color: #00FF00;
       border: 2px solid #00FF00;
-      padding: 5px;
-      font-family: monospace;
-      font-size: 0.9rem;
+      padding: 0.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.8rem, 2.5vw, 0.9rem);
       border-radius: 5px;
+      width: 50%;
+      max-width: 200px;
+      touch-action: manipulation;
+      -webkit-appearance: menulist-button;
     }
 
-    .submit-button {
-      background-color: transparent;
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .buttons button {
+      background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
-      padding: 8px 16px;
-      font-size: 1rem;
-      font-weight: bold;
+      padding: 0.6rem 1.2rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 3vw, 1rem);
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-      font-family: monospace;
-      margin-top: 1rem;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .submit-button:hover {
+    .buttons button:hover:not(:disabled) {
       background-color: #00FF00;
       color: black;
     }
 
-    .submit-button:disabled {
-      opacity: 0.6;
+    .buttons button:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+      .pbq-container {
+        max-width: 95%;
+      }
+      .rule span, .scenario span, .log span {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+      }
+      select {
+        width: 60%;
+        max-width: 180px;
+      }
     }
   </style>
 </head>
 <body>
   <a href="secplus.html" class="back-button">← Back</a>
-  <a href="pbq2.html" class="next-button" id="next-button">Next →</a>
 
-  <div class="pbq-content">
-    <div class="pbq-scenario">
-       A security administrator is configuring a firewall to secure a corporate network. Allow specific traffic while blocking unauthorized access. Configure the firewall:
-      <ul>
-        <li>Allow port 80 & 443 outbound traffic</li>
-        <li>Allow port 22 inbound to  192.168.1.10</li>
-        <li>Block all other inbound traffic</li>
-      </ul>
+  <div class="pbq-container">
+    <!-- PBQ 1: Firewall Rules -->
+    <div id="pbq1">
+      <div class="pbq-scenario">
+        Configure the firewall to secure the network:
+        <ul>
+          <li>Allow HTTP & HTTPS outbound</li>
+          <li>Allow SSH inbound to 192.168.1.10</li>
+          <li>Block all other inbound traffic</li>
+        </ul>
+      </div>
+      <div class="firewall-rules" id="firewall-rules"></div>
     </div>
-    <div class="firewall-rules" id="firewall-rules"></div>
-    <button class="submit-button" id="submit-button">Submit</button>
+
+    <!-- PBQ 2: Threat Actors -->
+    <div id="pbq2" class="hidden">
+      <div class="pbq-scenario">
+        Identify the threat actor for each incident:
+      </div>
+      <div class="threat-scenarios" id="threat-scenarios"></div>
+    </div>
+
+    <!-- PBQ 3: Log Analysis -->
+    <div id="pbq3" class="hidden">
+      <div class="pbq-scenario">
+        Match each log entry to the correct security incident:
+      </div>
+      <div class="log-entries" id="log-entries"></div>
+    </div>
+
+    <div class="buttons">
+      <button id="clear-button">Clear</button>
+      <button id="submit-button" disabled>Submit</button>
+      <button id="next-button" disabled>Next ➡</button>
+    </div>
     <div class="feedback" id="feedback"></div>
   </div>
 
   <script>
     const firewallRules = [
-      {
-        description: "Port 80 outbound",
-        correctAction: "Allow",
-      },
-      {
-        description: "Port 443 outbound",
-        correctAction: "Allow",
-      },
-      {
-        description: "Port 22 inbound to 192.168.1.10",
-        correctAction: "Allow",
-      },
-      {
-        description: "Port 21 inbound",
-        correctAction: "Block",
-      },
-      {
-        description: "RDP (port 3389) inbound",
-        correctAction: "Block",
-      },
+      { description: "HTTP outbound", correctAction: "Allow" },
+      { description: "HTTPS outbound", correctAction: "Allow" },
+      { description: "SSH to 192.168.1.10", correctAction: "Allow" },
+      { description: "FTP inbound", correctAction: "Block" },
+      { description: "RDP inbound", correctAction: "Block" },
     ];
 
+    const threatScenarios = [
+      { description: "Website defaced with political slogans", correctActor: "Hacktivist" },
+      { description: "IP stolen via APT for rival nation", correctActor: "Nation-State" },
+      { description: "Leaked data after denied promotion", correctActor: "Insider Threat" },
+      { description: "DDoS attack with pre-built tools", correctActor: "Script Kiddie" },
+      { description: "Ransomware for cryptocurrency", correctActor: "Organized Crime" },
+    ];
+
+    const logEntries = [
+      { description: "Multiple failed login attempts on admin account", correctIncident: "Brute Force" },
+      { description: "Email with suspicious link clicked by user", correctIncident: "Phishing" },
+      { description: "SELECT * FROM users WHERE '1'='1'", correctIncident: "SQL Injection" },
+      { description: "Unknown process downloading files", correctIncident: "Malware" },
+      { description: "User elevated to admin via unpatched exploit", correctIncident: "Privilege Escalation" },
+    ];
+
+    const pbq1 = document.getElementById("pbq1");
+    const pbq2 = document.getElementById("pbq2");
+    const pbq3 = document.getElementById("pbq3");
     const rulesElement = document.getElementById("firewall-rules");
+    const scenariosElement = document.getElementById("threat-scenarios");
+    const logEntriesElement = document.getElementById("log-entries");
     const feedbackElement = document.getElementById("feedback");
+    const clearButton = document.getElementById("clear-button");
     const submitButton = document.getElementById("submit-button");
     const nextButton = document.getElementById("next-button");
+
+    let currentPBQ = 1;
+
+    function checkAllSelected() {
+      const selectElements = currentPBQ === 1
+        ? Array.from(document.querySelectorAll(".firewall-rules select"))
+        : currentPBQ === 2
+        ? Array.from(document.querySelectorAll(".threat-scenarios select"))
+        : Array.from(document.querySelectorAll(".log-entries select"));
+      const allSelected = selectElements.every(select => select.value !== "");
+      submitButton.disabled = !allSelected;
+      console.log(`Submit button ${allSelected ? "enabled" : "disabled"}, all dropdowns selected: ${allSelected}`);
+    }
 
     function loadRules() {
       rulesElement.innerHTML = "";
@@ -221,24 +268,93 @@
         `;
         rulesElement.appendChild(ruleDiv);
       });
+      console.log("Firewall rules loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".firewall-rules select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadScenarios() {
+      scenariosElement.innerHTML = "";
+      threatScenarios.forEach((scenario, index) => {
+        const scenarioDiv = document.createElement("div");
+        scenarioDiv.classList.add("scenario");
+        scenarioDiv.innerHTML = `
+          <span>${scenario.description}</span>
+          <select id="scenario-${index}">
+            <option value="">Select Actor</option>
+            <option value="Hacktivist">Hacktivist</option>
+            <option value="Nation-State">Nation-State</option>
+            <option value="Insider Threat">Insider Threat</option>
+            <option value="Script Kiddie">Script Kiddie</option>
+            <option value="Organized Crime">Organized Crime</option>
+          </select>
+        `;
+        scenariosElement.appendChild(scenarioDiv);
+      });
+      console.log("Threat scenarios loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".threat-scenarios select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadLogs() {
+      logEntriesElement.innerHTML = "";
+      logEntries.forEach((log, index) => {
+        const logDiv = document.createElement("div");
+        logDiv.classList.add("log");
+        logDiv.innerHTML = `
+          <span>${log.description}</span>
+          <select id="log-${index}">
+            <option value="">Select Incident</option>
+            <option value="Phishing">Phishing</option>
+            <option value="Brute Force">Brute Force</option>
+            <option value="SQL Injection">SQL Injection</option>
+            <option value="Malware">Malware</option>
+            <option value="Privilege Escalation">Privilege Escalation</option>
+          </select>
+        `;
+        logEntriesElement.appendChild(logDiv);
+      });
+      console.log("Log entries loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".log-entries select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
     }
 
     function checkAllRules() {
       let allCorrect = true;
+      let allAnswered = true;
       let feedbackMessages = [];
 
+      console.log("Checking firewall rules...");
       firewallRules.forEach((rule, index) => {
         const select = document.getElementById(`rule-${index}`);
+        if (!select) {
+          console.error(`Select element rule-${index} not found`);
+          return;
+        }
         const selectedAction = select.value;
+        console.log(`Rule ${index}: ${rule.description}, Selected: ${selectedAction}, Correct: ${rule.correctAction}`);
         select.disabled = true;
         select.parentElement.classList.add("disabled");
 
         if (selectedAction === "") {
           feedbackMessages.push(`Please select an action for ${rule.description}.`);
           select.parentElement.style.borderColor = "red";
+          allAnswered = false;
           allCorrect = false;
         } else if (selectedAction === rule.correctAction) {
-          feedbackMessages.push(`✅ Correct: ${rule.description} should be ${rule.correctAction}.`);
+          feedbackMessages.push(`✅ Correct: ${rule.description} is ${rule.correctAction}.`);
           select.parentElement.style.borderColor = "#00FF00";
         } else {
           feedbackMessages.push(`❌ Incorrect: ${rule.description} should be ${rule.correctAction}.`);
@@ -249,14 +365,222 @@
 
       feedbackElement.innerHTML = feedbackMessages.join("<br>");
       submitButton.disabled = true;
+      clearButton.disabled = false;
 
-      if (allCorrect) {
-        feedbackElement.innerHTML = "All rules configured correctly! Firewall setup complete.";
-        nextButton.style.display = "block";
+      if (allAnswered) {
+        if (allCorrect) {
+          feedbackElement.innerHTML = "All rules correct! Firewall setup complete.";
+          console.log("All rules correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
+          console.log("Some rules incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all rules answered, Next button remains disabled");
       }
     }
 
-    submitButton.addEventListener("click", checkAllRules);
+    function checkAllScenarios() {
+      let allCorrect = true;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking threat scenarios...");
+      threatScenarios.forEach((scenario, index) => {
+        const select = document.getElementById(`scenario-${index}`);
+        if (!select) {
+          console.error(`Select element scenario-${index} not found`);
+          return;
+        }
+        const selectedActor = select.value;
+        console.log(`Scenario ${index}: ${scenario.description}, Selected: ${selectedActor}, Correct: ${scenario.correctActor}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedActor === "") {
+          feedbackMessages.push(`Please select a threat actor for "${scenario.description}".`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+          allCorrect = false;
+        } else if (selectedActor === scenario.correctActor) {
+          feedbackMessages.push(`✅ Correct: "${scenario.description}" is a ${scenario.correctActor}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+        } else {
+          feedbackMessages.push(`❌ Incorrect: "${scenario.description}" is a ${scenario.correctActor}.`);
+          select.parentElement.style.borderColor = "red";
+          allCorrect = false;
+        }
+      });
+
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+      clearButton.disabled = false;
+
+      if (allAnswered) {
+        if (allCorrect) {
+          feedbackElement.innerHTML = "All threat actors correct! Analysis complete.";
+          console.log("All scenarios correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
+          console.log("Some scenarios incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all scenarios answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllLogs() {
+      let allCorrect = true;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking log entries...");
+      logEntries.forEach((log, index) => {
+        const select = document.getElementById(`log-${index}`);
+        if (!select) {
+          console.error(`Select element log-${index} not found`);
+          return;
+        }
+        const selectedIncident = select.value;
+        console.log(`Log ${index}: ${log.description}, Selected: ${selectedIncident}, Correct: ${log.correctIncident}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedIncident === "") {
+          feedbackMessages.push(`Please select an incident for "${log.description}".`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+          allCorrect = false;
+        } else if (selectedIncident === log.correctIncident) {
+          feedbackMessages.push(`✅ Correct: "${log.description}" is a ${log.correctIncident}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+        } else {
+          feedbackMessages.push(`❌ Incorrect: "${log.description}" is a ${log.correctIncident}.`);
+          select.parentElement.style.borderColor = "red";
+          allCorrect = false;
+        }
+      });
+
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+      clearButton.disabled = false;
+
+      if (allAnswered) {
+        if (allCorrect) {
+          feedbackElement.innerHTML = "All incidents correct! Log analysis complete.";
+          console.log("All logs correct, hiding Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
+          console.log("Some logs incorrect, hiding Next button");
+        }
+        nextButton.classList.add("hidden");
+      } else {
+        console.log("Not all logs answered, Next button remains disabled");
+      }
+    }
+
+    function clearPBQ() {
+      feedbackElement.innerHTML = "";
+      submitButton.disabled = true;
+      nextButton.disabled = true;
+      nextButton.classList.remove("hidden");
+      const selectElements = currentPBQ === 1
+        ? Array.from(document.querySelectorAll(".firewall-rules select"))
+        : currentPBQ === 2
+        ? Array.from(document.querySelectorAll(".threat-scenarios select"))
+        : Array.from(document.querySelectorAll(".log-entries select"));
+      selectElements.forEach(select => {
+        select.value = "";
+        select.disabled = false;
+        select.parentElement.classList.remove("disabled");
+        select.parentElement.style.borderColor = "#00FF00";
+      });
+      console.log(`Cleared PBQ ${currentPBQ}, reloading content`);
+      if (currentPBQ === 1) {
+        loadRules();
+      } else if (currentPBQ === 2) {
+        loadScenarios();
+      } else {
+        loadLogs();
+      }
+    }
+
+    function resetPBQ() {
+      feedbackElement.innerHTML = "";
+      submitButton.disabled = true;
+      clearButton.disabled = false;
+      nextButton.disabled = true;
+      nextButton.classList.remove("hidden");
+      if (currentPBQ === 1) {
+        loadRules();
+      } else if (currentPBQ === 2) {
+        loadScenarios();
+      } else {
+        loadLogs();
+      }
+    }
+
+    submitButton.addEventListener("click", () => {
+      if (currentPBQ === 1) {
+        checkAllRules();
+      } else if (currentPBQ === 2) {
+        checkAllScenarios();
+      } else {
+        checkAllLogs();
+      }
+    });
+
+    submitButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      if (currentPBQ === 1) {
+        checkAllRules();
+      } else if (currentPBQ === 2) {
+        checkAllScenarios();
+      } else {
+        checkAllLogs();
+      }
+    });
+
+    clearButton.addEventListener("click", clearPBQ);
+    clearButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      clearPBQ();
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (currentPBQ === 1) {
+        pbq1.classList.add("hidden");
+        pbq2.classList.remove("hidden");
+        currentPBQ = 2;
+        resetPBQ();
+        console.log("Switched to PBQ 2, Next button visible but disabled");
+      } else if (currentPBQ === 2) {
+        pbq2.classList.add("hidden");
+        pbq3.classList.remove("hidden");
+        currentPBQ = 3;
+        resetPBQ();
+        console.log("Switched to PBQ 3, Next button visible but disabled");
+      }
+    });
+
+    nextButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      if (currentPBQ === 1) {
+        pbq1.classList.add("hidden");
+        pbq2.classList.remove("hidden");
+        currentPBQ = 2;
+        resetPBQ();
+        console.log("Switched to PBQ 2, Next button visible but disabled");
+      } else if (currentPBQ === 2) {
+        pbq2.classList.add("hidden");
+        pbq3.classList.remove("hidden");
+        currentPBQ = 3;
+        resetPBQ();
+        console.log("Switched to PBQ 3, Next button visible but disabled");
+      }
+    });
 
     loadRules();
   </script>

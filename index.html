@@ -1,202 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>  
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://www.paypalobjects.com https://www.paypal.com; frame-ancestors 'none';">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
-  <title>OverPowered StudyGuides</title>
-  <link rel="icon" type="image/png" href="images/favicon.png" />
-  <style>
-    body {
-      background-color: #000;
-      color: #00FF00;
-      font-family: monospace;
-      text-align: center;
-      padding: 50px;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .highlight-message {
-      font-size: 10px;
-      color: #66ff66;
-      font-style: italic;
-      opacity: 0.8;
-      margin-bottom: 30px;
-    }
-
-    .cert-group {
-      margin-bottom: 40px;
-    }
-
-    .cert-icon {
-      display: inline-block;
-      margin: 20px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .cert-icon:hover {
-      transform: scale(1.1);
-    }
-
-    .cert-icon img {
-      width: 120px;
-      height: auto;
-      border: 2px solid #00FF00;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00FF00;
-    }
-
-    #other-certs {
-      margin-top: 20px;
-    }
-
-    .footer-buttons {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 20px;
-      z-index: 9999;
-    }
-
-    .circle-button {
-      width: 100px;
-      height: 100px;
-      background-color: #000;
-      border: 2px solid #00FF00;
-      border-radius: 50%;
-      color: #00FF00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
-    }
-
-    .circle-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00FF00;
-    }
-
-    .pp-VSGG5Q55HR68C {
-      all: unset;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      border: 2px solid #00FF00;
-      border-radius: 50%;
-      color: #00FF00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      cursor: pointer;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
-      background-color: #000;
-    }
-
-    .pp-VSGG5Q55HR68C:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00FF00;
-    }
-
-    form {
-      margin: 0;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>OverPowered StudyGuides</h1>
-
-  <div class="highlight-message">
-    FREE, NO sign up, NO adds, NO cookies, NO BS, Just Simple
+<!-- LPI Cert Group -->
+<div class="cert-group" id="other-certs" style="position: relative;">
+  <a href="lpi/lpi.html" class="cert-icon" id="lpi">
+    <img src="images/lpi.png" alt="LPI Certification" />
+  </a>
+  
+  <!-- Hover menu for LPI -->
+  <div id="lpi-menu" style="
+    display: none;
+    position: absolute;
+    top: 140px; /* just below the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    border: 2px solid #00FF00;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 10px #00FF00;
+    z-index: 1000;
+    width: 120px;
+    text-align: left;
+  ">
+    <a href="lpi/lpi.html" style="color: #00FF00; text-decoration: none; display: block; margin-bottom: 6px;">Core 1</a>
+    <span style="color: #00FF00; display: block; margin-bottom: 6px;">Core 2</span>
+    <span style="color: #00FF00; display: block;">Core 3</span>
   </div>
+</div>
 
-  <!-- CompTIA Group -->
-  <div class="cert-group" id="comptia">
-    <a href="aplus/aplus.html" class="cert-icon" id="aplus">
-      <img src="images/aplus.png" alt="A+ Certification" />
-    </a>
-    <a href="secplus/secplus.html" class="cert-icon" id="secplus">
-      <img src="images/secplus.png" alt="Security+ Certification" />
-    </a>
-    <a href="netplus/netplus.html" class="cert-icon" id="networkPlus">
-      <img src="images/netplus.png" alt="Network+ Certification" />
-    </a>
-  </div>
+<script>
+  const lpiIcon = document.getElementById('lpi');
+  const lpiMenu = document.getElementById('lpi-menu');
+  const otherCertsDiv = document.getElementById('other-certs');
 
-  <!-- LPI Cert Group -->
-  <div class="cert-group" id="other-certs">
-    <a href="lpi/lpi.html" class="cert-icon" id="lpi">
-      <img src="images/lpi.png" alt="LPI Certification" />
-    </a>
-  </div>
+  otherCertsDiv.style.position = 'relative'; // ensure container relative for absolute menu
 
-  <!-- Floating Footer Buttons -->
-  <div class="footer-buttons">
-    <!-- Facebook -->
-    <a class="circle-button" href="https://www.facebook.com/groups/oppcus/" target="_blank">Facebook</a>
+  // Show menu on hover
+  lpiIcon.addEventListener('mouseenter', () => {
+    lpiMenu.style.display = 'block';
+  });
 
-    <!-- Buy Me a Coffee -->
-    <form action="https://www.paypal.com/ncp/payment/VSGG5Q55HR68C" method="post" target="_blank">
-      <button class="pp-VSGG5Q55HR68C" type="submit">Buy me a coffee</button>
-    </form>
-
-    <!-- Discord (updated link) -->
-    <a class="circle-button" href="https://discord.gg/NXE4gU8nVe" target="_blank">Discord</a>
-  </div>
-
-  <script>
-    function showMessage(event, message, allowNavigation = false) {
-      if (!allowNavigation) event.preventDefault();
-
-      const msg = document.createElement('div');
-      msg.textContent = message;
-
-      Object.assign(msg.style, {
-        position: 'absolute',
-        background: '#00FF00',
-        color: '#000',
-        padding: '5px 10px',
-        borderRadius: '5px',
-        fontWeight: 'bold',
-        fontSize: '1rem',
-        boxShadow: '0 0 5px #00FF00',
-        whiteSpace: 'nowrap',
-        zIndex: 10000
-      });
-
-      const rect = event.target.getBoundingClientRect();
-      msg.style.top = `${rect.bottom + window.scrollY + 5}px`;
-      msg.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
-      msg.style.transform = 'translateX(-50%)';
-
-      document.body.appendChild(msg);
-      setTimeout(() => msg.remove(), 2000);
-    }
-
-    document.getElementById('aplus')
-      .addEventListener('click', e => showMessage(e, 'Opening study guide...', true));
-    document.getElementById('secplus')
-      .addEventListener('click', e => showMessage(e, 'Opening study guide...', true));
-    document.getElementById('networkPlus')
-      .addEventListener('click', e => showMessage(e, 'Coming soon...'));
-    document.getElementById('lpi')
-      .addEventListener('click', e => showMessage(e, 'Coming soon...'));
-  </script>
-
-</body>
-</html>
+  // Hide menu when not hovering either icon or menu
+  otherCertsDiv.addEventListener('mouseleave', () => {
+    lpiMenu.style.display = 'none';
+  });
+</script>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Core 2 Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button,
+    .pbq-button {
+      position: fixed;
+      top: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button {
+      left: 1rem;
+    }
+
+    .pbq-button {
+      left: calc(1rem + 6rem + 0.5rem);
+    }
+
+    .back-button:hover,
+    .pbq-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .quiz-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="back-button">← Back</a>
+  <a href="pbq2.html" class="pbq-button">PBQ</a>
+
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+<script>
+const questions = [
+  {
+    question: "Which tool is used to edit Group Policy settings on a Windows system?",
+    choices: ["gpedit.msc", "msconfig", "cmd", "taskmgr"],
+    answer: "gpedit.msc"
+  },
+  {
+    question: "What is the purpose of the Windows Registry?",
+    choices: ["Store user files", "Manage network connections", "Store system configuration settings", "Encrypt the file system"],
+    answer: "Store system configuration settings"
+  },
+  {
+    question: "Which file system provides file permissions and encryption in Windows?",
+    choices: ["FAT32", "exFAT", "NTFS", "EXT4"],
+    answer: "NTFS"
+  },
+  {
+    question: "What command shows all active network connections on a Windows machine?",
+    choices: ["ipconfig", "ping", "tracert", "netstat"],
+    answer: "netstat"
+  },
+  {
+    question: "Which utility is used to manage startup programs in Windows 10?",
+    choices: ["msconfig", "taskmgr", "control panel", "regedit"],
+    answer: "taskmgr"
+  },
+  {
+    question: "What is the main advantage of using Windows BitLocker?",
+    choices: ["Faster boot times", "Cloud synchronization", "Full disk encryption", "Improved task scheduling"],
+    answer: "Full disk encryption"
+  },
+  {
+    question: "What is the minimum RAM requirement for a 64-bit installation of Windows 10?",
+    choices: ["1 GB", "2 GB", "4 GB", "8 GB"],
+    answer: "2 GB"
+  },
+  {
+    question: "Which file extension indicates a Windows system restore point?",
+    choices: [".bak", ".iso", ".vhd", ".sys"],
+    answer: ".vhd"
+  },
+  {
+    question: "What is the maximum file size supported by FAT32?",
+    choices: ["2 GB", "4 GB", "16 GB", "No limit"],
+    answer: "4 GB"
+  },
+  {
+    question: "Which Windows feature helps prevent unauthorized changes to the OS?",
+    choices: ["UAC", "NTFS", "Defender", "Task Manager"],
+    answer: "UAC"
+  },
+  {
+    question: "Which command is used to scan system files and repair corrupt ones?",
+    choices: ["chkdsk", "ipconfig", "sfc /scannow", "msconfig"],
+    answer: "sfc /scannow"
+  },
+  {
+    question: "What component manages user logins in Windows?",
+    choices: ["Explorer", "Registry", "LSASS", "Winlogon"],
+    answer: "LSASS"
+  },
+  {
+    question: "Which malware type pretends to be legitimate software?",
+    choices: ["Worm", "Trojan", "Rootkit", "Spyware"],
+    answer: "Trojan"
+  },
+  {
+    question: "What type of account has the highest level of control on a Windows machine?",
+    choices: ["Guest", "Standard", "Administrator", "Power User"],
+    answer: "Administrator"
+  },
+  {
+    question: "Which Windows tool allows you to schedule automated tasks?",
+    choices: ["Event Viewer", "Task Scheduler", "MSConfig", "Services.msc"],
+    answer: "Task Scheduler"
+  },
+  {
+    question: "Which of the following allows Windows to run older applications?",
+    choices: ["BitLocker", "VirtualBox", "Compatibility mode", "Windows Defender"],
+    answer: "Compatibility mode"
+  },
+  {
+    question: "Which backup method captures all data regardless of previous backups?",
+    choices: ["Incremental", "Differential", "Full", "Partial"],
+    answer: "Full"
+  },
+  {
+    question: "What is the default port for HTTPS?",
+    choices: ["80", "21", "443", "23"],
+    answer: "443"
+  },
+  {
+    question: "Which mobile device setting prevents all radio communications?",
+    choices: ["Wi-Fi mode", "Low-power mode", "Airplane mode", "Data saver"],
+    answer: "Airplane mode"
+  },
+  {
+    question: "What is the function of a VPN?",
+    choices: ["Block malware", "Secure internet traffic", "Speed up browsing", "Detect viruses"],
+    answer: "Secure internet traffic"
+  },
+  {
+    question: "What type of threat is ransomware?",
+    choices: ["Social engineering", "Denial of service", "Data exfiltration", "Crypto-malware"],
+    answer: "Crypto-malware"
+  },
+  {
+    question: "What feature helps locate a lost mobile device?",
+    choices: ["IMEI", "Factory reset", "Find My Device", "SIM lock"],
+    answer: "Find My Device"
+  },
+  {
+    question: "Which Windows feature creates a restore point automatically?",
+    choices: ["Windows Backup", "System Image", "System Protection", "BitLocker"],
+    answer: "System Protection"
+  },
+  {
+    question: "What is the purpose of EFS in Windows?",
+    choices: ["To encrypt individual files and folders", "To manage firewall rules", "To compress files", "To manage drivers"],
+    answer: "To encrypt individual files and folders"
+  },
+  {
+    question: "Which app helps remove unwanted programs in Windows?",
+    choices: ["Event Viewer", "Device Manager", "Programs and Features", "MSInfo32"],
+    answer: "Programs and Features"
+  },
+  {
+    question: "Which Windows update setting ensures critical patches are always applied?",
+    choices: ["Optional updates", "Driver updates", "Automatic updates", "Manual updates"],
+    answer: "Automatic updates"
+  },
+  {
+    question: "What utility shows all processes running on a system?",
+    choices: ["Task Manager", "Device Manager", "Disk Management", "Control Panel"],
+    answer: "Task Manager"
+  },
+  {
+    question: "What command displays IP configuration in Windows?",
+    choices: ["netstat", "ipconfig", "tracert", "nslookup"],
+    answer: "ipconfig"
+  },
+  {
+    question: "Which command is used to test DNS resolution?",
+    choices: ["ping", "ipconfig", "netstat", "nslookup"],
+    answer: "nslookup"
+  },
+  {
+    question: "Which permission allows viewing but not modifying a file?",
+    choices: ["Full Control", "Modify", "Read", "Write"],
+    answer: "Read"
+  },
+  {
+    question: "Which file is used to boot a Linux OS?",
+    choices: ["boot.ini", "initrd", "grub.cfg", "autoexec.bat"],
+    answer: "grub.cfg"
+  },
+  {
+    question: "Which of the following is NOT an example of social engineering?",
+    choices: ["Phishing", "Shoulder surfing", "Tailgating", "Keylogging"],
+    answer: "Keylogging"
+  },
+  {
+    question: "Where would you disable a service from starting in Windows?",
+    choices: ["Task Manager", "Services.msc", "Regedit", "Firewall"],
+    answer: "Services.msc"
+  },
+  {
+    question: "What Windows feature allows you to isolate apps in a container?",
+    choices: ["App Locker", "Windows Sandbox", "Hyper-V", "BitLocker"],
+    answer: "Windows Sandbox"
+  },
+  {
+    question: "Which mobile OS allows installation of APK files manually?",
+    choices: ["iOS", "Android", "Windows Phone", "BlackBerry OS"],
+    answer: "Android"
+  },
+  {
+    question: "What tool is used to edit the Windows boot configuration?",
+    choices: ["msconfig", "bcdedit", "regedit", "sfc"],
+    answer: "bcdedit"
+  },
+  {
+    question: "What does UEFI replace in modern PCs?",
+    choices: ["POST", "BIOS", "CMOS", "Firmware"],
+    answer: "BIOS"
+  },
+  {
+    question: "Where is the Windows pagefile typically stored?",
+    choices: ["\Program Files", "\System32", "\Windows", "C:\ (root directory)"],
+    answer: "C:\\ (root directory)"
+  },
+  {
+    question: "What command clears the DNS resolver cache?",
+    choices: ["ipconfig /flushdns", "nslookup clear", "arp -d", "netstat -r"],
+    answer: "ipconfig /flushdns"
+  },
+  {
+    question: "What Windows feature restores a system to an earlier state?",
+    choices: ["Backup and Restore", "System Restore", "Recovery Partition", "Disk Cleanup"],
+    answer: "System Restore"
+  },
+  {
+    question: "Which Linux command lists files in a directory?",
+    choices: ["cd", "ls", "pwd", "rm"],
+    answer: "ls"
+  },
+  {
+    question: "Which of the following improves laptop battery life?",
+    choices: ["Overclocking", "High brightness", "Airplane mode", "Full disk scan"],
+    answer: "Airplane mode"
+  },
+  {
+    question: "What setting allows you to roll back a Windows update?",
+    choices: ["System Restore", "Startup Repair", "Advanced Boot Options", "Recovery Options"],
+    answer: "Recovery Options"
+  },
+  {
+    question: "What command repairs disk errors in Windows?",
+    choices: ["sfc", "chkdsk", "netstat", "tracert"],
+    answer: "chkdsk"
+  },
+  {
+    question: "Which utility helps in freeing disk space in Windows?",
+    choices: ["Disk Cleanup", "Defrag", "CHKDSK", "Format"],
+    answer: "Disk Cleanup"
+  },
+  {
+    question: "What command shows the path packets take to a host?",
+    choices: ["ipconfig", "ping", "tracert", "arp"],
+    answer: "tracert"
+  },
+  {
+    question: "Which type of Windows account is best for temporary guests?",
+    choices: ["Local account", "Microsoft account", "Administrator", "Guest"],
+    answer: "Guest"
+  },
+  {
+    question: "Which technology allows biometric login on Windows 10?",
+    choices: ["Windows Security", "Windows Defender", "Windows Hello", "Microsoft Edge"],
+    answer: "Windows Hello"
+  },
+  {
+    question: "Which of these is used to restrict access to specific apps in Windows Pro?",
+    choices: ["BitLocker", "AppLocker", "Firewall", "UAC"],
+    answer: "AppLocker"
+  }
+];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestion = 0;
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = q.question;
+      feedbackElement.textContent = "";
+      choicesElement.innerHTML = "";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      feedbackElement.textContent = selected === correct
+        ? "✅ Correct!"
+        : `❌ Incorrect. Correct: ${correct}`;
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) {
+          div.style.borderColor = "#00FF00";
+        } else if (div.textContent === selected) {
+          div.style.borderColor = "red";
+        }
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          questionElement.textContent = "Quiz Complete!";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+        }
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

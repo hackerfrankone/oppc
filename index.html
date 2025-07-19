@@ -38,6 +38,7 @@
       margin: 20px;
       cursor: pointer;
       transition: transform 0.2s;
+      position: relative;
     }
 
     .cert-icon:hover {
@@ -115,6 +116,42 @@
     form {
       margin: 0;
     }
+
+    /* Hover Box Shared Style */
+    .hover-box {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: #00FF00;
+      border: 3px solid #00FF00;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 12px #00FF00;
+      z-index: 10001;
+      white-space: nowrap;
+      min-width: 150px;
+      margin-top: 0;
+      pointer-events: auto;
+    }
+
+    .hover-box a {
+      color: #00FF00;
+      text-decoration: none;
+    }
+
+    .hover-box a:hover {
+      text-decoration: underline;
+    }
+
+    .cert-icon:hover .hover-box,
+    .hover-box:hover {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -127,22 +164,28 @@
 
   <!-- CompTIA Group -->
   <div class="cert-group" id="comptia">
-    <a href="aplus/aplus.html" class="cert-icon" id="aplus">
+    <div class="cert-icon" id="aplus">
       <img src="images/aplus.png" alt="A+ Certification" />
-    </a>
+      <div class="hover-box">
+        <a href="aplus/aplus.html">Core 1</a>, Core 2
+      </div>
+    </div>
     <a href="secplus/secplus.html" class="cert-icon" id="secplus">
       <img src="images/secplus.png" alt="Security+ Certification" />
     </a>
-    <a href="netplus/netplus.html" class="cert-icon" id="networkPlus">
+    <a href="#" class="cert-icon" id="networkPlus">
       <img src="images/netplus.png" alt="Network+ Certification" />
     </a>
   </div>
 
   <!-- LPI Cert Group -->
   <div class="cert-group" id="other-certs">
-    <a href="lpi/lpi.html" class="cert-icon" id="lpi">
+    <div class="cert-icon" id="lpi">
       <img src="images/lpi.png" alt="LPI Certification" />
-    </a>
+      <div class="hover-box">
+        <a href="lpi/lpi.html">Core 1</a>, Core 2, Core 3
+      </div>
+    </div>
   </div>
 
   <!-- Floating Footer Buttons -->
@@ -155,13 +198,16 @@
       <button class="pp-VSGG5Q55HR68C" type="submit">Buy me a coffee</button>
     </form>
 
-    <!-- Discord (updated link) -->
+    <!-- Discord -->
     <a class="circle-button" href="https://discord.gg/NXE4gU8nVe" target="_blank">Discord</a>
   </div>
 
   <script>
     function showMessage(event, message, allowNavigation = false) {
-      if (!allowNavigation) event.preventDefault();
+      if (!allowNavigation) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
 
       const msg = document.createElement('div');
       msg.textContent = message;
@@ -179,7 +225,8 @@
         zIndex: 10000
       });
 
-      const rect = event.target.getBoundingClientRect();
+      const target = event.target.closest('.cert-icon') || event.target;
+      const rect = target.getBoundingClientRect();
       msg.style.top = `${rect.bottom + window.scrollY + 5}px`;
       msg.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
       msg.style.transform = 'translateX(-50%)';
@@ -195,7 +242,7 @@
     document.getElementById('networkPlus')
       .addEventListener('click', e => showMessage(e, 'Coming soon...'));
     document.getElementById('lpi')
-      .addEventListener('click', e => showMessage(e, 'Coming soon...'));
+      .addEventListener('click', e => showMessage(e, 'Select an exam from the menu'));
   </script>
 
 </body>

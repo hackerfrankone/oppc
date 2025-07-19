@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CompTIA A+ PBQs</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    #topBack {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #topBack:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .pbq-container {
+      max-width: 800px;
+      margin: auto;
+      width: 100%;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .instructions {
+      text-align: center;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .tools-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.5rem;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+      background: #111;
+    }
+
+    .description-box {
+      border: 2px solid #00FF00;
+      padding: 0.6rem;
+      background: #111;
+      border-radius: 5px;
+      min-height: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      word-wrap: break-word;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+      margin-bottom: 0.4rem;
+    }
+
+    .tool {
+      background: #0b0b0b;
+      border: 2px solid #00FF00;
+      padding: 0.6rem;
+      border-radius: 5px;
+      cursor: grab;
+      user-select: none;
+      flex: 1 1 auto;
+      transition: background-color 0.3s, color 0.3s;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .tool:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+    }
+
+    .hidden { display: none; }
+
+    .correct .result-icon { color: lime; margin-left: 0.5rem; }
+    .incorrect .result-icon { color: red; margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <button id="topBack">← Back</button>
+  <div class="pbq-container">
+    <div id="pbqArea"></div>
+    <div class="buttons">
+      <button id="clear">Clear</button>
+      <button id="submit" disabled>Submit</button>
+      <button id="next" disabled>Next ➡</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+    const pbqs = [
+      {
+        instructions: "PBQ 1: Match system utilities to their purpose",
+        tools: [
+          { name: "Task Manager", id: "taskmgr", description: "View running processes and performance data." },
+          { name: "MSConfig", id: "msconfig", description: "Manage startup programs and boot configuration." },
+          { name: "Device Manager", id: "devmgmt", description: "View and manage hardware and drivers." },
+          { name: "Disk Management", id: "diskmgmt", description: "Create, delete, and format partitions." }
+        ]
+      },
+      {
+        instructions: "PBQ 2: Match backup methods to their description",
+        tools: [
+          { name: "Full Backup", id: "full", description: "Backs up all selected data." },
+          { name: "Incremental", id: "incremental", description: "Backs up data changed since the last backup of any type." },
+          { name: "Differential", id: "differential", description: "Backs up data changed since the last full backup." },
+          { name: "Image Backup", id: "image", description: "Creates a snapshot of the entire system including OS." }
+        ]
+      },
+      {
+        instructions: "PBQ 3: Match security settings to their description",
+        tools: [
+          { name: "BitLocker", id: "bitlocker", description: "Encrypts entire drives for data protection." },
+          { name: "Firewall", id: "firewall", description: "Monitors and filters incoming/outgoing network traffic." },
+          { name: "User Account Control", id: "uac", description: "Prevents unauthorized system changes." },
+          { name: "Antivirus", id: "antivirus", description: "Detects and removes malicious software." }
+        ]
+      },
+      {
+        instructions: "PBQ 4: Match Windows tools to troubleshooting tasks",
+        tools: [
+          { name: "Event Viewer", id: "eventviewer", description: "View logs related to system and application events." },
+          { name: "Reliability Monitor", id: "reliability", description: "Shows timeline of system changes and failures." },
+          { name: "System Restore", id: "restore", description: "Reverts system files to an earlier state." },
+          { name: "Safe Mode", id: "safemode", description: "Boots Windows with minimal drivers and services." }
+        ]
+      },
+      {
+        instructions: "PBQ 5: Match file system types to their usage",
+        tools: [
+          { name: "NTFS", id: "ntfs", description: "Default file system for Windows; supports permissions and encryption." },
+          { name: "FAT32", id: "fat32", description: "Used for flash drives and external storage; wide compatibility." },
+          { name: "exFAT", id: "exfat", description: "Optimized for flash drives; supports larger files than FAT32." },
+          { name: "ext4", id: "ext4", description: "Common file system in Linux environments." }
+        ]
+      },
+      {
+        instructions: "PBQ 6: Match mobile OS tools to their function",
+        tools: [
+          { name: "Reset", id: "reset", description: "Wipes data and restores device to factory settings." },
+          { name: "Airplane Mode", id: "airplane", description: "Disables wireless communication." },
+          { name: "Tethering", id: "tethering", description: "Shares mobile connection with other devices." },
+          { name: "App Manager", id: "appmanager", description: "Controls app installs, permissions, and updates." }
+        ]
+      },
+      {
+        instructions: "PBQ 7: Match startup errors to probable causes",
+        tools: [
+          { name: "Missing OS", id: "missingos", description: "Boot configuration is corrupted or drive not detected." },
+          { name: "Blue Screen", id: "bluescreen", description: "Driver or hardware failure has occurred." },
+          { name: "Continuous Reboot", id: "reboot", description: "System is crashing or stuck in boot loop." },
+          { name: "No Boot Device", id: "noboot", description: "Incorrect boot order or no OS found on drive." }
+        ]
+      },
+      {
+        instructions: "PBQ 8: Match command line tools to tasks",
+        tools: [
+          { name: "sfc", id: "sfc", description: "Scans and restores corrupted system files." },
+          { name: "chkdsk", id: "chkdsk", description: "Checks disk for errors and bad sectors." },
+          { name: "diskpart", id: "diskpart", description: "Manages partitions and volumes." },
+          { name: "shutdown", id: "shutdown", description: "Schedules system shutdown or restart." }
+        ]
+      },
+      {
+        instructions: "PBQ 9: Match networking commands to functions",
+        tools: [
+          { name: "ipconfig", id: "ipconfig", description: "Displays IP and network adapter settings." },
+          { name: "netstat", id: "netstat", description: "Displays network connections and ports." },
+          { name: "nslookup", id: "nslookup", description: "Tests DNS resolution for domains." },
+          { name: "ping", id: "ping", description: "Tests connectivity to another network host." }
+        ]
+      },
+      {
+        instructions: "PBQ 10: Match permissions to user roles",
+        tools: [
+          { name: "Read", id: "read", description: "Allows viewing file contents." },
+          { name: "Write", id: "write", description: "Allows modifying file contents." },
+          { name: "Execute", id: "execute", description: "Allows running files or scripts." },
+          { name: "Full Control", id: "full", description: "Allows all permissions including deletion and ownership." }
+        ]
+      }
+    ];
+
+    let currentPBQ = 0;
+    const pbqArea = document.getElementById('pbqArea');
+    const submitBtn = document.getElementById('submit');
+    const clearBtn = document.getElementById('clear');
+    const nextBtn = document.getElementById('next');
+    const feedback = document.getElementById('feedback');
+
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function renderPBQ(index) {
+      const pbq = pbqs[index];
+      pbqArea.innerHTML = `<div class="instructions">${pbq.instructions}</div>
+        <div class="tools-container" id="tools"></div>
+        <div id="descriptions"></div>`;
+
+      const toolsContainer = document.getElementById('tools');
+      const descriptionsContainer = document.getElementById('descriptions');
+
+      shuffle(pbq.tools).forEach(tool => {
+        const el = document.createElement('div');
+        el.className = 'tool';
+        el.textContent = tool.name;
+        el.dataset.id = tool.id;
+        el.draggable = true;
+        toolsContainer.appendChild(el);
+      });
+
+      shuffle(pbq.tools).forEach(tool => {
+        const box = document.createElement('div');
+        box.className = 'description-box';
+        box.dataset.answer = tool.id;
+        box.dataset.answerText = tool.description;
+        box.innerHTML = `<span>${tool.description}</span>`;
+        descriptionsContainer.appendChild(box);
+      });
+
+      setupDragDrop();
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+      feedback.textContent = '';
+      clearBtn.textContent = (index === pbqs.length - 1) ? 'Restart' : 'Clear';
+    }
+
+    function setupDragDrop() {
+      document.querySelectorAll('.tool').forEach(el => {
+        el.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', e.target.dataset.id);
+        });
+      });
+
+      document.querySelectorAll('.description-box, .tools-container').forEach(target => {
+        target.addEventListener('dragover', e => e.preventDefault());
+        target.addEventListener('drop', e => {
+          e.preventDefault();
+          const data = e.dataTransfer.getData('text/plain');
+          const dragging = document.querySelector(`.tool[data-id="${data}"]`);
+
+          if (target.classList.contains('description-box')) {
+            const existing = target.querySelector('.tool');
+            if (existing) document.getElementById('tools').appendChild(existing);
+            target.appendChild(dragging);
+          } else {
+            target.appendChild(dragging);
+          }
+          enableSubmitIfReady();
+        });
+      });
+    }
+
+    function enableSubmitIfReady() {
+      const allFilled = [...document.querySelectorAll('.description-box')]
+        .every(box => box.querySelector('.tool'));
+      submitBtn.disabled = !allFilled;
+    }
+
+    function clearAll() {
+      if (clearBtn.textContent === 'Restart') {
+        window.location.reload();
+      } else {
+        renderPBQ(currentPBQ);
+      }
+    }
+
+    function submitAnswer() {
+      let correct = 0;
+      document.querySelectorAll('.description-box').forEach(box => {
+        const tool = box.querySelector('.tool');
+        box.classList.remove('correct', 'incorrect');
+
+        if (tool && tool.dataset.id === box.dataset.answer) {
+          box.classList.add('correct');
+          correct++;
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✓</span>`;
+          box.appendChild(tool);
+        } else {
+          box.classList.add('incorrect');
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`;
+          if (tool) box.appendChild(tool);
+        }
+      });
+      feedback.textContent = `You got ${correct} correct.`;
+      nextBtn.disabled = false;
+      submitBtn.disabled = true;
+    }
+
+    submitBtn.addEventListener('click', submitAnswer);
+    nextBtn.addEventListener('click', () => {
+      if (currentPBQ < pbqs.length - 1) {
+        currentPBQ++;
+        renderPBQ(currentPBQ);
+      }
+    });
+    clearBtn.addEventListener('click', clearAll);
+
+    document.getElementById('topBack').onclick = () => history.back();
+
+    renderPBQ(currentPBQ);
+  </script>
+</body>
+</html>

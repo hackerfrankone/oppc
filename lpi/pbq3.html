@@ -136,7 +136,7 @@
     let currentPBQ = 0;
     let history = [];
     let historyIndex = -1;
-    let currentPath = "/root";
+    let currentPath = "/student";
 
     function printToTerminal(text = "") {
       terminalOutput.innerHTML += text + "\n";
@@ -144,7 +144,7 @@
     }
 
     function clearTerminal() {
-      terminalOutput.innerHTML = `root@lpi:${currentPath}$\n`;
+      terminalOutput.innerHTML = `student@lpi:${currentPath}$\n`;
       answerBox.innerText = "";
       showQuestion();
     }
@@ -172,7 +172,7 @@
       const input = commandInput.value.trim();
       if (input === '') return;
 
-      printToTerminal(`root@lpi:${currentPath}$ ${input}`);
+      printToTerminal(`student@lpi:${currentPath}$ ${input}`);
       history.push(input);
       historyIndex = history.length;
 

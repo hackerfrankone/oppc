@@ -203,13 +203,15 @@
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
 
     <!-- PayPal Hosted Button -->
-    <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
-      <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
-      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
-      <section style="font-size: 0.75rem;">
-        Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
-      </section>
-    </form>
+    <div id="paypalContainer">
+      <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
+        <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+        <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+        <section style="font-size: 0.75rem;">
+          Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
+        </section>
+      </form>
+    </div>
 
     <!-- Discord Button (locked by default) -->
     <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
@@ -218,6 +220,7 @@
   <script>
     function unlockContent() {
       if (localStorage.getItem('unlocked') === 'paid-v2') {
+        // Unlock all locked links
         document.querySelectorAll('a.locked').forEach(link => {
           link.textContent = link.textContent.replace(' 🔒', '');
           link.href = link.getAttribute('data-url');
@@ -225,12 +228,19 @@
           link.style.cursor = 'pointer';
         });
 
+        // Enable Discord button
         const discordBtn = document.getElementById('discordButton');
         if (discordBtn) {
           discordBtn.href = 'https://discord.gg/NXE4gU8nVe';
           discordBtn.style.opacity = '1';
           discordBtn.style.pointerEvents = 'auto';
           discordBtn.onclick = null;
+        }
+
+        // Hide PayPal purchase container
+        const paypalDiv = document.getElementById('paypalContainer');
+        if (paypalDiv) {
+          paypalDiv.style.display = 'none';
         }
       }
     }

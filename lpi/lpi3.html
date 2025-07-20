@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LPIC-3 Linux Professional Institute Quiz</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: black;
+    font-family: 'Courier New', monospace;
+    color: #00FF00;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+  }
+  .back-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: transparent;
+    color: #00FF00;
+    border: 2px solid #00FF00;
+    padding: 0.5rem 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    z-index: 9999;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-button:hover {
+    background-color: #00FF00;
+    color: black;
+  }
+  .quiz-content {
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+  }
+  .question {
+    margin-bottom: 1rem;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+    line-height: 1.4;
+    word-wrap: break-word;
+    max-height: 20vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #00FF00 transparent;
+  }
+  .question::-webkit-scrollbar {
+    width: 6px;
+  }
+  .question::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .question::-webkit-scrollbar-thumb {
+    background: #00FF00;
+    border-radius: 3px;
+  }
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 200px;
+  }
+  .choice {
+    border: 2px solid #00FF00;
+    border-radius: 5px;
+    padding: 0.6rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+    text-align: left;
+    word-wrap: break-word;
+    line-height: 1.3;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    font-size: clamp(0.9rem, 2.8vw, 1rem);
+  }
+  .choice:hover:not(.disabled) {
+    background-color: #00FF00;
+    color: black;
+  }
+  .choice.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .feedback {
+    margin-top: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+    min-height: 2rem;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    body {
+      padding: 0.5rem;
+    }
+    .quiz-content {
+      max-width: 95%;
+    }
+    .question {
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      max-height: 25vh;
+    }
+    .choice {
+      font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+      padding: 0.5rem;
+    }
+    .back-button {
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      padding: 0.4rem 0.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <a href="index.html" class="back-button">← Back</a>
+
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+<script>
+  const questions = [
+    { question: "Which command would you use to view the active network connections on a Linux system?", choices: ["netstat -tuln", "ifconfig", "ping", "traceroute"], answer: "netstat -tuln" },
+    { question: "What is the primary role of the 'mdadm' utility?", choices: ["Manage software RAID arrays", "Configure network interfaces", "Monitor disk usage", "Manage user accounts"], answer: "Manage software RAID arrays" },
+    { question: "Which file defines the default runlevels for system services in systemd?", choices: ["/etc/systemd/system", "/etc/init.d", "/etc/rc.d", "/etc/init"], answer: "/etc/systemd/system" },
+    { question: "What does the 'modprobe' command do?", choices: ["Loads kernel modules", "Removes kernel modules", "Lists loaded modules", "Configures system services"], answer: "Loads kernel modules" },
+    { question: "What is the purpose of the 'chage' command?", choices: ["Manage user password aging", "Change file ownership", "Modify group membership", "Edit cron schedules"], answer: "Manage user password aging" },
+    { question: "Which file specifies the order of name resolution on a Linux system?", choices: ["/etc/nsswitch.conf", "/etc/resolv.conf", "/etc/hosts", "/etc/network/interfaces"], answer: "/etc/nsswitch.conf" },
+    { question: "Which systemd command reloads unit files without restarting services?", choices: ["systemctl daemon-reload", "systemctl reload", "systemctl restart", "systemctl enable"], answer: "systemctl daemon-reload" },
+    { question: "What does the 'iptables -F' command do?", choices: ["Flush all firewall rules", "Forward packets", "Filter specific ports", "Save firewall rules"], answer: "Flush all firewall rules" },
+    { question: "Which command checks filesystem integrity?", choices: ["fsck", "mkfs", "fdisk", "parted"], answer: "fsck" },
+    { question: "What does the 'GRUB_TIMEOUT' parameter in /etc/default/grub control?", choices: ["Boot menu display time", "Kernel load time", "Filesystem check interval", "System shutdown delay"], answer: "Boot menu display time" },
+    { question: "Which file controls DNS server information on Linux?", choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/nsswitch.conf", "/etc/network/interfaces"], answer: "/etc/resolv.conf" },
+    { question: "Which command lists all mounted filesystems?", choices: ["mount", "lsblk", "df", "fdisk"], answer: "mount" },
+    { question: "What is the purpose of the /etc/fstab file?", choices: ["Define filesystems to mount at boot", "List user accounts", "Configure network interfaces", "Store system logs"], answer: "Define filesystems to mount at boot" },
+    { question: "Which command is used to modify user groups?", choices: ["usermod", "groupadd", "passwd", "chgrp"], answer: "usermod" },
+    { question: "What is SELinux?", choices: ["Security module for access control", "Filesystem format", "Network protocol", "Package manager"], answer: "Security module for access control" },
+    { question: "Which command shows current SELinux mode?", choices: ["getenforce", "setenforce", "selinuxenabled", "sestatus"], answer: "getenforce" },
+    { question: "What is the function of the 'cron' daemon?", choices: ["Schedule tasks", "Manage services", "Monitor resources", "Handle user sessions"], answer: "Schedule tasks" },
+    { question: "Which file lists scheduled cron jobs for a user?", choices: ["/var/spool/cron/crontabs", "/etc/cron.d", "/etc/crontab", "/etc/init.d"], answer: "/var/spool/cron/crontabs" },
+    { question: "What does the 'passwd -l username' command do?", choices: ["Locks the user account", "Changes user password", "Deletes user account", "Unlocks user account"], answer: "Locks the user account" },
+    { question: "Which tool is used to update the initial RAM filesystem?", choices: ["mkinitrd", "update-initramfs", "dracut", "all of the above"], answer: "all of the above" },
+    { question: "What does the 'top' command display?", choices: ["Real-time process usage", "Disk partitions", "Network status", "User info"], answer: "Real-time process usage" },
+    { question: "Which command is used to add a new user?", choices: ["useradd", "adduser", "usermod", "passwd"], answer: "useradd" },
+    { question: "Which file stores user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"], answer: "/etc/passwd" },
+    { question: "What is the purpose of the /etc/shadow file?", choices: ["Stores encrypted passwords", "Lists user accounts", "Defines groups", "Stores system logs"], answer: "Stores encrypted passwords" },
+    { question: "Which command shows disk usage?", choices: ["du", "df", "lsblk", "fdisk"], answer: "du" },
+    { question: "Which systemd target replaces the traditional runlevel 3?", choices: ["multi-user.target", "graphical.target", "default.target", "network.target"], answer: "multi-user.target" },
+    { question: "What is the use of the 'journalctl' command?", choices: ["View system logs", "Modify kernel parameters", "Manage user accounts", "Configure firewall"], answer: "View system logs" },
+    { question: "Which file contains kernel boot parameters?", choices: ["/etc/default/grub", "/boot/grub/grub.cfg", "/etc/grub.conf", "/etc/lilo.conf"], answer: "/etc/default/grub" },
+    { question: "Which command formats a partition with ext4?", choices: ["mkfs.ext4", "mkfs", "fdisk", "parted"], answer: "mkfs.ext4" },
+    { question: "What is LVM in Linux?", choices: ["Logical Volume Manager", "Linux Volume Manager", "Local Volume Manager", "Logical Virtual Machine"], answer: "Logical Volume Manager" },
+    { question: "Which command activates a logical volume?", choices: ["lvchange -ay", "vgchange -ay", "lvcreate", "lvremove"], answer: "lvchange -ay" }
+  ];
+
+  let currentQuestionIndex = 0;
+  const questionEl = document.getElementById("question");
+  const choicesEl = document.getElementById("choices");
+  const feedbackEl = document.getElementById("feedback");
+
+  function shuffle(array) {
+    for(let i = array.length -1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Shuffle questions once at start
+  shuffle(questions);
+
+  function showQuestion() {
+    if(currentQuestionIndex >= questions.length) {
+      questionEl.textContent = "🎉 Quiz Completed! 🎉";
+      choicesEl.innerHTML = "";
+      feedbackEl.textContent = "";
+      return;
+    }
+
+    const q = questions[currentQuestionIndex];
+    questionEl.textContent = q.question;
+    feedbackEl.textContent = "";
+    choicesEl.innerHTML = "";
+
+    const shuffledChoices = [...q.choices];
+    shuffle(shuffledChoices);
+
+    shuffledChoices.forEach(choice => {
+      const choiceDiv = document.createElement("div");
+      choiceDiv.textContent = choice;
+      choiceDiv.classList.add("choice");
+      choiceDiv.onclick = () => handleAnswer(choiceDiv, choice, q.answer);
+      choicesEl.appendChild(choiceDiv);
+    });
+  }
+
+  function handleAnswer(choiceDiv, selected, correct) {
+    // Disable all choices
+    const allChoices = choicesEl.querySelectorAll(".choice");
+    allChoices.forEach(c => c.classList.add("disabled"));
+
+    if(selected === correct) {
+      feedbackEl.textContent = "✅ Correct!";
+      choiceDiv.style.backgroundColor = "#00FF00";
+      choiceDiv.style.color = "black";
+    } else {
+      feedbackEl.textContent = `❌ Incorrect! Correct answer: ${correct}`;
+      choiceDiv.style.backgroundColor = "#FF0000";
+      choiceDiv.style.color = "white";
+      // Highlight correct choice as well
+      allChoices.forEach(c => {
+        if(c.textContent === correct) {
+          c.style.backgroundColor = "#00FF00";
+          c.style.color = "black";
+        }
+      });
+    }
+
+    // After 5 seconds, go to next question
+    setTimeout(() => {
+      currentQuestionIndex++;
+      showQuestion();
+    }, 5000);
+  }
+
+  showQuestion();
+</script>
+</body>
+</html>

@@ -1,62 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
   <meta charset="UTF-8" />
-  <title>LPI Core 3 Study Guide</title>
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self'; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline'; 
+    img-src 'self' https://www.paypalobjects.com; 
+    frame-src 'none';
+    connect-src 'self';">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+  <title>OverPowered StudyGuides</title>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <style>
     body {
       background-color: #000;
-      color: #0f0;
+      color: #00FF00;
       font-family: monospace;
       text-align: center;
       padding: 50px;
+      margin: 0;
     }
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       margin-bottom: 20px;
     }
-    .button-container {
-      margin: 20px 0;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      margin: 10px;
+    .highlight-message,
+    .confidence-message,
+    .details-message,
+    .upgrade-message {
       font-size: 1rem;
-      color: #000;
-      background-color: #0f0;
-      border: none;
-      border-radius: 8px;
+      color: #66ff66;
+      font-style: italic;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+    .cert-group {
+      margin-bottom: 40px;
+    }
+    .cert-icon {
+      display: inline-block;
+      margin: 20px;
       cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+    }
+    .cert-icon:hover {
+      transform: scale(1.1);
+    }
+    .cert-icon img {
+      width: 120px;
+      height: auto;
+      border: 2px solid #00FF00;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00FF00;
+    }
+    #other-certs {
+      margin-top: 20px;
+    }
+    .footer-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      z-index: 9999;
+    }
+    .circle-button {
+      width: 100px;
+      height: 100px;
+      background-color: #000;
+      border: 2px solid #00FF00;
+      border-radius: 50%;
+      color: #00FF00;
       font-weight: bold;
-      transition: transform 0.2s, background-color 0.3s;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-align: center;
+    }
+    .circle-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #00FF00;
+    }
+    .hover-box {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: #00FF00;
+      border: 3px solid #00FF00;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 12px #00FF00;
+      z-index: 10001;
+      white-space: nowrap;
+      min-width: 150px;
+      margin-top: 0;
+      pointer-events: auto;
+    }
+    .hover-box a {
+      color: #00FF00;
       text-decoration: none;
     }
-    .btn:hover {
-      background-color: #99ff99;
-      transform: scale(1.05);
-    }
-    .home-link {
-      display: block;
-      margin-top: 40px;
-      font-size: 1rem;
-      color: #0f0;
+    .hover-box a:hover {
       text-decoration: underline;
     }
-    .home-link:hover {
-      color: #99ff99;
+    .cert-icon:hover .hover-box,
+    .hover-box:hover {
+      display: block;
+    }
+    .pp-5B76FJE8MKP2L {
+      text-align: center;
+      border: none;
+      border-radius: 0.25rem;
+      min-width: 11.625rem;
+      padding: 0 2rem;
+      height: 2.625rem;
+      font-weight: bold;
+      background-color: #FFD140;
+      color: #000000;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.25rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <h1>LPI Core 3 Study Guide</h1>
+  <h1>OverPowered StudyGuides</h1>
 
-  <div class="button-container">
-    <a href="pb3.html" class="btn">Practice PBQs</a>
+  <div class="highlight-message">
+    FREE A+ Core 1 | NO sign up | NO ads | NO cookies | NO BS
   </div>
 
-  <a href="/index.html" class="home-link">← Back to Home</a>
+  <div class="confidence-message">
+    Don't worry about scoring | Understand the material and answer them all correctly
+  </div>
+
+  <div class="details-message">
+    500+ multiple choice questions | 100+ PBQs
+  </div>
+
+  <div class="upgrade-message">
+    Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
+  </div>
+
+  <!-- CompTIA Group -->
+  <div class="cert-group" id="comptia">
+    <div class="cert-icon" id="aplus">
+      <img src="images/aplus.png" alt="A+ Certification" />
+      <div class="hover-box">
+        <a href="aplus/aplus.html">Core 1 (Free)</a><br>
+        <a href="#" class="locked" data-url="aplus/aplus2.html">Core 2 🔒</a>
+      </div>
+    </div>
+
+    <div class="cert-icon" id="secplus">
+      <img src="images/secplus.png" alt="Security+ Certification" />
+      <div class="hover-box">
+        <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
+      </div>
+    </div>
+
+    <div class="cert-icon" id="networkPlus">
+      <img src="images/netplus.png" alt="Network+ Certification" />
+      <div class="hover-box">
+        <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LPI Cert Group -->
+  <div class="cert-group" id="other-certs">
+    <div class="cert-icon" id="lpi">
+      <img src="images/lpi.png" alt="LPI Certification" />
+      <div class="hover-box">
+        <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Footer Buttons -->
+  <div class="footer-buttons">
+    <!-- CompTIA Link -->
+    <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
+
+    <!-- Linux Button -->
+    <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
+
+    <!-- PayPal Hosted Button -->
+    <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
+      <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+      <section style="font-size: 0.75rem;">
+        Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
+      </section>
+    </form>
+
+    <!-- Discord Button (locked by default) -->
+    <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
+  </div>
+
+  <script>
+    function unlockContent() {
+      if (localStorage.getItem('unlocked') === 'paid-v2') {
+        document.querySelectorAll('a.locked').forEach(link => {
+          link.textContent = link.textContent.replace(' 🔒', '');
+          link.href = link.getAttribute('data-url');
+          link.onclick = null;
+          link.style.cursor = 'pointer';
+        });
+
+        const discordBtn = document.getElementById('discordButton');
+        if (discordBtn) {
+          discordBtn.href = 'https://discord.gg/NXE4gU8nVe';
+          discordBtn.style.opacity = '1';
+          discordBtn.style.pointerEvents = 'auto';
+          discordBtn.onclick = null;
+        }
+      }
+    }
+
+    window.onload = unlockContent;
+  </script>
 
 </body>
 </html>

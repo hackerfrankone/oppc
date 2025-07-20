@@ -1,5 +1,8 @@
 export default {
   async fetch(request, env, ctx) {
+    // 🔍 Log the webhook environment variable
+    console.log("DISCORD_WEBHOOK env:", env.DISCORD_WEBHOOK);
+
     if (request.method !== "POST") {
       return new Response("Only POST allowed", { status: 405 });
     }

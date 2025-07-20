@@ -1,137 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>LPIC-3 Linux Professional Institute Quiz</title>
-<style>
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background-color: black;
-    font-family: 'Courier New', monospace;
-    color: #00FF00;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    position: relative;
-  }
-  .back-button {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    background: transparent;
-    color: #00FF00;
-    border: 2px solid #00FF00;
-    padding: 0.5rem 1rem;
-    font-family: 'Courier New', monospace;
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-    z-index: 9999;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .back-button:hover {
-    background-color: #00FF00;
-    color: black;
-  }
-  .quiz-content {
-    width: 100%;
-    max-width: 600px;
-    text-align: left;
-    font-size: clamp(0.9rem, 3vw, 1rem);
-  }
-  .question {
-    margin-bottom: 1rem;
-    font-size: clamp(1rem, 3.5vw, 1.2rem);
-    line-height: 1.4;
-    word-wrap: break-word;
-    max-height: 20vh;
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: #00FF00 transparent;
-  }
-  .question::-webkit-scrollbar {
-    width: 6px;
-  }
-  .question::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .question::-webkit-scrollbar-thumb {
-    background: #00FF00;
-    border-radius: 3px;
-  }
-  .choices {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    min-height: 200px;
-  }
-  .choice {
-    border: 2px solid #00FF00;
-    border-radius: 5px;
-    padding: 0.6rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    user-select: none;
-    text-align: left;
-    word-wrap: break-word;
-    line-height: 1.3;
-    min-height: 3rem;
-    display: flex;
-    align-items: center;
-    font-size: clamp(0.9rem, 2.8vw, 1rem);
-  }
-  .choice:hover:not(.disabled) {
-    background-color: #00FF00;
-    color: black;
-  }
-  .choice.disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  .feedback {
-    margin-top: 1rem;
-    font-size: clamp(0.9rem, 3vw, 1rem);
-    min-height: 2rem;
-    text-align: center;
-  }
-  @media (max-width: 600px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>LPI Linux Professional Institute Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      padding: 0.5rem;
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
     }
-    .quiz-content {
-      max-width: 95%;
+
+    .back-button,
+    .pbq-button {
+      position: fixed;
+      top: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
     }
-    .question {
-      font-size: clamp(0.9rem, 3vw, 1rem);
-      max-height: 25vh;
-    }
-    .choice {
-      font-size: clamp(0.8rem, 2.8vw, 0.9rem);
-      padding: 0.5rem;
-    }
+
     .back-button {
-      font-size: clamp(0.9rem, 2.5vw, 1rem);
-      padding: 0.4rem 0.8rem;
+      left: 1rem;
     }
-  }
-</style>
+
+    .pbq-button {
+      left: calc(1rem + 6rem + 0.5rem);
+    }
+
+    .back-button:hover,
+    .pbq-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .quiz-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .quiz-content {
+        max-width: 95%;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .back-button,
+      .pbq-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+
+      .pbq-button {
+        left: calc(1rem + 5rem + 0.5rem);
+      }
+    }
+  </style>
 </head>
 <body>
-  <a href="index.html" class="back-button">← Back</a>
+  <a href="../index.html" class="back-button">← Back</a>
+  <a href="pbq.html" class="pbq-button">PBQ</a>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
@@ -174,76 +208,68 @@
     { question: "Which command activates a logical volume?", choices: ["lvchange -ay", "vgchange -ay", "lvcreate", "lvremove"], answer: "lvchange -ay" }
   ];
 
-  let currentQuestionIndex = 0;
-  const questionEl = document.getElementById("question");
-  const choicesEl = document.getElementById("choices");
-  const feedbackEl = document.getElementById("feedback");
+    let currentQuestion = 0;
+    const questionEl = document.getElementById("question");
+    const choicesEl = document.getElementById("choices");
+    const feedbackEl = document.getElementById("feedback");
 
-  function shuffle(array) {
-    for(let i = array.length -1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
     }
-  }
 
-  // Shuffle questions once at start
-  shuffle(questions);
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        questionEl.textContent = "Quiz Complete!";
+        choicesEl.innerHTML = "";
+        feedbackEl.textContent = "";
+        return;
+      }
 
-  function showQuestion() {
-    if(currentQuestionIndex >= questions.length) {
-      questionEl.textContent = "🎉 Quiz Completed! 🎉";
-      choicesEl.innerHTML = "";
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
       feedbackEl.textContent = "";
-      return;
-    }
+      choicesEl.innerHTML = "";
 
-    const q = questions[currentQuestionIndex];
-    questionEl.textContent = q.question;
-    feedbackEl.textContent = "";
-    choicesEl.innerHTML = "";
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
 
-    const shuffledChoices = [...q.choices];
-    shuffle(shuffledChoices);
-
-    shuffledChoices.forEach(choice => {
-      const choiceDiv = document.createElement("div");
-      choiceDiv.textContent = choice;
-      choiceDiv.classList.add("choice");
-      choiceDiv.onclick = () => handleAnswer(choiceDiv, choice, q.answer);
-      choicesEl.appendChild(choiceDiv);
-    });
-  }
-
-  function handleAnswer(choiceDiv, selected, correct) {
-    // Disable all choices
-    const allChoices = choicesEl.querySelectorAll(".choice");
-    allChoices.forEach(c => c.classList.add("disabled"));
-
-    if(selected === correct) {
-      feedbackEl.textContent = "✅ Correct!";
-      choiceDiv.style.backgroundColor = "#00FF00";
-      choiceDiv.style.color = "black";
-    } else {
-      feedbackEl.textContent = `❌ Incorrect! Correct answer: ${correct}`;
-      choiceDiv.style.backgroundColor = "#FF0000";
-      choiceDiv.style.color = "white";
-      // Highlight correct choice as well
-      allChoices.forEach(c => {
-        if(c.textContent === correct) {
-          c.style.backgroundColor = "#00FF00";
-          c.style.color = "black";
-        }
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesEl.appendChild(div);
       });
     }
 
-    // After 5 seconds, go to next question
-    setTimeout(() => {
-      currentQuestionIndex++;
-      showQuestion();
-    }, 5000);
-  }
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      feedbackEl.textContent = selected === correct
+        ? "✅ Correct!"
+        : `❌ Incorrect. Correct: ${correct}`;
 
-  showQuestion();
-</script>
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) {
+          div.style.borderColor = "#00FF00";
+        } else if (div.textContent === selected) {
+          div.style.borderColor = "red";
+        }
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        showQuestion();
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-name = "paypal-discord-worker"
+name = "pp-discord-notification"
 type = "javascript"
 
 account_id = "d05470ecbfa0e5f969a5705ed4560292"

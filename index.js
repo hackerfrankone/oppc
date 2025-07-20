@@ -1,6 +1,5 @@
 export default {
   async fetch(request, env, ctx) {
-    // 🔍 Log the webhook environment variable
     console.log("DISCORD_WEBHOOK env:", env.DISCORD_WEBHOOK);
 
     if (request.method !== "POST") {
@@ -16,11 +15,9 @@ export default {
       return new Response("Unsupported content type", { status: 400 });
     }
 
-    // Convert form data to object
     const params = new URLSearchParams(bodyText);
     const payload = Object.fromEntries(params.entries());
 
-    // Forward to your webhook (optional)
     try {
       await fetch("http://paypal-webhook.familyfishingfun2025.workers.dev", {
         method: "POST",
@@ -31,7 +28,6 @@ export default {
       console.error("Webhook forward error:", err);
     }
 
-    // Send to Discord
     const discordMessage = {
       content: `🤑 **New PayPal Purchase!**
 **Name:** ${payload.first_name || 'N/A'} ${payload.last_name || ''}

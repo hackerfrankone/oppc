@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LPIC-1 Terminal Simulator</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #00ff00;
+      font-family: monospace, monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #terminal {
+      background: #0b0b0b;
+      padding: 40px 15px 15px 15px;
+      flex-grow: 2;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: #111;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    #commandInput {
+      background: #0b0b0b;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 8px;
+      flex: 1 1 50%;
+      min-width: 250px;
+      outline: none;
+      caret-color: #0f0;
+    }
+    button {
+      background-color: #222;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+    #questionBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 3.2em;
+    }
+    #answerBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 3.2em;
+    }
+    #backButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      border-radius: 3px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: monospace;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <button id="backButton" onclick="goBack()">← Back</button>
+
+  <div id="terminal"></div>
+
+  <div id="inputArea">
+    <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
+    <button onclick="submitCommand()">Submit</button>
+    <button onclick="clearTerminal()">Clear</button>
+    <button onclick="showAnswer()">Show Answer</button>
+  </div>
+
+  <div id="questionBox"></div>
+  <div id="answerBox"></div>
+
+  <script>
+    const terminalOutput = document.getElementById('terminal');
+    const commandInput = document.getElementById('commandInput');
+    const answerBox = document.getElementById('answerBox');
+    const questionBox = document.getElementById('questionBox');
+
+    // LPI Core 2 PBQs with multi-step answers split by steps array
+    const pbqs = [
+      {
+        question: "Open the GRUB configuration file for editing.",
+        answer: ["sudo nano /etc/default/grub"]
+      },
+      {
+        question: "Set GRUB_TIMEOUT to 5 in the configuration file.",
+        answer: ["Set GRUB_TIMEOUT=5"]
+      },
+      {
+        question: "Update GRUB to apply the changes.",
+        answer: ["sudo update-grub"]
+      },
+      {
+        question: "Create a new user named 'brandon' with a home directory and bash shell.",
+        answer: ["sudo useradd -m -s /bin/bash brandon"]
+      },
+      {
+        question: "View currently listening TCP/UDP sockets and ports.",
+        answer: ["ss"]
+      },
+      {
+        question: "Schedule a script to run at boot with systemd.",
+        answer: ["Place the script in /etc/systemd/system/ and enable with systemctl"]
+      },
+      {
+        question: "Add a new user group called 'developers'.",
+        answer: ["groupadd developers"]
+      },
+      {
+        question: "Lock a user account named 'guest'.",
+        answer: ["usermod -L guest"]
+      },
+      {
+        question: "Restart the SSH service.",
+        answer: ["sudo systemctl restart ssh"]
+      },
+      {
+        question: "Display the IP addresses assigned to the system.",
+        answer: ["ip a"]
+      },
+      {
+        question: "Find all files named 'passwd' starting from root directory.",
+        answer: ["find / -name passwd"]
+      },
+      {
+        question: "Search for the word 'bash' in /etc/passwd.",
+        answer: ["grep bash /etc/passwd"]
+      },
+      {
+        question: "Compress the 'logs' directory into a gzipped tarball.",
+        answer: ["tar -czf logs.tar.gz logs"]
+      },
+      {
+        question: "Show currently running processes.",
+        answer: ["ps aux"]
+      },
+      {
+        question: "Print the current working directory.",
+        answer: ["pwd"]
+      },
+      {
+        question: "List all files in current directory with detailed info.",
+        answer: ["ls -l"]
+      },
+      {
+        question: "Change ownership of 'project' directory to user brandon.",
+        answer: ["sudo chown brandon project"]
+      },
+      {
+        question: "Remove the file 'temp.txt'.",
+        answer: ["rm temp.txt"]
+      },
+      {
+        question: "Switch to root user.",
+        answer: ["sudo su"]
+      },
+      {
+        question: "Append text 'Hello World' to notes.txt.",
+        answer: ["echo 'Hello World' >> notes.txt"]
+      }
+    ];
+
+    let currentPBQ = 0;
+    let currentStep = 0;  // for multi-step answers
+    let history = [];
+    let historyIndex = -1;
+    let currentPath = "/home/student";
+
+    function printToTerminal(text = "") {
+      terminalOutput.innerHTML += text + "\n";
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function clearTerminal() {
+      terminalOutput.innerHTML = `student@lpi:${currentPath}$\n`;
+      answerBox.innerText = "";
+      currentStep = 0;
+      showQuestion();
+    }
+
+    function goBack() {
+      window.location.href = "lpi2.html";
+    }
+
+    function showAnswer() {
+      const pbq = pbqs[currentPBQ];
+      answerBox.innerText = `Answer:\n${pbq.answer[currentStep]}`;
+    }
+
+    function normalize(str) {
+      return str.trim().toLowerCase();
+    }
+
+    function showQuestion() {
+      const pbq = pbqs[currentPBQ];
+      questionBox.innerText = `PBQ ${currentPBQ + 1}:\n${pbq.question}`;
+      answerBox.innerText = "";
+    }
+
+    function submitCommand() {
+      const input = commandInput.value.trim();
+      if (input === '') return;
+
+      printToTerminal(`student@lpi:${currentPath}$ ${input}`);
+      history.push(input);
+      historyIndex = history.length;
+
+      const pbq = pbqs[currentPBQ];
+      const expectedAnswer = pbq.answer[currentStep].trim();
+
+      if (normalize(input) === normalize(expectedAnswer)) {
+        printToTerminal("\n✅ Correct command!");
+        currentStep++;
+
+        if (currentStep >= pbq.answer.length) {
+          currentPBQ++;
+          if (currentPBQ >= pbqs.length) {
+            printToTerminal("\n🎉 Quiz Complete! Well done.");
+            questionBox.innerText = "🎉 Quiz Complete! Well done.";
+            answerBox.innerText = "";
+            commandInput.disabled = true;
+            return;
+          } else {
+            currentStep = 0;
+            setTimeout(() => {
+              clearTerminal();
+            }, 2000);
+          }
+        } else {
+          setTimeout(() => {
+            showQuestion();
+          }, 1500);
+        }
+      } else {
+        printToTerminal("❌ Incorrect. Try again.");
+      }
+
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          commandInput.value = history[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          commandInput.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          commandInput.value = "";
+        }
+        e.preventDefault();
+      } else if (e.key === "Enter") {
+        submitCommand();
+        e.preventDefault();
+      }
+    });
+
+    // Bootup
+    clearTerminal();
+  </script>
+</body>
+</html>

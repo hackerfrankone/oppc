@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LPIC-3 Terminal Simulator</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #00ff00;
+      font-family: monospace, monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #terminal {
+      background: #0b0b0b;
+      padding: 40px 15px 15px 15px;
+      flex-grow: 2;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: #111;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    #commandInput {
+      background: #0b0b0b;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 8px;
+      flex: 1 1 50%;
+      min-width: 250px;
+      outline: none;
+      caret-color: #0f0;
+    }
+    button {
+      background-color: #222;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+    #questionBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 3.2em;
+    }
+    #answerBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+      min-height: 3.2em;
+    }
+    #backButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      border-radius: 3px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: monospace;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <button id="backButton" onclick="goBack()">← Back</button>
+
+  <div id="terminal"></div>
+
+  <div id="inputArea">
+    <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
+    <button onclick="submitCommand()">Submit</button>
+    <button onclick="clearTerminal()">Clear</button>
+    <button onclick="showAnswer()">Show Answer</button>
+  </div>
+
+  <div id="questionBox"></div>
+  <div id="answerBox"></div>
+
+  <script>
+    const terminalOutput = document.getElementById('terminal');
+    const commandInput = document.getElementById('commandInput');
+    const answerBox = document.getElementById('answerBox');
+    const questionBox = document.getElementById('questionBox');
+
+    // LPIC-3 PBQs focused on system administration, security, virtualization, networking, etc.
+    const pbqs = [
+      { question: "Configure a system to use SELinux in enforcing mode.", answer: ["sudo setenforce 1"] },
+      { question: "Check current SELinux mode.", answer: ["getenforce"] },
+      { question: "Disable AppArmor service temporarily.", answer: ["sudo systemctl stop apparmor"] },
+      { question: "Set up a Samba share named 'shared' accessible to all users.", answer: ["Configure /etc/samba/smb.conf and restart smb service"] },
+      { question: "Create a KVM virtual machine using the virt-install command.", answer: ["virt-install --name vm1 --ram 2048 --disk size=10 --cdrom /path/to/iso"] },
+      { question: "Display all active network interfaces.", answer: ["ip link show up"] },
+      { question: "Add a new user with no home directory and no shell.", answer: ["sudo useradd -M -s /sbin/nologin username"] },
+      { question: "Configure firewall to allow incoming HTTP traffic on port 80 using firewalld.", answer: ["sudo firewall-cmd --add-service=http --permanent && sudo firewall-cmd --reload"] },
+      { question: "Display the current routing table.", answer: ["ip route show"] },
+      { question: "Check mounted filesystems and their usage.", answer: ["df -h"] },
+      { question: "List all systemd services currently enabled.", answer: ["systemctl list-unit-files --state=enabled"] },
+      { question: "Create an encrypted LUKS partition on /dev/sdb1.", answer: ["sudo cryptsetup luksFormat /dev/sdb1"] },
+      { question: "Open an encrypted LUKS partition for usage.", answer: ["sudo cryptsetup luksOpen /dev/sdb1 cryptdisk"] },
+      { question: "Create a new RAID 1 array with two devices /dev/sdc and /dev/sdd.", answer: ["sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdc /dev/sdd"] },
+      { question: "Add a static IP address on interface eth0.", answer: ["Configure /etc/network/interfaces or use nmcli depending on distro"] },
+      { question: "Display SELinux boolean settings.", answer: ["getsebool -a"] },
+      { question: "Start the Docker service and enable it at boot.", answer: ["sudo systemctl start docker && sudo systemctl enable docker"] },
+      { question: "Check the status of the Docker daemon.", answer: ["sudo systemctl status docker"] },
+      { question: "Inspect running Docker containers.", answer: ["docker ps"] },
+      { question: "Restrict SSH access to a specific IP address using firewall.", answer: ["sudo firewall-cmd --add-rich-rule='rule family=ipv4 source address=1.2.3.4/32 accept' --permanent && sudo firewall-cmd --reload"] }
+    ];
+
+    let currentPBQ = 0;
+    let history = [];
+    let historyIndex = -1;
+    let currentPath = "/root";
+
+    function printToTerminal(text = "") {
+      terminalOutput.innerHTML += text + "\n";
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function clearTerminal() {
+      terminalOutput.innerHTML = `root@lpi:${currentPath}$\n`;
+      answerBox.innerText = "";
+      showQuestion();
+    }
+
+    function goBack() {
+      window.location.href = "lpi3.html";
+    }
+
+    function showAnswer() {
+      const pbq = pbqs[currentPBQ];
+      answerBox.innerText = `Answer:\n${pbq.answer[0]}`;
+    }
+
+    function normalize(str) {
+      return str.trim().toLowerCase();
+    }
+
+    function showQuestion() {
+      const pbq = pbqs[currentPBQ];
+      questionBox.innerText = `PBQ ${currentPBQ + 1}:\n${pbq.question}`;
+      answerBox.innerText = "";
+    }
+
+    function submitCommand() {
+      const input = commandInput.value.trim();
+      if (input === '') return;
+
+      printToTerminal(`root@lpi:${currentPath}$ ${input}`);
+      history.push(input);
+      historyIndex = history.length;
+
+      const pbq = pbqs[currentPBQ];
+      const expectedAnswer = pbq.answer[0].trim().toLowerCase();
+
+      if (normalize(input) === expectedAnswer) {
+        printToTerminal("\n✅ Correct command!");
+        currentPBQ++;
+        if (currentPBQ >= pbqs.length) {
+          printToTerminal("\n🎉 Quiz Complete! Well done.");
+          questionBox.innerText = "🎉 Quiz Complete! Well done.";
+          answerBox.innerText = "";
+          commandInput.disabled = true;
+        } else {
+          setTimeout(() => {
+            clearTerminal();
+          }, 2000);
+        }
+      } else {
+        printToTerminal("❌ Incorrect. Try again.");
+      }
+
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          commandInput.value = history[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          commandInput.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          commandInput.value = "";
+        }
+        e.preventDefault();
+      } else if (e.key === "Enter") {
+        submitCommand();
+        e.preventDefault();
+      }
+    });
+
+    // Bootup
+    clearTerminal();
+  </script>
+</body>
+</html>

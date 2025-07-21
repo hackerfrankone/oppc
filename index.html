@@ -135,96 +135,224 @@
       line-height: 1.25rem;
       cursor: pointer;
     }
+    #content {
+      min-height: 100vh;
+    }
   </style>
 </head>
 <body>
+  <div id="content">
+    <h1>OverPowered StudyGuides</h1>
 
-  <h1>OverPowered StudyGuides</h1>
+    <div class="highlight-message">
+      FREE A+ Core 1 | NO sign up | NO ads | NO cookies | NO BS
+    </div>
 
-  <div class="highlight-message">
-    FREE A+ Core 1 | NO sign up | NO ads | NO cookies | NO BS
-  </div>
+    <div class="confidence-message">
+      Don't worry about scoring | Understand the material
+    </div>
 
-  <div class="confidence-message">
-    Don't worry about scoring | Understand the material
-  </div>
+    <div class="details-message">
+      500+ multiple choice questions | 100+ PBQs | Linux Terminal Simulation
+    </div>
 
-  <div class="details-message">
-    500+ multiple choice questions | 100+ PBQs | Linux Terminal Simulation
-  </div>
+    <div class="upgrade-message">
+      Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
+    </div>
 
-  <div class="upgrade-message">
-    Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
-  </div>
+    <!-- CompTIA Group -->
+    <div class="cert-group" id="comptia">
+      <div class="cert-icon" id="aplus">
+        <img src="images/aplus.png" alt="A+ Certification" />
+        <div class="hover-box">
+          <a href="#" data-route="aplus/aplus.html">Core 1 (Free)</a><br>
+          <a href="#" class="locked" data-url="aplus/aplus2.html">Core 2 🔒</a>
+        </div>
+      </div>
 
-  <!-- CompTIA Group -->
-  <div class="cert-group" id="comptia">
-    <div class="cert-icon" id="aplus">
-      <img src="images/aplus.png" alt="A+ Certification" />
-      <div class="hover-box">
-        <a href="aplus/aplus.html">Core 1 (Free)</a><br>
-        <a href="#" class="locked" data-url="aplus/aplus2.html">Core 2 🔒</a>
+      <div class="cert-icon" id="secplus">
+        <img src="images/secplus.png" alt="Security+ Certification" />
+        <div class="hover-box">
+          <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
+        </div>
+      </div>
+
+      <div class="cert-icon" id="networkPlus">
+        <img src="images/netplus.png" alt="Network+ Certification" />
+        <div class="hover-box">
+          <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
+        </div>
       </div>
     </div>
 
-    <div class="cert-icon" id="secplus">
-      <img src="images/secplus.png" alt="Security+ Certification" />
-      <div class="hover-box">
-        <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
+    <!-- LPI Cert Group -->
+    <div class="cert-group" id="other-certs">
+      <div class="cert-icon" id="lpi">
+        <img src="images/lpi.png" alt="LPI Certification" />
+        <div class="hover-box">
+          <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+          <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+          <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
+        </div>
       </div>
     </div>
 
-    <div class="cert-icon" id="networkPlus">
-      <img src="images/netplus.png" alt="Network+ Certification" />
-      <div class="hover-box">
-        <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
+    <!-- Floating Footer Buttons -->
+    <div class="footer-buttons">
+      <!-- CompTIA Link -->
+      <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
+
+      <!-- Linux Button -->
+      <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
+
+      <!-- PayPal Hosted Button -->
+      <div id="paypalContainer">
+        <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
+          <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+          <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+          <section style="font-size: 0.75rem;">
+            Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
+          </section>
+        </form>
       </div>
+
+      <!-- Discord Button (locked by default) -->
+      <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
     </div>
-  </div>
-
-  <!-- LPI Cert Group -->
-  <div class="cert-group" id="other-certs">
-    <div class="cert-icon" id="lpi">
-      <img src="images/lpi.png" alt="LPI Certification" />
-      <div class="hover-box">
-        <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
-        <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
-        <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Floating Footer Buttons -->
-  <div class="footer-buttons">
-    <!-- CompTIA Link -->
-    <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
-
-    <!-- Linux Button -->
-    <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
-
-    <!-- PayPal Hosted Button -->
-    <div id="paypalContainer">
-      <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
-        <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
-        <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
-        <section style="font-size: 0.75rem;">
-          Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
-        </section>
-      </form>
-    </div>
-
-    <!-- Discord Button (locked by default) -->
-    <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
   <script>
+    // Set URL to oppc.us only if on the correct origin
+    window.onload = () => {
+      if (window.location.origin === 'https://oppc.us') {
+        history.pushState({ page: 'home' }, '', '/');
+      }
+      unlockContent();
+    };
+
+    // Handle client-side routing
+    async function navigateTo(route) {
+      // Prevent navigation to locked content unless unlocked
+      const isUnlocked = localStorage.getItem('unlocked') === 'paid-v2';
+      const lockedRoutes = [
+        'aplus/aplus2.html',
+        'secplus/secplus.html',
+        'netplus/netplus.html',
+        'lpi/lpi.html',
+        'lpi/lpi2.html',
+        'lpi/lpi3.html'
+      ];
+      if (lockedRoutes.includes(route) && !isUnlocked) {
+        alert('Please purchase access to view this content.');
+        return;
+      }
+
+      try {
+        const response = await fetch(route);
+        if (!response.ok) throw new Error('Content not found');
+        const content = await response.text();
+        document.getElementById('content').innerHTML = content;
+        // Re-run scripts in the loaded content
+        const scripts = document.getElementById('content').getElementsByTagName('script');
+        for (let script of scripts) {
+          eval(script.textContent);
+        }
+        // Update URL only if on oppc.us
+        if (window.location.origin === 'https://oppc.us') {
+          history.pushState({ page: route }, '', '/');
+        }
+      } catch (error) {
+        console.error('Navigation error:', error);
+        alert('Error loading content. Please try again.');
+      }
+    }
+
+    // Intercept link clicks
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[data-route]');
+      if (link) {
+        event.preventDefault();
+        navigateTo(link.getAttribute('data-route'));
+      }
+    });
+
+    // Handle back/forward navigation
+    window.onpopstate = (event) => {
+      if (event.state && event.state.page !== 'home') {
+        navigateTo(event.state.page);
+      } else {
+        // Reload home content
+        document.getElementById('content').innerHTML = `
+          <h1>OverPowered StudyGuides</h1>
+          <div class="highlight-message">
+            FREE A+ Core 1 | NO sign up | NO ads | NO cookies | NO BS
+          </div>
+          <div class="confidence-message">
+            Don't worry about scoring | Understand the material
+          </div>
+          <div class="details-message">
+            500+ multiple choice questions | 100+ PBQs | Linux Terminal Simulation
+          </div>
+          <div class="upgrade-message">
+            Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
+          </div>
+          <div class="cert-group" id="comptia">
+            <div class="cert-icon" id="aplus">
+              <img src="images/aplus.png" alt="A+ Certification" />
+              <div class="hover-box">
+                <a href="#" data-route="aplus/aplus.html">Core 1 (Free)</a><br>
+                <a href="#" class="locked" data-url="aplus/aplus2.html">Core 2 🔒</a>
+              </div>
+            </div>
+            <div class="cert-icon" id="secplus">
+              <img src="images/secplus.png" alt="Security+ Certification" />
+              <div class="hover-box">
+                <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
+              </div>
+            </div>
+            <div class="cert-icon" id="networkPlus">
+              <img src="images/netplus.png" alt="Network+ Certification" />
+              <div class="hover-box">
+                <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
+              </div>
+            </div>
+          </div>
+          <div class="cert-group" id="other-certs">
+            <div class="cert-icon" id="lpi">
+              <img src="images/lpi.png" alt="LPI Certification" />
+              <div class="hover-box">
+                <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+                <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+                <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
+              </div>
+            </div>
+          </div>
+          <div class="footer-buttons">
+            <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
+            <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
+            <div id="paypalContainer">
+              <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
+                <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+                <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+                <section style="font-size: 0.75rem;">
+                  Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
+                </section>
+              </form>
+            </div>
+            <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
+          </div>
+        `;
+        unlockContent();
+      }
+    };
+
     function unlockContent() {
       if (localStorage.getItem('unlocked') === 'paid-v2') {
         // Unlock all locked links
         document.querySelectorAll('a.locked').forEach(link => {
           link.textContent = link.textContent.replace(' 🔒', '');
-          link.href = link.getAttribute('data-url');
-          link.onclick = null;
+          link.setAttribute('data-route', link.getAttribute('data-url'));
+          link.classList.remove('locked');
           link.style.cursor = 'pointer';
         });
 
@@ -244,9 +372,6 @@
         }
       }
     }
-
-    window.onload = unlockContent;
   </script>
-
 </body>
 </html>

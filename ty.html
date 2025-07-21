@@ -7,13 +7,13 @@
     // Mark user as paid
     localStorage.setItem('unlocked', 'paid-v2');
     // Redirect to paid content after 1-2 seconds (optional delay)
-    setTimeout(() => {
-      window.location.href = 'app/home.html';
-    }, 1500);
+setTimeout(function() {
+  window.location.href = 'app/home.html';
+}, 3500);
   </script>
 </head>
 <body>
   <h1>Thank you for your purchase!</h1>
-  <p>Redirecting to your content...</p>
+  <p>Redirecting to content...</p>
 </body>
 </html>

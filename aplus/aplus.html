@@ -174,6 +174,18 @@
     <div class="feedback" id="feedback"></div>
   </div>
 
+  <script>
+  // Redirect to index if not unlocked
+  if (localStorage.getItem('unlocked') !== 'paid-v2') {
+    window.location.href = '../index.html';
+  }
+
+  // Set URL to oppc.us only if on the correct origin
+  if (window.location.origin === 'https://oppc.us') {
+    history.pushState({ page: window.location.pathname }, '', '/');
+  }
+</script>
+
 <script>
     const questions = [
       {

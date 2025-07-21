@@ -8,9 +8,9 @@
       // Set unlock flag in localStorage
       localStorage.setItem('unlocked', 'paid-v2');
 
-      // Redirect to homepage after 2 seconds
+      // Redirect to paid content after 2 seconds
       setTimeout(function() {
-        window.location.href = 'index.html'; // or '/' if homepage is root
+        window.location.href = 'app/home.html';
       }, 2000);
     }
   </script>
@@ -26,6 +26,6 @@
 </head>
 <body>
   <h1>Thank you for your purchase!</h1>
-  <p>Unlocking content now... Redirecting you back to the homepage.</p>
+  <p>Unlocking content now... Redirecting you to your study guides.</p>
 </body>
 </html>

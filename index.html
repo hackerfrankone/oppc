@@ -5,8 +5,21 @@
   <title>OverPowered StudyGuides</title>
   
   <script>
+    // Force non-www redirect
     if (location.hostname === 'www.oppc.us') {
       location.replace('https://oppc.us' + location.pathname);
+    }
+  </script>
+
+  <script>
+    // Check URL params for unlock flag
+    const params = new URLSearchParams(window.location.search);
+    const unlockParam = params.get('unlock');
+
+    if (unlockParam === 'paid-v2') {
+      localStorage.setItem('unlocked', 'paid-v2');
+      // Remove unlock param from URL for clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   </script>
   
@@ -17,9 +30,6 @@
       window.location.href = 'app/home.html';
     }
   </script>
-
-  <!-- You can continue with your existing styles, CSP, favicon etc below -->
-</head>
 
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; 
@@ -267,4 +277,4 @@
   </script>
 
 </body>
-</html>
+</html>v

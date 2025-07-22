@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <title>OverPowered StudyGuides</title>
+  
+  <script>
+    if (location.hostname === 'www.oppc.us') {
+      location.replace('https://oppc.us' + location.pathname);
+    }
+  </script>
+  
+  <script>
+    console.log('localStorage.unlocked =', localStorage.getItem('unlocked'));
+    if (localStorage.getItem('unlocked') === 'paid-v2') {
+      console.log('Redirecting to app/home.html');
+      window.location.href = 'app/home.html';
+    }
+  </script>
 
-<script>
-  console.log('localStorage.unlocked =', localStorage.getItem('unlocked'));
-  if (localStorage.getItem('unlocked') === 'paid-v2') {
-    console.log('Redirecting to app/home.html');
-    window.location.href = 'app/home.html';
-  }
-</script>
+  <!-- You can continue with your existing styles, CSP, favicon etc below -->
+</head>
 
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; 

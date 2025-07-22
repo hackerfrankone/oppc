@@ -33,7 +33,7 @@ export default {
 **Name:** ${payload.first_name || 'N/A'} ${payload.last_name || ''}
 **Email:** ${payload.payer_email || 'N/A'}
 **Amount:** ${payload.mc_gross || '0.00'} ${payload.mc_currency || ''}
-**Item:** ${payload.item_name || 'Unknown'}`,
+**Item:** ${payload.item_name || 'Content'}`,
     };
 
     try {

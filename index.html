@@ -1,37 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>  
   <meta charset="UTF-8" />
-  <title>OverPowered StudyGuides</title>
-  
-  <script>
-    // Force non-www redirect
-    if (location.hostname === 'www.oppc.us') {
-      location.replace('https://oppc.us' + location.pathname);
-    }
-  </script>
-
-  <script>
-    // Check URL params for unlock flag
-    if (window.location.origin === 'https://oppc.us') {
-      const params = new URLSearchParams(window.location.search);
-      const unlockParam = params.get('unlock');
-      if (unlockParam === 'paid-v2') {
-        localStorage.setItem('unlocked', 'paid-v2');
-        // Remove unlock param from URL for clean URL
-        window.history.replaceState({}, document.title, '/index.html');
-      }
-    }
-  </script>
-  
-  <script>
-    console.log('localStorage.unlocked =', localStorage.getItem('unlocked'));
-    if (localStorage.getItem('unlocked') === 'paid-v2' && window.location.pathname !== '/app/home.html') {
-      console.log('Redirecting to app/home.html');
-      window.location.href = '/app/home.html';
-    }
-  </script>
-
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; 
     script-src 'self' 'unsafe-inline'; 
@@ -40,6 +10,7 @@
     frame-src 'none';
     connect-src 'self';">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+  <title>OverPowered StudyGuides</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <style>
     body {
@@ -179,7 +150,7 @@
   </div>
 
   <div class="details-message">
-    500+ multiple choice questions | 100+ PBQs | Terminal Simulator 
+    500+ multiple choice questions | 100+ PBQs
   </div>
 
   <div class="upgrade-message">
@@ -234,7 +205,7 @@
     <!-- PayPal Hosted Button -->
     <div id="paypalContainer">
       <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
-        <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now for $0.99" />
+        <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
         <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
         <section style="font-size: 0.75rem;">
           Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />

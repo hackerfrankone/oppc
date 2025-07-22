@@ -6,12 +6,12 @@
   <script>
     window.onload = function() {
       // Set unlock flag in localStorage
-      localStorage.setItem('unlocked', 'paid-v2');
+      localStorage.setItem('unlocked', 'paid');
 
-      // Redirect to homepage after 2 seconds
+      // Redirect to homepage after 5 seconds
       setTimeout(function() {
-        window.location.href = 'index.html'; // or '/' if homepage is root
-      }, 2000);
+        window.location.href = 'index.html';
+      }, 5000);
     }
   </script>
   <style>

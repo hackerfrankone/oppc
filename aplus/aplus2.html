@@ -27,7 +27,8 @@
     }
 
     .back-button,
-    .pbq-button {
+    .pbq-button,
+    .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -52,8 +53,15 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      left: 1rem;
+      display: none;
+    }
+
     .back-button:hover,
-    .pbq-button:hover {
+    .pbq-button:hover,
+    .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -63,6 +71,10 @@
       max-width: 600px;
       text-align: left;
       font-size: clamp(0.9rem, 3vw, 1rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 60vh;
     }
 
     .question {
@@ -75,6 +87,16 @@
       padding-right: 0.5rem;
       scrollbar-width: thin;
       scrollbar-color: #00FF00 transparent;
+    }
+
+    .question.quiz-complete {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      margin: 0;
     }
 
     .question::-webkit-scrollbar {
@@ -131,16 +153,59 @@
       min-height: 2rem;
       text-align: center;
     }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .quiz-content {
+        max-width: 95%;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .back-button,
+      .pbq-button,
+      .restart-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+
+      .pbq-button {
+        left: calc(1rem + 5rem + 0.5rem);
+      }
+
+      .restart-button {
+        top: calc(0.5rem + 2rem + 0.5rem);
+      }
+    }
   </style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq2.html" class="pbq-button">PBQ</a>
+  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
   </div>
 
 <script>
@@ -389,6 +454,261 @@ const questions = [
     question: "Which of these is used to restrict access to specific apps in Windows Pro?",
     choices: ["BitLocker", "AppLocker", "Firewall", "UAC"],
     answer: "AppLocker"
+},
+{
+    question: "Which Windows command displays the current directory path?",
+    choices: ["dir", "cd", "path", "pwd"],
+    answer: "cd"
+  },
+  {
+    question: "What is the purpose of the `chown` command in Linux?",
+    choices: ["Change file permissions", "Change file ownership", "Copy files", "Delete files"],
+    answer: "Change file ownership"
+  },
+  {
+    question: "Which Windows tool allows you to manage running services?",
+    choices: ["msinfo32", "compmgmt.msc", "dcomcnfg", "services.msc"],
+    answer: "services.msc"
+  },
+  {
+    question: "What is the default port for Remote Desktop Protocol (RDP)?",
+    choices: ["22", "3389", "445", "143"],
+    answer: "3389"
+  },
+  {
+    question: "Which Linux command displays real-time system resource usage?",
+    choices: ["ls", "df", "top", "ps"],
+    answer: "top"
+  },
+  {
+    question: "Which Windows tool allows you to roll back driver updates?",
+    choices: ["Device Manager", "Disk Management", "Performance Monitor", "Task Scheduler"],
+    answer: "Device Manager"
+  },
+  {
+    question: "What macOS utility is used to manage disk partitions?",
+    choices: ["Keychain Access", "Disk Utility", "Time Machine", "Activity Monitor"],
+    answer: "Disk Utility"
+  },
+  {
+    question: "What is the primary function of a network firewall?",
+    choices: ["Encrypt data", "Filter network traffic", "Manage backups", "Monitor CPU usage"],
+    answer: "Filter network traffic"
+  },
+  {
+    question: "Which Linux command changes file permissions?",
+    choices: ["chmod", "chown", "cp", "mv"],
+    answer: "chmod"
+  },
+  {
+    question: "What is the main purpose of Windows Defender?",
+    choices: ["System optimization", "Antivirus protection", "Disk defragmentation", "Network configuration"],
+    answer: "Antivirus protection"
+  },
+  {
+    question: "Which mobile OS uses the App Store for downloading applications?",
+    choices: ["Android", "iOS", "Windows Phone", "Ubuntu Touch"],
+    answer: "iOS"
+  },
+  {
+    question: "Which Windows command creates a new directory?",
+    choices: ["dir", "mkdir", "rmdir", "cd"],
+    answer: "mkdir"
+  },
+  {
+    question: "Which type of malware spreads without user interaction?",
+    choices: ["Trojan", "Worm", "Adware", "Spyware"],
+    answer: "Worm"
+  },
+  {
+    question: "What is the purpose of the `sudo` command in Linux?",
+    choices: ["List directory contents", "Run commands as an administrator", "Update software", "Shut down the system"],
+    answer: "Run commands as an administrator"
+  },
+  {
+    question: "Which Windows tool monitors system performance in real-time?",
+    choices: ["Event Viewer", "Performance Monitor", "Disk Management", "Resource Monitor"],
+    answer: "Performance Monitor"
+  },
+  {
+    question: "What is the default port for SSH in Linux?",
+    choices: ["21", "22", "80", "3389"],
+    answer: "22"
+  },
+  {
+    question: "Which Windows utility allows configuring automatic user login?",
+    choices: ["netplwiz", "lusrmgr.msc", "msconfig", "dcomcnfg"],
+    answer: "netplwiz"
+  },
+  {
+    question: "What is the purpose of a System Image in Windows?",
+    choices: ["Create a full system backup", "Encrypt files", "Manage user accounts", "Optimize disk space"],
+    answer: "Create a full system backup"
+  },
+  {
+    question: "Which Linux command displays disk space usage?",
+    choices: ["ls", "df", "du", "free"],
+    answer: "df"
+  },
+  {
+    question: "What is the purpose of two-factor authentication (2FA)?",
+    choices: ["Speed up login", "Add an extra layer of security", "Manage passwords", "Encrypt network traffic"],
+    answer: "Add an extra layer of security"
+  },
+  {
+    question: "Which Windows tool is used to defragment a hard drive?",
+    choices: ["Disk Cleanup", "Defragment and Optimize Drives", "Disk Management", "CHKDSK"],
+    answer: "Defragment and Optimize Drives"
+  },
+  {
+    question: "What is the function of the `grep` command in Linux?",
+    choices: ["Search text within files", "Search for files", "Copy files", "Delete directories"],
+    answer: "Search text within files"
+  },
+  {
+    question: "Which mobile OS feature synchronizes data with cloud services?",
+    choices: ["VPN", "iCloud/Google Sync", "Airplane mode", "Find My Device"],
+    answer: "iCloud/Google Sync"
+  },
+  {
+    question: "Which Windows command removes a directory?",
+    choices: ["mkdir", "rmdir", "del", "cd"],
+    answer: "rmdir"
+  },
+  {
+    question: "Which attack involves tricking users into revealing sensitive information?",
+    choices: ["Brute force", "Phishing", "SQL injection", "Man-in-the-middle"],
+    answer: "Phishing"
+  },
+  {
+    question: "Which macOS feature provides automatic file backups?",
+    choices: ["Spotlight", "Time Machine", "Disk Utility", "Keychain Access"],
+    answer: "Time Machine"
+  },
+  {
+    question: "What is the purpose of the Windows Event Viewer?",
+    choices: ["Manage user accounts", "View system logs", "Edit system files", "Schedule tasks"],
+    answer: "View system logs"
+  },
+  {
+    question: "Which Linux command updates the package list on Debian-based systems?",
+    choices: ["apt-get update", "yum install", "dnf update", "rpm -i"],
+    answer: "apt-get update"
+  },
+  {
+    question: "Which Windows feature restricts access to specific folders?",
+    choices: ["UAC", "NTFS permissions", "BitLocker", "AppLocker"],
+    answer: "NTFS permissions"
+  },
+  {
+    question: "Which mobile OS feature allows remote wiping of a lost device?",
+    choices: ["App Store", "VPN", "Find My Device", "Data Saver"],
+    answer: "Find My Device"
+  },
+  {
+    question: "What is the purpose of the `ping` command in Windows?",
+    choices: ["Test network connectivity", "Display network connections", "Trace packet routes", "Flush DNS cache"],
+    answer: "Test network connectivity"
+  },
+  {
+    question: "Which backup type saves files changed since the last full backup?",
+    choices: ["Incremental", "Differential", "Mirror", "Full"],
+    answer: "Incremental"
+  },
+  {
+    question: "Which Windows tool manages local users and groups?",
+    choices: ["lusrmgr.msc", "gpedit.msc", "msconfig", "compmgmt.msc"],
+    answer: "lusrmgr.msc"
+  },
+  {
+    question: "Which Linux command displays the current user’s ID and group information?",
+    choices: ["whoami", "id", "passwd", "su"],
+    answer: "id"
+  },
+  {
+    question: "What is the purpose of a proxy server?",
+    choices: ["Encrypt data", "Scan for malware", "Filter and forward network requests", "Manage DNS"],
+    answer: "Filter and forward network requests"
+  },
+  {
+    question: "Which Windows command repairs file system errors?",
+    choices: ["sfc /scannow", "chkdsk /f", "diskpart", "format"],
+    answer: "chkdsk /f"
+  },
+  {
+    question: "Which macOS tool monitors running processes?",
+    choices: ["Disk Utility", "Activity Monitor", "Time Machine", "Keychain Access"],
+    answer: "Activity Monitor"
+  },
+  {
+    question: "Which security practice involves regularly updating software?",
+    choices: ["Phishing prevention", "Patch management", "Firewall configuration", "Social engineering"],
+    answer: "Patch management"
+  },
+  {
+    question: "Which Windows command displays the routing table?",
+    choices: ["netstat -r", "ipconfig /all", "arp -a", "tracert"],
+    answer: "netstat -r"
+  },
+  {
+    question: "Which Linux command installs software on Debian-based systems?",
+    choices: ["yum install", "apt-get install", "rpm -i", "dnf install"],
+    answer: "apt-get install"
+  },
+  {
+    question: "What is the purpose of the Windows Recovery Environment (WinRE)?",
+    choices: ["Troubleshoot boot issues", "Manage backups", "Encrypt disks", "Schedule tasks"],
+    answer: "Troubleshoot boot issues"
+  },
+  {
+    question: "Which mobile OS feature restricts apps from running in the background?",
+    choices: ["Battery Optimization", "Data Saver", "Airplane Mode", "VPN"],
+    answer: "Battery Optimization"
+  },
+  {
+    question: "Which Windows command displays the MAC address of a network adapter?",
+    choices: ["ipconfig /all", "netstat -a", "ping", "nslookup"],
+    answer: "ipconfig /all"
+  },
+  {
+    question: "Which type of malware hides itself from detection?",
+    choices: ["Trojan", "Rootkit", "Worm", "Adware"],
+    answer: "Rootkit"
+  },
+  {
+    question: "What is the purpose of the `man` command in Linux?",
+    choices: ["Manage users", "Display manual pages", "Move files", "Monitor processes"],
+    answer: "Display manual pages"
+  },
+  {
+    question: "Which Windows feature enables remote desktop access?",
+    choices: ["Remote Desktop", "Windows Sandbox", "Hyper-V", "Task Scheduler"],
+    answer: "Remote Desktop"
+  },
+  {
+    question: "What is the purpose of a DMZ in network security?",
+    choices: ["Encrypt data", "Isolate public-facing servers", "Manage DNS", "Block all traffic"],
+    answer: "Isolate public-facing servers"
+  },
+  {
+    question: "Which Linux command terminates a running process?",
+    choices: ["kill", "stop", "end", "quit"],
+    answer: "kill"
+  },
+  {
+    question: "Which Windows tool configures firewall settings?",
+    choices: ["Windows Defender Firewall", "Event Viewer", "Task Scheduler", "Disk Management"],
+    answer: "Windows Defender Firewall"
+  },
+  {
+    question: "Which operational procedure ensures proper disposal of sensitive data?",
+    choices: ["Data encryption", "Data wiping", "Data backup", "Data compression"],
+    answer: "Data wiping"
+  },
+  {
+    question: "Which Windows command resolves IP to MAC addresses?",
+    choices: ["arp -a", "netstat -r", "ipconfig /all", "tracert"],
+    answer: "arp -a"
   }
 ];
 
@@ -400,15 +720,22 @@ const questions = [
     }
 
     let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const restartButton = document.querySelector(".restart-button");
 
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = q.question;
+      questionElement.classList.remove("quiz-complete");
       feedbackElement.textContent = "";
+      scoreElement.textContent = "";
       choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
 
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
@@ -424,9 +751,13 @@ const questions = [
 
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      feedbackElement.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+      }
 
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
@@ -445,10 +776,21 @@ const questions = [
           showQuestion();
         } else {
           questionElement.textContent = "Quiz Complete!";
+          questionElement.classList.add("quiz-complete");
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct, You got ${incorrectAnswers} wrong`;
+          restartButton.style.display = "block";
         }
       }, 5000);
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      shuffle(questions);
+      showQuestion();
     }
 
     shuffle(questions);

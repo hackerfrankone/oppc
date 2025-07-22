@@ -24,13 +24,15 @@
       background-color: #0f0;
       color: #000;
       border: none;
-      padding: 12px 20px;
-      margin: 10px;
+      padding: 15px 30px;
+      margin: 20px auto;
       font-weight: bold;
       cursor: pointer;
-      border-radius: 6px;
+      border-radius: 8px;
       font-family: monospace;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      display: block;
+      width: 200px;
       transition: background-color 0.3s ease;
     }
     button:hover {
@@ -41,10 +43,10 @@
 
 <body>
   <h1>Welcome to your Study Guides</h1>
-  <p>This is the protected home page!</p>
+  <p>You have unlocked full access. Ready to start?</p>
 
   <button onclick="window.location.href='../index.html'">
-    Back to Index
+    Start Studying
   </button>
 
   <button onclick="localStorage.removeItem('unlocked'); location.href='../index.html';">

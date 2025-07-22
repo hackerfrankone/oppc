@@ -27,7 +27,8 @@
     }
 
     .back-button,
-    .pbq-button {
+    .pbq-button,
+    .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -52,8 +53,15 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      left: 1rem;
+      display: none;
+    }
+
     .back-button:hover,
-    .pbq-button:hover {
+    .pbq-button:hover,
+    .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -133,6 +141,12 @@
       text-align: center;
     }
 
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -153,7 +167,8 @@
       }
 
       .back-button,
-      .pbq-button {
+      .pbq-button,
+      .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
       }
@@ -161,17 +176,23 @@
       .pbq-button {
         left: calc(1rem + 5rem + 0.5rem);
       }
+
+      .restart-button {
+        top: calc(0.5rem + 2rem + 0.5rem);
+      }
     }
   </style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
   </div>
 
 <script>
@@ -692,16 +713,22 @@
     }
 
     let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const restartButton = document.querySelector(".restart-button");
 
     // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = q.question;
       feedbackElement.textContent = "";
+      scoreElement.textContent = "";
       choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
 
       // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
@@ -716,12 +743,16 @@
       });
     }
 
-    // Handle answer selection and provide feedback
+    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      feedbackElement.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+      }
 
       // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
@@ -735,7 +766,7 @@
         }
       });
 
-      // Move to next question after 5 seconds
+      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
         if (currentQuestion < questions.length) {
@@ -744,8 +775,19 @@
           questionElement.textContent = "Quiz Complete!";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct, You got ${incorrectAnswers} wrong`;
+          restartButton.style.display = "block";
         }
       }, 5000);
+    }
+
+    // Restart the quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      shuffle(questions);
+      showQuestion();
     }
 
     // Randomize question order at start

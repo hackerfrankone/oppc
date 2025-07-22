@@ -25,7 +25,8 @@
       position: relative;
     }
 
-    .back-button {
+    .back-button,
+    .restart-button {
       position: fixed;
       top: 1rem;
       left: 1rem;
@@ -43,7 +44,13 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .back-button:hover {
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      display: none;
+    }
+
+    .back-button:hover,
+    .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -53,6 +60,9 @@
       max-width: 600px;
       text-align: left;
       font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .pbq-scenario {
@@ -94,6 +104,12 @@
       margin-top: 1rem;
       font-size: clamp(0.9rem, 3vw, 1rem);
       min-height: 2rem;
+      text-align: center;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
       text-align: center;
     }
 
@@ -165,7 +181,7 @@
 </head>
 <body>
   <a href="secplus.html" class="back-button">← Back</a>
-
+  <button id="restart" class="restart-button">Start Over</button>
   <div class="pbq-container">
     <!-- PBQ 1: Firewall Rules -->
     <div id="pbq1">
@@ -196,12 +212,98 @@
       <div class="log-entries" id="log-entries"></div>
     </div>
 
+    <!-- PBQ 4: Zero Trust Configuration -->
+    <div id="pbq4" class="hidden">
+      <div class="pbq-scenario">
+        Configure zero trust policies for a hybrid environment:
+        <ul>
+          <li>Require MFA for all cloud access</li>
+          <li>Restrict internal network access to verified devices</li>
+          <li>Limit data access based on user role</li>
+        </ul>
+      </div>
+      <div class="zero-trust-policies" id="zero-trust-policies"></div>
+    </div>
+
+    <!-- PBQ 5: IoT Device Security -->
+    <div id="pbq5" class="hidden">
+      <div class="pbq-scenario">
+        Secure IoT devices in a smart office:
+        <ul>
+          <li>Enable encryption for device communication</li>
+          <li>Isolate IoT network from corporate network</li>
+          <li>Apply firmware updates regularly</li>
+        </ul>
+      </div>
+      <div class="iot-security" id="iot-security"></div>
+    </div>
+
+    <!-- PBQ 6: Cloud Misconfiguration -->
+    <div id="pbq6" class="hidden">
+      <div class="pbq-scenario">
+        Identify and mitigate cloud misconfigurations:
+        <ul>
+          <li>Disable public access to S3 buckets</li>
+          <li>Enable encryption for cloud storage</li>
+          <li>Restrict API key usage</li>
+        </ul>
+      </div>
+      <div class="cloud-config" id="cloud-config"></div>
+    </div>
+
+    <!-- PBQ 7: Incident Response Order -->
+    <div id="pbq7" class="hidden">
+      <div class="pbq-scenario">
+        Arrange the incident response steps in the correct order:
+      </div>
+      <div class="incident-response" id="incident-response"></div>
+    </div>
+
+    <!-- PBQ 8: Vulnerability Management -->
+    <div id="pbq8" class="hidden">
+      <div class="pbq-scenario">
+        Prioritize vulnerabilities for patching:
+        <ul>
+          <li>Critical CVE with active exploitation</li>
+          <li>High-severity CVE with no known exploit</li>
+          <li>Medium-severity CVE with potential risk</li>
+        </ul>
+      </div>
+      <div class="vulnerability-priorities" id="vulnerability-priorities"></div>
+    </div>
+
+    <!-- PBQ 9: Encryption Standards -->
+    <div id="pbq9" class="hidden">
+      <div class="pbq-scenario">
+        Match encryption standards to their use cases:
+        <ul>
+          <li>Secure email communication</li>
+          <li>Protect data at rest</li>
+          <li>Secure web traffic</li>
+        </ul>
+      </div>
+      <div class="encryption-standards" id="encryption-standards"></div>
+    </div>
+
+    <!-- PBQ 10: Phishing Mitigation -->
+    <div id="pbq10" class="hidden">
+      <div class="pbq-scenario">
+        Implement phishing mitigation controls:
+        <ul>
+          <li>Enable email filtering</li>
+          <li>Conduct user awareness training</li>
+          <li>Block suspicious attachments</li>
+        </ul>
+      </div>
+      <div class="phishing-controls" id="phishing-controls"></div>
+    </div>
+
     <div class="buttons">
-      <button id="clear-button">Clear</button>
       <button id="submit-button" disabled>Submit</button>
       <button id="next-button" disabled>Next ➡</button>
     </div>
     <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
   </div>
 
   <script>
@@ -229,25 +331,101 @@
       { description: "User elevated to admin via unpatched exploit", correctIncident: "Privilege Escalation" },
     ];
 
+    const zeroTrustPolicies = [
+      { description: "Cloud access", correctPolicy: "Require MFA" },
+      { description: "Internal network access", correctPolicy: "Restrict to verified devices" },
+      { description: "Data access", correctPolicy: "Limit by user role" },
+    ];
+
+    const iotSecurity = [
+      { description: "Device communication", correctSecurity: "Enable encryption" },
+      { description: "Network isolation", correctSecurity: "Isolate from corporate network" },
+      { description: "Firmware updates", correctSecurity: "Apply regularly" },
+    ];
+
+    const cloudConfig = [
+      { description: "S3 bucket access", correctConfig: "Disable public access" },
+      { description: "Cloud storage", correctConfig: "Enable encryption" },
+      { description: "API key usage", correctConfig: "Restrict" },
+    ];
+
+    const incidentResponseSteps = [
+      { description: "Identify the incident", correctOrder: 1 },
+      { description: "Contain the incident", correctOrder: 2 },
+      { description: "Eradicate the threat", correctOrder: 3 },
+      { description: "Recover systems", correctOrder: 4 },
+      { description: "Post-incident review", correctOrder: 5 },
+    ];
+
+    const vulnerabilityPriorities = [
+      { description: "Critical CVE with active exploitation", correctPriority: "High" },
+      { description: "High-severity CVE with no known exploit", correctPriority: "Medium" },
+      { description: "Medium-severity CVE with potential risk", correctPriority: "Low" },
+    ];
+
+    const encryptionStandards = [
+      { description: "Secure email communication", correctStandard: "PGP" },
+      { description: "Protect data at rest", correctStandard: "AES-256" },
+      { description: "Secure web traffic", correctStandard: "TLS" },
+    ];
+
+    const phishingControls = [
+      { description: "Email filtering", correctControl: "Enable" },
+      { description: "User awareness training", correctControl: "Conduct" },
+      { description: "Suspicious attachments", correctControl: "Block" },
+    ];
+
     const pbq1 = document.getElementById("pbq1");
     const pbq2 = document.getElementById("pbq2");
     const pbq3 = document.getElementById("pbq3");
+    const pbq4 = document.getElementById("pbq4");
+    const pbq5 = document.getElementById("pbq5");
+    const pbq6 = document.getElementById("pbq6");
+    const pbq7 = document.getElementById("pbq7");
+    const pbq8 = document.getElementById("pbq8");
+    const pbq9 = document.getElementById("pbq9");
+    const pbq10 = document.getElementById("pbq10");
     const rulesElement = document.getElementById("firewall-rules");
     const scenariosElement = document.getElementById("threat-scenarios");
     const logEntriesElement = document.getElementById("log-entries");
+    const zeroTrustElement = document.getElementById("zero-trust-policies");
+    const iotElement = document.getElementById("iot-security");
+    const cloudElement = document.getElementById("cloud-config");
+    const incidentElement = document.getElementById("incident-response");
+    const vulnElement = document.getElementById("vulnerability-priorities");
+    const encElement = document.getElementById("encryption-standards");
+    const phishingElement = document.getElementById("phishing-controls");
     const feedbackElement = document.getElementById("feedback");
-    const clearButton = document.getElementById("clear-button");
+    const scoreElement = document.getElementById("score");
     const submitButton = document.getElementById("submit-button");
     const nextButton = document.getElementById("next-button");
+    const buttonsDiv = document.querySelector('.buttons');
+    const restartBtn = document.getElementById('restart');
 
     let currentPBQ = 1;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
 
     function checkAllSelected() {
       const selectElements = currentPBQ === 1
         ? Array.from(document.querySelectorAll(".firewall-rules select"))
         : currentPBQ === 2
         ? Array.from(document.querySelectorAll(".threat-scenarios select"))
-        : Array.from(document.querySelectorAll(".log-entries select"));
+        : currentPBQ === 3
+        ? Array.from(document.querySelectorAll(".log-entries select"))
+        : currentPBQ === 4
+        ? Array.from(document.querySelectorAll(".zero-trust-policies select"))
+        : currentPBQ === 5
+        ? Array.from(document.querySelectorAll(".iot-security select"))
+        : currentPBQ === 6
+        ? Array.from(document.querySelectorAll(".cloud-config select"))
+        : currentPBQ === 7
+        ? Array.from(document.querySelectorAll(".incident-response select"))
+        : currentPBQ === 8
+        ? Array.from(document.querySelectorAll(".vulnerability-priorities select"))
+        : currentPBQ === 9
+        ? Array.from(document.querySelectorAll(".encryption-standards select"))
+        : Array.from(document.querySelectorAll(".phishing-controls select"));
       const allSelected = selectElements.every(select => select.value !== "");
       submitButton.disabled = !allSelected;
       console.log(`Submit button ${allSelected ? "enabled" : "disabled"}, all dropdowns selected: ${allSelected}`);
@@ -331,8 +509,185 @@
       checkAllSelected();
     }
 
+    function loadZeroTrust() {
+      zeroTrustElement.innerHTML = "";
+      zeroTrustPolicies.forEach((policy, index) => {
+        const policyDiv = document.createElement("div");
+        policyDiv.classList.add("rule");
+        policyDiv.innerHTML = `
+          <span>${policy.description}</span>
+          <select id="zt-${index}">
+            <option value="">Select Policy</option>
+            <option value="Require MFA">Require MFA</option>
+            <option value="Restrict to verified devices">Restrict to verified devices</option>
+            <option value="Limit by user role">Limit by user role</option>
+          </select>
+        `;
+        zeroTrustElement.appendChild(policyDiv);
+      });
+      console.log("Zero Trust policies loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".zero-trust-policies select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadIoT() {
+      iotElement.innerHTML = "";
+      iotSecurity.forEach((security, index) => {
+        const securityDiv = document.createElement("div");
+        securityDiv.classList.add("rule");
+        securityDiv.innerHTML = `
+          <span>${security.description}</span>
+          <select id="iot-${index}">
+            <option value="">Select Security</option>
+            <option value="Enable encryption">Enable encryption</option>
+            <option value="Isolate from corporate network">Isolate from corporate network</option>
+            <option value="Apply regularly">Apply regularly</option>
+          </select>
+        `;
+        iotElement.appendChild(securityDiv);
+      });
+      console.log("IoT security loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".iot-security select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadCloud() {
+      cloudElement.innerHTML = "";
+      cloudConfig.forEach((config, index) => {
+        const configDiv = document.createElement("div");
+        configDiv.classList.add("rule");
+        configDiv.innerHTML = `
+          <span>${config.description}</span>
+          <select id="cloud-${index}">
+            <option value="">Select Config</option>
+            <option value="Disable public access">Disable public access</option>
+            <option value="Enable encryption">Enable encryption</option>
+            <option value="Restrict">Restrict</option>
+          </select>
+        `;
+        cloudElement.appendChild(configDiv);
+      });
+      console.log("Cloud config loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".cloud-config select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadIncident() {
+      incidentElement.innerHTML = "";
+      incidentResponseSteps.forEach((step, index) => {
+        const stepDiv = document.createElement("div");
+        stepDiv.classList.add("rule");
+        stepDiv.innerHTML = `
+          <span>${step.description}</span>
+          <select id="ir-${index}">
+            <option value="">Select Order</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        `;
+        incidentElement.appendChild(stepDiv);
+      });
+      console.log("Incident response loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".incident-response select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadVuln() {
+      vulnElement.innerHTML = "";
+      vulnerabilityPriorities.forEach((vuln, index) => {
+        const vulnDiv = document.createElement("div");
+        vulnDiv.classList.add("rule");
+        vulnDiv.innerHTML = `
+          <span>${vuln.description}</span>
+          <select id="vuln-${index}">
+            <option value="">Select Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        `;
+        vulnElement.appendChild(vulnDiv);
+      });
+      console.log("Vulnerability priorities loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".vulnerability-priorities select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadEnc() {
+      encElement.innerHTML = "";
+      encryptionStandards.forEach((standard, index) => {
+        const standardDiv = document.createElement("div");
+        standardDiv.classList.add("rule");
+        standardDiv.innerHTML = `
+          <span>${standard.description}</span>
+          <select id="enc-${index}">
+            <option value="">Select Standard</option>
+            <option value="PGP">PGP</option>
+            <option value="AES-256">AES-256</option>
+            <option value="TLS">TLS</option>
+          </select>
+        `;
+        encElement.appendChild(standardDiv);
+      });
+      console.log("Encryption standards loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".encryption-standards select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
+    function loadPhishing() {
+      phishingElement.innerHTML = "";
+      phishingControls.forEach((control, index) => {
+        const controlDiv = document.createElement("div");
+        controlDiv.classList.add("rule");
+        controlDiv.innerHTML = `
+          <span>${control.description}</span>
+          <select id="phish-${index}">
+            <option value="">Select Control</option>
+            <option value="Enable">Enable</option>
+            <option value="Conduct">Conduct</option>
+            <option value="Block">Block</option>
+          </select>
+        `;
+        phishingElement.appendChild(controlDiv);
+      });
+      console.log("Phishing controls loaded, Next button visible but disabled");
+      const selects = document.querySelectorAll(".phishing-controls select");
+      selects.forEach(select => {
+        select.addEventListener("change", checkAllSelected);
+        select.addEventListener("touchstart", checkAllSelected);
+      });
+      checkAllSelected();
+    }
+
     function checkAllRules() {
-      let allCorrect = true;
+      let correct = 0;
       let allAnswered = true;
       let feedbackMessages = [];
 
@@ -352,27 +707,27 @@
           feedbackMessages.push(`Please select an action for ${rule.description}.`);
           select.parentElement.style.borderColor = "red";
           allAnswered = false;
-          allCorrect = false;
         } else if (selectedAction === rule.correctAction) {
           feedbackMessages.push(`✅ Correct: ${rule.description} is ${rule.correctAction}.`);
           select.parentElement.style.borderColor = "#00FF00";
+          correct++;
         } else {
           feedbackMessages.push(`❌ Incorrect: ${rule.description} should be ${rule.correctAction}.`);
           select.parentElement.style.borderColor = "red";
-          allCorrect = false;
         }
       });
 
+      correctAnswers += correct;
+      incorrectAnswers += (5 - correct); // 5 items per PBQ
       feedbackElement.innerHTML = feedbackMessages.join("<br>");
       submitButton.disabled = true;
-      clearButton.disabled = false;
 
       if (allAnswered) {
-        if (allCorrect) {
+        if (correct === 5) {
           feedbackElement.innerHTML = "All rules correct! Firewall setup complete.";
           console.log("All rules correct, enabling Next button");
         } else {
-          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
           console.log("Some rules incorrect, enabling Next button");
         }
         nextButton.disabled = false;
@@ -382,7 +737,7 @@
     }
 
     function checkAllScenarios() {
-      let allCorrect = true;
+      let correct = 0;
       let allAnswered = true;
       let feedbackMessages = [];
 
@@ -402,27 +757,27 @@
           feedbackMessages.push(`Please select a threat actor for "${scenario.description}".`);
           select.parentElement.style.borderColor = "red";
           allAnswered = false;
-          allCorrect = false;
         } else if (selectedActor === scenario.correctActor) {
           feedbackMessages.push(`✅ Correct: "${scenario.description}" is a ${scenario.correctActor}.`);
           select.parentElement.style.borderColor = "#00FF00";
+          correct++;
         } else {
           feedbackMessages.push(`❌ Incorrect: "${scenario.description}" is a ${scenario.correctActor}.`);
           select.parentElement.style.borderColor = "red";
-          allCorrect = false;
         }
       });
 
+      correctAnswers += correct;
+      incorrectAnswers += (5 - correct); // 5 items per PBQ
       feedbackElement.innerHTML = feedbackMessages.join("<br>");
       submitButton.disabled = true;
-      clearButton.disabled = false;
 
       if (allAnswered) {
-        if (allCorrect) {
+        if (correct === 5) {
           feedbackElement.innerHTML = "All threat actors correct! Analysis complete.";
           console.log("All scenarios correct, enabling Next button");
         } else {
-          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
           console.log("Some scenarios incorrect, enabling Next button");
         }
         nextButton.disabled = false;
@@ -432,7 +787,7 @@
     }
 
     function checkAllLogs() {
-      let allCorrect = true;
+      let correct = 0;
       let allAnswered = true;
       let feedbackMessages = [];
 
@@ -452,36 +807,394 @@
           feedbackMessages.push(`Please select an incident for "${log.description}".`);
           select.parentElement.style.borderColor = "red";
           allAnswered = false;
-          allCorrect = false;
         } else if (selectedIncident === log.correctIncident) {
           feedbackMessages.push(`✅ Correct: "${log.description}" is a ${log.correctIncident}.`);
           select.parentElement.style.borderColor = "#00FF00";
+          correct++;
         } else {
           feedbackMessages.push(`❌ Incorrect: "${log.description}" is a ${log.correctIncident}.`);
           select.parentElement.style.borderColor = "red";
-          allCorrect = false;
         }
       });
 
+      correctAnswers += correct;
+      incorrectAnswers += (5 - correct); // 5 items per PBQ
       feedbackElement.innerHTML = feedbackMessages.join("<br>");
       submitButton.disabled = true;
-      clearButton.disabled = false;
 
       if (allAnswered) {
-        if (allCorrect) {
+        if (correct === 5) {
           feedbackElement.innerHTML = "All incidents correct! Log analysis complete.";
-          console.log("All logs correct, hiding Next button");
+          console.log("All logs correct");
         } else {
-          feedbackElement.innerHTML = feedbackMessages.join("<br>") + "<br>Clear to try again or Next to proceed.";
-          console.log("Some logs incorrect, hiding Next button");
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some logs incorrect");
         }
-        nextButton.classList.add("hidden");
+        if (currentPBQ === 10) {
+          showFinalScore();
+        } else {
+          nextButton.disabled = false;
+        }
       } else {
-        console.log("Not all logs answered, Next button remains disabled");
+        console.log("Not all logs answered");
       }
     }
 
-    function clearPBQ() {
+    function checkAllZeroTrust() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking zero trust policies...");
+      zeroTrustPolicies.forEach((policy, index) => {
+        const select = document.getElementById(`zt-${index}`);
+        if (!select) {
+          console.error(`Select element zt-${index} not found`);
+          return;
+        }
+        const selectedPolicy = select.value;
+        console.log(`Policy ${index}: ${policy.description}, Selected: ${selectedPolicy}, Correct: ${policy.correctPolicy}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedPolicy === "") {
+          feedbackMessages.push(`Please select a policy for ${policy.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedPolicy === policy.correctPolicy) {
+          feedbackMessages.push(`✅ Correct: ${policy.description} is ${policy.correctPolicy}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${policy.description} should be ${policy.correctPolicy}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All zero trust policies correct! Configuration complete.";
+          console.log("All policies correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some policies incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all policies answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllIoT() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking IoT security...");
+      iotSecurity.forEach((security, index) => {
+        const select = document.getElementById(`iot-${index}`);
+        if (!select) {
+          console.error(`Select element iot-${index} not found`);
+          return;
+        }
+        const selectedSecurity = select.value;
+        console.log(`Security ${index}: ${security.description}, Selected: ${selectedSecurity}, Correct: ${security.correctSecurity}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedSecurity === "") {
+          feedbackMessages.push(`Please select a security measure for ${security.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedSecurity === security.correctSecurity) {
+          feedbackMessages.push(`✅ Correct: ${security.description} is ${security.correctSecurity}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${security.description} should be ${security.correctSecurity}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All IoT security measures correct! Setup complete.";
+          console.log("All measures correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some measures incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all measures answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllCloud() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking cloud configurations...");
+      cloudConfig.forEach((config, index) => {
+        const select = document.getElementById(`cloud-${index}`);
+        if (!select) {
+          console.error(`Select element cloud-${index} not found`);
+          return;
+        }
+        const selectedConfig = select.value;
+        console.log(`Config ${index}: ${config.description}, Selected: ${selectedConfig}, Correct: ${config.correctConfig}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedConfig === "") {
+          feedbackMessages.push(`Please select a configuration for ${config.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedConfig === config.correctConfig) {
+          feedbackMessages.push(`✅ Correct: ${config.description} is ${config.correctConfig}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${config.description} should be ${config.correctConfig}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All cloud configurations correct! Mitigation complete.";
+          console.log("All configs correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some configs incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all configs answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllIncident() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking incident response order...");
+      incidentResponseSteps.forEach((step, index) => {
+        const select = document.getElementById(`ir-${index}`);
+        if (!select) {
+          console.error(`Select element ir-${index} not found`);
+          return;
+        }
+        const selectedOrder = select.value;
+        console.log(`Step ${index}: ${step.description}, Selected: ${selectedOrder}, Correct: ${step.correctOrder}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedOrder === "") {
+          feedbackMessages.push(`Please select an order for ${step.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedOrder == step.correctOrder) {
+          feedbackMessages.push(`✅ Correct: ${step.description} is step ${step.correctOrder}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${step.description} should be step ${step.correctOrder}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (5 - correct); // 5 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 5) {
+          feedbackElement.innerHTML = "All incident response steps correct! Process complete.";
+          console.log("All steps correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some steps incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all steps answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllVuln() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking vulnerability priorities...");
+      vulnerabilityPriorities.forEach((vuln, index) => {
+        const select = document.getElementById(`vuln-${index}`);
+        if (!select) {
+          console.error(`Select element vuln-${index} not found`);
+          return;
+        }
+        const selectedPriority = select.value;
+        console.log(`Vuln ${index}: ${vuln.description}, Selected: ${selectedPriority}, Correct: ${vuln.correctPriority}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedPriority === "") {
+          feedbackMessages.push(`Please select a priority for ${vuln.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedPriority === vuln.correctPriority) {
+          feedbackMessages.push(`✅ Correct: ${vuln.description} is ${vuln.correctPriority} priority.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${vuln.description} should be ${vuln.correctPriority} priority.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All vulnerability priorities correct! Patching plan complete.";
+          console.log("All priorities correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some priorities incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all priorities answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllEnc() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking encryption standards...");
+      encryptionStandards.forEach((standard, index) => {
+        const select = document.getElementById(`enc-${index}`);
+        if (!select) {
+          console.error(`Select element enc-${index} not found`);
+          return;
+        }
+        const selectedStandard = select.value;
+        console.log(`Standard ${index}: ${standard.description}, Selected: ${selectedStandard}, Correct: ${standard.correctStandard}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedStandard === "") {
+          feedbackMessages.push(`Please select a standard for ${standard.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedStandard === standard.correctStandard) {
+          feedbackMessages.push(`✅ Correct: ${standard.description} uses ${standard.correctStandard}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${standard.description} should use ${standard.correctStandard}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All encryption standards correct! Configuration complete.";
+          console.log("All standards correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some standards incorrect, enabling Next button");
+        }
+        nextButton.disabled = false;
+      } else {
+        console.log("Not all standards answered, Next button remains disabled");
+      }
+    }
+
+    function checkAllPhishing() {
+      let correct = 0;
+      let allAnswered = true;
+      let feedbackMessages = [];
+
+      console.log("Checking phishing controls...");
+      phishingControls.forEach((control, index) => {
+        const select = document.getElementById(`phish-${index}`);
+        if (!select) {
+          console.error(`Select element phish-${index} not found`);
+          return;
+        }
+        const selectedControl = select.value;
+        console.log(`Control ${index}: ${control.description}, Selected: ${selectedControl}, Correct: ${control.correctControl}`);
+        select.disabled = true;
+        select.parentElement.classList.add("disabled");
+
+        if (selectedControl === "") {
+          feedbackMessages.push(`Please select a control for ${control.description}.`);
+          select.parentElement.style.borderColor = "red";
+          allAnswered = false;
+        } else if (selectedControl === control.correctControl) {
+          feedbackMessages.push(`✅ Correct: ${control.description} is ${control.correctControl}.`);
+          select.parentElement.style.borderColor = "#00FF00";
+          correct++;
+        } else {
+          feedbackMessages.push(`❌ Incorrect: ${control.description} should be ${control.correctControl}.`);
+          select.parentElement.style.borderColor = "red";
+        }
+      });
+
+      correctAnswers += correct;
+      incorrectAnswers += (3 - correct); // 3 items per PBQ
+      feedbackElement.innerHTML = feedbackMessages.join("<br>");
+      submitButton.disabled = true;
+
+      if (allAnswered) {
+        if (correct === 3) {
+          feedbackElement.innerHTML = "All phishing controls correct! Mitigation complete.";
+          console.log("All controls correct, enabling Next button");
+        } else {
+          feedbackElement.innerHTML = feedbackMessages.join("<br>");
+          console.log("Some controls incorrect, enabling Next button");
+        }
+        if (currentPBQ === 10) {
+          showFinalScore();
+        } else {
+          nextButton.disabled = false;
+        }
+      } else {
+        console.log("Not all controls answered, Next button remains disabled");
+      }
+    }
+
+    function resetPBQ() {
       feedbackElement.innerHTML = "";
       submitButton.disabled = true;
       nextButton.disabled = true;
@@ -490,36 +1203,91 @@
         ? Array.from(document.querySelectorAll(".firewall-rules select"))
         : currentPBQ === 2
         ? Array.from(document.querySelectorAll(".threat-scenarios select"))
-        : Array.from(document.querySelectorAll(".log-entries select"));
+        : currentPBQ === 3
+        ? Array.from(document.querySelectorAll(".log-entries select"))
+        : currentPBQ === 4
+        ? Array.from(document.querySelectorAll(".zero-trust-policies select"))
+        : currentPBQ === 5
+        ? Array.from(document.querySelectorAll(".iot-security select"))
+        : currentPBQ === 6
+        ? Array.from(document.querySelectorAll(".cloud-config select"))
+        : currentPBQ === 7
+        ? Array.from(document.querySelectorAll(".incident-response select"))
+        : currentPBQ === 8
+        ? Array.from(document.querySelectorAll(".vulnerability-priorities select"))
+        : currentPBQ === 9
+        ? Array.from(document.querySelectorAll(".encryption-standards select"))
+        : Array.from(document.querySelectorAll(".phishing-controls select"));
       selectElements.forEach(select => {
         select.value = "";
         select.disabled = false;
         select.parentElement.classList.remove("disabled");
         select.parentElement.style.borderColor = "#00FF00";
       });
-      console.log(`Cleared PBQ ${currentPBQ}, reloading content`);
+      console.log(`Reset PBQ ${currentPBQ}, reloading content`);
       if (currentPBQ === 1) {
         loadRules();
       } else if (currentPBQ === 2) {
         loadScenarios();
-      } else {
+      } else if (currentPBQ === 3) {
         loadLogs();
+      } else if (currentPBQ === 4) {
+        loadZeroTrust();
+      } else if (currentPBQ === 5) {
+        loadIoT();
+      } else if (currentPBQ === 6) {
+        loadCloud();
+      } else if (currentPBQ === 7) {
+        loadIncident();
+      } else if (currentPBQ === 8) {
+        loadVuln();
+      } else if (currentPBQ === 9) {
+        loadEnc();
+      } else {
+        loadPhishing();
       }
     }
 
-    function resetPBQ() {
-      feedbackElement.innerHTML = "";
+    function showFinalScore() {
+      pbq1.classList.add("hidden");
+      pbq2.classList.add("hidden");
+      pbq3.classList.add("hidden");
+      pbq4.classList.add("hidden");
+      pbq5.classList.add("hidden");
+      pbq6.classList.add("hidden");
+      pbq7.classList.add("hidden");
+      pbq8.classList.add("hidden");
+      pbq9.classList.add("hidden");
+      pbq10.classList.add("hidden");
+      buttonsDiv.classList.add("hidden");
+      feedbackElement.textContent = "";
+      document.querySelector(".pbq-scenario").textContent = "Quiz Complete!";
+      scoreElement.textContent = `You got ${correctAnswers} correct, You got ${incorrectAnswers} wrong`;
+      restartBtn.style.display = "block";
+    }
+
+    function restartQuiz() {
+      currentPBQ = 1;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      pbq1.classList.remove("hidden");
+      pbq2.classList.add("hidden");
+      pbq3.classList.add("hidden");
+      pbq4.classList.add("hidden");
+      pbq5.classList.add("hidden");
+      pbq6.classList.add("hidden");
+      pbq7.classList.add("hidden");
+      pbq8.classList.add("hidden");
+      pbq9.classList.add("hidden");
+      pbq10.classList.add("hidden");
+      buttonsDiv.classList.remove("hidden");
+      document.querySelector(".pbq-scenario").textContent = "Configure the firewall to secure the network:";
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      restartBtn.style.display = "none";
       submitButton.disabled = true;
-      clearButton.disabled = false;
       nextButton.disabled = true;
-      nextButton.classList.remove("hidden");
-      if (currentPBQ === 1) {
-        loadRules();
-      } else if (currentPBQ === 2) {
-        loadScenarios();
-      } else {
-        loadLogs();
-      }
+      loadRules();
     }
 
     submitButton.addEventListener("click", () => {
@@ -527,8 +1295,22 @@
         checkAllRules();
       } else if (currentPBQ === 2) {
         checkAllScenarios();
-      } else {
+      } else if (currentPBQ === 3) {
         checkAllLogs();
+      } else if (currentPBQ === 4) {
+        checkAllZeroTrust();
+      } else if (currentPBQ === 5) {
+        checkAllIoT();
+      } else if (currentPBQ === 6) {
+        checkAllCloud();
+      } else if (currentPBQ === 7) {
+        checkAllIncident();
+      } else if (currentPBQ === 8) {
+        checkAllVuln();
+      } else if (currentPBQ === 9) {
+        checkAllEnc();
+      } else {
+        checkAllPhishing();
       }
     });
 
@@ -538,15 +1320,23 @@
         checkAllRules();
       } else if (currentPBQ === 2) {
         checkAllScenarios();
-      } else {
+      } else if (currentPBQ === 3) {
         checkAllLogs();
+      } else if (currentPBQ === 4) {
+        checkAllZeroTrust();
+      } else if (currentPBQ === 5) {
+        checkAllIoT();
+      } else if (currentPBQ === 6) {
+        checkAllCloud();
+      } else if (currentPBQ === 7) {
+        checkAllIncident();
+      } else if (currentPBQ === 8) {
+        checkAllVuln();
+      } else if (currentPBQ === 9) {
+        checkAllEnc();
+      } else {
+        checkAllPhishing();
       }
-    });
-
-    clearButton.addEventListener("click", clearPBQ);
-    clearButton.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      clearPBQ();
     });
 
     nextButton.addEventListener("click", () => {
@@ -562,6 +1352,48 @@
         currentPBQ = 3;
         resetPBQ();
         console.log("Switched to PBQ 3, Next button visible but disabled");
+      } else if (currentPBQ === 3) {
+        pbq3.classList.add("hidden");
+        pbq4.classList.remove("hidden");
+        currentPBQ = 4;
+        resetPBQ();
+        console.log("Switched to PBQ 4, Next button visible but disabled");
+      } else if (currentPBQ === 4) {
+        pbq4.classList.add("hidden");
+        pbq5.classList.remove("hidden");
+        currentPBQ = 5;
+        resetPBQ();
+        console.log("Switched to PBQ 5, Next button visible but disabled");
+      } else if (currentPBQ === 5) {
+        pbq5.classList.add("hidden");
+        pbq6.classList.remove("hidden");
+        currentPBQ = 6;
+        resetPBQ();
+        console.log("Switched to PBQ 6, Next button visible but disabled");
+      } else if (currentPBQ === 6) {
+        pbq6.classList.add("hidden");
+        pbq7.classList.remove("hidden");
+        currentPBQ = 7;
+        resetPBQ();
+        console.log("Switched to PBQ 7, Next button visible but disabled");
+      } else if (currentPBQ === 7) {
+        pbq7.classList.add("hidden");
+        pbq8.classList.remove("hidden");
+        currentPBQ = 8;
+        resetPBQ();
+        console.log("Switched to PBQ 8, Next button visible but disabled");
+      } else if (currentPBQ === 8) {
+        pbq8.classList.add("hidden");
+        pbq9.classList.remove("hidden");
+        currentPBQ = 9;
+        resetPBQ();
+        console.log("Switched to PBQ 9, Next button visible but disabled");
+      } else if (currentPBQ === 9) {
+        pbq9.classList.add("hidden");
+        pbq10.classList.remove("hidden");
+        currentPBQ = 10;
+        resetPBQ();
+        console.log("Switched to PBQ 10, Next button visible but disabled");
       }
     });
 
@@ -579,8 +1411,52 @@
         currentPBQ = 3;
         resetPBQ();
         console.log("Switched to PBQ 3, Next button visible but disabled");
+      } else if (currentPBQ === 3) {
+        pbq3.classList.add("hidden");
+        pbq4.classList.remove("hidden");
+        currentPBQ = 4;
+        resetPBQ();
+        console.log("Switched to PBQ 4, Next button visible but disabled");
+      } else if (currentPBQ === 4) {
+        pbq4.classList.add("hidden");
+        pbq5.classList.remove("hidden");
+        currentPBQ = 5;
+        resetPBQ();
+        console.log("Switched to PBQ 5, Next button visible but disabled");
+      } else if (currentPBQ === 5) {
+        pbq5.classList.add("hidden");
+        pbq6.classList.remove("hidden");
+        currentPBQ = 6;
+        resetPBQ();
+        console.log("Switched to PBQ 6, Next button visible but disabled");
+      } else if (currentPBQ === 6) {
+        pbq6.classList.add("hidden");
+        pbq7.classList.remove("hidden");
+        currentPBQ = 7;
+        resetPBQ();
+        console.log("Switched to PBQ 7, Next button visible but disabled");
+      } else if (currentPBQ === 7) {
+        pbq7.classList.add("hidden");
+        pbq8.classList.remove("hidden");
+        currentPBQ = 8;
+        resetPBQ();
+        console.log("Switched to PBQ 8, Next button visible but disabled");
+      } else if (currentPBQ === 8) {
+        pbq8.classList.add("hidden");
+        pbq9.classList.remove("hidden");
+        currentPBQ = 9;
+        resetPBQ();
+        console.log("Switched to PBQ 9, Next button visible but disabled");
+      } else if (currentPBQ === 9) {
+        pbq9.classList.add("hidden");
+        pbq10.classList.remove("hidden");
+        currentPBQ = 10;
+        resetPBQ();
+        console.log("Switched to PBQ 10, Next button visible but disabled");
       }
     });
+
+    restartBtn.addEventListener("click", restartQuiz);
 
     loadRules();
   </script>

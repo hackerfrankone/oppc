@@ -213,28 +213,25 @@
       </form>
     </div>
 
-    <!-- Discord Button (locked by default) -->
-    <a id="discordButton" class="circle-button" href="#" onclick="alert('Unlock full access to get Discord access too!')" style="opacity: 0.4; pointer-events: none;">Discord</a>
+    <!-- Discord Button -->
+    <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
   <script>
     function unlockContent() {
-      if (localStorage.getItem('unlocked') === 'paid-v2') {
+      if (localStorage.getItem('unlocked') === 'paid') {
         // Unlock all locked links
         document.querySelectorAll('a.locked').forEach(link => {
           link.textContent = link.textContent.replace(' 🔒', '');
           link.href = link.getAttribute('data-url');
-          link.onclick = null;
-          link.style.cursor = 'pointer';
+          link.classList.remove('locked');
         });
 
         // Enable Discord button
         const discordBtn = document.getElementById('discordButton');
         if (discordBtn) {
-          discordBtn.href = 'https://discord.gg/NXE4gU8nVe';
           discordBtn.style.opacity = '1';
           discordBtn.style.pointerEvents = 'auto';
-          discordBtn.onclick = null;
         }
 
         // Hide PayPal purchase container

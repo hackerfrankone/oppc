@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <title>Home</title>
 
+  <!-- gate-keep: send non-paid users back -->
   <script>
-    console.log('Unlock flag on home.html:', localStorage.getItem('unlocked'));
-    if (localStorage.getItem('unlocked') !== 'paid-v2') {
-      // If not unlocked, go back to index
-      window.location.href = '../index.html';
+    console.log("Unlock flag on home.html:", localStorage.getItem("unlocked"));
+    if (localStorage.getItem("unlocked") !== "paid-v2") {
+      window.location.href = "/index.html";   /* absolute path is safest */
     }
   </script>
 
@@ -21,24 +21,20 @@
       padding: 50px;
       margin: 0;
     }
-    button {
-      background-color: #0f0;
+    .btn {
+      display: inline-block;
+      margin: 40px auto;
+      padding: 15px 40px;
+      background: #0f0;
       color: #000;
-      border: none;
-      padding: 15px 30px;
-      margin: 20px auto;
       font-weight: bold;
-      cursor: pointer;
-      border-radius: 8px;
       font-family: monospace;
       font-size: 1.2rem;
-      display: block;
-      width: 200px;
-      transition: background-color 0.3s ease;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.25s ease;
     }
-    button:hover {
-      background-color: #0c0;
-    }
+    .btn:hover { background: #0c0; }
   </style>
 </head>
 
@@ -46,8 +42,7 @@
   <h1>Welcome to your Study Guides</h1>
   <p>You have unlocked full access. Ready to start?</p>
 
-  <button onclick="window.location.href='../index.html'">
-    Start Studying
-  </button>
+  <!-- anchor acts like a button, guaranteed to navigate -->
+  <a href="/index.html" class="btn">Start Studying</a>
 </body>
 </html>

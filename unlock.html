@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Unlocking content...</title>
+
+  <!-- Add this first -->
+  <script>
+    if (location.hostname === 'www.oppc.us') {
+      location.replace('https://oppc.us' + location.pathname);
+    }
+  </script>
+
+  <!-- Then your existing onload script -->
   <script>
     window.onload = function() {
       // Set unlock flag in localStorage
@@ -14,6 +21,7 @@
       }, 2000);
     }
   </script>
+
   <style>
     body {
       background-color: #000;
@@ -24,8 +32,3 @@
     }
   </style>
 </head>
-<body>
-  <h1>Thank you for your purchase!</h1>
-  <p>Unlocking content now... Redirecting you to your study guides.</p>
-</body>
-</html>

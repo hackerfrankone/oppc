@@ -195,7 +195,7 @@
     <div class="score" id="score"></div>
   </div>
 
-<script>
+  <script>
     const questions = [
       {
         question: "Which device is used to connect multiple network segments?",
@@ -724,7 +724,7 @@
     // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
-      questionElement.textContent = q.question;
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
       choicesElement.innerHTML = "";
@@ -775,7 +775,7 @@
           questionElement.textContent = "Quiz Complete!";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
-          scoreElement.textContent = `You got ${correctAnswers} correct, You got ${incorrectAnswers} wrong`;
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
           restartButton.style.display = "block";
         }
       }, 5000);

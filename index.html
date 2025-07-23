@@ -135,59 +135,44 @@
       line-height: 1.25rem;
       cursor: pointer;
     }
-    /* Popup Styles */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #000;
-      color: #00FF00;
-      border: 3px solid #00FF00;
-      border-radius: 8px;
-      padding: 20px;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00FF00;
-      z-index: 10002;
-      text-align: center;
-    }
-    .popup button {
-      background-color: #FFD140;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .popup button:hover {
-      background-color: #e6b800;
-    }
   </style>
 </head>
 <body>
 
+  <!-- Live Students Counter -->
+  <div id="live-counter" style="
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #000;
+    color: #00FF00;
+    font-family: monospace;
+    font-size: 1rem;
+    border: 1px solid #00FF00;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #00FF00;
+    z-index: 9999;
+  ">
+    Students Studying Live | <span id="studentCount">6</span>
+  </div>
+
   <h1>OverPowered StudyGuides</h1>
 
-  <div class="highlight-message" id="noSignUpMessage">
+  <div class="highlight-message">
     NO sign up | NO ads | NO cookies | NO BS 
   </div>
-  
+
+  <div class="confidence-message">
+    Don't worry about scoring | Focus on understanding the material
+  </div>
+
   <div class="details-message">
-    600+ multiple choice questions | 100+ PBQs | Terminal Simulator
+    500+ multiple choice questions | 100+ PBQs | Terminal Simulator
   </div>
 
-  <div class="upgrade-message" id="oneTimeMessage">
+  <div class="upgrade-message">
     Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
-  </div>
-
-  <!-- Popup for cache message -->
-  <div id="cachePopup" class="popup">
-    <p>*Don't delete oppc.us cache*</p>
-    <button onclick="closePopup()">OK</button>
   </div>
 
   <!-- CompTIA Group -->
@@ -253,53 +238,41 @@
   <script>
     function unlockContent() {
       if (localStorage.getItem('unlocked') === 'paid') {
-        // Unlock all locked links
         document.querySelectorAll('a.locked').forEach(link => {
           link.textContent = link.textContent.replace(' 🔒', '');
           link.href = link.getAttribute('data-url');
           link.classList.remove('locked');
         });
 
-        // Enable Discord button
         const discordBtn = document.getElementById('discordButton');
         if (discordBtn) {
           discordBtn.style.opacity = '1';
           discordBtn.style.pointerEvents = 'auto';
         }
 
-        // Hide PayPal purchase container
         const paypalDiv = document.getElementById('paypalContainer');
         if (paypalDiv) {
           paypalDiv.style.display = 'none';
         }
-
-        // Hide promotional messages
-        const noSignUpMessage = document.getElementById('noSignUpMessage');
-        if (noSignUpMessage) {
-          noSignUpMessage.style.display = 'none';
-        }
-        const oneTimeMessage = document.getElementById('oneTimeMessage');
-        if (oneTimeMessage) {
-          oneTimeMessage.style.display = 'none';
-        }
-
-        // Show popup if not already shown
-        if (!localStorage.getItem('cachePopupShown')) {
-          const popup = document.getElementById('cachePopup');
-          if (popup) {
-            popup.style.display = 'block';
-            localStorage.setItem('cachePopupShown', 'true');
-          }
-        }
       }
     }
 
-    function closePopup() {
-      const popup = document.getElementById('cachePopup');
-      if (popup) {
-        popup.style.display = 'none';
+    // Simulate "students studying live" fluctuation
+    (function () {
+      let currentCount = 14;
+
+      function updateLiveCount() {
+        const change = Math.floor(Math.random() * 4) - 1; // -1 to +2
+        currentCount = Math.max(3, currentCount + change); // Keep at least 3
+        document.getElementById("studentCount").textContent = currentCount;
       }
-    }
+
+      setInterval(updateLiveCount, 300000); // every 5 minutes
+
+      for (let i = 1; i <= 4; i++) {
+        setTimeout(updateLiveCount, i * 30000); // simulate early movement every 30s
+      }
+    })();
 
     window.onload = unlockContent;
   </script>

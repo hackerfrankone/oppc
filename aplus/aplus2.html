@@ -5,7 +5,7 @@
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>CompTIA A+ Core 2 Quiz</title>
+  <title>CompTIA A+ Core 2 (220-1102) Quiz</title>
   <style>
     * {
       box-sizing: border-box;
@@ -71,10 +71,6 @@
       max-width: 600px;
       text-align: left;
       font-size: clamp(0.9rem, 3vw, 1rem);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 60vh;
     }
 
     .question {
@@ -87,16 +83,6 @@
       padding-right: 0.5rem;
       scrollbar-width: thin;
       scrollbar-color: #00FF00 transparent;
-    }
-
-    .question.quiz-complete {
-      font-size: clamp(1.2rem, 4vw, 1.5rem);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      width: 100%;
-      margin: 0;
     }
 
     .question::-webkit-scrollbar {
@@ -130,6 +116,7 @@
       transition: background-color 0.3s, color 0.3s;
       user-select: none;
       text-align: left;
+      word-wrap: break-word;
       line-height: 1.3;
       min-height: 3rem;
       display: flex;
@@ -198,7 +185,7 @@
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq2.html" class="pbq-button">PBQ</a>
+  <a href="pbq.html" class="pbq-button">PBQ</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -208,510 +195,371 @@
     <div class="score" id="score"></div>
   </div>
 
-<script>
-const questions = [
-  {
-    question: "Which tool is used to edit Group Policy settings on a Windows system?",
-    choices: ["gpedit.msc", "msconfig", "cmd", "taskmgr"],
-    answer: "gpedit.msc"
-  },
-  {
-    question: "What is the purpose of the Windows Registry?",
-    choices: ["Store user files", "Manage network connections", "Store system configuration settings", "Encrypt the file system"],
-    answer: "Store system configuration settings"
-  },
-  {
-    question: "Which file system provides file permissions and encryption in Windows?",
-    choices: ["FAT32", "exFAT", "NTFS", "EXT4"],
-    answer: "NTFS"
-  },
-  {
-    question: "What command shows all active network connections on a Windows machine?",
-    choices: ["ipconfig", "ping", "tracert", "netstat"],
-    answer: "netstat"
-  },
-  {
-    question: "Which utility is used to manage startup programs in Windows 10?",
-    choices: ["msconfig", "taskmgr", "control panel", "regedit"],
-    answer: "taskmgr"
-  },
-  {
-    question: "What is the main advantage of using Windows BitLocker?",
-    choices: ["Faster boot times", "Cloud synchronization", "Full disk encryption", "Improved task scheduling"],
-    answer: "Full disk encryption"
-  },
-  {
-    question: "What is the minimum RAM requirement for a 64-bit installation of Windows 10?",
-    choices: ["1 GB", "2 GB", "4 GB", "8 GB"],
-    answer: "2 GB"
-  },
-  {
-    question: "Which file extension indicates a Windows system restore point?",
-    choices: [".bak", ".iso", ".vhd", ".sys"],
-    answer: ".vhd"
-  },
-  {
-    question: "What is the maximum file size supported by FAT32?",
-    choices: ["2 GB", "4 GB", "16 GB", "No limit"],
-    answer: "4 GB"
-  },
-  {
-    question: "Which Windows feature helps prevent unauthorized changes to the OS?",
-    choices: ["UAC", "NTFS", "Defender", "Task Manager"],
-    answer: "UAC"
-  },
-  {
-    question: "Which command is used to scan system files and repair corrupt ones?",
-    choices: ["chkdsk", "ipconfig", "sfc /scannow", "msconfig"],
-    answer: "sfc /scannow"
-  },
-  {
-    question: "What component manages user logins in Windows?",
-    choices: ["Explorer", "Registry", "LSASS", "Winlogon"],
-    answer: "LSASS"
-  },
-  {
-    question: "Which malware type pretends to be legitimate software?",
-    choices: ["Worm", "Trojan", "Rootkit", "Spyware"],
-    answer: "Trojan"
-  },
-  {
-    question: "What type of account has the highest level of control on a Windows machine?",
-    choices: ["Guest", "Standard", "Administrator", "Power User"],
-    answer: "Administrator"
-  },
-  {
-    question: "Which Windows tool allows you to schedule automated tasks?",
-    choices: ["Event Viewer", "Task Scheduler", "MSConfig", "Services.msc"],
-    answer: "Task Scheduler"
-  },
-  {
-    question: "Which of the following allows Windows to run older applications?",
-    choices: ["BitLocker", "VirtualBox", "Compatibility mode", "Windows Defender"],
-    answer: "Compatibility mode"
-  },
-  {
-    question: "Which backup method captures all data regardless of previous backups?",
-    choices: ["Incremental", "Differential", "Full", "Partial"],
-    answer: "Full"
-  },
-  {
-    question: "What is the default port for HTTPS?",
-    choices: ["80", "21", "443", "23"],
-    answer: "443"
-  },
-  {
-    question: "Which mobile device setting prevents all radio communications?",
-    choices: ["Wi-Fi mode", "Low-power mode", "Airplane mode", "Data saver"],
-    answer: "Airplane mode"
-  },
-  {
-    question: "What is the function of a VPN?",
-    choices: ["Block malware", "Secure internet traffic", "Speed up browsing", "Detect viruses"],
-    answer: "Secure internet traffic"
-  },
-  {
-    question: "What type of threat is ransomware?",
-    choices: ["Social engineering", "Denial of service", "Data exfiltration", "Crypto-malware"],
-    answer: "Crypto-malware"
-  },
-  {
-    question: "What feature helps locate a lost mobile device?",
-    choices: ["IMEI", "Factory reset", "Find My Device", "SIM lock"],
-    answer: "Find My Device"
-  },
-  {
-    question: "Which Windows feature creates a restore point automatically?",
-    choices: ["Windows Backup", "System Image", "System Protection", "BitLocker"],
-    answer: "System Protection"
-  },
-  {
-    question: "What is the purpose of EFS in Windows?",
-    choices: ["To encrypt individual files and folders", "To manage firewall rules", "To compress files", "To manage drivers"],
-    answer: "To encrypt individual files and folders"
-  },
-  {
-    question: "Which app helps remove unwanted programs in Windows?",
-    choices: ["Event Viewer", "Device Manager", "Programs and Features", "MSInfo32"],
-    answer: "Programs and Features"
-  },
-  {
-    question: "Which Windows update setting ensures critical patches are always applied?",
-    choices: ["Optional updates", "Driver updates", "Automatic updates", "Manual updates"],
-    answer: "Automatic updates"
-  },
-  {
-    question: "What utility shows all processes running on a system?",
-    choices: ["Task Manager", "Device Manager", "Disk Management", "Control Panel"],
-    answer: "Task Manager"
-  },
-  {
-    question: "What command displays IP configuration in Windows?",
-    choices: ["netstat", "ipconfig", "tracert", "nslookup"],
-    answer: "ipconfig"
-  },
-  {
-    question: "Which command is used to test DNS resolution?",
-    choices: ["ping", "ipconfig", "netstat", "nslookup"],
-    answer: "nslookup"
-  },
-  {
-    question: "Which permission allows viewing but not modifying a file?",
-    choices: ["Full Control", "Modify", "Read", "Write"],
-    answer: "Read"
-  },
-  {
-    question: "Which file is used to boot a Linux OS?",
-    choices: ["boot.ini", "initrd", "grub.cfg", "autoexec.bat"],
-    answer: "grub.cfg"
-  },
-  {
-    question: "Which of the following is NOT an example of social engineering?",
-    choices: ["Phishing", "Shoulder surfing", "Tailgating", "Keylogging"],
-    answer: "Keylogging"
-  },
-  {
-    question: "Where would you disable a service from starting in Windows?",
-    choices: ["Task Manager", "Services.msc", "Regedit", "Firewall"],
-    answer: "Services.msc"
-  },
-  {
-    question: "What Windows feature allows you to isolate apps in a container?",
-    choices: ["App Locker", "Windows Sandbox", "Hyper-V", "BitLocker"],
-    answer: "Windows Sandbox"
-  },
-  {
-    question: "Which mobile OS allows installation of APK files manually?",
-    choices: ["iOS", "Android", "Windows Phone", "BlackBerry OS"],
-    answer: "Android"
-  },
-  {
-    question: "What tool is used to edit the Windows boot configuration?",
-    choices: ["msconfig", "bcdedit", "regedit", "sfc"],
-    answer: "bcdedit"
-  },
-  {
-    question: "What does UEFI replace in modern PCs?",
-    choices: ["POST", "BIOS", "CMOS", "Firmware"],
-    answer: "BIOS"
-  },
-  {
-    question: "Where is the Windows pagefile typically stored?",
-    choices: ["\Program Files", "\System32", "\Windows", "C:\ (root directory)"],
-    answer: "C:\\ (root directory)"
-  },
-  {
-    question: "What command clears the DNS resolver cache?",
-    choices: ["ipconfig /flushdns", "nslookup clear", "arp -d", "netstat -r"],
-    answer: "ipconfig /flushdns"
-  },
-  {
-    question: "What Windows feature restores a system to an earlier state?",
-    choices: ["Backup and Restore", "System Restore", "Recovery Partition", "Disk Cleanup"],
-    answer: "System Restore"
-  },
-  {
-    question: "Which Linux command lists files in a directory?",
-    choices: ["cd", "ls", "pwd", "rm"],
-    answer: "ls"
-  },
-  {
-    question: "Which of the following improves laptop battery life?",
-    choices: ["Overclocking", "High brightness", "Airplane mode", "Full disk scan"],
-    answer: "Airplane mode"
-  },
-  {
-    question: "What setting allows you to roll back a Windows update?",
-    choices: ["System Restore", "Startup Repair", "Advanced Boot Options", "Recovery Options"],
-    answer: "Recovery Options"
-  },
-  {
-    question: "What command repairs disk errors in Windows?",
-    choices: ["sfc", "chkdsk", "netstat", "tracert"],
-    answer: "chkdsk"
-  },
-  {
-    question: "Which utility helps in freeing disk space in Windows?",
-    choices: ["Disk Cleanup", "Defrag", "CHKDSK", "Format"],
-    answer: "Disk Cleanup"
-  },
-  {
-    question: "What command shows the path packets take to a host?",
-    choices: ["ipconfig", "ping", "tracert", "arp"],
-    answer: "tracert"
-  },
-  {
-    question: "Which type of Windows account is best for temporary guests?",
-    choices: ["Local account", "Microsoft account", "Administrator", "Guest"],
-    answer: "Guest"
-  },
-  {
-    question: "Which technology allows biometric login on Windows 10?",
-    choices: ["Windows Security", "Windows Defender", "Windows Hello", "Microsoft Edge"],
-    answer: "Windows Hello"
-  },
-  {
-    question: "Which of these is used to restrict access to specific apps in Windows Pro?",
-    choices: ["BitLocker", "AppLocker", "Firewall", "UAC"],
-    answer: "AppLocker"
-},
-{
-    question: "Which Windows command displays the current directory path?",
-    choices: ["dir", "cd", "path", "pwd"],
-    answer: "cd"
-  },
-  {
-    question: "What is the purpose of the `chown` command in Linux?",
-    choices: ["Change file permissions", "Change file ownership", "Copy files", "Delete files"],
-    answer: "Change file ownership"
-  },
-  {
-    question: "Which Windows tool allows you to manage running services?",
-    choices: ["msinfo32", "compmgmt.msc", "dcomcnfg", "services.msc"],
-    answer: "services.msc"
-  },
-  {
-    question: "What is the default port for Remote Desktop Protocol (RDP)?",
-    choices: ["22", "3389", "445", "143"],
-    answer: "3389"
-  },
-  {
-    question: "Which Linux command displays real-time system resource usage?",
-    choices: ["ls", "df", "top", "ps"],
-    answer: "top"
-  },
-  {
-    question: "Which Windows tool allows you to roll back driver updates?",
-    choices: ["Device Manager", "Disk Management", "Performance Monitor", "Task Scheduler"],
-    answer: "Device Manager"
-  },
-  {
-    question: "What macOS utility is used to manage disk partitions?",
-    choices: ["Keychain Access", "Disk Utility", "Time Machine", "Activity Monitor"],
-    answer: "Disk Utility"
-  },
-  {
-    question: "What is the primary function of a network firewall?",
-    choices: ["Encrypt data", "Filter network traffic", "Manage backups", "Monitor CPU usage"],
-    answer: "Filter network traffic"
-  },
-  {
-    question: "Which Linux command changes file permissions?",
-    choices: ["chmod", "chown", "cp", "mv"],
-    answer: "chmod"
-  },
-  {
-    question: "What is the main purpose of Windows Defender?",
-    choices: ["System optimization", "Antivirus protection", "Disk defragmentation", "Network configuration"],
-    answer: "Antivirus protection"
-  },
-  {
-    question: "Which mobile OS uses the App Store for downloading applications?",
-    choices: ["Android", "iOS", "Windows Phone", "Ubuntu Touch"],
-    answer: "iOS"
-  },
-  {
-    question: "Which Windows command creates a new directory?",
-    choices: ["dir", "mkdir", "rmdir", "cd"],
-    answer: "mkdir"
-  },
-  {
-    question: "Which type of malware spreads without user interaction?",
-    choices: ["Trojan", "Worm", "Adware", "Spyware"],
-    answer: "Worm"
-  },
-  {
-    question: "What is the purpose of the `sudo` command in Linux?",
-    choices: ["List directory contents", "Run commands as an administrator", "Update software", "Shut down the system"],
-    answer: "Run commands as an administrator"
-  },
-  {
-    question: "Which Windows tool monitors system performance in real-time?",
-    choices: ["Event Viewer", "Performance Monitor", "Disk Management", "Resource Monitor"],
-    answer: "Performance Monitor"
-  },
-  {
-    question: "What is the default port for SSH in Linux?",
-    choices: ["21", "22", "80", "3389"],
-    answer: "22"
-  },
-  {
-    question: "Which Windows utility allows configuring automatic user login?",
-    choices: ["netplwiz", "lusrmgr.msc", "msconfig", "dcomcnfg"],
-    answer: "netplwiz"
-  },
-  {
-    question: "What is the purpose of a System Image in Windows?",
-    choices: ["Create a full system backup", "Encrypt files", "Manage user accounts", "Optimize disk space"],
-    answer: "Create a full system backup"
-  },
-  {
-    question: "Which Linux command displays disk space usage?",
-    choices: ["ls", "df", "du", "free"],
-    answer: "df"
-  },
-  {
-    question: "What is the purpose of two-factor authentication (2FA)?",
-    choices: ["Speed up login", "Add an extra layer of security", "Manage passwords", "Encrypt network traffic"],
-    answer: "Add an extra layer of security"
-  },
-  {
-    question: "Which Windows tool is used to defragment a hard drive?",
-    choices: ["Disk Cleanup", "Defragment and Optimize Drives", "Disk Management", "CHKDSK"],
-    answer: "Defragment and Optimize Drives"
-  },
-  {
-    question: "What is the function of the `grep` command in Linux?",
-    choices: ["Search text within files", "Search for files", "Copy files", "Delete directories"],
-    answer: "Search text within files"
-  },
-  {
-    question: "Which mobile OS feature synchronizes data with cloud services?",
-    choices: ["VPN", "iCloud/Google Sync", "Airplane mode", "Find My Device"],
-    answer: "iCloud/Google Sync"
-  },
-  {
-    question: "Which Windows command removes a directory?",
-    choices: ["mkdir", "rmdir", "del", "cd"],
-    answer: "rmdir"
-  },
-  {
-    question: "Which attack involves tricking users into revealing sensitive information?",
-    choices: ["Brute force", "Phishing", "SQL injection", "Man-in-the-middle"],
-    answer: "Phishing"
-  },
-  {
-    question: "Which macOS feature provides automatic file backups?",
-    choices: ["Spotlight", "Time Machine", "Disk Utility", "Keychain Access"],
-    answer: "Time Machine"
-  },
-  {
-    question: "What is the purpose of the Windows Event Viewer?",
-    choices: ["Manage user accounts", "View system logs", "Edit system files", "Schedule tasks"],
-    answer: "View system logs"
-  },
-  {
-    question: "Which Linux command updates the package list on Debian-based systems?",
-    choices: ["apt-get update", "yum install", "dnf update", "rpm -i"],
-    answer: "apt-get update"
-  },
-  {
-    question: "Which Windows feature restricts access to specific folders?",
-    choices: ["UAC", "NTFS permissions", "BitLocker", "AppLocker"],
-    answer: "NTFS permissions"
-  },
-  {
-    question: "Which mobile OS feature allows remote wiping of a lost device?",
-    choices: ["App Store", "VPN", "Find My Device", "Data Saver"],
-    answer: "Find My Device"
-  },
-  {
-    question: "What is the purpose of the `ping` command in Windows?",
-    choices: ["Test network connectivity", "Display network connections", "Trace packet routes", "Flush DNS cache"],
-    answer: "Test network connectivity"
-  },
-  {
-    question: "Which backup type saves files changed since the last full backup?",
-    choices: ["Incremental", "Differential", "Mirror", "Full"],
-    answer: "Incremental"
-  },
-  {
-    question: "Which Windows tool manages local users and groups?",
-    choices: ["lusrmgr.msc", "gpedit.msc", "msconfig", "compmgmt.msc"],
-    answer: "lusrmgr.msc"
-  },
-  {
-    question: "Which Linux command displays the current user’s ID and group information?",
-    choices: ["whoami", "id", "passwd", "su"],
-    answer: "id"
-  },
-  {
-    question: "What is the purpose of a proxy server?",
-    choices: ["Encrypt data", "Scan for malware", "Filter and forward network requests", "Manage DNS"],
-    answer: "Filter and forward network requests"
-  },
-  {
-    question: "Which Windows command repairs file system errors?",
-    choices: ["sfc /scannow", "chkdsk /f", "diskpart", "format"],
-    answer: "chkdsk /f"
-  },
-  {
-    question: "Which macOS tool monitors running processes?",
-    choices: ["Disk Utility", "Activity Monitor", "Time Machine", "Keychain Access"],
-    answer: "Activity Monitor"
-  },
-  {
-    question: "Which security practice involves regularly updating software?",
-    choices: ["Phishing prevention", "Patch management", "Firewall configuration", "Social engineering"],
-    answer: "Patch management"
-  },
-  {
-    question: "Which Windows command displays the routing table?",
-    choices: ["netstat -r", "ipconfig /all", "arp -a", "tracert"],
-    answer: "netstat -r"
-  },
-  {
-    question: "Which Linux command installs software on Debian-based systems?",
-    choices: ["yum install", "apt-get install", "rpm -i", "dnf install"],
-    answer: "apt-get install"
-  },
-  {
-    question: "What is the purpose of the Windows Recovery Environment (WinRE)?",
-    choices: ["Troubleshoot boot issues", "Manage backups", "Encrypt disks", "Schedule tasks"],
-    answer: "Troubleshoot boot issues"
-  },
-  {
-    question: "Which mobile OS feature restricts apps from running in the background?",
-    choices: ["Battery Optimization", "Data Saver", "Airplane Mode", "VPN"],
-    answer: "Battery Optimization"
-  },
-  {
-    question: "Which Windows command displays the MAC address of a network adapter?",
-    choices: ["ipconfig /all", "netstat -a", "ping", "nslookup"],
-    answer: "ipconfig /all"
-  },
-  {
-    question: "Which type of malware hides itself from detection?",
-    choices: ["Trojan", "Rootkit", "Worm", "Adware"],
-    answer: "Rootkit"
-  },
-  {
-    question: "What is the purpose of the `man` command in Linux?",
-    choices: ["Manage users", "Display manual pages", "Move files", "Monitor processes"],
-    answer: "Display manual pages"
-  },
-  {
-    question: "Which Windows feature enables remote desktop access?",
-    choices: ["Remote Desktop", "Windows Sandbox", "Hyper-V", "Task Scheduler"],
-    answer: "Remote Desktop"
-  },
-  {
-    question: "What is the purpose of a DMZ in network security?",
-    choices: ["Encrypt data", "Isolate public-facing servers", "Manage DNS", "Block all traffic"],
-    answer: "Isolate public-facing servers"
-  },
-  {
-    question: "Which Linux command terminates a running process?",
-    choices: ["kill", "stop", "end", "quit"],
-    answer: "kill"
-  },
-  {
-    question: "Which Windows tool configures firewall settings?",
-    choices: ["Windows Defender Firewall", "Event Viewer", "Task Scheduler", "Disk Management"],
-    answer: "Windows Defender Firewall"
-  },
-  {
-    question: "Which operational procedure ensures proper disposal of sensitive data?",
-    choices: ["Data encryption", "Data wiping", "Data backup", "Data compression"],
-    answer: "Data wiping"
-  },
-  {
-    question: "Which Windows command resolves IP to MAC addresses?",
-    choices: ["arp -a", "netstat -r", "ipconfig /all", "tracert"],
-    answer: "arp -a"
-  }
-];
+  <script>
+    const questions = [
+      {
+        question: "Which Windows tool is used to manage user accounts?",
+        choices: ["Control Panel", "Device Manager", "Task Scheduler", "Disk Management"],
+        answer: "Control Panel"
+      },
+      {
+        question: "What command clears the print queue in Windows?",
+        choices: ["net stop spooler", "print /clear", "taskkill /im spoolsv", "del /q %systemroot%\\System32\\spool\\printers\\*"],
+        answer: "net stop spooler"
+      },
+      {
+        question: "Which file system supports file-level encryption in Windows?",
+        choices: ["FAT32", "exFAT", "NTFS", "ext4"],
+        answer: "NTFS"
+      },
+      {
+        question: "What is the purpose of a security policy?",
+        choices: ["Increase network speed", "Define acceptable use and security practices", "Optimize hardware performance", "Manage user permissions"],
+        answer: "Define acceptable use and security practices"
+      },
+      {
+        question: "Which Windows utility repairs corrupted system files?",
+        choices: ["chkdsk", "sfc /scannow", "diskpart", "format"],
+        answer: "sfc /scannow"
+      },
+      {
+        question: "What type of malware disguises itself as legitimate software?",
+        choices: ["Worm", "Trojan", "Spyware", "Ransomware"],
+        answer: "Trojan"
+      },
+      {
+        question: "Which protocol is used for secure remote desktop access?",
+        choices: ["RDP", "SSH", "FTP", "HTTP"],
+        answer: "RDP"
+      },
+      {
+        question: "What is the default location for user profiles in Windows?",
+        choices: ["C:\\Users", "C:\\Program Files", "C:\\Windows\\System32", "C:\\ProgramData"],
+        answer: "C:\\Users"
+      },
+      {
+        question: "Which command displays the status of services in Windows?",
+        choices: ["netstat", "services.msc", "tasklist", "msconfig"],
+        answer: "services.msc"
+      },
+      {
+        question: "What does a blue screen of death (BSOD) indicate?",
+        choices: ["Overheating CPU", "Critical system error", "Low disk space", "Network disconnection"],
+        answer: "Critical system error"
+      },
+      {
+        question: "Which Windows feature encrypts an entire drive?",
+        choices: ["EFS", "BitLocker", "TPM", "Secure Boot"],
+        answer: "BitLocker"
+      },
+      {
+        question: "What is the purpose of a firewall?",
+        choices: ["Increase internet speed", "Block unauthorized network access", "Manage user accounts", "Optimize memory usage"],
+        answer: "Block unauthorized network access"
+      },
+      {
+        question: "Which command restores the system to a previous state?",
+        choices: ["sfc /scannow", "systemrestore", "rstrui", "chkdsk"],
+        answer: "rstrui"
+      },
+      {
+        question: "What type of attack involves intercepting communication?",
+        choices: ["Phishing", "Man-in-the-Middle", "DDoS", "SQL Injection"],
+        answer: "Man-in-the-Middle"
+      },
+      {
+        question: "Which Windows utility schedules automated tasks?",
+        choices: ["Task Manager", "Task Scheduler", "Event Viewer", "Disk Management"],
+        answer: "Task Scheduler"
+      },
+      {
+        question: "What is the purpose of a backup strategy?",
+        choices: ["Improve system performance", "Protect data from loss", "Increase network bandwidth", "Reduce hardware costs"],
+        answer: "Protect data from loss"
+      },
+      {
+        question: "Which file extension is commonly used for Windows scripts?",
+        choices: [".bat", ".exe", ".dll", ".sys"],
+        answer: ".bat"
+      },
+      {
+        question: "What does UAC stand for in Windows?",
+        choices: ["User Access Control", "Unified Administrative Console", "Universal Application Configuration", "User Account Configuration"],
+        answer: "User Access Control"
+      },
+      {
+        question: "Which tool is used to troubleshoot software conflicts?",
+        choices: ["Safe Mode", "Device Manager", "Disk Cleanup", "System Restore"],
+        answer: "Safe Mode"
+      },
+      {
+        question: "What is the purpose of antivirus software?",
+        choices: ["Optimize CPU performance", "Detect and remove malware", "Manage network settings", "Increase storage capacity"],
+        answer: "Detect and remove malware"
+      },
+      {
+        question: "Which Windows command lists running processes?",
+        choices: ["tasklist", "netstat", "ipconfig", "dir"],
+        answer: "tasklist"
+      },
+      {
+        question: "What is a common symptom of a failing hard drive?",
+        choices: ["Overheating", "Slow performance or bad sectors", "Excessive noise", "Both slow performance and bad sectors"],
+        answer: "Both slow performance and bad sectors"
+      },
+      {
+        question: "Which protocol secures web traffic?",
+        choices: ["HTTP", "HTTPS", "FTP", "SMTP"],
+        answer: "HTTPS"
+      },
+      {
+        question: "What is the purpose of a password manager?",
+        choices: ["Increase internet speed", "Store and generate secure passwords", "Optimize memory usage", "Manage user accounts"],
+        answer: "Store and generate secure passwords"
+      },
+      {
+        question: "Which Windows feature allows multiple users to log in simultaneously?",
+        choices: ["Fast User Switching", "Remote Desktop", "Task View", "System Restore"],
+        answer: "Fast User Switching"
+      },
+      {
+        question: "What type of backup saves only changed files since the last backup?",
+        choices: ["Full", "Incremental", "Differential", "Mirror"],
+        answer: "Incremental"
+      },
+      {
+        question: "Which command checks disk errors in Windows?",
+        choices: ["sfc /scannow", "chkdsk", "diskpart", "format"],
+        answer: "chkdsk"
+      },
+      {
+        question: "What is the purpose of a VPN?",
+        choices: ["Increase bandwidth", "Secure remote network access", "Optimize CPU performance", "Manage storage devices"],
+        answer: "Secure remote network access"
+      },
+      {
+        question: "Which Windows utility displays system event logs?",
+        choices: ["Event Viewer", "Task Manager", "Device Manager", "Disk Management"],
+        answer: "Event Viewer"
+      },
+      {
+        question: "What is a common sign of a phishing email?",
+        choices: ["Professional formatting", "Request for personal information", "Clear sender identity", "Attachment from a trusted source"],
+        answer: "Request for personal information"
+      },
+      {
+        question: "Which file system is compatible with both Windows and macOS?",
+        choices: ["NTFS", "exFAT", "FAT32", "ext4"],
+        answer: "exFAT"
+      },
+      {
+        question: "What does TPM stand for?",
+        choices: ["Trusted Platform Module", "Temporary Processing Memory", "Total Performance Monitor", "Technical Power Management"],
+        answer: "Trusted Platform Module"
+      },
+      {
+        question: "Which Windows command stops a service?",
+        choices: ["net stop", "net start", "sc config", "taskkill"],
+        answer: "net stop"
+      },
+      {
+        question: "What is the purpose of a software patch?",
+        choices: ["Increase hardware speed", "Fix bugs or improve security", "Optimize network settings", "Manage user permissions"],
+        answer: "Fix bugs or improve security"
+      },
+      {
+        question: "Which type of malware tracks user activity?",
+        choices: ["Trojan", "Spyware", "Ransomware", "Worm"],
+        answer: "Spyware"
+      },
+      {
+        question: "What is the default port for SSH?",
+        choices: ["21", "22", "23", "80"],
+        answer: "22"
+      },
+      {
+        question: "Which Windows feature prevents unauthorized OS changes?",
+        choices: ["Secure Boot", "BitLocker", "Windows Defender", "User Account Control"],
+        answer: "Secure Boot"
+      },
+      {
+        question: "What is a common cause of application crashes?",
+        choices: ["Overheating", "Corrupted files or incompatible drivers", "Low network speed", "Excessive RAM usage"],
+        answer: "Corrupted files or incompatible drivers"
+      },
+      {
+        question: "Which command refreshes group policy settings?",
+        choices: ["gpupdate /force", "sfc /scannow", "chkdsk", "netsh"],
+        answer: "gpupdate /force"
+      },
+      {
+        question: "What is the purpose of a disaster recovery plan?",
+        choices: ["Optimize hardware performance", "Restore operations after a disaster", "Increase network bandwidth", "Manage user accounts"],
+        answer: "Restore operations after a disaster"
+      },
+      {
+        question: "Which Windows utility configures network settings?",
+        choices: ["Network and Sharing Center", "Device Manager", "Task Scheduler", "Disk Management"],
+        answer: "Network and Sharing Center"
+      },
+      {
+        question: "What type of attack floods a server with requests?",
+        choices: ["Phishing", "DDoS", "Man-in-the-Middle", "Brute Force"],
+        answer: "DDoS"
+      },
+      {
+        question: "Which file extension is used for PowerShell scripts?",
+        choices: [".ps1", ".bat", ".cmd", ".vbs"],
+        answer: ".ps1"
+      },
+      {
+        question: "What is the purpose of a BIOS update?",
+        choices: ["Increase CPU speed", "Fix hardware compatibility issues", "Optimize network performance", "Manage user permissions"],
+        answer: "Fix hardware compatibility issues"
+      },
+      {
+        question: "Which Windows command displays the IP configuration?",
+        choices: ["ipconfig", "netstat", "tracert", "ping"],
+        answer: "ipconfig"
+      },
+      {
+        question: "What is a common symptom of a malware infection?",
+        choices: ["Fast boot times", "Slow performance or pop-up ads", "Increased storage space", "Improved network speed"],
+        answer: "Slow performance or pop-up ads"
+      },
+      {
+        question: "Which protocol is used for email retrieval?",
+        choices: ["POP3", "SMTP", "IMAP", "HTTP"],
+        answer: "POP3"
+      },
+      {
+        question: "What is the purpose of a service pack?",
+        choices: ["Increase hardware performance", "Provide cumulative updates and fixes", "Optimize memory usage", "Manage network settings"],
+        answer: "Provide cumulative updates and fixes"
+      },
+      {
+        question: "Which Windows feature monitors system security?",
+        choices: ["Windows Defender", "Task Manager", "Event Viewer", "Device Manager"],
+        answer: "Windows Defender"
+      },
+      {
+        question: "What is a common cause of a frozen application?",
+        choices: ["Overheating", "Insufficient memory or resource conflicts", "Excessive network speed", "Low storage space"],
+        answer: "Insufficient memory or resource conflicts"
+      },
+      {
+        question: "Which command checks for disk space in Windows?",
+        choices: ["dir", "chkdsk", "diskpart", "fsutil"],
+        answer: "dir"
+      },
+      {
+        question: "What is the purpose of a data wipe before disposal?",
+        choices: ["Improve performance", "Prevent data recovery", "Increase storage capacity", "Optimize network settings"],
+        answer: "Prevent data recovery"
+      },
+      {
+        question: "Which Windows utility manages startup programs?",
+        choices: ["msconfig", "Task Manager", "services.msc", "regedit"],
+        answer: "msconfig"
+      },
+      {
+        question: "What type of backup includes all files regardless of changes?",
+        choices: ["Incremental", "Differential", "Full", "Mirror"],
+        answer: "Full"
+      },
+      {
+        question: "Which command restarts a Windows machine?",
+        choices: ["shutdown /r", "shutdown /s", "restart", "reboot"],
+        answer: "shutdown /r"
+      },
+      {
+        question: "What is the purpose of a software license?",
+        choices: ["Increase hardware speed", "Define legal usage rights", "Optimize memory usage", "Manage user accounts"],
+        answer: "Define legal usage rights"
+      },
+      {
+        question: "Which Windows feature allows file history backups?",
+        choices: ["System Restore", "File History", "Backup and Restore", "Disk Management"],
+        answer: "File History"
+      },
+      {
+        question: "What is a common sign of a rootkit infection?",
+        choices: ["Fast system boot", "Hidden processes or files", "Increased storage", "Improved network speed"],
+        answer: "Hidden processes or files"
+      },
+      {
+        question: "Which protocol secures file transfers?",
+        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
+        answer: "SFTP"
+      },
+      {
+        question: "What is the purpose of a change management process?",
+        choices: ["Increase network speed", "Control and document system changes", "Optimize CPU performance", "Manage user permissions"],
+        answer: "Control and document system changes"
+      },
+      {
+        question: "Which Windows command displays network statistics?",
+        choices: ["netstat", "ipconfig", "tracert", "ping"],
+        answer: "netstat"
+      },
+      {
+        question: "What is a common cause of a slow boot time?",
+        choices: ["Overheating", "Too many startup programs", "Excessive RAM", "High network speed"],
+        answer: "Too many startup programs"
+      },
+      {
+        question: "Which Windows feature protects against unauthorized boot changes?",
+        choices: ["BitLocker", "Secure Boot", "TPM", "EFS"],
+        answer: "Secure Boot"
+      },
+      {
+        question: "What is the purpose of a log review?",
+        choices: ["Increase storage capacity", "Identify security incidents or errors", "Optimize network performance", "Manage user accounts"],
+        answer: "Identify security incidents or errors"
+      },
+      {
+        question: "Which command uninstalls a Windows update?",
+        choices: ["wusa /uninstall", "sfc /scannow", "chkdsk", "diskpart"],
+        answer: "wusa /uninstall"
+      },
+      {
+        question: "What type of attack guesses passwords systematically?",
+        choices: ["Phishing", "Brute Force", "DDoS", "SQL Injection"],
+        answer: "Brute Force"
+      },
+      {
+        question: "Which Windows utility manages virtual memory?",
+        choices: ["Task Manager", "System Properties", "Device Manager", "Disk Management"],
+        answer: "System Properties"
+      },
+      {
+        question: "What is the purpose of a malware scan?",
+        choices: ["Optimize CPU performance", "Detect and remove malicious software", "Increase network bandwidth", "Manage user permissions"],
+        answer: "Detect and remove malicious software"
+      },
+      {
+        question: "Which command clears the ARP cache in Windows?",
+        choices: ["arp -d", "ipconfig /flushdns", "netsh interface ip delete arpcache", "netstat -r"],
+        answer: "netsh interface ip delete arpcache"
+      },
+      {
+        question: "What is a common symptom of a failing OS?",
+        choices: ["Fast boot times", "Frequent crashes or error messages", "Increased storage space", "Improved network speed"],
+        answer: "Frequent crashes or error messages"
+      },
+      {
+        question: "Which Windows feature allows remote assistance?",
+        choices: ["Remote Desktop", "Quick Assist", "Task View", "System Restore"],
+        answer: "Quick Assist"
+      },
+      {
+        question: "What is the purpose of a software update policy?",
+        choices: ["Increase hardware speed", "Ensure systems are patched and secure", "Optimize memory usage", "Manage user accounts"],
+        answer: "Ensure systems are patched and secure"
+      }
+    ];
 
+    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -728,15 +576,16 @@ const questions = [
     const scoreElement = document.getElementById("score");
     const restartButton = document.querySelector(".restart-button");
 
+    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
-      questionElement.textContent = q.question;
-      questionElement.classList.remove("quiz-complete");
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
+      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -749,6 +598,7 @@ const questions = [
       });
     }
 
+    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
@@ -759,6 +609,7 @@ const questions = [
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
       }
 
+      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
@@ -770,21 +621,22 @@ const questions = [
         }
       });
 
+      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
         if (currentQuestion < questions.length) {
           showQuestion();
         } else {
           questionElement.textContent = "Quiz Complete!";
-          questionElement.classList.add("quiz-complete");
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
-          scoreElement.textContent = `You got ${correctAnswers} correct, You got ${incorrectAnswers} wrong`;
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
           restartButton.style.display = "block";
         }
       }, 5000);
     }
 
+    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
@@ -793,6 +645,7 @@ const questions = [
       showQuestion();
     }
 
+    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

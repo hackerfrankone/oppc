@@ -172,8 +172,9 @@
 
   <h1>OverPowered StudyGuides</h1>
 
-  <!-- Live count display -->
-  <div id="liveCountDisplay" style="margin: 20px 0; font-weight: bold;">Loading live count...</div>
+  <!-- Total and Live Count Display -->
+  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px;">Total OPPC Students: 14</div>
+  <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold;">Loading live count...</div>
 
   <div class="highlight-message" id="noSignUpMessage">
     NO sign up | NO ads | NO cookies | NO BS 
@@ -232,13 +233,8 @@
 
   <!-- Floating Footer Buttons -->
   <div class="footer-buttons">
-    <!-- CompTIA Link -->
     <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
-
-    <!-- Linux Button -->
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
-
-    <!-- PayPal Hosted Button -->
     <div id="paypalContainer">
       <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
         <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
@@ -248,35 +244,29 @@
         </section>
       </form>
     </div>
-
-    <!-- Discord Button -->
     <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
   <script>
     function unlockContent() {
       if (localStorage.getItem('unlocked') === 'paid') {
-        // Unlock all locked links
         document.querySelectorAll('a.locked').forEach(link => {
           link.textContent = link.textContent.replace(' 🔒', '');
           link.href = link.getAttribute('data-url');
           link.classList.remove('locked');
         });
 
-        // Enable Discord button
         const discordBtn = document.getElementById('discordButton');
         if (discordBtn) {
           discordBtn.style.opacity = '1';
           discordBtn.style.pointerEvents = 'auto';
         }
 
-        // Hide PayPal purchase container
         const paypalDiv = document.getElementById('paypalContainer');
         if (paypalDiv) {
           paypalDiv.style.display = 'none';
         }
 
-        // Hide promotional messages
         const noSignUpMessage = document.getElementById('noSignUpMessage');
         if (noSignUpMessage) {
           noSignUpMessage.style.display = 'none';
@@ -286,7 +276,6 @@
           oneTimeMessage.style.display = 'none';
         }
 
-        // Show popup if not already shown
         if (!localStorage.getItem('cachePopupShown')) {
           const popup = document.getElementById('cachePopup');
           if (popup) {
@@ -328,10 +317,7 @@
       }
     }
 
-    // Initial fetch
     fetchLiveCount();
-
-    // Refresh every 10 seconds
     setInterval(fetchLiveCount, 10000);
   </script>
 

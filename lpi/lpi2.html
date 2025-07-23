@@ -2,24 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>LPI Core 2 Quiz (Exam 102)</title>
+  <title>LPI LPIC-1 102-500 Quiz</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 0; min-height: 100vh;
+      margin: 0;
+      min-height: 100vh;
       background-color: black;
       font-family: 'Courier New', monospace;
       color: #00FF00;
       user-select: none;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      padding: 1rem; position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
     }
-    .back-button, .pbq-button {
-      position: fixed; top: 1rem;
-      background: transparent; color: #00FF00;
+
+    .back-button,
+    .pbq-button,
+    .restart-button {
+      position: fixed;
+      top: 1rem;
+      background: transparent;
+      color: #00FF00;
       border: 2px solid #00FF00;
       padding: 0.5rem 1rem;
       font-family: 'Courier New', monospace;
@@ -31,16 +44,35 @@
       z-index: 9999;
       -webkit-tap-highlight-color: transparent;
     }
-    .back-button { left: 1rem; }
-    .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
-    .back-button:hover, .pbq-button:hover {
-      background-color: #00FF00; color: black;
+
+    .back-button {
+      left: 1rem;
     }
+
+    .pbq-button {
+      left: calc(1rem + 6rem + 0.5rem);
+    }
+
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      left: 1rem;
+      display: none;
+    }
+
+    .back-button:hover,
+    .pbq-button:hover,
+    .restart-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
     .quiz-content {
-      width: 100%; max-width: 600px;
+      width: 100%;
+      max-width: 600px;
       text-align: left;
       font-size: clamp(0.9rem, 3vw, 1rem);
     }
+
     .question {
       margin-bottom: 1rem;
       font-size: clamp(1rem, 3.5vw, 1.2rem);
@@ -52,16 +84,20 @@
       scrollbar-width: thin;
       scrollbar-color: #00FF00 transparent;
     }
+
     .question::-webkit-scrollbar {
       width: 6px;
     }
+
     .question::-webkit-scrollbar-track {
       background: transparent;
     }
+
     .question::-webkit-scrollbar-thumb {
       background: #00FF00;
       border-radius: 3px;
     }
+
     .choices {
       display: flex;
       flex-direction: column;
@@ -71,6 +107,7 @@
       margin: 0 auto;
       min-height: 200px;
     }
+
     .choice {
       border: 2px solid #00FF00;
       border-radius: 5px;
@@ -82,88 +119,372 @@
       word-wrap: break-word;
       line-height: 1.3;
       min-height: 3rem;
-      display: flex; align-items: center;
+      display: flex;
+      align-items: center;
       font-size: clamp(0.9rem, 2.8vw, 1rem);
     }
+
     .choice:hover:not(.disabled) {
       background-color: #00FF00;
       color: black;
     }
+
     .choice.disabled {
       pointer-events: none;
       opacity: 0.5;
     }
+
     .feedback {
       margin-top: 1rem;
       font-size: clamp(0.9rem, 3vw, 1rem);
       min-height: 2rem;
       text-align: center;
     }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
     @media (max-width: 600px) {
-      body { padding: 0.5rem; }
-      .quiz-content { max-width: 95%; }
-      .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
-      .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
-      .back-button, .pbq-button {
+      body {
+        padding: 0.5rem;
+      }
+
+      .quiz-content {
+        max-width: 95%;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .back-button,
+      .pbq-button,
+      .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
       }
+
       .pbq-button {
         left: calc(1rem + 5rem + 0.5rem);
+      }
+
+      .restart-button {
+        top: calc(0.5rem + 2rem + 0.5rem);
       }
     }
   </style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq2.html" class="pbq-button">PBQ</a>
+  <a href="pbq.html" class="pbq-button">PBQ</a>
+  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
   </div>
 
   <script>
     const questions = [
-      { question: "Which file defines login shell initialization for all users?", choices: ["/etc/profile", "~/.bashrc", "/etc/bash.bashrc", "/etc/shadow"], answer: "/etc/profile" },
-      { question: "Which command adds a new user group?", choices: ["groupadd", "usermod", "addgroup", "groupmod"], answer: "groupadd" },
-      { question: "To schedule a script to run at boot, where should you place it on a systemd system?", choices: ["/etc/systemd/system/", "/etc/cron.d/", "/usr/local/bin/", "/etc/init.d/"], answer: "/etc/systemd/system/" },
-      { question: "Which file should be modified to allow sudo without password for a user?", choices: ["/etc/sudoers", "~/.sudoers", "/etc/passwd", "/etc/group"], answer: "/etc/sudoers" },
-      { question: "Which command displays socket activity and listening ports?", choices: ["ss", "netstat", "lsof", "nmap"], answer: "ss" },
-      { question: "Which daemon resolves mDNS hostnames by default?", choices: ["avahi-daemon", "systemd-resolved", "named", "dnsmasq"], answer: "avahi-daemon" },
-      { question: "Which security context tool is used in SELinux?", choices: ["chcon", "setfacl", "getenforce", "semanage"], answer: "chcon" },
-      { question: "To restrict user login via SSH, which file should be edited?", choices: ["/etc/ssh/sshd_config", "/etc/hosts.allow", "/etc/login.defs", "/etc/security/limits.conf"], answer: "/etc/ssh/sshd_config" },
-      { question: "Which command locks a user account?", choices: ["usermod -L", "passwd -l", "chage -E", "userdel"], answer: "usermod -L" },
-      { question: "Where is the default location for mail logs on most Linux systems?", choices: ["/var/log/mail.log", "/var/log/maillog", "/var/log/messages", "/var/log/syslog"], answer: "/var/log/maillog" },
-
-      { question: "Which command shows the current disk usage in a human-readable format?", choices: ["df -h", "du -sh", "lsblk", "mount"], answer: "df -h" },
-      { question: "What is the default runlevel for multi-user mode without GUI on most systems?", choices: ["3", "5", "1", "0"], answer: "3" },
-      { question: "Which command edits the GRUB boot loader configuration?", choices: ["grub-mkconfig", "grub-edit", "update-grub", "grub-install"], answer: "update-grub" },
-      { question: "Where are systemd service unit files usually stored?", choices: ["/etc/systemd/system/", "/usr/lib/systemd/system/", "/var/lib/systemd/system/", "/lib/systemd/system/"], answer: "/usr/lib/systemd/system/" },
-      { question: "Which file configures PAM (Pluggable Authentication Modules)?", choices: ["/etc/pam.conf", "/etc/pam.d/common-auth", "/etc/security/pam.conf", "/etc/pam.d/sshd"], answer: "/etc/pam.d/common-auth" },
-      { question: "Which command shows the status of a systemd service?", choices: ["systemctl status", "service status", "systemctl show", "systemctl list"], answer: "systemctl status" },
-      { question: "Which command lists all listening TCP ports?", choices: ["ss -lt", "netstat -an", "lsof -iTCP -sTCP:LISTEN", "nmap localhost"], answer: "ss -lt" },
-      { question: "What does the 'chmod 755' permission mean?", choices: ["Owner read/write/execute; group and others read/execute", "Owner read/write; group and others read", "Owner execute only; group and others none", "Owner read/write/execute; group and others none"], answer: "Owner read/write/execute; group and others read/execute" },
-      { question: "Which command would you use to view the last 100 lines of a log file?", choices: ["tail -100", "head -100", "less +100", "cat -100"], answer: "tail -100" },
-      { question: "Which command is used to create a symbolic link?", choices: ["ln -s", "ln", "link", "symlink"], answer: "ln -s" },
-      { question: "What is the default shell for most Linux users?", choices: ["/bin/bash", "/bin/sh", "/bin/zsh", "/bin/csh"], answer: "/bin/bash" },
-      { question: "Which command changes a user's password expiration information?", choices: ["chage", "passwd", "usermod", "useradd"], answer: "chage" },
-      { question: "Which file stores static IP configuration on Debian systems?", choices: ["/etc/network/interfaces", "/etc/netplan/config.yaml", "/etc/sysconfig/network-scripts/ifcfg-eth0", "/etc/resolv.conf"], answer: "/etc/network/interfaces" },
-      { question: "What is the primary configuration file for SSH server settings?", choices: ["/etc/ssh/sshd_config", "/etc/ssh/ssh_config", "/etc/hosts.allow", "/etc/hosts.deny"], answer: "/etc/ssh/sshd_config" },
-      { question: "Which command shows the kernel ring buffer?", choices: ["dmesg", "journalctl", "syslog", "kernlog"], answer: "dmesg" },
-      { question: "Which utility is used to manage software packages on RPM-based systems?", choices: ["yum", "apt", "dpkg", "pacman"], answer: "yum" },
-      { question: "Which command displays current network interface configurations?", choices: ["ip addr", "ifconfig", "netstat", "route"], answer: "ip addr" },
-      { question: "Which tool manages firewall rules on many Linux systems?", choices: ["iptables", "firewalld", "ufw", "nftables"], answer: "iptables" },
-      { question: "Where is the main configuration file for cron jobs?", choices: ["/etc/crontab", "/var/spool/cron/crontabs", "/etc/cron.d", "/etc/cron.daily"], answer: "/etc/crontab" },
-      { question: "Which command checks file system integrity on ext4 partitions?", choices: ["fsck", "e2fsck", "chkfs", "mount"], answer: "e2fsck" }
+      {
+        question: "Which command displays all logged-in users?",
+        choices: ["who", "w", "users", "last"],
+        answer: "who"
+      },
+      {
+        question: "What does the -l option do with the useradd command?",
+        choices: ["Locks the account", "Creates a system account", "Sets login shell", "Lists users"],
+        answer: "Creates a system account"
+      },
+      {
+        question: "Which file contains user login shells?",
+        choices: ["/etc/passwd", "/etc/shadow", "/etc/shells", "/etc/group"],
+        answer: "/etc/shells"
+      },
+      {
+        question: "What command changes a user's password?",
+        choices: ["passwd", "chpass", "userpass", "changepw"],
+        answer: "passwd"
+      },
+      {
+        question: "Which service manages local email delivery?",
+        choices: ["sshd", "postfix", "apache", "named"],
+        answer: "postfix"
+      },
+      {
+        question: "What does the -x option do with the chmod command?",
+        choices: ["Sets execute permission", "Excludes files", "Extracts permissions", "Extends permissions"],
+        answer: "Sets execute permission"
+      },
+      {
+        question: "Which command starts a service?",
+        choices: ["service start", "systemctl start", "init start", "runlevel start"],
+        answer: "systemctl start"
+      },
+      {
+        question: "What does the -u option do with the who command?",
+        choices: ["Shows idle time", "Displays username", "Updates list", "Unlinks users"],
+        answer: "Shows idle time"
+      },
+      {
+        question: "Which file contains cron jobs for all users?",
+        choices: ["/etc/crontab", "/var/spool/cron", "/etc/cron.d", "/etc/anacrontab"],
+        answer: "/etc/crontab"
+      },
+      {
+        question: "What command displays network interfaces?",
+        choices: ["ifconfig", "ip", "netstat", "route"],
+        answer: "ip"
+      },
+      {
+        question: "Which command edits a user's group membership?",
+        choices: ["usermod", "groupmod", "chgrp", "gpasswd"],
+        answer: "usermod"
+      },
+      {
+        question: "What does the -r option do with the userdel command?",
+        choices: ["Removes the home directory", "Renames the user", "Resets password", "Readds user"],
+        answer: "Removes the home directory"
+      },
+      {
+        question: "Which service provides domain name resolution?",
+        choices: ["dhcpd", "named", "sshd", "ntpd"],
+        answer: "named"
+      },
+      {
+        question: "What does the -e option do with the passwd command?",
+        choices: ["Expires the password", "Edits the password", "Enables the account", "Encrypts the password"],
+        answer: "Expires the password"
+      },
+      {
+        question: "Which command schedules a one-time task?",
+        choices: ["cron", "at", "anacron", "batch"],
+        answer: "at"
+      },
+      {
+        question: "What does the -p option do with the groupadd command?",
+        choices: ["Sets password", "Creates a private group", "Prompts for confirmation", "Prevents deletion"],
+        answer: "Creates a private group"
+      },
+      {
+        question: "Which file contains SSH configuration?",
+        choices: ["/etc/ssh/sshd_config", "/etc/ssh/ssh_config", "/etc/hosts", "/etc/resolv.conf"],
+        answer: "/etc/ssh/sshd_config"
+      },
+      {
+        question: "What command restarts a service?",
+        choices: ["service restart", "systemctl restart", "init restart", "reboot"],
+        answer: "systemctl restart"
+      },
+      {
+        question: "Which command displays the routing table?",
+        choices: ["route", "ip route", "netstat -r", "ifconfig"],
+        answer: "ip route"
+      },
+      {
+        question: "What does the -L option do with the chage command?",
+        choices: ["Lists password expiration", "Locks the account", "Loads settings", "Links users"],
+        answer: "Lists password expiration"
+      },
+      {
+        question: "Which service provides time synchronization?",
+        choices: ["ntpd", "sshd", "httpd", "samba"],
+        answer: "ntpd"
+      },
+      {
+        question: "What command adds a user to a group?",
+        choices: ["usermod -aG", "groupadd", "chgrp", "addgroup"],
+        answer: "usermod -aG"
+      },
+      {
+        question: "Which file contains system-wide environment variables?",
+        choices: ["/etc/profile", "/etc/bashrc", "/etc/environment", "/etc/login.defs"],
+        answer: "/etc/environment"
+      },
+      {
+        question: "What does the -k option do with the useradd command?",
+        choices: ["Keeps the home directory", "Sets the password expiration", "Kills the user", "Creates a key"],
+        answer: "Keeps the home directory"
+      },
+      {
+        question: "Which command enables a service at boot?",
+        choices: ["systemctl enable", "service enable", "chkconfig on", "init enable"],
+        answer: "systemctl enable"
+      },
+      {
+        question: "What does the -s option do with the useradd command?",
+        choices: ["Sets the shell", "Skips home directory", "Shows user info", "Starts service"],
+        answer: "Sets the shell"
+      },
+      {
+        question: "Which command displays active sessions?",
+        choices: ["w", "who", "last", "users"],
+        answer: "w"
+      },
+      {
+        question: "What does the -d option do with the chage command?",
+        choices: ["Sets the password expiration date", "Deletes the account", "Displays details", "Disables login"],
+        answer: "Sets the password expiration date"
+      },
+      {
+        question: "Which service provides file sharing?",
+        choices: ["samba", "nfs", "ftp", "httpd"],
+        answer: "samba"
+      },
+      {
+        question: "What command checks a user's login history?",
+        choices: ["last", "who", "w", "logname"],
+        answer: "last"
+      },
+      {
+        question: "Which file contains mail aliases?",
+        choices: ["/etc/aliases", "/etc/mail/aliases", "/etc/postfix/aliases", "/etc/mail.rc"],
+        answer: "/etc/aliases"
+      },
+      {
+        question: "What does the -g option do with the useradd command?",
+        choices: ["Sets the primary group", "Generates a password", "Groups users", "Gets user info"],
+        answer: "Sets the primary group"
+      },
+      {
+        question: "Which command stops a service?",
+        choices: ["systemctl stop", "service stop", "init stop", "kill"],
+        answer: "systemctl stop"
+      },
+      {
+        question: "What does the -f option do with the chage command?",
+        choices: ["Forces password change", "Finds users", "Filters output", "Fixes settings"],
+        answer: "Forces password change"
+      },
+      {
+        question: "Which command configures network settings?",
+        choices: ["ifconfig", "ip", "netplan", "route"],
+        answer: "ip"
+      },
+      {
+        question: "What does the -M option do with the useradd command?",
+        choices: ["Creates a home directory", "Modifies user", "Manages groups", "Merges accounts"],
+        answer: "Creates a home directory"
+      },
+      {
+        question: "Which service provides web access?",
+        choices: ["apache", "nginx", "sshd", "postfix"],
+        answer: "apache"
+      },
+      {
+        question: "What command displays the current runlevel?",
+        choices: ["runlevel", "systemctl get-default", "init", "who -r"],
+        answer: "systemctl get-default"
+      },
+      {
+        question: "What does the -a option do with the chage command?",
+        choices: ["Sets the account expiration date", "Adds users", "Activates account", "Analyzes settings"],
+        answer: "Sets the account expiration date"
+      },
+      {
+        question: "Which command edits a cron job?",
+        choices: ["crontab -e", "cronedit", "editcron", "crontab -l"],
+        answer: "crontab -e"
+      },
+      {
+        question: "What does the -n option do with the at command?",
+        choices: ["Specifies a queue", "No execution", "Notifies user", "New job"],
+        answer: "Specifies a queue"
+      },
+      {
+        question: "Which file contains SSH public keys?",
+        choices: ["/home/user/.ssh/authorized_keys", "/etc/ssh/ssh_host_key", "/etc/ssh/sshd_config", "/etc/hosts"],
+        answer: "/home/user/.ssh/authorized_keys"
+      },
+      {
+        question: "What command checks open ports?",
+        choices: ["netstat -tuln", "ss -tuln", "ip port", "route"],
+        answer: "ss -tuln"
+      },
+      {
+        question: "What does the -D option do with the useradd command?",
+        choices: ["Disables the account", "Does not create a home directory", "Deletes user", "Displays info"],
+        answer: "Does not create a home directory"
+      },
+      {
+        question: "Which service provides DHCP?",
+        choices: ["dhcpd", "named", "ntpd", "sshd"],
+        answer: "dhcpd"
+      },
+      {
+        question: "What command displays the mail queue?",
+        choices: ["mailq", "postqueue", "sendmail -bp", "mailstat"],
+        answer: "mailq"
+      },
+      {
+        question: "What does the -l option do with the chage command?",
+        choices: ["Lists password status", "Locks account", "Loads settings", "Links users"],
+        answer: "Lists password status"
+      },
+      {
+        question: "Which command configures a network interface?",
+        choices: ["ifup", "ip link", "netplan apply", "route add"],
+        answer: "ip link"
+      },
+      {
+        question: "What does the -r option do with the groupdel command?",
+        choices: ["Removes the group", "Renames the group", "Resets permissions", "Readds group"],
+        answer: "Removes the group"
+      },
+      {
+        question: "Which service provides remote login?",
+        choices: ["sshd", "telnetd", "ftpd", "httpd"],
+        answer: "sshd"
+      },
+      {
+        question: "What command displays the system log?",
+        choices: ["cat /var/log/syslog", "less /var/log/messages", "tail /var/log/auth.log", "journalctl"],
+        answer: "journalctl"
+      },
+      {
+        question: "What does the -m option do with the useradd command?",
+        choices: ["Sets the mail directory", "Modifies user", "Manages groups", "Moves home"],
+        answer: "Sets the mail directory"
+      },
+      {
+        question: "Which command checks a user's group membership?",
+        choices: ["groups", "id", "whoami", "users"],
+        answer: "groups"
+      },
+      {
+        question: "What does the -t option do with the at command?",
+        choices: ["Specifies time", "Tests job", "Truncates output", "Temporarily disables"],
+        answer: "Specifies time"
+      },
+      {
+        question: "Which file contains login access controls?",
+        choices: ["/etc/login.defs", "/etc/security/access.conf", "/etc/pam.d/login", "/etc/passwd"],
+        answer: "/etc/security/access.conf"
+      },
+      {
+        question: "What command reloads a service configuration?",
+        choices: ["systemctl reload", "service reload", "init reload", "restart"],
+        answer: "systemctl reload"
+      },
+      {
+        question: "What does the -G option do with the usermod command?",
+        choices: ["Sets supplementary groups", "Generates a key", "Gets group info", "Groups users"],
+        answer: "Sets supplementary groups"
+      }
     ];
 
-    let currentQuestion = 0;
-    const questionEl = document.getElementById("question");
-    const choicesEl = document.getElementById("choices");
-    const feedbackEl = document.getElementById("feedback");
-
+    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -171,31 +492,53 @@
       }
     }
 
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const restartButton = document.querySelector(".restart-button");
+
+    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      choicesEl.innerHTML = "";
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
 
+      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
+
       shuffledChoices.forEach(choice => {
         const div = document.createElement("div");
         div.textContent = choice;
         div.classList.add("choice");
         div.onclick = () => handleAnswer(choice);
-        choicesEl.appendChild(div);
+        choicesElement.appendChild(div);
       });
     }
 
+    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+      }
 
-      document.querySelectorAll(".choice").forEach(div => {
+      // Disable all choices and highlight correct/incorrect
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
         div.classList.add("disabled");
+        div.onclick = null;
         if (div.textContent === correct) {
           div.style.borderColor = "#00FF00";
         } else if (div.textContent === selected) {
@@ -203,18 +546,31 @@
         }
       });
 
+      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
         if (currentQuestion < questions.length) {
           showQuestion();
         } else {
-          questionEl.textContent = " Quiz Complete!";
-          choicesEl.innerHTML = "";
-          feedbackEl.textContent = "";
+          questionElement.textContent = "Quiz Complete!";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          restartButton.style.display = "block";
         }
-      }, 3000);
+      }, 5000);
     }
 
+    // Restart the quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      shuffle(questions);
+      showQuestion();
+    }
+
+    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

@@ -8,7 +8,7 @@
     style-src 'self' 'unsafe-inline'; 
     img-src 'self' https://www.paypalobjects.com; 
     frame-src 'none';
-    connect-src 'self';">
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   <title>OverPowered StudyGuides</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
@@ -166,11 +166,21 @@
     .popup button:hover {
       background-color: #e6b800;
     }
+    /* New style for live count */
+    #liveCountDisplay {
+      margin: 30px 0;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #33FF33;
+      text-shadow: 0 0 5px #00FF00;
+    }
   </style>
 </head>
 <body>
 
   <h1>OverPowered StudyGuides</h1>
+
+  <div id="liveCountDisplay">Loading live students...</div>
 
   <div class="highlight-message" id="noSignUpMessage">
     NO sign up | NO ads | NO cookies | NO BS 
@@ -304,6 +314,33 @@
     window.onload = unlockContent;
   </script>
 
-  <script src="student-live.js"></script>
+  <script>
+    const liveCountElement = document.getElementById('liveCountDisplay');
+    const WORKER_URL = "https://student-live.oppcus2025.workers.dev/live-count";
+
+    async function fetchLiveCount() {
+      try {
+        const response = await fetch(WORKER_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const data = await response.json();
+        if (data.count !== undefined) {
+          liveCountElement.textContent = `Live Students Currently Online: ${data.count}`;
+        } else {
+          liveCountElement.textContent = 'Live count data unavailable';
+        }
+      } catch (err) {
+        liveCountElement.textContent = 'Error fetching live count';
+        console.error('Fetch error:', err);
+      }
+    }
+
+    // Initial fetch
+    fetchLiveCount();
+
+    // Refresh every 10 seconds
+    setInterval(fetchLiveCount, 10000);
+  </script>
+
 </body>
 </html>

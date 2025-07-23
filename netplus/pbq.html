@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Net+ PBQs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CompTIA Network+ N10-008 PBQs</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -37,6 +39,7 @@
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
       z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #topBack:hover {
@@ -83,6 +86,7 @@
       word-wrap: break-word;
       font-size: clamp(0.9rem, 2.8vw, 1rem);
       margin-bottom: 0.4rem;
+      position: relative;
     }
 
     .tool {
@@ -149,6 +153,8 @@
 
     .correct .result-icon { color: lime; margin-left: 0.5rem; }
     .incorrect .result-icon { color: red; margin-left: 0.5rem; }
+    .feedback-text { color: #00FF00; font-size: 0.8rem; margin-top: 0.2rem; text-align: left; }
+    .summary-feedback { color: #00FF00; font-size: 0.8rem; margin-top: 0.5rem; text-align: left; padding-left: 1rem; }
   </style>
 </head>
 <body>
@@ -156,7 +162,6 @@
   <div class="pbq-container">
     <div id="pbqArea"></div>
     <div class="buttons">
-      <button id="clear">Clear</button>
       <button id="submit" disabled>Submit</button>
       <button id="next" disabled>Next ➡</button>
     </div>
@@ -166,101 +171,122 @@
   <script>
     const pbqs = [
       {
-        instructions: "PBQ 1: Match OSI layers to their functions",
+        instructions: "PBQ 1: Match networking fundamentals to their definitions",
         tools: [
-          { name: "Application", id: "app", description: "Provides services for user applications like email and file transfer." },
-          { name: "Transport", id: "transport", description: "Ensures complete data transfer with error checking and flow control." },
-          { name: "Network", id: "network", description: "Routes data between devices using IP addressing." },
-          { name: "Data Link", id: "datalink", description: "Handles physical addressing and error detection for local network traffic." }
+          { name: "OSI Model", id: "osi", description: "Framework for network communication layers." },
+          { name: "TCP/IP", id: "tcpip", description: "Core protocol suite for internet." },
+          { name: "IP Address", id: "ip", description: "Unique identifier for network devices." },
+          { name: "Subnet Mask", id: "subnet", description: "Determines network and host portions." },
+          { name: "MAC Address", id: "mac", description: "Physical address of a network interface." },
+          { name: "Port Number", id: "port", description: "Identifies specific processes on a device." }
         ]
       },
       {
-        instructions: "PBQ 2: Match cable types to their features",
+        instructions: "PBQ 2: Match network devices to their functions",
         tools: [
-          { name: "Cat6", id: "cat6", description: "Twisted-pair cable supporting up to 10 Gbps speeds over short distances." },
-          { name: "RG6", id: "rg6", description: "Coaxial cable used for cable internet and TV." },
-          { name: "Multimode Fiber", id: "mmf", description: "Fiber optic cable for short-range, high-speed connections using LED light." },
-          { name: "Singlemode Fiber", id: "smf", description: "Fiber optic cable for long-distance, high-bandwidth using laser light." }
+          { name: "Router", id: "router", description: "Directs data between networks." },
+          { name: "Switch", id: "switch", description: "Connects devices within a network." },
+          { name: "Access Point", id: "ap", description: "Provides wireless network access." },
+          { name: "Hub", id: "hub", description: "Broadcasts data to all connected devices." },
+          { name: "Bridge", id: "bridge", description: "Connects two network segments." },
+          { name: "Modem", id: "modem", description: "Converts internet signals for use." }
         ]
       },
       {
-        instructions: "PBQ 3: Match ports to their services",
+        instructions: "PBQ 3: Match cabling types to their characteristics",
         tools: [
-          { name: "22", id: "22", description: "SSH (Secure Shell)" },
-          { name: "53", id: "53", description: "DNS (Domain Name System)" },
-          { name: "110", id: "110", description: "POP3 (Email retrieval)" },
-          { name: "3389", id: "3389", description: "RDP (Remote Desktop Protocol)" }
+          { name: "Cat 6", id: "cat6", description: "Supports up to 10 Gbps over 55 meters." },
+          { name: "Fiber Optic", id: "fiber", description: "Uses light for high-speed, long-distance data." },
+          { name: "Cat 5e", id: "cat5e", description: "Supports up to 1 Gbps over 100 meters." },
+          { name: "Coaxial", id: "coax", description: "Uses single copper conductor with shield." },
+          { name: "Twisted Pair", id: "twisted", description: "Reduces electromagnetic interference." },
+          { name: "Ethernet", id: "ethernet", description: "Common wired network standard." }
         ]
       },
       {
-        instructions: "PBQ 4: Match wireless encryption types to their description",
+        instructions: "PBQ 4: Match wireless standards to their specifications",
         tools: [
-          { name: "WEP", id: "wep", description: "Outdated and insecure wireless encryption standard." },
-          { name: "WPA", id: "wpa", description: "Improved over WEP, uses TKIP but still vulnerable." },
-          { name: "WPA2", id: "wpa2", description: "Uses AES encryption, much stronger than WEP/WPA." },
-          { name: "WPA3", id: "wpa3", description: "Latest and most secure wireless encryption protocol." }
+          { name: "802.11a", id: "a", description: "Operates at 5 GHz with 54 Mbps max." },
+          { name: "802.11b", id: "b", description: "Operates at 2.4 GHz with 11 Mbps max." },
+          { name: "802.11g", id: "g", description: "Operates at 2.4 GHz with 54 Mbps max." },
+          { name: "802.11n", id: "n", description: "Supports 2.4/5 GHz with 600 Mbps max." },
+          { name: "802.11ac", id: "ac", description: "Supports 5 GHz with 1.3 Gbps max." },
+          { name: "802.11ax", id: "ax", description: "Supports 2.4/5/6 GHz with 9.6 Gbps max." }
         ]
       },
       {
-        instructions: "PBQ 5: Match network devices to their functions",
+        instructions: "PBQ 5: Match network protocols to their purposes",
         tools: [
-          { name: "Switch", id: "switch", description: "Connects devices in a LAN and forwards frames based on MAC addresses." },
-          { name: "Router", id: "router", description: "Connects different networks and routes traffic using IP addresses." },
-          { name: "Firewall", id: "firewall", description: "Monitors and filters network traffic for security." },
-          { name: "Access Point", id: "ap", description: "Extends wireless coverage and connects wireless clients to a network." }
+          { name: "HTTP", id: "http", description: "Transfers web pages over the internet." },
+          { name: "FTP", id: "ftp", description: "Transfers files between systems." },
+          { name: "DNS", id: "dns", description: "Resolves domain names to IP addresses." },
+          { name: "DHCP", id: "dhcp", description: "Assigns IP addresses dynamically." },
+          { name: "SMTP", id: "smtp", description: "Sends email messages." },
+          { name: "SNMP", id: "snmp", description: "Monitors network devices." }
         ]
       },
       {
-        instructions: "PBQ 6: Match command-line tools to their use",
+        instructions: "PBQ 6: Match infrastructure components to their roles",
         tools: [
-          { name: "tracert", id: "tracert", description: "Shows path packets take to a destination." },
-          { name: "ipconfig", id: "ipconfig", description: "Displays IP address, subnet mask, and gateway on Windows." },
-          { name: "netstat", id: "netstat", description: "Shows active TCP/UDP connections and ports." },
-          { name: "nslookup", id: "nslookup", description: "Tests DNS resolution." }
+          { name: "Firewall", id: "firewall", description: "Filters incoming/outgoing traffic." },
+          { name: "Load Balancer", id: "load", description: "Distributes traffic across servers." },
+          { name: "Proxy Server", id: "proxy", description: "Acts as intermediary for requests." },
+          { name: "VPN Concentrator", id: "vpn", description: "Manages multiple VPN connections." },
+          { name: "IDS/IPS", id: "idsips", description: "Detects/prevents network intrusions." },
+          { name: "Wireless Controller", id: "wlc", description: "Manages wireless access points." }
         ]
       },
       {
-        instructions: "PBQ 7: Match protocols to their functions",
+        instructions: "PBQ 7: Match network operations tools to their uses",
         tools: [
-          { name: "FTP", id: "ftp", description: "Transfers files over a network." },
-          { name: "SNMP", id: "snmp", description: "Used for network device monitoring and management." },
-          { name: "DHCP", id: "dhcp", description: "Automatically assigns IP addresses to devices." },
-          { name: "SMTP", id: "smtp", description: "Sends email between mail servers." }
+          { name: "Ping", id: "ping", description: "Tests connectivity to a device." },
+          { name: "Traceroute", id: "traceroute", description: "Maps the path to a destination." },
+          { name: "Netstat", id: "netstat", description: "Displays network statistics." },
+          { name: "Wireshark", id: "wireshark", description: "Captures and analyzes packets." },
+          { name: "Nmap", id: "nmap", description: "Scans for open ports and services." },
+          { name: "IPConfig", id: "ipconfig", description: "Displays IP configuration details." }
         ]
       },
       {
-        instructions: "PBQ 8: Match wireless frequencies to use cases",
+        instructions: "PBQ 8: Match network security measures to their purposes",
         tools: [
-          { name: "2.4 GHz", id: "2.4", description: "Longer range, slower speed, more interference." },
-          { name: "5 GHz", id: "5", description: "Shorter range, faster speed, less interference." },
-          { name: "60 GHz", id: "60", description: "Very short range, extremely high speed (used in WiGig)." },
-          { name: "900 MHz", id: "900", description: "Used for legacy wireless and long-range IoT." }
+          { name: "Encryption", id: "encryption", description: "Secures data transmission." },
+          { name: "ACL", id: "acl", description: "Controls access based on rules." },
+          { name: "VLAN", id: "vlan", description: "Segments network traffic." },
+          { name: "NAC", id: "nac", description: "Enforces network access policies." },
+          { name: "Antivirus", id: "antivirus", description: "Protects against malware." },
+          { name: "802.1X", id: "8021x", description: "Authenticates devices on a network." }
         ]
       },
       {
-        instructions: "PBQ 9: Match IPv4 classes to their default subnet masks",
+        instructions: "PBQ 9: Match troubleshooting steps to their sequence",
         tools: [
-          { name: "Class A", id: "a", description: "255.0.0.0" },
-          { name: "Class B", id: "b", description: "255.255.0.0" },
-          { name: "Class C", id: "c", description: "255.255.255.0" },
-          { name: "Class D", id: "d", description: "Reserved for multicast" }
+          { name: "Identify Issue", id: "identify", description: "Determine the reported problem." },
+          { name: "Establish Theory", id: "theory", description: "Form a hypothesis of the cause." },
+          { name: "Test Theory", id: "test", description: "Verify the proposed solution." },
+          { name: "Implement Solution", id: "implement", description: "Apply the fix." },
+          { name: "Verify Resolution", id: "verify", description: "Confirm the issue is resolved." },
+          { name: "Document Findings", id: "doc", description: "Record the process and outcome." }
         ]
       },
       {
-        instructions: "PBQ 10: Match network services to ports",
+        instructions: "PBQ 10: Match cloud concepts to their applications",
         tools: [
-          { name: "HTTPS", id: "https", description: "Port 443" },
-          { name: "HTTP", id: "http", description: "Port 80" },
-          { name: "TELNET", id: "telnet", description: "Port 23" },
-          { name: "LDAP", id: "ldap", description: "Port 389" }
+          { name: "IaaS", id: "iaas", description: "Provides virtualized computing resources." },
+          { name: "PaaS", id: "paas", description: "Offers platform for application development." },
+          { name: "SaaS", id: "saas", description: "Delivers software over the internet." },
+          { name: "Public Cloud", id: "public", description: "Shared resources for multiple users." },
+          { name: "Private Cloud", id: "private", description: "Dedicated resources for one organization." },
+          { name: "Hybrid Cloud", id: "hybrid", description: "Combines public and private clouds." }
         ]
       }
     ];
 
     let currentPBQ = 0;
+    let correctTotal = 0;
+    let incorrectTotal = 0;
     const pbqArea = document.getElementById('pbqArea');
     const submitBtn = document.getElementById('submit');
-    const clearBtn = document.getElementById('clear');
     const nextBtn = document.getElementById('next');
     const feedback = document.getElementById('feedback');
 
@@ -299,7 +325,6 @@
       submitBtn.disabled = true;
       nextBtn.disabled = true;
       feedback.textContent = '';
-      clearBtn.textContent = (index === pbqs.length - 1) ? 'Restart' : 'Clear';
     }
 
     function setupDragDrop() {
@@ -334,34 +359,58 @@
       submitBtn.disabled = !allFilled;
     }
 
-    function clearAll() {
-      if (clearBtn.textContent === 'Restart') {
-        window.location.reload();
-      } else {
-        renderPBQ(currentPBQ);
-      }
-    }
-
     function submitAnswer() {
       let correct = 0;
       document.querySelectorAll('.description-box').forEach(box => {
-        const tool = box.querySelector('.tool');
+        const tool = box.querySelector('.tool'); // Fixed from queryselector to querySelector
         box.classList.remove('correct', 'incorrect');
+        const feedbackText = document.createElement('div');
+        feedbackText.className = 'feedback-text';
+        const summaryFeedback = document.createElement('div');
+        summaryFeedback.className = 'summary-feedback';
 
         if (tool && tool.dataset.id === box.dataset.answer) {
           box.classList.add('correct');
           correct++;
+          feedbackText.textContent = `Correct!`;
+          summaryFeedback.textContent = `✅ ${tool.textContent} matches this description.`;
+          box.appendChild(feedbackText);
           box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✓</span>`;
           box.appendChild(tool);
         } else {
           box.classList.add('incorrect');
-          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`;
+          const correctTool = pbqs[currentPBQ].tools.find(t => t.id === box.dataset.answer).name;
+          feedbackText.textContent = `Incorrect. Correct answer: ${correctTool}`;
+          summaryFeedback.textContent = `✓ ${correctTool} is the correct match for this description.`; // Right side green ✓
+          box.appendChild(feedbackText);
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`; // Left side red ✗
           if (tool) box.appendChild(tool);
         }
+        box.appendChild(summaryFeedback);
       });
-      feedback.textContent = `You got ${correct} correct.`;
+      correctTotal += correct;
+      incorrectTotal += (pbqs[currentPBQ].tools.length - correct);
+      feedback.textContent = `${correct} out of ${pbqs[currentPBQ].tools.length} correct`;
       nextBtn.disabled = false;
       submitBtn.disabled = true;
+    }
+
+    function showFinalScore() {
+      pbqArea.innerHTML = `<div class="instructions">Quiz Complete!</div>`;
+      feedback.textContent = `Overall Score: You got ${correctTotal} correct and ${incorrectTotal} wrong out of ${pbqs.length * 6} possible points.`; // Updated for 6 tools per PBQ
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = 'none';
+      const restartBtn = document.createElement('button');
+      restartBtn.textContent = 'Restart';
+      restartBtn.addEventListener('click', () => {
+        currentPBQ = 0;
+        correctTotal = 0;
+        incorrectTotal = 0;
+        renderPBQ(currentPBQ);
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'block';
+      });
+      document.querySelector('.buttons').appendChild(restartBtn);
     }
 
     submitBtn.addEventListener('click', submitAnswer);
@@ -369,9 +418,11 @@
       if (currentPBQ < pbqs.length - 1) {
         currentPBQ++;
         renderPBQ(currentPBQ);
+      } else if (currentPBQ === pbqs.length - 1) {
+        showFinalScore();
       }
     });
-    clearBtn.addEventListener('click', clearAll);
+
     document.getElementById('topBack').onclick = () => history.back();
 
     renderPBQ(currentPBQ);

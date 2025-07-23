@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CompTIA A+ PBQs</title>
   <style>
     * {
@@ -74,17 +74,22 @@
       background: #111;
     }
 
-    .order-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      padding: 0.5rem;
+    .description-box {
       border: 2px solid #00FF00;
-      border-radius: 5px;
+      padding: 0.6rem;
       background: #111;
+      border-radius: 5px;
+      min-height: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      word-wrap: break-word;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+      margin-bottom: 0.4rem;
+      position: relative;
     }
 
-    .tool, .step {
+    .tool {
       background: #0b0b0b;
       border: 2px solid #00FF00;
       padding: 0.6rem;
@@ -102,42 +107,10 @@
       font-size: clamp(0.9rem, 2.8vw, 1rem);
     }
 
-    .tool:hover, .step:hover {
+    .tool:hover {
       background-color: #00FF00;
       color: black;
     }
-
-    .description-box {
-      border: 2px solid #00FF00;
-      padding: 0.6rem;
-      background: #111;
-      border-radius: 5px;
-      min-height: 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      word-wrap: break-word;
-      font-size: clamp(0.9rem, 2.8vw, 1rem);
-    }
-
-    .step-box {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .step-number {
-      font-weight: bold;
-      font-size: clamp(0.9rem, 2.8vw, 1rem);
-    }
-
-    .result-icon {
-      font-size: clamp(0.9rem, 2.8vw, 1rem);
-      margin-left: 10px;
-    }
-
-    .correct .result-icon { color: lime; }
-    .incorrect .result-icon { color: red; }
 
     .buttons {
       display: flex;
@@ -178,415 +151,281 @@
 
     .hidden { display: none; }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 0.5rem;
-      }
-
-      .pbq-container {
-        max-width: 95%;
-      }
-
-      .instructions {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-      }
-
-      .tool, .step, .description-box {
-        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
-        padding: 0.5rem;
-      }
-
-      button, #topBack {
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-        padding: 0.4rem 0.8rem;
-      }
-    }
+    .correct .result-icon { color: lime; margin-left: 0.5rem; }
+    .incorrect .result-icon { color: red; margin-left: 0.5rem; }
+    .feedback-text { color: #00FF00; font-size: 0.8rem; margin-top: 0.2rem; text-align: left; }
+    .summary-feedback { color: #00FF00; font-size: 0.8rem; margin-top: 0.5rem; text-align: left; padding-left: 1rem; }
   </style>
 </head>
 <body>
-
-<!-- Fixed top-left back button -->
-<button id="topBack">
-  ← Back
-</button>
-
-<div class="pbq-container">
-
-  <!-- PBQ 1 -->
-  <div id="pbq1">
-    <div class="instructions">PBQ 1: Match each tool to its correct description</div>
-    <div id="tools1" class="tools-container"></div>
-    <div id="descriptions1"></div>
+  <button id="topBack">← Back</button>
+  <div class="pbq-container">
+    <div id="pbqArea"></div>
+    <div class="buttons">
+      <button id="submit" disabled>Submit</button>
+      <button id="next" disabled>Next ➡</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
   </div>
 
-  <!-- PBQ 2 -->
-  <div id="pbq2" class="hidden">
-    <div class="instructions">PBQ 2: Drag the malware removal steps into the correct order</div>
-    <div id="stepsPool" class="tools-container"></div>
-    <div id="stepsTarget" class="order-container"></div>
-  </div>
+  <script>
+    const pbqs = [
+      {
+        instructions: "PBQ 1: Match hardware components to their functions",
+        tools: [
+          { name: "CPU", id: "cpu", description: "Processes instructions from programs." },
+          { name: "RAM", id: "ram", description: "Temporarily stores data for quick access." },
+          { name: "Motherboard", id: "motherboard", description: "Connects all computer components." },
+          { name: "GPU", id: "gpu", description: "Handles rendering of images and videos." },
+          { name: "SSD", id: "ssd", description: "Provides fast storage using flash memory." },
+          { name: "PSU", id: "psu", description: "Supplies power to the computer." }
+        ]
+      },
+      {
+        instructions: "PBQ 2: Match network devices to their purposes",
+        tools: [
+          { name: "Router", id: "router", description: "Directs data between networks." },
+          { name: "Switch", id: "switch", description: "Connects devices within a network." },
+          { name: "Access Point", id: "ap", description: "Provides wireless network access." },
+          { name: "Modem", id: "modem", description: "Converts internet signals for use." },
+          { name: "Hub", id: "hub", description: "Broadcasts data to all connected devices." },
+          { name: "Firewall", id: "firewall", description: "Filters incoming/outgoing network traffic." }
+        ]
+      },
+      {
+        instructions: "PBQ 3: Match operating system tools to their uses",
+        tools: [
+          { name: "Task Manager", id: "taskmgr", description: "View running processes and performance." },
+          { name: "Disk Cleanup", id: "diskcleanup", description: "Removes unnecessary files." },
+          { name: "Device Manager", id: "devmgmt", description: "Manages hardware devices." },
+          { name: "Command Prompt", id: "cmd", description: "Executes system commands." },
+          { name: "Control Panel", id: "control", description: "Configures system settings." },
+          { name: "Event Viewer", id: "eventviewer", description: "Logs system and application events." }
+        ]
+      },
+      {
+        instructions: "PBQ 4: Match security measures to their purposes",
+        tools: [
+          { name: "Antivirus", id: "antivirus", description: "Detects and removes malware." },
+          { name: "Firewall", id: "firewall", description: "Blocks unauthorized network access." },
+          { name: "Encryption", id: "encryption", description: "Secures data with codes." },
+          { name: "Biometrics", id: "biometrics", description: "Uses physical traits for authentication." },
+          { name: "Password Manager", id: "password", description: "Stores and generates secure passwords." },
+          { name: "Two-Factor Authentication", id: "2fa", description: "Adds a second login verification." }
+        ]
+      },
+      {
+        instructions: "PBQ 5: Match troubleshooting steps to their order",
+        tools: [
+          { name: "Identify Problem", id: "identify", description: "Determine the issue reported." },
+          { name: "Establish Theory", id: "theory", description: "Form a hypothesis of the cause." },
+          { name: "Test Theory", id: "test", description: "Verify the proposed solution." },
+          { name: "Apply Fix", id: "fix", description: "Implement the solution." },
+          { name: "Verify Solution", id: "verify", description: "Confirm the issue is resolved." },
+          { name: "Document Results", id: "document", description: "Record the process and outcome." }
+        ]
+      },
+      {
+        instructions: "PBQ 6: Match mobile device features to their functions",
+        tools: [
+          { name: "Touchscreen", id: "touch", description: "Enables direct input via touch." },
+          { name: "GPS", id: "gps", description: "Provides location tracking." },
+          { name: "Camera", id: "camera", description: "Captures photos and videos." },
+          { name: "Bluetooth", id: "bluetooth", description: "Enables short-range device pairing." },
+          { name: "Wi-Fi", id: "wifi", description: "Connects to wireless networks." },
+          { name: "NFC", id: "nfc", description: "Supports contactless transactions." }
+        ]
+      },
+      {
+        instructions: "PBQ 7: Match command line commands to their uses",
+        tools: [
+          { name: "ipconfig", id: "ipconfig", description: "Displays IP configuration." },
+          { name: "ping", id: "ping", description: "Tests network connectivity." },
+          { name: "tracert", id: "tracert", description: "Traces route to a destination." },
+          { name: "netstat", id: "netstat", description: "Shows network statistics." },
+          { name: "dir", id: "dir", description: "Lists directory contents." },
+          { name: "chkdsk", id: "chkdsk", description: "Checks disk for errors." }
+        ]
+      },
+      {
+        instructions: "PBQ 8: Match backup types to their characteristics",
+        tools: [
+          { name: "Full Backup", id: "full", description: "Backs up all data completely." },
+          { name: "Incremental Backup", id: "incremental", description: "Backs up changes since last backup." },
+          { name: "Differential Backup", id: "differential", description: "Backs up changes since last full backup." },
+          { name: "Image Backup", id: "image", description: "Creates a system snapshot." },
+          { name: "Mirror Backup", id: "mirror", description: "Duplicates data exactly." },
+          { name: "Offsite Backup", id: "offsite", description: "Stores data at a remote location." }
+        ]
+      },
+      {
+        instructions: "PBQ 9: Match virtualization concepts to their definitions",
+        tools: [
+          { name: "Hypervisor", id: "hypervisor", description: "Manages virtual machines." },
+          { name: "VM", id: "vm", description: "A virtualized computer instance." },
+          { name: "Snapshot", id: "snapshot", description: "Saves a VM's state." },
+          { name: "Container", id: "container", description: "Isolates applications with shared OS." },
+          { name: "VLAN", id: "vlan", description: "Segments network traffic virtually." },
+          { name: "Host", id: "host", description: "Physical machine running VMs." }
+        ]
+      },
+      {
+        instructions: "PBQ 10: Match operational procedures to their goals",
+        tools: [
+          { name: "Change Management", id: "change", description: "Controls system modifications." },
+          { name: "Incident Response", id: "incident", description: "Manages security breaches." },
+          { name: "Backup Verification", id: "verify", description: "Ensures backups are valid." },
+          { name: "User Training", id: "training", description: "Educates on best practices." },
+          { name: "Documentation", id: "doc", description: "Records processes and issues." },
+          { name: "Disaster Recovery", id: "recovery", description: "Restores systems post-disaster." }
+        ]
+      }
+    ];
 
-  <!-- PBQ 3 -->
-  <div id="pbq3" class="hidden">
-    <div class="instructions">PBQ 3: Drag the troubleshooting steps into the correct order</div>
-    <div id="theoryStepsPool" class="tools-container"></div>
-    <div id="theoryStepsTarget" class="order-container"></div>
-  </div>
+    let currentPBQ = 0;
+    let correctTotal = 0;
+    let incorrectTotal = 0;
+    const pbqArea = document.getElementById('pbqArea');
+    const submitBtn = document.getElementById('submit');
+    const nextBtn = document.getElementById('next');
+    const feedback = document.getElementById('feedback');
 
-  <div class="buttons">
-    <button id="clear">Clear</button>
-    <button id="submit" disabled>Submit</button>
-    <button id="next" disabled>Next ➡</button>
-  </div>
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
 
-  <div class="feedback" id="feedback"></div>
+    function renderPBQ(index) {
+      const pbq = pbqs[index];
+      pbqArea.innerHTML = `<div class="instructions">${pbq.instructions}</div>
+        <div class="tools-container" id="tools"></div>
+        <div id="descriptions"></div>`;
 
-</div>
+      const toolsContainer = document.getElementById('tools');
+      const descriptionsContainer = document.getElementById('descriptions');
 
-<script>
-  const toolsData = [
-    { name: "Crimper", id: "crimper", description: "Used to attach connectors to the end of cables by pressing metal pins into the conductors." },
-    { name: "Cable Stripper", id: "cable_stripper", description: "Removes insulation from wires to expose conductors for connections." },
-    { name: "Multimeter", id: "multimeter", description: "Measures electrical properties like voltage, current, and resistance." },
-    { name: "Punch Down Tool", id: "punch_down_tool", description: "Inserts wires into insulation-displacement connectors on patch panels or outlets." },
-    { name: "Loopback Plug", id: "loopback_plug", description: "Simulates network signals to test ports or network connectivity." }
-  ];
-
-  const malwareSteps = [
-    "Identify and research malware symptoms",
-    "Quarantine the infected system",
-    "Disable system restore (in Windows)",
-    "Remediate the system",
-    "Schedule scans and run updates",
-    "Enable system restore and create a restore point",
-    "Educate the end user"
-  ];
-
-  const theorySteps = [
-    "Identify the problem",
-    "Establish a theory of probable cause",
-    "Test the theory to determine cause",
-    "Establish a plan of action to resolve the problem",
-    "Implement the solution or escalate as necessary",
-    "Verify full system functionality and implement preventive measures",
-    "Document findings, actions, and outcomes"
-  ];
-
-  const toolsContainer = document.getElementById('tools1');
-  const descriptionsContainer = document.getElementById('descriptions1');
-  const stepsPool = document.getElementById('stepsPool');
-  const stepsTarget = document.getElementById('stepsTarget');
-  const theoryStepsPool = document.getElementById('theoryStepsPool');
-  const theoryStepsTarget = document.getElementById('theoryStepsTarget');
-  const feedback = document.getElementById('feedback');
-
-  const submitBtn = document.getElementById('submit');
-  const clearBtn = document.getElementById('clear');
-  const nextBtn = document.getElementById('next');
-  const topBackBtn = document.getElementById('topBack');
-
-  let currentPBQ = 1;
-
-  function shuffle(arr) {
-    return [...arr].sort(() => Math.random() - 0.5);
-  }
-
-  function renderPBQ1() {
-    toolsContainer.innerHTML = '';
-    descriptionsContainer.innerHTML = '';
-    shuffle(toolsData).forEach(tool => {
-      const t = document.createElement('div');
-      t.className = 'tool';
-      t.draggable = true;
-      t.dataset.id = tool.id;
-      t.textContent = tool.name;
-      toolsContainer.appendChild(t);
-    });
-
-    shuffle(toolsData).forEach(tool => {
-      const box = document.createElement('div');
-      box.className = 'description-box';
-      box.dataset.answer = tool.id;
-      box.innerHTML = `<span>${tool.description}</span>`;
-      descriptionsContainer.appendChild(box);
-    });
-  }
-
-  function renderPBQ2() {
-    stepsPool.innerHTML = '';
-    stepsTarget.innerHTML = '';
-
-    shuffle(malwareSteps).forEach(step => {
-      const div = document.createElement('div');
-      div.className = 'step';
-      div.draggable = true;
-      div.textContent = step;
-      div.dataset.step = step;
-      stepsPool.appendChild(div);
-    });
-
-    malwareSteps.forEach((_, i) => {
-      const target = document.createElement('div');
-      target.className = 'description-box';
-      target.dataset.index = i;
-
-      const number = document.createElement('div');
-      number.className = 'step-number';
-      number.textContent = `${i + 1}.`;
-
-      const holder = document.createElement('div');
-      holder.className = 'step-box';
-      holder.appendChild(number);
-
-      target.appendChild(holder);
-      stepsTarget.appendChild(target);
-    });
-  }
-
-  function renderPBQ3() {
-    theoryStepsPool.innerHTML = '';
-    theoryStepsTarget.innerHTML = '';
-
-    shuffle(theorySteps).forEach(step => {
-      const div = document.createElement('div');
-      div.className = 'step';
-      div.draggable = true;
-      div.textContent = step;
-      div.dataset.step = step;
-      theoryStepsPool.appendChild(div);
-    });
-
-    theorySteps.forEach((_, i) => {
-      const target = document.createElement('div');
-      target.className = 'description-box';
-      target.dataset.index = i;
-
-      const number = document.createElement('div');
-      number.className = 'step-number';
-      number.textContent = `${i + 1}.`;
-
-      const holder = document.createElement('div');
-      holder.className = 'step-box';
-      holder.appendChild(number);
-
-      target.appendChild(holder);
-      theoryStepsTarget.appendChild(target);
-    });
-  }
-
-  function setupDragDrop() {
-    document.querySelectorAll('[draggable="true"]').forEach(el => {
-      el.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', e.target.dataset.id || e.target.dataset.step);
-        e.dataTransfer.setData('type', e.target.classList.contains('tool') ? 'tool' : 'step');
-        e.target.classList.add('dragging');
-      });
-      el.addEventListener('dragend', e => {
-        e.target.classList.remove('dragging');
-      });
-    });
-
-    document.querySelectorAll('.description-box, .tools-container, .order-container').forEach(target => {
-      target.addEventListener('dragover', e => {
-        e.preventDefault();
+      shuffle(pbq.tools).forEach(tool => {
+        const el = document.createElement('div');
+        el.className = 'tool';
+        el.textContent = tool.name;
+        el.dataset.id = tool.id;
+        el.draggable = true;
+        toolsContainer.appendChild(el);
       });
 
-      target.addEventListener('drop', e => {
-        e.preventDefault();
-        const type = e.dataTransfer.getData('type');
-        const data = e.dataTransfer.getData('text/plain');
-        let dragging = null;
-        if (type === 'tool') {
-          dragging = document.querySelector(`.tool[data-id="${data}"]`);
-        } else if (type === 'step') {
-          dragging = document.querySelector(`.step[data-step="${data}"]`);
-        }
-        if (!dragging) return;
+      shuffle(pbq.tools).forEach(tool => {
+        const box = document.createElement('div');
+        box.className = 'description-box';
+        box.dataset.answer = tool.id;
+        box.dataset.answerText = tool.description;
+        box.innerHTML = `<span>${tool.description}</span>`;
+        descriptionsContainer.appendChild(box);
+      });
 
-        // PBQ 1: Tools to descriptions
-        if (type === 'tool' && currentPBQ === 1 && target.classList.contains('description-box')) {
-          if (target.querySelector('.tool')) {
-            // Move existing tool back to pool
-            const existingTool = target.querySelector('.tool');
-            toolsContainer.appendChild(existingTool);
+      setupDragDrop();
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+      feedback.textContent = '';
+    }
+
+    function setupDragDrop() {
+      document.querySelectorAll('.tool').forEach(el => {
+        el.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', e.target.dataset.id);
+        });
+      });
+
+      document.querySelectorAll('.description-box, .tools-container').forEach(target => {
+        target.addEventListener('dragover', e => e.preventDefault());
+        target.addEventListener('drop', e => {
+          e.preventDefault();
+          const data = e.dataTransfer.getData('text/plain');
+          const dragging = document.querySelector(`.tool[data-id="${data}"]`);
+
+          if (target.classList.contains('description-box')) {
+            const existing = target.querySelector('.tool');
+            if (existing) document.getElementById('tools').appendChild(existing);
+            target.appendChild(dragging);
+          } else {
+            target.appendChild(dragging);
           }
-          target.appendChild(dragging);
-        }
-
-        // PBQ 2: Malware steps to order
-        if (type === 'step' && currentPBQ === 2 && target.classList.contains('description-box')) {
-          if (target.querySelector('.step')) {
-            // Move existing step back to pool
-            const existingStep = target.querySelector('.step');
-            stepsPool.appendChild(existingStep);
-          }
-          target.querySelector('.step-box').appendChild(dragging);
-        }
-
-        // PBQ 3: Troubleshooting steps to order
-        if (type === 'step' && currentPBQ === 3 && target.classList.contains('description-box')) {
-          if (target.querySelector('.step')) {
-            // Move existing step back to pool
-            const existingStep = target.querySelector('.step');
-            theoryStepsPool.appendChild(existingStep);
-          }
-          target.querySelector('.step-box').appendChild(dragging);
-        }
-
-        // Return to pool
-        if (type === 'tool' && currentPBQ === 1 && target.classList.contains('tools-container')) {
-          toolsContainer.appendChild(dragging);
-        }
-        if (type === 'step' && currentPBQ === 2 && target.classList.contains('tools-container')) {
-          stepsPool.appendChild(dragging);
-        }
-        if (type === 'step' && currentPBQ === 3 && target.classList.contains('tools-container')) {
-          theoryStepsPool.appendChild(dragging);
-        }
-
-        enableSubmitIfReady();
+          enableSubmitIfReady();
+        });
       });
-    });
-  }
+    }
 
-  function enableSubmitIfReady() {
-    if (currentPBQ === 1) {
-      const allFilled = [...document.querySelectorAll('#descriptions1 .description-box')]
+    function enableSubmitIfReady() {
+      const allFilled = [...document.querySelectorAll('.description-box')]
         .every(box => box.querySelector('.tool'));
       submitBtn.disabled = !allFilled;
-    } else if (currentPBQ === 2) {
-      const allFilled = [...document.querySelectorAll('#stepsTarget .description-box')]
-        .every(box => box.querySelector('.step'));
-      submitBtn.disabled = !allFilled;
-    } else if (currentPBQ === 3) {
-      const allFilled = [...document.querySelectorAll('#theoryStepsTarget .description-box')]
-        .every(box => box.querySelector('.step'));
-      submitBtn.disabled = !allFilled;
     }
-  }
 
-  function clearIcons() {
-    document.querySelectorAll('.description-box').forEach(box => {
-      box.classList.remove('correct', 'incorrect');
-      box.querySelector('.result-icon')?.remove();
-    });
-  }
+    function submitAnswer() {
+      let correct = 0;
+      document.querySelectorAll('.description-box').forEach(box => {
+        const tool = box.querySelector('.tool');
+        box.classList.remove('correct', 'incorrect');
+        const feedbackText = document.createElement('div');
+        feedbackText.className = 'feedback-text';
+        const summaryFeedback = document.createElement('div');
+        summaryFeedback.className = 'summary-feedback';
 
-  function checkPBQ1() {
-    clearIcons();
-    let correct = 0;
-    document.querySelectorAll('#descriptions1 .description-box').forEach(box => {
-      const tool = box.querySelector('.tool');
-      const icon = document.createElement('span');
-      icon.className = 'result-icon';
-      if (tool && tool.dataset.id === box.dataset.answer) {
-        icon.textContent = '✔';
-        box.classList.add('correct');
-        correct++;
-      } else {
-        icon.textContent = '✖';
-        box.classList.add('incorrect');
-      }
-      box.appendChild(icon);
-    });
-    feedback.textContent = correct === toolsData.length
-      ? '✅ All correct!'
-      : '❌ Clear to try again or click Next.';
-    nextBtn.disabled = false;
-  }
-
-  function checkPBQ2() {
-    clearIcons();
-    let correct = 0;
-    document.querySelectorAll('#stepsTarget .description-box').forEach((box, idx) => {
-      const step = box.querySelector('.step');
-      const icon = document.createElement('span');
-      icon.className = 'result-icon';
-      if (step && step.dataset.step === malwareSteps[idx]) {
-        icon.textContent = '✔';
-        box.classList.add('correct');
-        correct++;
-      } else {
-        icon.textContent = '✖';
-        box.classList.add('incorrect');
-      }
-      box.appendChild(icon);
-    });
-    feedback.textContent = correct === malwareSteps.length
-      ? '✅ Steps in perfect order!'
-      : '❌ Clear to try again or click Next.';
-    nextBtn.disabled = false;
-  }
-
-  function checkPBQ3() {
-    clearIcons();
-    let correct = 0;
-    document.querySelectorAll('#theoryStepsTarget .description-box').forEach((box, idx) => {
-      const step = box.querySelector('.step');
-      const icon = document.createElement('span');
-      icon.className = 'result-icon';
-      if (step && step.dataset.step === theorySteps[idx]) {
-        icon.textContent = '✔';
-        box.classList.add('correct');
-        correct++;
-      } else {
-        icon.textContent = '✖';
-        box.classList.add('incorrect');
-      }
-      box.appendChild(icon);
-    });
-    feedback.textContent = correct === theorySteps.length
-      ? '✅ Steps in perfect order!'
-      : '❌ Clear to try again or click Next.';
-    nextBtn.disabled = false;
-  }
-
-  submitBtn.addEventListener('click', () => {
-    if (currentPBQ === 1) checkPBQ1();
-    else if (currentPBQ === 2) checkPBQ2();
-    else if (currentPBQ === 3) checkPBQ3();
-  });
-
-  clearBtn.addEventListener('click', () => {
-    if (currentPBQ === 1) renderPBQ1();
-    else if (currentPBQ === 2) renderPBQ2();
-    else if (currentPBQ === 3) renderPBQ3();
-    feedback.textContent = '';
-    submitBtn.disabled = true;
-    nextBtn.disabled = true;
-    setupDragDrop();
-  });
-
-  nextBtn.addEventListener('click', () => {
-    if (currentPBQ === 1) {
-      document.getElementById('pbq1').classList.add('hidden');
-      document.getElementById('pbq2').classList.remove('hidden');
-      currentPBQ = 2;
-      renderPBQ2();
-      setupDragDrop();
-      feedback.textContent = '';
+        if (tool && tool.dataset.id === box.dataset.answer) {
+          box.classList.add('correct');
+          correct++;
+          feedbackText.textContent = `Correct!`;
+          summaryFeedback.textContent = `✅ ${tool.textContent} matches this description.`;
+          box.appendChild(feedbackText);
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✓</span>`;
+          box.appendChild(tool);
+        } else {
+          box.classList.add('incorrect');
+          const correctTool = pbqs[currentPBQ].tools.find(t => t.id === box.dataset.answer).name;
+          feedbackText.textContent = `Incorrect. Correct answer: ${correctTool}`;
+          summaryFeedback.textContent = `✓ ${correctTool} is the correct match for this description.`; // Right side green ✓
+          box.appendChild(feedbackText);
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`; // Left side red ✗
+          if (tool) box.appendChild(tool);
+        }
+        box.appendChild(summaryFeedback);
+      });
+      correctTotal += correct;
+      incorrectTotal += (pbqs[currentPBQ].tools.length - correct);
+      feedback.textContent = `${correct} out of ${pbqs[currentPBQ].tools.length} correct`;
+      nextBtn.disabled = false;
       submitBtn.disabled = true;
-      nextBtn.disabled = true;
-    } else if (currentPBQ === 2) {
-      document.getElementById('pbq2').classList.add('hidden');
-      document.getElementById('pbq3').classList.remove('hidden');
-      currentPBQ = 3;
-      renderPBQ3();
-      setupDragDrop();
-      feedback.textContent = '';
-      submitBtn.disabled = true;
-      nextBtn.disabled = true;
     }
-  });
 
-  topBackBtn.addEventListener('click', () => {
-    window.location.href = 'aplus.html';
-  });
+    function showFinalScore() {
+      pbqArea.innerHTML = `<div class="instructions">Quiz Complete!</div>`;
+      feedback.textContent = `Overall Score: You got ${correctTotal} correct and ${incorrectTotal} wrong out of ${pbqs.length * 6} possible points.`; // Updated for 6 tools per PBQ
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = 'none';
+      const restartBtn = document.createElement('button');
+      restartBtn.textContent = 'Restart';
+      restartBtn.addEventListener('click', () => {
+        currentPBQ = 0;
+        correctTotal = 0;
+        incorrectTotal = 0;
+        renderPBQ(currentPBQ);
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'block';
+      });
+      document.querySelector('.buttons').appendChild(restartBtn);
+    }
 
-  // Initialize
-  renderPBQ1();
-  setupDragDrop();
-</script>
+    submitBtn.addEventListener('click', submitAnswer);
+    nextBtn.addEventListener('click', () => {
+      if (currentPBQ < pbqs.length - 1) {
+        currentPBQ++;
+        renderPBQ(currentPBQ);
+      } else if (currentPBQ === pbqs.length - 1) {
+        showFinalScore();
+      }
+    });
 
+    document.getElementById('topBack').onclick = () => history.back();
+
+    renderPBQ(currentPBQ);
+  </script>
 </body>
 </html>

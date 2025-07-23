@@ -135,13 +135,44 @@
       line-height: 1.25rem;
       cursor: pointer;
     }
+    /* Popup Styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #000;
+      color: #00FF00;
+      border: 3px solid #00FF00;
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 12px #00FF00;
+      z-index: 10002;
+      text-align: center;
+    }
+    .popup button {
+      background-color: #FFD140;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .popup button:hover {
+      background-color: #e6b800;
+    }
   </style>
 </head>
 <body>
 
   <h1>OverPowered StudyGuides</h1>
 
-  <div class="highlight-message">
+  <div class="highlight-message" id="noSignUpMessage">
     NO sign up | NO ads | NO cookies | NO BS 
   </div>
   
@@ -149,13 +180,15 @@
     600+ multiple choice questions | 100+ PBQs | Terminal Simulator
   </div>
 
-  <div class="upgrade-message">
+  <div class="upgrade-message" id="oneTimeMessage">
     Lifetime access to all content for just a ONE-TIME $0.99 | NO subscription
   </div>
 
-<div class="highlight-message">
-    *Don't delete oppc.us cache*
-</div>
+  <!-- Popup for cache message -->
+  <div id="cachePopup" class="popup">
+    <p>*Don't delete oppc.us cache*</p>
+    <button onclick="closePopup()">OK</button>
+  </div>
 
   <!-- CompTIA Group -->
   <div class="cert-group" id="comptia">
@@ -239,6 +272,32 @@
         if (paypalDiv) {
           paypalDiv.style.display = 'none';
         }
+
+        // Hide promotional messages
+        const noSignUpMessage = document.getElementById('noSignUpMessage');
+        if (noSignUpMessage) {
+          noSignUpMessage.style.display = 'none';
+        }
+        const oneTimeMessage = document.getElementById('oneTimeMessage');
+        if (oneTimeMessage) {
+          oneTimeMessage.style.display = 'none';
+        }
+
+        // Show popup if not already shown
+        if (!localStorage.getItem('cachePopupShown')) {
+          const popup = document.getElementById('cachePopup');
+          if (popup) {
+            popup.style.display = 'block';
+            localStorage.setItem('cachePopupShown', 'true');
+          }
+        }
+      }
+    }
+
+    function closePopup() {
+      const popup = document.getElementById('cachePopup');
+      if (popup) {
+        popup.style.display = 'none';
       }
     }
 

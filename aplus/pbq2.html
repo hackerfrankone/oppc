@@ -86,6 +86,7 @@
       word-wrap: break-word;
       font-size: clamp(0.9rem, 2.8vw, 1rem);
       margin-bottom: 0.4rem;
+      position: relative;
     }
 
     .tool {
@@ -152,6 +153,8 @@
 
     .correct .result-icon { color: lime; margin-left: 0.5rem; }
     .incorrect .result-icon { color: red; margin-left: 0.5rem; }
+    .feedback-text { color: #00FF00; font-size: 0.8rem; margin-top: 0.2rem; text-align: left; }
+    .summary-feedback { color: #00FF00; font-size: 0.8rem; margin-top: 0.5rem; text-align: left; padding-left: 1rem; }
   </style>
 </head>
 <body>
@@ -159,7 +162,6 @@
   <div class="pbq-container">
     <div id="pbqArea"></div>
     <div class="buttons">
-      <button id="clear">Clear</button>
       <button id="submit" disabled>Submit</button>
       <button id="next" disabled>Next ➡</button>
     </div>
@@ -169,25 +171,7 @@
   <script>
     const pbqs = [
       {
-        instructions: "PBQ 1: Match system utilities to their purpose",
-        tools: [
-          { name: "Task Manager", id: "taskmgr", description: "View running processes and performance data." },
-          { name: "MSConfig", id: "msconfig", description: "Manage startup programs and boot configuration." },
-          { name: "Device Manager", id: "devmgmt", description: "View and manage hardware and drivers." },
-          { name: "Disk Management", id: "diskmgmt", description: "Create, delete, and format partitions." }
-        ]
-      },
-      {
-        instructions: "PBQ 2: Match backup methods to their description",
-        tools: [
-          { name: "Full Backup", id: "full", description: "Backs up all selected data." },
-          { name: "Incremental", id: "incremental", description: "Backs up data changed since the last backup of any type." },
-          { name: "Differential", id: "differential", description: "Backs up data changed since the last full backup." },
-          { name: "Image Backup", id: "image", description: "Creates a snapshot of the entire system including OS." }
-        ]
-      },
-      {
-        instructions: "PBQ 3: Match security settings to their description",
+        instructions: "PBQ 1: Match security settings to their description",
         tools: [
           { name: "BitLocker", id: "bitlocker", description: "Encrypts entire drives for data protection." },
           { name: "Firewall", id: "firewall", description: "Monitors and filters incoming/outgoing network traffic." },
@@ -196,7 +180,7 @@
         ]
       },
       {
-        instructions: "PBQ 4: Match Windows tools to troubleshooting tasks",
+        instructions: "PBQ 2: Match Windows tools to troubleshooting tasks",
         tools: [
           { name: "Event Viewer", id: "eventviewer", description: "View logs related to system and application events." },
           { name: "Reliability Monitor", id: "reliability", description: "Shows timeline of system changes and failures." },
@@ -205,25 +189,7 @@
         ]
       },
       {
-        instructions: "PBQ 5: Match file system types to their usage",
-        tools: [
-          { name: "NTFS", id: "ntfs", description: "Default file system for Windows; supports permissions and encryption." },
-          { name: "FAT32", id: "fat32", description: "Used for flash drives and external storage; wide compatibility." },
-          { name: "exFAT", id: "exfat", description: "Optimized for flash drives; supports larger files than FAT32." },
-          { name: "ext4", id: "ext4", description: "Common file system in Linux environments." }
-        ]
-      },
-      {
-        instructions: "PBQ 6: Match mobile OS tools to their function",
-        tools: [
-          { name: "Reset", id: "reset", description: "Wipes data and restores device to factory settings." },
-          { name: "Airplane Mode", id: "airplane", description: "Disables wireless communication." },
-          { name: "Tethering", id: "tethering", description: "Shares mobile connection with other devices." },
-          { name: "App Manager", id: "appmanager", description: "Controls app installs, permissions, and updates." }
-        ]
-      },
-      {
-        instructions: "PBQ 7: Match startup errors to probable causes",
+        instructions: "PBQ 3: Match startup errors to probable causes",
         tools: [
           { name: "Missing OS", id: "missingos", description: "Boot configuration is corrupted or drive not detected." },
           { name: "Blue Screen", id: "bluescreen", description: "Driver or hardware failure has occurred." },
@@ -232,7 +198,7 @@
         ]
       },
       {
-        instructions: "PBQ 8: Match command line tools to tasks",
+        instructions: "PBQ 4: Match command line tools to tasks",
         tools: [
           { name: "sfc", id: "sfc", description: "Scans and restores corrupted system files." },
           { name: "chkdsk", id: "chkdsk", description: "Checks disk for errors and bad sectors." },
@@ -241,29 +207,66 @@
         ]
       },
       {
-        instructions: "PBQ 9: Match networking commands to functions",
+        instructions: "PBQ 5: Match backup methods to their description",
         tools: [
-          { name: "ipconfig", id: "ipconfig", description: "Displays IP and network adapter settings." },
-          { name: "netstat", id: "netstat", description: "Displays network connections and ports." },
-          { name: "nslookup", id: "nslookup", description: "Tests DNS resolution for domains." },
-          { name: "ping", id: "ping", description: "Tests connectivity to another network host." }
+          { name: "Full Backup", id: "full", description: "Backs up all selected data." },
+          { name: "Incremental", id: "incremental", description: "Backs up data changed since the last backup of any type." },
+          { name: "Differential", id: "differential", description: "Backs up data changed since the last full backup." },
+          { name: "Image Backup", id: "image", description: "Creates a snapshot of the entire system including OS." }
         ]
       },
       {
-        instructions: "PBQ 10: Match permissions to user roles",
+        instructions: "PBQ 6: Match malware removal steps to their order",
+        tools: [
+          { name: "Identify Symptoms", id: "identify", description: "Recognize signs of malware infection." },
+          { name: "Quarantine System", id: "quarantine", description: "Isolate the infected device." },
+          { name: "Run Malware Scan", id: "scan", description: "Use antivirus to detect and remove malware." },
+          { name: "Update Software", id: "update", description: "Apply latest security patches post-removal." }
+        ]
+      },
+      {
+        instructions: "PBQ 7: Match operational procedures to their purpose",
+        tools: [
+          { name: "Change Management", id: "change", description: "Document and approve system changes." },
+          { name: "Incident Response", id: "incident", description: "Handle security breaches or failures." },
+          { name: "Backup Verification", id: "verify", description: "Ensure backups are functional and complete." },
+          { name: "User Training", id: "training", description: "Educate users on security best practices." }
+        ]
+      },
+      {
+        instructions: "PBQ 8: Match permissions to user roles",
         tools: [
           { name: "Read", id: "read", description: "Allows viewing file contents." },
           { name: "Write", id: "write", description: "Allows modifying file contents." },
           { name: "Execute", id: "execute", description: "Allows running files or scripts." },
           { name: "Full Control", id: "full", description: "Allows all permissions including deletion and ownership." }
         ]
+      },
+      {
+        instructions: "PBQ 9: Match virtualization security measures to their use",
+        tools: [
+          { name: "VM Isolation", id: "isolation", description: "Separates virtual machines to prevent interference." },
+          { name: "Snapshot Security", id: "snapshot", description: "Secures VM snapshots from unauthorized access." },
+          { name: "Hypervisor Updates", id: "updates", description: "Applies patches to the virtualization layer." },
+          { name: "Access Controls", id: "access", description: "Restricts VM management to authorized users." }
+        ]
+      },
+      {
+        instructions: "PBQ 10: Match disaster recovery steps to their sequence",
+        tools: [
+          { name: "Assess Damage", id: "assess", description: "Evaluate the extent of data or system loss." },
+          { name: "Restore Data", id: "restore", description: "Recover data from backups." },
+          { name: "Test Systems", id: "test", description: "Verify restored systems are operational." },
+          { name: "Document Recovery", id: "document", description: "Record the recovery process for future reference." }
+        ]
       }
     ];
 
     let currentPBQ = 0;
+    let correctTotal = 0;
+    let incorrectTotal = 0;
     const pbqArea = document.getElementById('pbqArea');
     const submitBtn = document.getElementById('submit');
-    const clearBtn = document.getElementById('clear');
     const nextBtn = document.getElementById('next');
     const feedback = document.getElementById('feedback');
 
@@ -302,7 +305,6 @@
       submitBtn.disabled = true;
       nextBtn.disabled = true;
       feedback.textContent = '';
-      clearBtn.textContent = (index === pbqs.length - 1) ? 'Restart' : 'Clear';
     }
 
     function setupDragDrop() {
@@ -337,34 +339,58 @@
       submitBtn.disabled = !allFilled;
     }
 
-    function clearAll() {
-      if (clearBtn.textContent === 'Restart') {
-        window.location.reload();
-      } else {
-        renderPBQ(currentPBQ);
-      }
-    }
-
     function submitAnswer() {
       let correct = 0;
       document.querySelectorAll('.description-box').forEach(box => {
         const tool = box.querySelector('.tool');
         box.classList.remove('correct', 'incorrect');
+        const feedbackText = document.createElement('div');
+        feedbackText.className = 'feedback-text';
+        const summaryFeedback = document.createElement('div');
+        summaryFeedback.className = 'summary-feedback';
 
         if (tool && tool.dataset.id === box.dataset.answer) {
           box.classList.add('correct');
           correct++;
+          feedbackText.textContent = `Correct!`;
+          summaryFeedback.textContent = `✅ ${tool.textContent} matches this description.`;
+          box.appendChild(feedbackText);
           box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✓</span>`;
           box.appendChild(tool);
         } else {
           box.classList.add('incorrect');
-          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`;
+          const correctTool = pbqs[currentPBQ].tools.find(t => t.id === box.dataset.answer).name;
+          feedbackText.textContent = `Incorrect. Correct answer: ${correctTool}`;
+          summaryFeedback.textContent = `✓ ${correctTool} is the correct match for this description.`; // Right side keeps green ✓
+          box.appendChild(feedbackText);
+          box.innerHTML = `<span>${box.dataset.answerText}</span> <span class="result-icon">✗</span>`; // Left side changed to red ✗
           if (tool) box.appendChild(tool);
         }
+        box.appendChild(summaryFeedback);
       });
-      feedback.textContent = `You got ${correct} correct.`;
+      correctTotal += correct;
+      incorrectTotal += (pbqs[currentPBQ].tools.length - correct);
+      feedback.textContent = `${correct} out of ${pbqs[currentPBQ].tools.length} correct`;
       nextBtn.disabled = false;
       submitBtn.disabled = true;
+    }
+
+    function showFinalScore() {
+      pbqArea.innerHTML = `<div class="instructions">Quiz Complete!</div>`;
+      feedback.textContent = `Overall Score: You got ${correctTotal} correct and ${incorrectTotal} wrong out of ${pbqs.length * 4} possible points.`;
+      nextBtn.style.display = 'none';
+      submitBtn.style.display = 'none';
+      const restartBtn = document.createElement('button');
+      restartBtn.textContent = 'Restart';
+      restartBtn.addEventListener('click', () => {
+        currentPBQ = 0;
+        correctTotal = 0;
+        incorrectTotal = 0;
+        renderPBQ(currentPBQ);
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'block';
+      });
+      document.querySelector('.buttons').appendChild(restartBtn);
     }
 
     submitBtn.addEventListener('click', submitAnswer);
@@ -372,9 +398,10 @@
       if (currentPBQ < pbqs.length - 1) {
         currentPBQ++;
         renderPBQ(currentPBQ);
+      } else if (currentPBQ === pbqs.length - 1) {
+        showFinalScore();
       }
     });
-    clearBtn.addEventListener('click', clearAll);
 
     document.getElementById('topBack').onclick = () => history.back();
 

@@ -8,7 +8,7 @@
     style-src 'self' 'unsafe-inline'; 
     img-src 'self' https://www.paypalobjects.com; 
     frame-src 'none';
-    connect-src 'self';">
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   <title>OverPowered StudyGuides</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
@@ -154,7 +154,7 @@
     box-shadow: 0 0 10px #00FF00;
     z-index: 9999;
   ">
-    Students Studying Live | <span id="studentCount">...</span>
+    Students Studying Live | <span id="studentCount">10</span>
   </div>
 
   <h1>OverPowered StudyGuides</h1>
@@ -257,35 +257,23 @@
       }
     }
 
-    // Simulated live student counter
-    (function () {
-      let currentCount = Math.floor(Math.random() * 4) + 6; // Start between 6–9
-      const maxCount = 14;
-      const minCount = 3;
-
-      function updateLiveCount() {
-        const change = Math.floor(Math.random() * 4) - 1; // -1, 0, +1, +2
-        currentCount += change;
-
-        // Clamp between min and max
-        currentCount = Math.max(minCount, Math.min(maxCount, currentCount));
-
-        document.getElementById("studentCount").textContent = currentCount;
+    async function fetchLiveCount() {
+      try {
+        const res = await fetch("https://student-live.oppcus2025.workers.dev/live-count");
+        const data = await res.json();
+        document.getElementById("studentCount").textContent = data.count;
+      } catch (e) {
+        console.error("Live count fetch failed:", e);
       }
+    }
 
-      // Set initial value
-      document.getElementById("studentCount").textContent = currentCount;
+    fetchLiveCount(); // Initial load
+    setInterval(fetchLiveCount, 300000); // Every 5 minutes
 
-      // Update every 5 minutes
-      setInterval(updateLiveCount, 300000);
-
-      // Simulate early activity (every 30s for 2 mins)
-      for (let i = 1; i <= 4; i++) {
-        setTimeout(updateLiveCount, i * 30000);
-      }
-    })();
-
-    window.onload = unlockContent;
+    window.onload = function () {
+      unlockContent();
+      fetchLiveCount(); // Extra safety fetch
+    };
   </script>
 
 </body>

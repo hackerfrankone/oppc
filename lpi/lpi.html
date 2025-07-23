@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <meta name="description" content="Interactive Linux Professional Institute (LPI) quiz to test your Linux knowledge.">
-  <title>LPI Quiz</title>
+  <title>LPI LPIC-1 101-500 Quiz</title>
   <style>
-    :root {
-      --primary-color: #00FF00;
-      --text-color: #000000;
-      --background-color: #000000;
-    }
-
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       min-height: 100vh;
-      background-color: var(--background-color);
+      background-color: black;
       font-family: 'Courier New', monospace;
-      color: var(--primary-color);
+      color: #00FF00;
+      user-select: none;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -32,14 +26,16 @@
       position: relative;
     }
 
-    .button {
+    .back-button,
+    .pbq-button,
+    .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
-      color: var(--primary-color);
-      border: 2px solid var(--primary-color);
+      color: #00FF00;
+      border: 2px solid #00FF00;
       padding: 0.5rem 1rem;
-      font-family: inherit;
+      font-family: 'Courier New', monospace;
       font-size: clamp(1rem, 3vw, 1.2rem);
       border-radius: 5px;
       cursor: pointer;
@@ -57,11 +53,17 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
-    .button:hover,
-    .button:focus {
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      outline: none;
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      left: 1rem;
+      display: none;
+    }
+
+    .back-button:hover,
+    .pbq-button:hover,
+    .restart-button:hover {
+      background-color: #00FF00;
+      color: black;
     }
 
     .quiz-content {
@@ -75,12 +77,12 @@
       margin-bottom: 1rem;
       font-size: clamp(1rem, 3.5vw, 1.2rem);
       line-height: 1.4;
-      overflow-wrap: break-word;
+      word-wrap: break-word;
       max-height: 20vh;
       overflow-y: auto;
       padding-right: 0.5rem;
       scrollbar-width: thin;
-      scrollbar-color: var(--primary-color) transparent;
+      scrollbar-color: #00FF00 transparent;
     }
 
     .question::-webkit-scrollbar {
@@ -92,7 +94,7 @@
     }
 
     .question::-webkit-scrollbar-thumb {
-      background: var(--primary-color);
+      background: #00FF00;
       border-radius: 3px;
     }
 
@@ -107,13 +109,14 @@
     }
 
     .choice {
-      border: 2px solid var(--primary-color);
+      border: 2px solid #00FF00;
       border-radius: 5px;
       padding: 0.6rem;
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
+      user-select: none;
       text-align: left;
-      overflow-wrap: break-word;
+      word-wrap: break-word;
       line-height: 1.3;
       min-height: 3rem;
       display: flex;
@@ -121,11 +124,9 @@
       font-size: clamp(0.9rem, 2.8vw, 1rem);
     }
 
-    .choice:hover:not(.disabled),
-    .choice:focus:not(.disabled) {
-      background-color: var(--primary-color);
-      color: var(--text-color);
-      outline: none;
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
     }
 
     .choice.disabled {
@@ -137,6 +138,12 @@
       margin-top: 1rem;
       font-size: clamp(0.9rem, 3vw, 1rem);
       min-height: 2rem;
+      text-align: center;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
       text-align: center;
     }
 
@@ -159,7 +166,9 @@
         padding: 0.5rem;
       }
 
-      .button {
+      .back-button,
+      .pbq-button,
+      .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
       }
@@ -167,168 +176,416 @@
       .pbq-button {
         left: calc(1rem + 5rem + 0.5rem);
       }
+
+      .restart-button {
+        top: calc(0.5rem + 2rem + 0.5rem);
+      }
     }
   </style>
 </head>
 <body>
-  <a href="../index.html" class="button back-button" aria-label="Back to main page">← Back</a>
-  <a href="pbq.html" class="button pbq-button" aria-label="Go to PBQ section">PBQ</a>
+  <a href="../index.html" class="back-button">← Back</a>
+  <a href="pbq.html" class="pbq-button">PBQ</a>
+  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
-  <main class="quiz-content">
-    <div class="question" id="question" role="region" aria-live="polite"></div>
-    <div class="choices" id="choices" role="listbox"></div>
-    <div class="feedback" id="feedback" role="status"></div>
-  </main>
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
+  </div>
 
   <script>
     const questions = [
-      { question: "What command lists files in a directory?", choices: ["ls", "cd", "mkdir", "rm"], answer: "ls" },
-      { question: "Which file contains user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"], answer: "/etc/passwd" },
-      { question: "What does the 'chmod' command do?", choices: ["Changes file permissions", "Changes file owner", "Changes file name", "Changes directory"], answer: "Changes file permissions" },
-      { question: "Which init system is most commonly used in modern Linux distributions?", choices: ["systemd", "SysVinit", "Upstart", "OpenRC"], answer: "systemd" },
-      { question: "What port does SSH use by default?", choices: ["22", "80", "443", "21"], answer: "22" },
-      { question: "Which command displays the current directory?", choices: ["pwd", "whoami", "ls", "cd"], answer: "pwd" },
-      { question: "Which file stores network interface configuration?", choices: ["/etc/network/interfaces", "/etc/hosts", "/etc/resolv.conf", "/etc/fstab"], answer: "/etc/network/interfaces" },
-      { question: "What is the primary purpose of the 'cron' daemon?", choices: ["Schedule jobs", "Manage services", "Handle logging", "Control user access"], answer: "Schedule jobs" },
-      { question: "Which command shows running processes?", choices: ["ps", "ls", "kill", "top"], answer: "ps" },
-      { question: "Which command is used to search for text within files?", choices: ["grep", "find", "awk", "sed"], answer: "grep" },
-      { question: "What does the 'tar' command do?", choices: ["Archives files", "Changes permissions", "Copies files", "Deletes files"], answer: "Archives files" },
-      { question: "Which file contains kernel parameters at boot?", choices: ["/boot/grub/grub.cfg", "/etc/fstab", "/etc/hostname", "/etc/hosts"], answer: "/boot/grub/grub.cfg" },
-      { question: "What does the 'df' command display?", choices: ["Disk space usage", "Memory usage", "CPU usage", "Network statistics"], answer: "Disk space usage" },
-      { question: "Which command is used to update package lists on Debian-based systems?", choices: ["apt-get update", "yum update", "pacman -Syu", "zypper refresh"], answer: "apt-get update" },
-      { question: "What is the superuser account called in Linux?", choices: ["root", "admin", "super", "sudo"], answer: "root" },
-      { question: "What command changes the owner of a file?", choices: ["chown", "chmod", "chgrp", "passwd"], answer: "chown" },
-      { question: "Which file defines system hostname?", choices: ["/etc/hostname", "/etc/hosts", "/etc/resolv.conf", "/etc/network/interfaces"], answer: "/etc/hostname" },
-      { question: "Which command is used to display manual pages?", choices: ["man", "help", "info", "doc"], answer: "man" },
-      { question: "What does the 'ps aux' command do?", choices: ["Lists all running processes", "Shows network interfaces", "Lists open files", "Displays disk usage"], answer: "Lists all running processes" },
-      { question: "Which file contains user password hashes?", choices: ["/etc/shadow", "/etc/passwd", "/etc/group", "/etc/gshadow"], answer: "/etc/shadow" },
-      { question: "What is the default shell for most Linux users?", choices: ["bash", "zsh", "sh", "csh"], answer: "bash" },
-      { question: "Which command is used to reboot a Linux system?", choices: ["reboot", "shutdown", "halt", "init"], answer: "reboot" },
-      { question: "What does the 'kill' command do?", choices: ["Terminates processes", "Starts services", "Changes permissions", "Schedules jobs"], answer: "Terminates processes" },
-      { question: "Which directory contains user home directories?", choices: ["/home", "/root", "/usr", "/var"], answer: "/home" },
-      { question: "What is the purpose of the 'sudo' command?", choices: ["Run commands as another user", "Change passwords", "Modify files", "Schedule tasks"], answer: "Run commands as another user" },
-      { question: "Which command shows network connections?", choices: ["netstat", "ping", "traceroute", "ifconfig"], answer: "netstat" },
-      { question: "What is the package manager for Red Hat-based distributions?", choices: ["yum", "apt", "pacman", "zypper"], answer: "yum" },
-      { question: "Which file contains DNS resolver configuration?", choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/nsswitch.conf", "/etc/network/interfaces"], answer: "/etc/resolv.conf" },
-      { question: "What does the 'mount' command do?", choices: ["Mounts filesystems", "Changes ownership", "Checks disk usage", "Starts services"], answer: "Mounts filesystems" },
-      { question: "Which command shows disk partitions?", choices: ["fdisk -l", "df -h", "mount", "lsblk"], answer: "fdisk -l" },
-      { question: "What does the 'uname -r' command show?", choices: ["Kernel version", "Hostname", "User ID", "CPU info"], answer: "Kernel version" },
-      { question: "Which directory contains system log files?", choices: ["/var/log", "/etc/log", "/usr/log", "/log"], answer: "/var/log" },
-      { question: "What does the 'ifconfig' command do?", choices: ["Displays network interfaces", "Displays disk usage", "Shows running processes", "Edits files"], answer: "Displays network interfaces" },
-      { question: "Which command is used to change file timestamps?", choices: ["touch", "chmod", "chown", "date"], answer: "touch" },
-      { question: "What is the main configuration file for sudo?", choices: ["/etc/sudoers", "/etc/passwd", "/etc/shadow", "/etc/group"], answer: "/etc/sudoers" },
-      { question: "Which command is used to download files from the internet?", choices: ["wget", "curl", "ftp", "scp"], answer: "wget" },
-      { question: "What does the 'ps -ef' command show?", choices: ["Full format list of all processes", "Network interfaces", "Disk usage", "Open files"], answer: "Full format list of all processes" },
-      { question: "Which command changes the system date and time?", choices: ["date", "time", "clock", "timedatectl"], answer: "date" },
-      { question: "Which of the following is a Linux text editor?", choices: ["vim", "notepad", "nano", "emacs"], answer: "vim" },
-      { question: "Which runlevel is used for multi-user graphical mode?", choices: ["5", "3", "1", "0"], answer: "5" },
-      { question: "Which command displays the first lines of a file?", choices: ["head", "tail", "less", "cat"], answer: "head" },
-      { question: "What is the purpose of the '/etc/fstab' file?", choices: ["Filesystem mount points", "Network settings", "User accounts", "Boot loader configuration"], answer: "Filesystem mount points" },
-      { question: "Which command is used to change group ownership of a file?", choices: ["chgrp", "chown", "chmod", "grpmod"], answer: "chgrp" },
-      { question: "Which Linux distribution uses the Pacman package manager?", choices: ["Arch Linux", "Ubuntu", "Fedora", "Debian"], answer: "Arch Linux" },
-      { question: "What command shows disk free space?", choices: ["df", "du", "ls", "mount"], answer: "df" },
-      { question: "Which command displays user login history?", choices: ["last", "who", "w", "users"], answer: "last" },
-      { question: "What does the 'env' command do?", choices: ["Shows environment variables", "Changes file permissions", "Starts services", "Schedules jobs"], answer: "Shows environment variables" },
-      { question: "Which command is used to extract tar archives?", choices: ["tar -xvf", "tar -cvf", "tar -tf", "tar -rvf"], answer: "tar -xvf" },
-      { question: "Which Linux directory contains binaries for user programs?", choices: ["/usr/bin", "/bin", "/sbin", "/lib"], answer: "/usr/bin" },
-      { question: "What is the command to switch to the root user?", choices: ["su", "sudo", "login", "root"], answer: "su" },
-      { question: "Which command is used to display free and used memory?", choices: ["free", "top", "vmstat", "ps"], answer: "free" },
-      { question: "Which system file controls services at boot time?", choices: ["/etc/systemd/system", "/etc/init.d", "/etc/rc.d", "/etc/init"], answer: "/etc/systemd/system" },
-      { question: "What is the command to check open ports?", choices: ["netstat -tuln", "ifconfig", "ipconfig", "ping"], answer: "netstat -tuln" },
-      { question: "What is the default runlevel for system shutdown?", choices: ["0", "6", "1", "3"], answer: "0" },
-      { question: "Which command edits text files in the terminal?", choices: ["nano", "gedit", "vim", "emacs"], answer: "nano" },
-      { question: "Which command loads a kernel module with specific parameters?", choices: ["modprobe", "insmod", "lsmod", "rmmod"], answer: "modprobe" },
-      { question: "What is the purpose of the 'setuid' bit on an executable?", choices: ["Runs with the permissions of the file owner", "Restricts execution to root", "Allows group execution only", "Enables sticky bit"], answer: "Runs with the permissions of the file owner" },
-      { question: "Which file configures the systemd journal storage settings?", choices: ["/etc/systemd/journald.conf", "/etc/syslog.conf", "/etc/logrotate.conf", "/var/log/journal.conf"], answer: "/etc/systemd/journald.conf" },
-      { question: "What command displays the routing table on a Linux system?", choices: ["ip route", "netstat -r", "route -n", "ip addr"], answer: "ip route" },
-      { question: "Which command creates a software RAID array?", choices: ["mdadm", "mkfs", "parted", "fdisk"], answer: "mdadm" },
-      { question: "What does the 'nofail' option in /etc/fstab do?", choices: ["Allows boot to continue if the filesystem fails to mount", "Forces filesystem check on boot", "Prevents unmounting", "Enables read-only mount"], answer: "Allows boot to continue if the filesystem fails to mount" },
-      { question: "Which command displays detailed kernel module information?", choices: ["modinfo", "lsmod", "modprobe", "insmod"], answer: "modinfo" },
-      { question: "What is the purpose of the 'chage' command?", choices: ["Manages user password aging", "Changes file ownership", "Modifies group membership", "Edits cron schedules"], answer: "Manages user password aging" },
-      { question: "Which file specifies the order of name resolution?", choices: ["/etc/nsswitch.conf", "/etc/resolv.conf", "/etc/hosts", "/etc/network/interfaces"], answer: "/etc/nsswitch.conf" },
-      { question: "What command restores a system from a tar backup?", choices: ["tar -xvf", "tar -cvf", "tar -tvf", "tar -rvf"], answer: "tar -xvf" },
-      { question: "Which systemd command reloads unit files without interrupting services?", choices: ["systemctl daemon-reload", "systemctl reload", "systemctl restart", "systemctl enable"], answer: "systemctl daemon-reload" },
-      { question: "What is the purpose of the 'iptables -F' command?", choices: ["Flushes all firewall rules", "Forwards packets", "Filters specific ports", "Saves firewall rules"], answer: "Flushes all firewall rules" },
-      { question: "Which command checks filesystem integrity?", choices: ["fsck", "mkfs", "fdisk", "parted"], answer: "fsck" },
-      { question: "What does the 'GRUB_TIMEOUT' parameter in /etc/default/grub control?", choices: ["Boot menu display time", "Kernel load time", "Filesystem check interval", "System shutdown delay"], answer: "Boot menu display time" },
-      { question: "Which command lists open files for a specific process ID?", choices: ["lsof -p", "netstat -p", "ps -p", "top -p"], answer: "lsof -p" },
-      { question: "What is the purpose of the '/proc/sys/kernel' directory?", choices: ["Stores kernel parameters", "Contains user binaries", "Logs system events", "Manages systemd services"], answer: "Stores kernel parameters" },
-      { question: "Which command configures a static IP address on a modern Linux system?", choices: ["ip addr add", "ifconfig", "netplan apply", "nmcli"], answer: "nmcli" },
-      { question: "What does the 'nice' command do when running a process?", choices: ["Sets process priority", "Kills a process", "Monitors CPU usage", "Schedules a process"], answer: "Sets process priority" },
-      { question: "Which file is used to configure log rotation?", choices: ["/etc/logrotate.conf", "/etc/syslog.conf", "/etc/journald.conf", "/etc/rsyslog.conf"], answer: "/etc/logrotate.conf" },
-      { question: "What command is used to enter a chroot environment?", choices: ["chroot", "su", "sudo", "pivot_root"], answer: "chroot" }
+      {
+        question: "Which command displays the current working directory?",
+        choices: ["cd", "pwd", "ls", "dir"],
+        answer: "pwd"
+      },
+      {
+        question: "What does the -l option do with the ls command?",
+        choices: ["Lists files in long format", "Lists hidden files", "Sorts by size", "Displays recursively"],
+        answer: "Lists files in long format"
+      },
+      {
+        question: "Which file contains user account information?",
+        choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"],
+        answer: "/etc/passwd"
+      },
+      {
+        question: "What command is used to change file permissions?",
+        choices: ["chmod", "chown", "chgrp", "lsattr"],
+        answer: "chmod"
+      },
+      {
+        question: "Which directory contains system boot files?",
+        choices: ["/bin", "/boot", "/etc", "/var"],
+        answer: "/boot"
+      },
+      {
+        question: "What does the df command do?",
+        choices: ["Displays file contents", "Reports disk space usage", "Finds files", "Deletes files"],
+        answer: "Reports disk space usage"
+      },
+      {
+        question: "Which command installs software on a Debian-based system?",
+        choices: ["yum", "apt", "rpm", "dnf"],
+        answer: "apt"
+      },
+      {
+        question: "What does the -r option do with the rm command?",
+        choices: ["Removes recursively", "Removes read-only files", "Renames files", "Restores files"],
+        answer: "Removes recursively"
+      },
+      {
+        question: "Which shell is the default on most Linux systems?",
+        choices: ["sh", "bash", "csh", "ksh"],
+        answer: "bash"
+      },
+      {
+        question: "What command displays the last few lines of a file?",
+        choices: ["head", "tail", "cat", "more"],
+        answer: "tail"
+      },
+      {
+        question: "Which file contains encrypted passwords?",
+        choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"],
+        answer: "/etc/shadow"
+      },
+      {
+        question: "What does the grep command do?",
+        choices: ["Searches text patterns", "Compresses files", "Edits files", "Lists directories"],
+        answer: "Searches text patterns"
+      },
+      {
+        question: "Which command updates the locate database?",
+        choices: ["updatedb", "locate", "find", "whereis"],
+        answer: "updatedb"
+      },
+      {
+        question: "What does the -i option do with the cp command?",
+        choices: ["Ignores errors", "Installs files", "Prompts before overwrite", "Includes hidden files"],
+        answer: "Prompts before overwrite"
+      },
+      {
+        question: "Which directory contains variable data like logs?",
+        choices: ["/var", "/tmp", "/usr", "/home"],
+        answer: "/var"
+      },
+      {
+        question: "What command is used to create a directory?",
+        choices: ["mkdir", "touch", "cp", "mv"],
+        answer: "mkdir"
+      },
+      {
+        question: "Which command displays manual pages?",
+        choices: ["man", "info", "help", "doc"],
+        answer: "man"
+      },
+      {
+        question: "What does the -a option do with the ls command?",
+        choices: ["Lists all files including hidden", "Sorts by access time", "Displays in long format", "Recursively lists"],
+        answer: "Lists all files including hidden"
+      },
+      {
+        question: "Which file contains network configuration?",
+        choices: ["/etc/network/interfaces", "/etc/hosts", "/etc/resolv.conf", "/etc/hostname"],
+        answer: "/etc/network/interfaces"
+      },
+      {
+        question: "What command terminates a process?",
+        choices: ["kill", "ps", "top", "nice"],
+        answer: "kill"
+      },
+      {
+        question: "Which command lists running processes?",
+        choices: ["ps", "top", "kill", "free"],
+        answer: "ps"
+      },
+      {
+        question: "What does the -R option do with the chmod command?",
+        choices: ["Recursively changes permissions", "Resets permissions", "Reads permissions", "Removes permissions"],
+        answer: "Recursively changes permissions"
+      },
+      {
+        question: "Which command mounts a filesystem?",
+        choices: ["mount", "umount", "fsck", "df"],
+        answer: "mount"
+      },
+      {
+        question: "What does the whoami command display?",
+        choices: ["Current user", "System hostname", "Logged-in users", "Current directory"],
+        answer: "Current user"
+      },
+      {
+        question: "Which command edits text files?",
+        choices: ["vi", "cat", "less", "more"],
+        answer: "vi"
+      },
+      {
+        question: "What does the -f option do with the tar command?",
+        choices: ["Specifies the archive file", "Forces overwrite", "Filters files", "Extracts files"],
+        answer: "Specifies the archive file"
+      },
+      {
+        question: "Which directory contains binary executables?",
+        choices: ["/bin", "/sbin", "/usr/bin", "/usr/local/bin"],
+        answer: "/bin"
+      },
+      {
+        question: "What command checks file system integrity?",
+        choices: ["fsck", "df", "du", "mount"],
+        answer: "fsck"
+      },
+      {
+        question: "Which command displays the kernel version?",
+        choices: ["uname -r", "cat /proc/version", "lsb_release", "hostnamectl"],
+        answer: "uname -r"
+      },
+      {
+        question: "What does the -v option do with the cp command?",
+        choices: ["Verbose output", "Verifies copy", "Views file", "Validates permissions"],
+        answer: "Verbose output"
+      },
+      {
+        question: "Which file contains hostname settings?",
+        choices: ["/etc/hostname", "/etc/hosts", "/etc/resolv.conf", "/etc/network"],
+        answer: "/etc/hostname"
+      },
+      {
+        question: "What command creates an empty file?",
+        choices: ["touch", "mkdir", "cp", "mv"],
+        answer: "touch"
+      },
+      {
+        question: "Which command lists open files?",
+        choices: ["lsof", "ls", "find", "cat"],
+        answer: "lsof"
+      },
+      {
+        question: "What does the -x option do with the chmod command?",
+        choices: ["Sets execute permission", "Excludes files", "Extracts permissions", "Extends permissions"],
+        answer: "Sets execute permission"
+      },
+      {
+        question: "Which command displays memory usage?",
+        choices: ["free", "df", "du", "top"],
+        answer: "free"
+      },
+      {
+        question: "What does the -z option do with the tar command?",
+        choices: ["Compresses with gzip", "Zeroes files", "Zips files", "Zaps archive"],
+        answer: "Compresses with gzip"
+      },
+      {
+        question: "Which directory contains user home directories?",
+        choices: ["/home", "/usr", "/var", "/tmp"],
+        answer: "/home"
+      },
+      {
+        question: "What command changes ownership of a file?",
+        choices: ["chown", "chmod", "chgrp", "chattr"],
+        answer: "chown"
+      },
+      {
+        question: "Which command searches for files?",
+        choices: ["find", "locate", "whereis", "which"],
+        answer: "find"
+      },
+      {
+        question: "What does the -p option do with the mkdir command?",
+        choices: ["Creates parent directories as needed", "Sets permissions", "Prompts for confirmation", "Purges directory"],
+        answer: "Creates parent directories as needed"
+      },
+      {
+        question: "Which file contains DNS settings?",
+        choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/hostname", "/etc/network"],
+        answer: "/etc/resolv.conf"
+      },
+      {
+        question: "What command displays the command history?",
+        choices: ["history", "hist", "log", "record"],
+        answer: "history"
+      },
+      {
+        question: "Which command sets the system hostname?",
+        choices: ["hostnamectl", "hostname", "set-hostname", "hostctl"],
+        answer: "hostnamectl"
+      },
+      {
+        question: "What does the -c option do with the grep command?",
+        choices: ["Counts matching lines", "Case-insensitive search", "Clears output", "Compresses output"],
+        answer: "Counts matching lines"
+      },
+      {
+        question: "Which command unmounts a filesystem?",
+        choices: ["mount", "umount", "fsck", "df"],
+        answer: "umount"
+      },
+      {
+        question: "What does the -l option do with the netstat command?",
+        choices: ["Lists listening sockets", "Logs connections", "Links files", "Loads data"],
+        answer: "Lists listening sockets"
+      },
+      {
+        question: "Which directory contains configuration files?",
+        choices: ["/etc", "/var", "/usr", "/bin"],
+        answer: "/etc"
+      },
+      {
+        question: "What command displays the CPU usage?",
+        choices: ["top", "ps", "free", "df"],
+        answer: "top"
+      },
+      {
+        question: "Which command creates a symbolic link?",
+        choices: ["ln -s", "ln", "link", "symlink"],
+        answer: "ln -s"
+      },
+      {
+        question: "What does the -t option do with the ls command?",
+        choices: ["Sorts by modification time", "Displays tree view", "Tests files", "Truncates output"],
+        answer: "Sorts by modification time"
+      },
+      {
+        question: "Which file contains group information?",
+        choices: ["/etc/group", "/etc/passwd", "/etc/shadow", "/etc/hosts"],
+        answer: "/etc/group"
+      },
+      {
+        question: "What command checks disk usage?",
+        choices: ["du", "df", "free", "top"],
+        answer: "du"
+      },
+      {
+        question: "Which command updates the system clock?",
+        choices: ["date", "hwclock", "timedatectl", "clock"],
+        answer: "timedatectl"
+      },
+      {
+        question: "What does the -u option do with the who command?",
+        choices: ["Shows idle time", "Displays username", "Updates list", "Unlinks users"],
+        answer: "Shows idle time"
+      },
+      {
+        question: "Which command displays network interfaces?",
+        choices: ["ifconfig", "ip", "netstat", "route"],
+        answer: "ip"
+      },
+      {
+        question: "What does the -r option do with the sort command?",
+        choices: ["Sorts in reverse order", "Recursively sorts", "Removes duplicates", "Resets sorting"],
+        answer: "Sorts in reverse order"
+      },
+      {
+        question: "Which directory contains shared libraries?",
+        choices: ["/lib", "/usr/lib", "/var/lib", "/tmp/lib"],
+        answer: "/lib"
+      },
+      {
+        question: "What command archives files?",
+        choices: ["tar", "zip", "gzip", "bzip2"],
+        answer: "tar"
+      },
+      {
+        question: "Which command displays the system uptime?",
+        choices: ["uptime", "top", "ps", "free"],
+        answer: "uptime"
+      },
+      {
+        question: "What does the -n option do with the ping command?",
+        choices: ["Specifies number of packets", "Disables name resolution", "Sets network interface", "Notifies errors"],
+        answer: "Specifies number of packets"
+      }
     ];
 
-    let currentQuestion = 0;
-    const questionEl = document.getElementById("question");
-    const choicesEl = document.getElementById("choices");
-    const feedbackEl = document.getElementById("feedback");
-
+    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
-      return array;
     }
 
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const restartButton = document.querySelector(".restart-button");
+
+    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      choicesEl.innerHTML = "";
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
 
-      const shuffledChoices = shuffle([...q.choices]);
+      // Shuffle choices for the current question
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
       shuffledChoices.forEach(choice => {
         const div = document.createElement("div");
         div.textContent = choice;
         div.classList.add("choice");
-        div.setAttribute("role", "option");
-        div.setAttribute("tabindex", "0");
-        div.addEventListener("click", () => handleAnswer(choice));
-        div.addEventListener("keypress", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            handleAnswer(choice);
-          }
-        });
-        choicesEl.appendChild(div);
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
       });
-
-      // Focus first choice for accessibility
-      choicesEl.querySelector(".choice")?.focus();
     }
 
+    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. The correct answer is: ${correct}`;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+      }
 
-      const choiceDivs = choicesEl.querySelectorAll(".choice");
+      // Disable all choices and highlight correct/incorrect
+      const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
-        div.removeEventListener("click", handleAnswer);
-        div.setAttribute("tabindex", "-1");
+        div.onclick = null;
         if (div.textContent === correct) {
-          div.style.borderColor = "var(--primary-color)";
+          div.style.borderColor = "#00FF00";
         } else if (div.textContent === selected) {
           div.style.borderColor = "red";
         }
       });
 
+      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
         if (currentQuestion < questions.length) {
           showQuestion();
         } else {
-          questionEl.textContent = "Quiz Complete!";
-          choicesEl.innerHTML = "";
-          feedbackEl.textContent = "";
+          questionElement.textContent = "Quiz Complete!";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          restartButton.style.display = "block";
         }
       }, 5000);
     }
 
-    // Initialize quiz
+    // Restart the quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      shuffle(questions);
+      showQuestion();
+    }
+
+    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

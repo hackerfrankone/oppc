@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>LPI Linux Professional Institute Quiz</title>
+  <title>LPI LPIC-3 300 Quiz</title>
   <style>
     * {
       box-sizing: border-box;
@@ -26,7 +27,8 @@
     }
 
     .back-button,
-    .pbq-button {
+    .pbq-button,
+    .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -51,8 +53,15 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .restart-button {
+      top: calc(1rem + 2.5rem + 0.5rem);
+      left: 1rem;
+      display: none;
+    }
+
     .back-button:hover,
-    .pbq-button:hover {
+    .pbq-button:hover,
+    .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -132,6 +141,12 @@
       text-align: center;
     }
 
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -152,7 +167,8 @@
       }
 
       .back-button,
-      .pbq-button {
+      .pbq-button,
+      .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
       }
@@ -160,59 +176,360 @@
       .pbq-button {
         left: calc(1rem + 5rem + 0.5rem);
       }
+
+      .restart-button {
+        top: calc(0.5rem + 2rem + 0.5rem);
+      }
     }
   </style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq3.html" class="pbq-button">PBQ</a>
+  <a href="pbq.html" class="pbq-button">PBQ</a>
+  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
   </div>
 
-<script>
-  const questions = [
-    { question: "Which command would you use to view the active network connections on a Linux system?", choices: ["netstat -tuln", "ifconfig", "ping", "traceroute"], answer: "netstat -tuln" },
-    { question: "What is the primary role of the 'mdadm' utility?", choices: ["Manage software RAID arrays", "Configure network interfaces", "Monitor disk usage", "Manage user accounts"], answer: "Manage software RAID arrays" },
-    { question: "Which file defines the default runlevels for system services in systemd?", choices: ["/etc/systemd/system", "/etc/init.d", "/etc/rc.d", "/etc/init"], answer: "/etc/systemd/system" },
-    { question: "What does the 'modprobe' command do?", choices: ["Loads kernel modules", "Removes kernel modules", "Lists loaded modules", "Configures system services"], answer: "Loads kernel modules" },
-    { question: "What is the purpose of the 'chage' command?", choices: ["Manage user password aging", "Change file ownership", "Modify group membership", "Edit cron schedules"], answer: "Manage user password aging" },
-    { question: "Which file specifies the order of name resolution on a Linux system?", choices: ["/etc/nsswitch.conf", "/etc/resolv.conf", "/etc/hosts", "/etc/network/interfaces"], answer: "/etc/nsswitch.conf" },
-    { question: "Which systemd command reloads unit files without restarting services?", choices: ["systemctl daemon-reload", "systemctl reload", "systemctl restart", "systemctl enable"], answer: "systemctl daemon-reload" },
-    { question: "What does the 'iptables -F' command do?", choices: ["Flush all firewall rules", "Forward packets", "Filter specific ports", "Save firewall rules"], answer: "Flush all firewall rules" },
-    { question: "Which command checks filesystem integrity?", choices: ["fsck", "mkfs", "fdisk", "parted"], answer: "fsck" },
-    { question: "What does the 'GRUB_TIMEOUT' parameter in /etc/default/grub control?", choices: ["Boot menu display time", "Kernel load time", "Filesystem check interval", "System shutdown delay"], answer: "Boot menu display time" },
-    { question: "Which file controls DNS server information on Linux?", choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/nsswitch.conf", "/etc/network/interfaces"], answer: "/etc/resolv.conf" },
-    { question: "Which command lists all mounted filesystems?", choices: ["mount", "lsblk", "df", "fdisk"], answer: "mount" },
-    { question: "What is the purpose of the /etc/fstab file?", choices: ["Define filesystems to mount at boot", "List user accounts", "Configure network interfaces", "Store system logs"], answer: "Define filesystems to mount at boot" },
-    { question: "Which command is used to modify user groups?", choices: ["usermod", "groupadd", "passwd", "chgrp"], answer: "usermod" },
-    { question: "What is SELinux?", choices: ["Security module for access control", "Filesystem format", "Network protocol", "Package manager"], answer: "Security module for access control" },
-    { question: "Which command shows current SELinux mode?", choices: ["getenforce", "setenforce", "selinuxenabled", "sestatus"], answer: "getenforce" },
-    { question: "What is the function of the 'cron' daemon?", choices: ["Schedule tasks", "Manage services", "Monitor resources", "Handle user sessions"], answer: "Schedule tasks" },
-    { question: "Which file lists scheduled cron jobs for a user?", choices: ["/var/spool/cron/crontabs", "/etc/cron.d", "/etc/crontab", "/etc/init.d"], answer: "/var/spool/cron/crontabs" },
-    { question: "What does the 'passwd -l username' command do?", choices: ["Locks the user account", "Changes user password", "Deletes user account", "Unlocks user account"], answer: "Locks the user account" },
-    { question: "Which tool is used to update the initial RAM filesystem?", choices: ["mkinitrd", "update-initramfs", "dracut", "all of the above"], answer: "all of the above" },
-    { question: "What does the 'top' command display?", choices: ["Real-time process usage", "Disk partitions", "Network status", "User info"], answer: "Real-time process usage" },
-    { question: "Which command is used to add a new user?", choices: ["useradd", "adduser", "usermod", "passwd"], answer: "useradd" },
-    { question: "Which file stores user account information?", choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"], answer: "/etc/passwd" },
-    { question: "What is the purpose of the /etc/shadow file?", choices: ["Stores encrypted passwords", "Lists user accounts", "Defines groups", "Stores system logs"], answer: "Stores encrypted passwords" },
-    { question: "Which command shows disk usage?", choices: ["du", "df", "lsblk", "fdisk"], answer: "du" },
-    { question: "Which systemd target replaces the traditional runlevel 3?", choices: ["multi-user.target", "graphical.target", "default.target", "network.target"], answer: "multi-user.target" },
-    { question: "What is the use of the 'journalctl' command?", choices: ["View system logs", "Modify kernel parameters", "Manage user accounts", "Configure firewall"], answer: "View system logs" },
-    { question: "Which file contains kernel boot parameters?", choices: ["/etc/default/grub", "/boot/grub/grub.cfg", "/etc/grub.conf", "/etc/lilo.conf"], answer: "/etc/default/grub" },
-    { question: "Which command formats a partition with ext4?", choices: ["mkfs.ext4", "mkfs", "fdisk", "parted"], answer: "mkfs.ext4" },
-    { question: "What is LVM in Linux?", choices: ["Logical Volume Manager", "Linux Volume Manager", "Local Volume Manager", "Logical Virtual Machine"], answer: "Logical Volume Manager" },
-    { question: "Which command activates a logical volume?", choices: ["lvchange -ay", "vgchange -ay", "lvcreate", "lvremove"], answer: "lvchange -ay" }
-  ];
+  <script>
+    const questions = [
+      {
+        question: "Which command configures Samba shares?",
+        choices: ["smbpasswd", "testparm", "samba-tool", "net conf"],
+        answer: "samba-tool"
+      },
+      {
+        question: "What does the smbclient command do?",
+        choices: ["Manages Samba users", "Tests Samba configuration", "Accesses Samba shares", "Starts Samba service"],
+        answer: "Accesses Samba shares"
+      },
+      {
+        question: "Which file contains LDAP configuration?",
+        choices: ["/etc/ldap/ldap.conf", "/etc/openldap/ldap.conf", "/etc/ldap.conf", "/etc/openldap.conf"],
+        answer: "/etc/openldap/ldap.conf"
+      },
+      {
+        question: "What is the purpose of the slapd service?",
+        choices: ["Manages DNS", "Runs an LDAP server", "Handles email", "Provides SSH"],
+        answer: "Runs an LDAP server"
+      },
+      {
+        question: "Which command adds an LDAP entry?",
+        choices: ["ldapadd", "ldapsearch", "ldapmodify", "ldapdelete"],
+        answer: "ldapadd"
+      },
+      {
+        question: "What does the -H option do with ldapsearch?",
+        choices: ["Specifies the LDAP URI", "Hides output", "Helps with syntax", "Hosts the server"],
+        answer: "Specifies the LDAP URI"
+      },
+      {
+        question: "Which protocol is used for Kerberos authentication?",
+        choices: ["LDAP", "Kerberos", "Samba", "NFS"],
+        answer: "Kerberos"
+      },
+      {
+        question: "What is the purpose of the kinit command?",
+        choices: ["Initializes Kerberos credentials", "Kills a process", "Configures Kerberos", "Lists Kerberos tickets"],
+        answer: "Initializes Kerberos credentials"
+      },
+      {
+        question: "Which file contains Kerberos configuration?",
+        choices: ["/etc/krb5.conf", "/etc/kerberos.conf", "/etc/krb.conf", "/etc/krb5"],
+        answer: "/etc/krb5.conf"
+      },
+      {
+        question: "What does the -x option do with ldapmodify?",
+        choices: ["Enables extended operations", "Excludes attributes", "Extracts data", "Executes commands"],
+        answer: "Enables extended operations"
+      },
+      {
+        question: "Which command tests Samba configuration?",
+        choices: ["testparm", "smbstatus", "samba-tool", "net test"],
+        answer: "testparm"
+      },
+      {
+        question: "What is the purpose of the smbpasswd command?",
+        choices: ["Changes Samba passwords", "Starts Samba service", "Configures shares", "Tests connectivity"],
+        answer: "Changes Samba passwords"
+      },
+      {
+        question: "Which service provides NFS sharing?",
+        choices: ["nfsd", "smbd", "sshd", "httpd"],
+        answer: "nfsd"
+      },
+      {
+        question: "What does the -a option do with mount?",
+        choices: ["Mounts all filesystems", "Adds a new mount point", "Appends options", "Authenticates mount"],
+        answer: "Mounts all filesystems"
+      },
+      {
+        question: "Which file contains NFS exports?",
+        choices: ["/etc/exports", "/etc/nfs.conf", "/etc/nfs/exports", "/etc/exportfs"],
+        answer: "/etc/exports"
+      },
+      {
+        question: "What is the purpose of the exportfs command?",
+        choices: ["Exports NFS shares", "Imports files", "Configures exports", "Displays export status"],
+        answer: "Exports NFS shares"
+      },
+      {
+        question: "Which command secures a service with SELinux?",
+        choices: ["setsebool", "chcon", "semanage", "restorecon"],
+        answer: "setsebool"
+      },
+      {
+        question: "What does the -Z option do with ls?",
+        choices: ["Displays SELinux context", "Zips files", "Zeroes output", "Zaps attributes"],
+        answer: "Displays SELinux context"
+      },
+      {
+        question: "Which tool manages AppArmor profiles?",
+        choices: ["aa-genprof", "selinux-config", "apparmorctl", "aa-status"],
+        answer: "aa-genprof"
+      },
+      {
+        question: "What is the purpose of the chage command in security?",
+        choices: ["Changes ownership", "Manages password aging", "Checks permissions", "Configures SELinux"],
+        answer: "Manages password aging"
+      },
+      {
+        question: "Which command lists open files with security context?",
+        choices: ["lsof -Z", "ls -l", "ps -Z", "find -Z"],
+        answer: "lsof -Z"
+      },
+      {
+        question: "What does the -P option do with rsync?",
+        choices: ["Preserves permissions", "Prompts for confirmation", "Performs dry run", "Prints progress"],
+        answer: "Preserves permissions"
+      },
+      {
+        question: "Which protocol secures file transfers?",
+        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
+        answer: "SFTP"
+      },
+      {
+        question: "What is the purpose of a high availability cluster?",
+        choices: ["Increases speed", "Ensures service uptime", "Reduces storage", "Manages users"],
+        answer: "Ensures service uptime"
+      },
+      {
+        question: "Which tool configures a Pacemaker cluster?",
+        choices: ["pcs", "crm", "corosync", "ha-cluster"],
+        answer: "pcs"
+      },
+      {
+        question: "What does the -f option do with crm configure?",
+        choices: ["Forces configuration", "Finds resources", "Filters output", "Fixes errors"],
+        answer: "Forces configuration"
+      },
+      {
+        question: "Which service provides heartbeat in a cluster?",
+        choices: ["corosync", "pacemaker", "heartbeat", "keepalived"],
+        answer: "corosync"
+      },
+      {
+        question: "What is the purpose of DRBD?",
+        choices: ["Distributed Replicated Block Device", "Direct RAID Backup Device", "Dynamic Resource Block Driver", "Data Recovery Backup Device"],
+        answer: "Distributed Replicated Block Device"
+      },
+      {
+        question: "Which command checks cluster status?",
+        choices: ["pcs status", "crm status", "corosync-cfgtool", "cluster-check"],
+        answer: "pcs status"
+      },
+      {
+        question: "What does the -r option do with drbdadm?",
+        choices: ["Resyncs data", "Removes device", "Restarts service", "Reconfigures"],
+        answer: "Resyncs data"
+      },
+      {
+        question: "Which tool manages virtualization?",
+        choices: ["libvirt", "kvm", "qemu", "virt-manager"],
+        answer: "libvirt"
+      },
+      {
+        question: "What is the purpose of the virsh command?",
+        choices: ["Manages virtual machines", "Configures networks", "Monitors CPU", "Edits files"],
+        answer: "Manages virtual machines"
+      },
+      {
+        question: "Which file contains libvirt network settings?",
+        choices: ["/etc/libvirt/qemu/networks/default.xml", "/etc/libvirt/networks.conf", "/etc/qemu/networks", "/etc/virt/networks"],
+        answer: "/etc/libvirt/qemu/networks/default.xml"
+      },
+      {
+        question: "What does the -c option do with virsh?",
+        choices: ["Connects to hypervisor", "Creates a VM", "Checks status", "Configures network"],
+        answer: "Connects to hypervisor"
+      },
+      {
+        question: "Which hypervisor is fully open-source?",
+        choices: ["VMware ESXi", "KVM", "Hyper-V", "XenServer"],
+        answer: "KVM"
+      },
+      {
+        question: "What is the purpose of a container in Linux?",
+        choices: ["Increases hardware speed", "Isolates applications", "Manages users", "Encrypts data"],
+        answer: "Isolates applications"
+      },
+      {
+        question: "Which tool manages Docker containers?",
+        choices: ["docker", "podman", "lxc", "containerd"],
+        answer: "docker"
+      },
+      {
+        question: "What does the -d option do with docker run?",
+        choices: ["Runs container in detached mode", "Deletes container", "Displays logs", "Debugs container"],
+        answer: "Runs container in detached mode"
+      },
+      {
+        question: "Which command lists running containers?",
+        choices: ["docker ps", "docker list", "docker run", "docker inspect"],
+        answer: "docker ps"
+      },
+      {
+        question: "What is the purpose of a Dockerfile?",
+        choices: ["Configures network", "Defines container image", "Manages services", "Edits logs"],
+        answer: "Defines container image"
+      },
+      {
+        question: "Which command builds a Docker image?",
+        choices: ["docker build", "docker create", "docker run", "docker push"],
+        answer: "docker build"
+      },
+      {
+        question: "What does the -v option do with docker run?",
+        choices: ["Mounts a volume", "Verifies image", "Views logs", "Validates container"],
+        answer: "Mounts a volume"
+      },
+      {
+        question: "Which tool provides orchestration for containers?",
+        choices: ["Kubernetes", "Docker Swarm", "Podman", "LXC"],
+        answer: "Kubernetes"
+      },
+      {
+        question: "What is the purpose of a pod in Kubernetes?",
+        choices: ["Manages networks", "Groups containers", "Stores data", "Runs services"],
+        answer: "Groups containers"
+      },
+      {
+        question: "Which command deploys a pod in Kubernetes?",
+        choices: ["kubectl apply", "kubectl run", "kubectl create", "kubectl delete"],
+        answer: "kubectl apply"
+      },
+      {
+        question: "What does the -f option do with kubectl apply?",
+        choices: ["Specifies a file", "Forces update", "Filters output", "Finds resources"],
+        answer: "Specifies a file"
+      },
+      {
+        question: "Which component manages Kubernetes nodes?",
+        choices: ["etcd", "kube-apiserver", "kube-scheduler", "kubelet"],
+        answer: "kubelet"
+      },
+      {
+        question: "What is the purpose of a service in Kubernetes?",
+        choices: ["Manages storage", "Exposes applications", "Runs containers", "Configures networks"],
+        answer: "Exposes applications"
+      },
+      {
+        question: "Which command checks Kubernetes cluster status?",
+        choices: ["kubectl get nodes", "kubectl status", "kubectl cluster", "kubectl check"],
+        answer: "kubectl get nodes"
+      },
+      {
+        question: "What does the -o wide option do with kubectl get?",
+        choices: ["Displays detailed output", "Overwrites data", "Opens a file", "Optimizes display"],
+        answer: "Displays detailed output"
+      },
+      {
+        question: "Which command deletes a Kubernetes resource?",
+        choices: ["kubectl delete", "kubectl remove", "kubectl destroy", "kubectl purge"],
+        answer: "kubectl delete"
+      },
+      {
+        question: "What is the purpose of etcd in Kubernetes?",
+        choices: ["Stores configuration data", "Manages nodes", "Runs containers", "Handles networking"],
+        answer: "Stores configuration data"
+      },
+      {
+        question: "Which command scales a Kubernetes deployment?",
+        choices: ["kubectl scale", "kubectl resize", "kubectl update", "kubectl expand"],
+        answer: "kubectl scale"
+      },
+      {
+        question: "What does the -l option do with kubectl get?",
+        choices: ["Filters by label", "Lists all resources", "Loads data", "Links nodes"],
+        answer: "Filters by label"
+      },
+      {
+        question: "Which tool monitors Kubernetes performance?",
+        choices: ["Prometheus", "Nagios", "Zabbix", "Grafana"],
+        answer: "Prometheus"
+      },
+      {
+        question: "What is the purpose of a ConfigMap in Kubernetes?",
+        choices: ["Manages storage", "Stores configuration data", "Runs applications", "Handles networking"],
+        answer: "Stores configuration data"
+      },
+      {
+        question: "Which command creates a ConfigMap?",
+        choices: ["kubectl create configmap", "kubectl apply config", "kubectl set config", "kubectl add map"],
+        answer: "kubectl create configmap"
+      },
+      {
+        question: "What does the -n option do with kubectl?",
+        choices: ["Specifies namespace", "Notifies user", "New resource", "Networks data"],
+        answer: "Specifies namespace"
+      },
+      {
+        question: "Which component handles Kubernetes API requests?",
+        choices: ["kube-apiserver", "etcd", "kube-controller", "kube-proxy"],
+        answer: "kube-apiserver"
+      },
+      {
+        question: "What is the purpose of a PersistentVolume in Kubernetes?",
+        choices: ["Manages CPU", "Provides persistent storage", "Runs containers", "Configures networks"],
+        answer: "Provides persistent storage"
+      },
+      {
+        question: "Which command checks pod logs?",
+        choices: ["kubectl logs", "kubectl view", "kubectl tail", "kubectl debug"],
+        answer: "kubectl logs"
+      },
+      {
+        question: "What does the -p option do with kubectl run?",
+        choices: ["Runs in privileged mode", "Specifies port", "Pauses execution", "Prints output"],
+        answer: "Specifies port"
+      },
+      {
+        question: "Which tool provides container security scanning?",
+        choices: ["Trivy", "Clair", "Aqua", "Sysdig"],
+        answer: "Trivy"
+      },
+      {
+        question: "What is the purpose of a namespace in Kubernetes?",
+        choices: ["Isolates resources", "Manages storage", "Runs applications", "Configures networks"],
+        answer: "Isolates resources"
+      },
+      {
+        question: "Which command restarts a Kubernetes pod?",
+        choices: ["kubectl rollout restart", "kubectl restart", "kubectl redeploy", "kubectl reset"],
+        answer: "kubectl rollout restart"
+      },
+      {
+        question: "What does the -A option do with kubectl get?",
+        choices: ["Shows all namespaces", "Authenticates user", "Adds resources", "Analyzes data"],
+        answer: "Shows all namespaces"
+      }
+    ];
 
-    let currentQuestion = 0;
-    const questionEl = document.getElementById("question");
-    const choicesEl = document.getElementById("choices");
-    const feedbackEl = document.getElementById("feedback");
-
+    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -220,19 +537,25 @@
       }
     }
 
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const restartButton = document.querySelector(".restart-button");
+
+    // Display the current question and its shuffled choices
     function showQuestion() {
-      if (currentQuestion >= questions.length) {
-        questionEl.textContent = "Quiz Complete!";
-        choicesEl.innerHTML = "";
-        feedbackEl.textContent = "";
-        return;
-      }
-
       const q = questions[currentQuestion];
-      questionEl.textContent = q.question;
-      feedbackEl.textContent = "";
-      choicesEl.innerHTML = "";
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
 
+      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -241,16 +564,22 @@
         div.textContent = choice;
         div.classList.add("choice");
         div.onclick = () => handleAnswer(choice);
-        choicesEl.appendChild(div);
+        choicesElement.appendChild(div);
       });
     }
 
+    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      feedbackEl.textContent = selected === correct
-        ? "✅ Correct!"
-        : `❌ Incorrect. Correct: ${correct}`;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+      }
 
+      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
@@ -262,12 +591,31 @@
         }
       });
 
+      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        showQuestion();
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          questionElement.textContent = "Quiz Complete!";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          restartButton.style.display = "block";
+        }
       }, 5000);
     }
 
+    // Restart the quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      shuffle(questions);
+      showQuestion();
+    }
+
+    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

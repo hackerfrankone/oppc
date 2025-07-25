@@ -168,20 +168,30 @@
     }
     /* Already Paid Container */
     .already-paid-container {
+      width: 100px;
+      height: 100px;
       background: #000;
       color: #00FF00;
       border: 2px solid #00FF00;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-size: 1rem;
+      border-radius: 50%;
+      font-size: 0.85rem;
       font-weight: bold;
-      box-shadow: 0 0 10px #00FF00;
+      box-shadow: 0 0 12px #00FF00;
       display: none;
       position: fixed;
       bottom: 20px;
       left: 50%;
-      transform: translateX(-480px); /* Moved further left */
+      transform: translateX(300px); /* Moved even further to the right of PayPal */
       z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .already-paid-container:hover {
+      transform: translateX(300px) scale(1.1);
+      box-shadow: 0 0 20px #00FF00;
     }
     .already-paid-container a {
       color: #00FF00;
@@ -320,7 +330,7 @@
       } else {
         const alreadyPaidContainer = document.getElementById('alreadyPaidContainer');
         if (alreadyPaidContainer) {
-          alreadyPaidContainer.style.display = 'inline-block';
+          alreadyPaidContainer.style.display = 'inline-flex';
         }
       }
     }

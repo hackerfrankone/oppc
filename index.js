@@ -6,20 +6,17 @@ export default {
 
     const contentType = request.headers.get("content-type") || "";
 
-    // Validate content-type
     if (!contentType.includes("application/x-www-form-urlencoded")) {
       return new Response("Unsupported content type", { status: 400 });
     }
 
-    // Parse form data
     let bodyText = await request.text();
     const params = new URLSearchParams(bodyText);
     const payload = Object.fromEntries(params.entries());
 
-    // Optional: Log to console
     console.log("Received PayPal payload:", payload);
 
-    // 🔁 Forward to secondary worker (optional)
+    // Optional: Forward to another webhook or worker (if you want)
     try {
       await fetch("https://paypal-webhook.familyfishingfun2025.workers.dev", {
         method: "POST",
@@ -30,16 +27,47 @@ export default {
       console.error("❌ Failed to forward to PayPal Worker:", err);
     }
 
-    // Format Discord message
+    // **Updated Discord embed message here**
     const discordMessage = {
-      content: `🤑 **New PayPal Purchase!**
-**Name:** ${payload.first_name || 'N/A'} ${payload.last_name || ''}
-**Email:** ${payload.payer_email || 'N/A'}
-**Amount:** ${payload.mc_gross || '0.00'} ${payload.mc_currency || ''}
-**Item:** ${payload.item_name || 'Content'}`,
+      embeds: [
+        {
+          title: "🤑 New PayPal Purchase",
+          color: 0x00ff99,
+          fields: [
+            {
+              name: "👤 Name",
+              value: `${payload.first_name || 'N/A'} ${payload.last_name || ''}`,
+              inline: true
+            },
+            {
+              name: "📧 Email",
+              value: payload.payer_email || 'N/A',
+              inline: true
+            },
+            {
+              name: "💵 Amount",
+              value: `${payload.mc_gross || '0.00'} ${payload.mc_currency || ''}`,
+              inline: true
+            },
+            {
+              name: "📦 Item",
+              value: payload.item_name || 'Content',
+              inline: false
+            },
+            {
+              name: "🕓 Time",
+              value: new Date().toLocaleString("en-US", { timeZone: "America/New_York" }),
+              inline: false
+            }
+          ],
+          footer: {
+            text: "🛒 PayPal Notification Bot"
+          },
+          timestamp: new Date().toISOString()
+        }
+      ]
     };
 
-    // Send to Discord
     try {
       const discordResponse = await fetch(env.DISCORD_WEBHOOK, {
         method: "POST",

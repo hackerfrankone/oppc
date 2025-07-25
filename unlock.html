@@ -3,17 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Unlocking content...</title>
-  <script>
-    window.onload = function() {
-      // Set unlock flag in localStorage
-      localStorage.setItem('unlocked', 'paid');
-
-      // Redirect to homepage after 5 seconds
-      setTimeout(function() {
-        window.location.href = 'index.html';
-      }, 5000);
-    }
-  </script>
   <style>
     body {
       background-color: #000;
@@ -22,10 +11,70 @@
       text-align: center;
       padding: 50px;
     }
+    input, button {
+      background: #111;
+      border: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 1.2rem;
+      padding: 10px;
+      margin: 10px 0;
+      width: 300px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>Thank you for your purchase!</h1>
-  <p>Unlocking content now... Redirecting you back to the homepage.</p>
+  <h1>Enter Your Access Token</h1>
+  <input id="email" type="email" placeholder="Enter your email" required />
+  <input id="token" type="text" placeholder="Enter your access token" required />
+  <button id="unlockBtn">Unlock Content</button>
+  <div id="message"></div>
+
+  <script>
+    document.getElementById('unlockBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const token = document.getElementById('token').value.trim();
+      const messageEl = document.getElementById('message');
+
+      if (!email || !token) {
+        messageEl.textContent = 'Please enter both email and token.';
+        return;
+      }
+
+      messageEl.textContent = 'Verifying token...';
+
+      try {
+        const res = await fetch('https://verify-token.oppcus2025.workers.dev/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, token })
+        });
+
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (data.valid) {
+          localStorage.setItem('unlocked', 'paid');
+          messageEl.textContent = 'Access granted! Redirecting...';
+          setTimeout(() => window.location.href = 'index.html', 1500);
+        } else {
+          messageEl.textContent = 'Invalid token or email. Try again.';
+        }
+      } catch (error) {
+        messageEl.textContent = 'Network error. Please try again.';
+        console.error(error);
+      }
+    });
+  </script>
 </body>
 </html>

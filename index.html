@@ -64,7 +64,7 @@
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 30px;
+      gap: 30px; /* Consistent gap between buttons */
       align-items: flex-start;
       z-index: 9999;
     }
@@ -135,6 +135,13 @@
       line-height: 1.25rem;
       cursor: pointer;
     }
+    #paypalContainer {
+      display: inline-grid;
+      justify-items: center;
+      align-content: start;
+      gap: 0.5rem;
+      margin-top: 20px;
+    }
     /* Popup Styles */
     .popup {
       display: none;
@@ -181,7 +188,7 @@
       position: fixed;
       bottom: 20px;
       left: 50%;
-      transform: translateX(300px); /* Moved even further to the right of PayPal */
+      transform: translateX(390px); /* Adjusted to align with 30px gap after Cisco */
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -190,7 +197,7 @@
       transition: transform 0.2s, box-shadow 0.3s;
     }
     .already-paid-container:hover {
-      transform: translateX(300px) scale(1.1);
+      transform: translateX(390px) scale(1.1);
       box-shadow: 0 0 20px #00FF00;
     }
     .already-paid-container a {
@@ -220,6 +227,17 @@
 
   <div class="upgrade-message" id="oneTimeMessage">
     Lifetime access to all content for just a ONE-TIME $4.99 | NO subscription
+  </div>
+
+  <!-- PayPal Button -->
+  <div id="paypalContainer">
+    <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank">
+      <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+      <section style="font-size: 0.75rem;">
+        Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
+      </section>
+    </form>
   </div>
 
   <!-- Already Paid Container -->
@@ -275,16 +293,8 @@
   <div class="footer-buttons">
     <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
+    <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="circle-button" target="_blank">Cisco</a>
     <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
-    <div id="paypalContainer">
-      <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank" style="display: inline-grid; justify-items: center; align-content: start; gap: 0.5rem;">
-        <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
-        <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
-        <section style="font-size: 0.75rem;">
-          Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;" />
-        </section>
-      </form>
-    </div>
   </div>
 
   <script>

@@ -86,7 +86,7 @@
       text-align: center;
     }
     .circle-button:hover {
-      transform: scale electoral-btn;
+      transform: scale(1.1);
       box-shadow: 0 0 20px #00FF00;
     }
     .hover-box {
@@ -106,7 +106,7 @@
       z-index: 10001;
       white-space: nowrap;
       min-width: 150px;
-      margin-top: none;
+      margin-top: 0;
       pointer-events: auto;
     }
     .hover-box a {
@@ -167,7 +167,7 @@
       padding: 20px;
       font-size: 1rem;
       font-weight: bold;
-      box-shadow: 0 0 12px #00ff00;
+      box-shadow: 0 0 12px #00FF00;
       z-index: 10002;
       text-align: center;
     }
@@ -184,7 +184,7 @@
     .popup button:hover {
       background-color: #e6b800;
     }
-    /* Already Paid button */
+    /* Already Paid Container */
     .already-paid-container {
       width: 100px;
       height: 100px;
@@ -192,7 +192,7 @@
       color: #00FF00;
       border: 2px solid #00FF00;
       border-radius: 50%;
-      font-size: 0arrer 85rem;
+      font-size: 0.85rem;
       font-weight: bold;
       box-shadow: 0 0 12px #00FF00;
       display: none;
@@ -204,15 +204,15 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: all 0.2s;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
     .already-paid-container:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 10px #00FF00;
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #00FF00;
     }
     .already-paid-container a {
-      text-decoration: none;
       color: #00FF00;
+      text-decoration: none;
     }
     .already-paid-container a:hover {
       text-decoration: none;
@@ -225,15 +225,15 @@
 
   <!-- Total and Live Count Display -->
   <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px;">Total OPPC Students: 23</div>
-  <div id="liveCountDisplay" style="font-weight: bold; margin-bottom: 20px;">Loading live count...</div>
+  <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold;">Loading live count...</div>
 
   <div class="highlight-message" id="noSignUpMessage">
-    NO sign-up | NO ads | NO cookies | NO BS 
-    </div>
+    NO sign up | NO ads | NO cookies | NO BS 
+  </div>
   
   <div class="details-message">
-    500+ multiple-choice questions | 100 PBQ Tests | Terminal Simulation 
-    </div>
+    500+ multiple choice questions | 100 PBQs | Terminal Simulator
+  </div>
 
   <div class="upgrade-message" id="oneTimeMessage">
     Lifetime access to all content for just a ONE-TIME $4.99 | NO subscription
@@ -242,16 +242,16 @@
   <!-- PayPal Button -->
   <div id="paypalContainer">
     <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank">
-      <input type="submit" value="Buy Now" class="pp-5B76FJE8MKP2L">
-      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards">
+      <input class="pp-5B76FJE8MKP2L" type="submit" value="Buy Now" />
+      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
       <section style="font-size: 0.65rem;">
-        Powered by <img src="https://www.paypalobjects.com/paypal-ui/buttons/paypal-wordmarking-color.svg" alt="paypal">
+        Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" />
       </section>
     </form>
   </div>
 
-  <!-- Already Paid container -->
-  <div id="alreadyPaidContainer" class="already-paid-container">
+  <!-- Already Paid Container -->
+  <div class="already-paid-container" id="alreadyPaidContainer">
     <a href="unlock.html">Already Paid?</a>
   </div>
 
@@ -259,49 +259,49 @@
   <div id="cachePopup" class="popup">
     <p>*Don't delete oppc.us cache*</p>
     <p>*Don't lose your access token*</p>
-    <button onclick="clearPopup()">OK</button>
+    <button onclick="closePopup()">OK</button>
   </div>
 
   <!-- CompTIA Group -->
-  <div class="comp-tia" id="cert-group">
-    <div class="cert-icon" id="aPlus">
-      <img src="https://www.oppcus.edu/images/a-plus.png" alt="A+ Certification">
+  <div class="cert-group" id="comptia">
+    <div class="cert-icon" id="aplus">
+      <img src="images/aplus.png" alt="A+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="a-plus/a-plus.html">Core 1 🔒</a><br>
-        <a href="#" class="locked" data-url="a-plus/a-plus2.html">Core 2 🔒</a>
+        <a href="#" class="locked" data-url="aplus/aplus.html">Core 1 🔒</a><br>
+        <a href="#" class="locked" data-url="aplus/aplus2.html">Core 2 🔒</a>
       </div>
     </div>
 
-    <div class="cert-icon" id="securityPlus">
-      <img src="https://www.oppcus.edu/images/security-plus.png" alt="Security+ Certification">
+    <div class="cert-icon" id="secplus">
+      <img src="images/secplus.png" alt="Security+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="security-plus/secure.html">Security 🔒</a>
+        <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
       </div>
     </div>
 
     <div class="cert-icon" id="networkPlus">
-      <img src="https://www.oppcus.edu/images/network-plus.png" alt="Network+ Certification">
+      <img src="images/netplus.png" alt="Network+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="network-plus/network.html">Network 🔒</a>
+        <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
       </div>
     </div>
   </div>
 
   <!-- LPI Cert Group -->
   <div class="cert-group" id="other-certs">
-    <div class="cert-icon" id="linux">
-      <img src="https://www.oppcus.edu/images/linux.png" alt="Linux Certification">
+    <div class="cert-icon" id="lpi">
+      <img src="images/lpi.png" alt="LPI Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="linux/linux.html">Core 1 🔒</a><br>
-        <a href="#" class="locked" data-url="linux/linux2.html">Core 2 🔒</a><br>
-        <a href="#" class="locked" data-url="linux/linux3.html">Core 3 🔒</a>
+        <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
       </div>
     </div>
   </div>
 
-  <!-- Footer Buttons -->
+  <!-- Floating Footer Buttons -->
   <div class="footer-buttons">
-    <a href="https://www.comptia.org/about-comptia" class="circle-button" target="_blank">CompTIA</a>
+    <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
     <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="circle-button" target="_blank">Cisco</a>
     <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>

@@ -166,6 +166,30 @@
     .popup button:hover {
       background-color: #e6b800;
     }
+    /* Already Paid Container */
+    .already-paid-container {
+      background: #000;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 10px #00FF00;
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-480px); /* Moved further left */
+      z-index: 9999;
+    }
+    .already-paid-container a {
+      color: #00FF00;
+      text-decoration: none;
+    }
+    .already-paid-container a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -186,6 +210,11 @@
 
   <div class="upgrade-message" id="oneTimeMessage">
     Lifetime access to all content for just a ONE-TIME $4.99 | NO subscription
+  </div>
+
+  <!-- Already Paid Container -->
+  <div class="already-paid-container" id="alreadyPaidContainer">
+    <a href="unlock.html">Already Paid?</a>
   </div>
 
   <!-- Popup for cache message -->
@@ -276,6 +305,10 @@
         if (oneTimeMessage) {
           oneTimeMessage.style.display = 'none';
         }
+        const alreadyPaidContainer = document.getElementById('alreadyPaidContainer');
+        if (alreadyPaidContainer) {
+          alreadyPaidContainer.style.display = 'none';
+        }
 
         if (!localStorage.getItem('cachePopupShown')) {
           const popup = document.getElementById('cachePopup');
@@ -283,6 +316,11 @@
             popup.style.display = 'block';
             localStorage.setItem('cachePopupShown', 'true');
           }
+        }
+      } else {
+        const alreadyPaidContainer = document.getElementById('alreadyPaidContainer');
+        if (alreadyPaidContainer) {
+          alreadyPaidContainer.style.display = 'inline-block';
         }
       }
     }

@@ -56,7 +56,7 @@
       box-shadow: 0 0 10px #00FF00;
     }
     #other-certs {
-      margin-top: 30px; /* Increased from 20px for a slight downward shift */
+      margin-top: 30px;
     }
     .footer-buttons {
       position: fixed;
@@ -160,7 +160,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #000;
+      background: #FF0000; /* Changed to red */
       color: #00FF00;
       border: 3px solid #00FF00;
       border-radius: 8px;
@@ -252,7 +252,7 @@
   <!-- Popup for cache message -->
   <div id="cachePopup" class="popup">
     <p>*Don't delete oppc.us cache*</p>
-    <button onclick="closePopup()">OK</button>
+    <button onclick="acknowledgePopup()">I acknowledge</button>
   </div>
 
   <!-- CompTIA Group -->
@@ -333,11 +333,10 @@
           alreadyPaidContainer.style.display = 'none';
         }
 
-        if (!localStorage.getItem('cachePopupShown')) {
+        if (!localStorage.getItem('cacheAcknowledged')) {
           const popup = document.getElementById('cachePopup');
           if (popup) {
             popup.style.display = 'block';
-            localStorage.setItem('cachePopupShown', 'true');
           }
         }
       } else {
@@ -348,7 +347,8 @@
       }
     }
 
-    function closePopup() {
+    function acknowledgePopup() {
+      localStorage.setItem('cacheAcknowledged', 'true');
       const popup = document.getElementById('cachePopup');
       if (popup) {
         popup.style.display = 'none';

@@ -1,80 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Unlocking content...</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unlock OPPC Content</title>
   <style>
     body {
       background-color: #000;
-      color: #0f0;
+      color: #00FF00;
       font-family: monospace;
       text-align: center;
       padding: 50px;
+      margin: 0;
     }
-    input, button {
-      background: #111;
-      border: 1px solid #0f0;
-      color: #0f0;
-      font-family: monospace;
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    p {
       font-size: 1.2rem;
-      padding: 10px;
-      margin: 10px 0;
-      width: 300px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+      margin-bottom: 20px;
     }
-    #message {
-      margin-top: 20px;
+    button {
+      background-color: #FFD140;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
       font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #e6b800;
     }
   </style>
 </head>
 <body>
-  <h1>Enter Your Email & Access Token (check email)</h1>
-  <input id="email" type="email" placeholder="Enter your email" required />
-  <input id="token" type="text" placeholder="Enter your access token" required />
-  <button id="unlockBtn">Unlock Content</button>
-  <div id="message"></div>
-
+  <h1>Unlock OPPC Content</h1>
+  <p>Click below to unlock your study guides and start studying!</p>
+  <button onclick="unlockAndRedirect()">Unlock</button>
   <script>
-    document.getElementById('unlockBtn').addEventListener('click', async () => {
-      const email = document.getElementById('email').value.trim();
-      const token = document.getElementById('token').value.trim();
-      const messageEl = document.getElementById('message');
-
-      if (!email || !token) {
-        messageEl.textContent = 'Please enter both email and token.';
-        return;
-      }
-
-      messageEl.textContent = 'Verifying token...';
-
-      try {
-        const res = await fetch('https://verify-token.oppcus2025.workers.dev/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, token })
-        });
-
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (data.valid) {
-          localStorage.setItem('unlocked', 'paid');
-          messageEl.textContent = 'Access granted! Redirecting...';
-          setTimeout(() => window.location.href = 'index.html', 1500);
-        } else {
-          messageEl.textContent = 'Invalid token or email. Try again.';
-        }
-      } catch (error) {
-        messageEl.textContent = 'Network error. Please try again.';
-        console.error(error);
-      }
-    });
+    function unlockAndRedirect() {
+      localStorage.setItem('unlocked', 'paid');
+      window.location.href = 'https://hackerfrankone.github.io/oppc/';
+    }
   </script>
 </body>
 </html>

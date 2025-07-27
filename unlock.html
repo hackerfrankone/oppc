@@ -37,14 +37,14 @@
 </head>
 <body>
   <h1>🔓 OPPCUS Token Generated</h1>
-  <p>Your <strong>OPPCUS-token</strong> has been downloaded. Use if you lose access to OPPCUS content.</p>
+  <p>Your <strong>OPPCUS-token.html</strong> has been downloaded.</p>
 
   <button onclick="unlockAndRedirect()">Unlock</button>
 
   <script>
     function unlockAndRedirect() {
       localStorage.setItem('unlocked', 'paid');
-      window.location.href = 'https://hackerfrankone.github.io/oppc/';
+      window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';
     }
 
     // Automatically download token file
@@ -83,8 +83,9 @@
         </style>
       </head>
       <body>
-        <h1>🔐 OPPCUS-token</h1>
-        <button onclick="localStorage.setItem('unlocked','paid');location.href='https://hackerfrankone.github.io/oppc/';">Unlock</button>
+        <h1>🔓 OPPCUS-token</h1>
+        <p>Access Confirmed! Keep this file as a backup.</p>
+        <button onclick="localStorage.setItem('unlocked', 'paid'); window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';">Unlock</button>
       </body>
       </html>
     `;

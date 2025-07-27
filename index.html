@@ -8,7 +8,7 @@
     style-src 'self' 'unsafe-inline'; 
     img-src 'self' https://www.paypalobjects.com; 
     frame-src 'none';
-    connect-src 'self' https://student-live.oppcus2025.workers.dev;">
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   <title>OverPowered StudyGuides</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
@@ -160,7 +160,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #FF0000; /* Changed to red */
+      background: #1a1a1a; /* Dark gray to keep hacker theme, removed red */
       color: #00FF00;
       border: 3px solid #00FF00;
       border-radius: 8px;
@@ -184,47 +184,13 @@
     .popup button:hover {
       background-color: #e6b800;
     }
-    /* Already Paid Container */
-    .already-paid-container {
-      width: 100px;
-      height: 100px;
-      background: #000;
-      color: #00FF00;
-      border: 2px solid #00FF00;
-      border-radius: 50%;
-      font-size: 0.85rem;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00FF00;
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.3s;
-    }
-    .already-paid-container:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00FF00;
-    }
-    .already-paid-container a {
-      color: #00FF00;
-      text-decoration: none;
-    }
-    .already-paid-container a:hover {
-      text-decoration: none;
-    }
   </style>
 </head>
 <body>
-
   <h1>OverPowered StudyGuides</h1>
 
   <!-- Total and Live Count Display -->
-  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px;">Total OPPC Students: 31</div>
+  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px;">Total OPPC Students: 27</div>
   <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold;">Loading live count...</div>
 
   <div class="highlight-message" id="noSignUpMessage">
@@ -251,7 +217,7 @@
   </div>
   <!-- Popup for cache message -->
   <div id="cachePopup" class="popup">
-    <p>*Don't delete oppc.us history/cache*</p>
+    <p>*Don't delete oppc.us cache*</p>
     <button onclick="acknowledgePopup()">I acknowledge</button>
   </div>
 
@@ -301,61 +267,69 @@
   </div>
 
   <script>
-    function unlockContent() {
-      if (localStorage.getItem('unlocked') === 'paid') {
-        document.querySelectorAll('a.locked').forEach(link => {
-          link.textContent = link.textContent.replace(' 🔒', '');
-          link.href = link.getAttribute('data-url');
-          link.classList.remove('locked');
-        });
-
-        const discordBtn = document.getElementById('discordButton');
-        if (discordBtn) {
-          discordBtn.style.opacity = '1';
-          discordBtn.style.pointerEvents = 'auto';
-        }
-
-        const paypalDiv = document.getElementById('paypalContainer');
-        if (paypalDiv) {
-          paypalDiv.style.display = 'none';
-        }
-
-        const noSignUpMessage = document.getElementById('noSignUpMessage');
-        if (noSignUpMessage) {
-          noSignUpMessage.style.display = 'none';
-        }
-        const oneTimeMessage = document.getElementById('oneTimeMessage');
-        if (oneTimeMessage) {
-          oneTimeMessage.style.display = 'none';
-        }
-        const alreadyPaidContainer = document.getElementById('alreadyPaidContainer');
-        if (alreadyPaidContainer) {
-          alreadyPaidContainer.style.display = 'none';
-        }
-
-        if (!localStorage.getItem('cacheAcknowledged')) {
-          const popup = document.getElementById('cachePopup');
-          if (popup) {
-            popup.style.display = 'block';
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log('URL Params:', urlParams.toString());
+        const isUnlocked = localStorage.getItem('unlocked') === 'paid' || urlParams.get('unlocked') === 'paid';
+        console.log('LocalStorage unlocked:', localStorage.getItem('unlocked'), 'Is Unlocked:', isUnlocked);
+        if (isUnlocked) {
+          // Set localStorage if only from query param and reload
+          if (urlParams.get('unlocked') === 'paid' && !localStorage.getItem('unlocked')) {
+            localStorage.setItem('unlocked', 'paid');
+            console.log('Set localStorage.unlocked to "paid" via query param, reloading...');
+            window.location.reload();
+            return; // Exit to let reload handle the rest
           }
+          // Apply unlock changes
+          document.querySelectorAll('a.locked').forEach(link => {
+            link.textContent = link.textContent.replace(' 🔒', '');
+            link.href = link.getAttribute('data-url') || '#';
+            link.classList.remove('locked');
+            console.log('Unlocked link:', link.textContent);
+          });
+          const discordBtn = document.getElementById('discordButton');
+          if (discordBtn) {
+            discordBtn.style.opacity = '1';
+            discordBtn.style.pointerEvents = 'auto';
+            console.log('Discord button enabled');
+          }
+          const paypalDiv = document.getElementById('paypalContainer');
+          if (paypalDiv) {
+            paypalDiv.style.display = 'none';
+            console.log('PayPal container hidden');
+          }
+          const noSignUpMessage = document.getElementById('noSignUpMessage');
+          if (noSignUpMessage) {
+            noSignUpMessage.style.display = 'none';
+            console.log('NoSignUpMessage hidden');
+          }
+          const oneTimeMessage = document.getElementById('oneTimeMessage');
+          if (oneTimeMessage) {
+            oneTimeMessage.style.display = 'none';
+            console.log('OneTimeMessage hidden');
+          }
+          if (!localStorage.getItem('cacheAcknowledged')) {
+            const popup = document.getElementById('cachePopup');
+            if (popup) {
+              popup.style.display = 'block';
+              console.log('Cache popup shown');
+            }
+          }
+        } else {
+          console.log('Content remains locked');
         }
-      } else {
-        const alreadyPaidContainer = document.getElementById('alreadyPaidContainer');
-        if (alreadyPaidContainer) {
-          alreadyPaidContainer.style.display = 'inline-flex';
-        }
+      } catch (err) {
+        console.error('Unlock error:', err);
       }
-    }
+    });
 
     function acknowledgePopup() {
       localStorage.setItem('cacheAcknowledged', 'true');
       const popup = document.getElementById('cachePopup');
-      if (popup) {
-        popup.style.display = 'none';
-      }
+      if (popup) popup.style.display = 'none';
+      console.log('Cache acknowledged');
     }
-
-    window.onload = unlockContent;
   </script>
 
   <script>

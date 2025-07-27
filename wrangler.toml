@@ -4,6 +4,3 @@ type = "javascript"
 account_id = "d05470ecbfa0e5f969a5705ed4560292"
 workers_dev = true
 compatibility_date = "2024-07-20"
-
-[vars]
-DISCORD_WEBHOOK = "https://canary.discord.com/api/webhooks/1396575722075717754/zMgBa_zlcXYsRJSevC5SQSdgnmlOJy94jWaXzoKpZDrMtldd-qlwsIsZ03WtC8VQne8p"

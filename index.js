@@ -6,20 +6,16 @@ export default {
 
     const contentType = request.headers.get("content-type") || "";
 
-    // ✅ Accept form data
     if (!contentType.includes("application/x-www-form-urlencoded")) {
       return new Response("Unsupported content type", { status: 400 });
     }
 
-    // Parse the form body
     let bodyText = await request.text();
     const params = new URLSearchParams(bodyText);
     const payload = Object.fromEntries(params.entries());
 
-    // 🧪 Optional logging (remove later)
     console.log("Received PayPal payload:", payload);
 
-    // ✅ Format Discord message as a rich embed
     const discordMessage = {
       embeds: [
         {
@@ -61,9 +57,13 @@ export default {
     };
 
     try {
-      const discordWebhook = env.DISCORD_WEBHOOK || "https://canary.discord.com/api/webhooks/1396575722075717754/zMgBa_zlcXYsRJSevC5SQSdgnmlOJy94jWaXzoKpZDrMtldd-qlwsIsZ03WtC8VQne8p";
+      // ✅ Use ONLY the secret environment variable
+      if (!env.DISCORD_WEBHOOK) {
+        console.error("❌ Discord webhook not configured.");
+        return new Response("Missing Discord webhook", { status: 500 });
+      }
 
-      const discordResponse = await fetch(discordWebhook, {
+      const discordResponse = await fetch(env.DISCORD_WEBHOOK, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(discordMessage),

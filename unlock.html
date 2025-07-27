@@ -28,29 +28,26 @@
       font-weight: bold;
       border-radius: 5px;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
-    #success {
-      display: none;
-      color: #66ff66;
+    button:hover {
+      background-color: #e6b800;
     }
   </style>
 </head>
 <body>
   <h1>🔓 OPPCUS Token Generated</h1>
   <p>Your <strong>OPPCUS-token.html</strong> has been downloaded.</p>
-  <p>Access Confirmed! Keep this file as a backup.</p>
+
   <button onclick="unlockAndRedirect()">Unlock</button>
-  <div id="success">Download successful! Redirecting...</div>
+
   <script>
     function unlockAndRedirect() {
-      try {
-        localStorage.setItem('unlocked', 'paid');
-        window.location.href = 'https://hackerfrankone.github.io/oppc/?unlocked=paid';
-      } catch (err) {
-        console.error('Redirect error:', err);
-        window.location.href = 'https://hackerfrankone.github.io/oppc/?unlocked=paid';
-      }
+      localStorage.setItem('unlocked', 'paid');
+      window.location.href = 'https://hackerfrankone.github.io/oppc/';
     }
+
+    // Automatically download token file
     const tokenHTML = `
       <!DOCTYPE html>
       <html lang="en">
@@ -58,41 +55,48 @@
         <meta charset="UTF-8">
         <title>OPPCUS-token</title>
         <style>
-          body { background-color: #000; color: #00FF00; font-family: monospace; text-align: center; padding: 50px; }
-          h1 { font-size: 2.5rem; margin-bottom: 20px; }
-          p { font-size: 1.2rem; margin-bottom: 20px; }
-          button { background-color: #FFD140; color: #000; border: none; padding: 10px 20px; font-size: 1rem; font-weight: bold; border-radius: 5px; cursor: pointer; }
+          body {
+            background-color: #000;
+            color: #00FF00;
+            font-family: monospace;
+            text-align: center;
+            padding: 50px;
+          }
+          h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+          }
+          button {
+            background-color: #FFD140;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+          }
+          button:hover {
+            background-color: #e6b800;
+          }
         </style>
       </head>
       <body>
-        <h1>🔓 OPPCUS-token</h1>
-        <p>Access Confirmed! Keep this file as a backup.</p>
-        <button onclick="unlock()">Unlock</button>
-        <script>
-          function unlock() {
-            try { localStorage.setItem('unlocked', 'paid'); window.location.href = 'https://hackerfrankone.github.io/oppc/?unlocked=paid'; }
-            catch (err) { window.location.href = 'https://hackerfrankone.github.io/oppc/?unlocked=paid'; }
-          }
-        </script>
+        <h1>🔐 OPPCUS-token</h1>
+        <button onclick="localStorage.setItem('unlocked','paid');location.href='https://hackerfrankone.github.io/oppc/';">Unlock</button>
       </body>
       </html>
     `;
-    window.onload = function() {
-      try {
-        const blob = new Blob([tokenHTML], { type: 'text/html' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'OPPCUS-token.html';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        document.getElementById('success').style.display = 'block';
-        setTimeout(unlockAndRedirect, 2000); // Redirect after 2 seconds
-      } catch (err) {
-        console.error('Download error:', err);
-        document.getElementById('success').textContent = 'Download failed. Check console.';
-        document.getElementById('success').style.display = 'block';
-      }
+
+    window.onload = function () {
+      const blob = new Blob([tokenHTML], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'OPPCUS-token.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     };
   </script>
 </body>

@@ -2,103 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self'; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline';">
   <title>Unlock OPPCUS Token</title>
   <style>
-    body {
-      background-color: #000;
-      color: #00FF00;
-      font-family: monospace;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-    button {
-      background-color: #FFD140;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background-color: #e6b800;
-    }
+    body { background:#000; color:#0F0; font-family:monospace; text-align:center; padding:50px; }
+    button { background:#FFD140; color:#000; padding:10px 20px; font-weight:bold; border-radius:5px; cursor:pointer; }
+    button:hover { background:#e6b800; }
   </style>
 </head>
 <body>
-  <h1>🔓 OPPCUS Token Generated</h1>
-  <p>Your <strong>OPPCUS-token.html</strong> has been downloaded.</p>
+  <h1>🔓 OPPCUS Token</h1>
+  <p>Processing your OPPCUS-token. Use if you lose access to content. Keep safe!</p>
 
-  <button onclick="unlockAndRedirect()">Unlock</button>
+<script>
+const SALT = "oppcus-salt-v1";
+const INDEX_URL = "https://hackerfrankone.github.io/oppc/index.html";
 
-  <script>
-    function unlockAndRedirect() {
-      localStorage.setItem('unlocked', 'paid');
-      window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';
-    }
+async function generateHash() {
+  const data = navigator.userAgent + navigator.language + screen.width + screen.height + SALT;
+  const encoder = new TextEncoder();
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
-    // Automatically download token file
-    const tokenHTML = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <title>OPPCUS-token</title>
-        <style>
-          body {
-            background-color: #000;
-            color: #00FF00;
-            font-family: monospace;
-            text-align: center;
-            padding: 50px;
-          }
-          h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-          }
-          button {
-            background-color: #FFD140;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-          }
-          button:hover {
-            background-color: #e6b800;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>🔓 OPPCUS-token</h1>
-        <p>Access Confirmed! Keep this file as a backup.</p>
-        <button onclick="localStorage.setItem('unlocked', 'paid'); window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';">Unlock</button>
-      </body>
-      </html>
-    `;
+(async () => {
+  const hash = await generateHash();
+  localStorage.setItem("oppcusTokenHash", hash);
+  localStorage.setItem("unlocked", "paid");
 
-    window.onload = function () {
-      const blob = new Blob([tokenHTML], { type: 'text/html' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'OPPCUS-token.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-  </script>
+  // Small delay to ensure localStorage write completes before redirect
+  setTimeout(() => {
+    window.location.href = INDEX_URL + "?unlocked=paid";
+  }, 500);
+})();
+</script>
 </body>
 </html>

@@ -1,1 +1,2 @@
-FREE, ROBUST, EASY NAVIGATION, NO COOKIES, NO SIGN UP, NO BS, JUST SIMPLE
+CompTIA & Linux LPI study material | 500+ Multi questions | 100 PBQ                 
+***********Linux terminal simulator ***********

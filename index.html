@@ -263,47 +263,55 @@
   </div>
 
   <!-- Salt Hash Validation -->
-  <script>
-    document.addEventListener('DOMContentLoaded', async function() {
-      try {
-        const storedHash = localStorage.getItem('oppcusTokenHash');
-        const salt = 'oppcus-salt-v1';
-        const fpData = navigator.userAgent + navigator.language + screen.width + screen.height + salt;
-        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fpData));
-        const deviceHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+  <!-- Unlock Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
 
-        if (storedHash === deviceHash) {
-          localStorage.setItem('unlocked', 'paid');
-        } else {
-          localStorage.removeItem('unlocked');
-        }
-
-        const isUnlocked = localStorage.getItem('unlocked') === 'paid';
-        if (isUnlocked) {
-          document.querySelectorAll('a.locked').forEach(link => {
-            link.textContent = link.textContent.replace(' 🔒', '');
-            link.href = link.dataset.url;
-            link.classList.remove('locked');
-          });
-          document.getElementById('discordButton').style.opacity = '1';
-          document.getElementById('discordButton').style.pointerEvents = 'auto';
-          document.getElementById('paypalContainer').style.display = 'none';
-          document.getElementById('noSignUpMessage').style.display = 'none';
-          document.getElementById('oneTimeMessage').style.display = 'none';
-          if (!localStorage.getItem('cacheAcknowledged')) {
-            document.getElementById('cachePopup').style.display = 'block';
-          }
-        }
-      } catch (err) {
-        console.error('Unlock error:', err);
-      }
-    });
-
-    function acknowledgePopup() {
-      localStorage.setItem('cacheAcknowledged', 'true');
-      document.getElementById('cachePopup').style.display = 'none';
+    // ✅ Unlock if URL contains ?unlocked=paid
+    if (params.get('unlocked') === 'paid') {
+      localStorage.setItem('unlocked', 'paid');
     }
-  </script>
+
+    const storedHash = localStorage.getItem('oppcusTokenHash');
+    const salt = 'oppcus-salt-v1';
+    const fpData = navigator.userAgent + navigator.language + screen.width + screen.height + salt;
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fpData));
+    const deviceHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+    if (storedHash === deviceHash) {
+      localStorage.setItem('unlocked', 'paid');
+    }
+
+    // ✅ Check unlock status
+    const isUnlocked = localStorage.getItem('unlocked') === 'paid';
+    if (isUnlocked) {
+      document.querySelectorAll('a.locked').forEach(link => {
+        link.textContent = link.textContent.replace(' 🔒', '');
+        link.href = link.dataset.url;
+        link.classList.remove('locked');
+      });
+      document.getElementById('discordButton').style.opacity = '1';
+      document.getElementById('discordButton').style.pointerEvents = 'auto';
+      document.getElementById('paypalContainer').style.display = 'none';
+      document.getElementById('noSignUpMessage').style.display = 'none';
+      document.getElementById('oneTimeMessage').style.display = 'none';
+      if (!localStorage.getItem('cacheAcknowledged')) {
+        document.getElementById('cachePopup').style.display = 'block';
+      }
+    }
+  } catch (err) {
+    console.error('Unlock error:', err);
+  }
+});
+
+function acknowledgePopup() {
+  localStorage.setItem('cacheAcknowledged', 'true');
+  document.getElementById('cachePopup').style.display = 'none';
+}
+</script>
+
 
   <!-- Live Count -->
   <script>

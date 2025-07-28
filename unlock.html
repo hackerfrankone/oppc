@@ -12,86 +12,88 @@
 <body>
   <h1>🔓 OPPCUS Token Generated</h1>
   <p>Your <strong>OPPCUS-token.html</strong> will be downloaded automatically.</p>
+  <p>Use OPPCUS-token to gain access anytime.</p>
+  
+  <button onclick="continueToContent()">Continue</button>
 
-<script>
-async function generateHash(salt) {
-  const data = navigator.userAgent + navigator.language +
-               screen.width + screen.height +
-               Intl.DateTimeFormat().resolvedOptions().timeZone + salt;
-  const encoder = new TextEncoder();
-  const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
-  return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+  <script>
+    async function generateHash(salt) {
+      const data = navigator.userAgent + navigator.language +
+                   screen.width + screen.height +
+                   Intl.DateTimeFormat().resolvedOptions().timeZone + salt;
+      const encoder = new TextEncoder();
+      const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(data));
+      return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
 
-function randomSalt(length=8) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  return Array.from(crypto.getRandomValues(new Uint8Array(length)))
-              .map(x => chars[x % chars.length]).join('');
-}
+    function randomSalt(length=8) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      return Array.from(crypto.getRandomValues(new Uint8Array(length)))
+                  .map(x => chars[x % chars.length]).join('');
+    }
 
-window.onload = async function() {
-  // Generate salt + hash
-  const salt = randomSalt();
-  const hash = await generateHash(salt);
+    window.onload = async function() {
+      // Generate salt + hash
+      const salt = randomSalt();
+      const hash = await generateHash(salt);
 
-  // Save hash to localStorage for index.html verification
-  localStorage.setItem('oppcusTokenHash', hash);
-  localStorage.setItem('unlocked', 'paid');
+      // Save hash to localStorage for index.html verification
+      localStorage.setItem('oppcusTokenHash', hash);
+      localStorage.setItem('unlocked', 'paid');
 
-  // Create token file content
-  const tokenHTML = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>OPPCUS-token</title>
-    <style>
-      body { background:#000; color:#0F0; font-family:monospace; text-align:center; padding:50px; }
-      .status { font-size:1.5rem; font-weight:bold; margin-top:20px; }
-    </style>
-  </head>
-  <body>
-    <h1>🔓 OPPCUS-token</h1>
-    <p>Validating your token...</p>
-    <div id="status" class="status"></div>
-    <script>
-      const salt="${salt}";
-      const validHash="${hash}";
-      async function verifyMachine(){
-        const data=navigator.userAgent+navigator.language+screen.width+screen.height+Intl.DateTimeFormat().resolvedOptions().timeZone+salt;
-        const enc=new TextEncoder();
-        const buf=await crypto.subtle.digest('SHA-256',enc.encode(data));
-        const curHash=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-        const statusEl=document.getElementById('status');
-        if(curHash===validHash){
-          localStorage.setItem('unlocked','paid');
-          localStorage.setItem('oppcusTokenHash',validHash);
-          statusEl.textContent="✅ Access Granted";
-          statusEl.style.color="#0F0";
-          setTimeout(()=>window.location.href='https://hackerfrankone.github.io/oppc/index.html?unlocked=paid',1500);
-        } else {
-          statusEl.textContent="❌ Access Denied";
-          statusEl.style.color="#F00";
-        }
-      }
-      verifyMachine();
-    <\/script>
-  </body>
-  </html>
-  `;
+      // Create token file content
+      const tokenHTML = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>OPPCUS-token</title>
+        <style>
+          body { background:#000; color:#0F0; font-family:monospace; text-align:center; padding:50px; }
+          .status { font-size:1.5rem; font-weight:bold; margin-top:20px; }
+        </style>
+      </head>
+      <body>
+        <h1>🔓 OPPCUS-token</h1>
+        <p>Validating your token...</p>
+        <div id="status" class="status"></div>
+        <script>
+          const salt="${salt}";
+          const validHash="${hash}";
+          async function verifyMachine(){
+            const data=navigator.userAgent+navigator.language+screen.width+screen.height+Intl.DateTimeFormat().resolvedOptions().timeZone+salt;
+            const enc=new TextEncoder();
+            const buf=await crypto.subtle.digest('SHA-256',enc.encode(data));
+            const curHash=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+            const statusEl=document.getElementById('status');
+            if(curHash===validHash){
+              localStorage.setItem('unlocked','paid');
+              localStorage.setItem('oppcusTokenHash',validHash);
+              statusEl.textContent="✅ Access Granted";
+              statusEl.style.color="#0F0";
+              setTimeout(()=>window.location.href='https://hackerfrankone.github.io/oppc/index.html?unlocked=paid',1500);
+            } else {
+              statusEl.textContent="❌ Access Denied";
+              statusEl.style.color="#F00";
+            }
+          }
+          verifyMachine();
+        <\/script>
+      </body>
+      </html>
+      `;
 
-  // Trigger download
-  const blob = new Blob([tokenHTML], { type:'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'OPPCUS-token.html';
-  a.click();
+      // Trigger download
+      const blob = new Blob([tokenHTML], { type:'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'OPPCUS-token.html';
+      a.click();
+    };
 
-  // Redirect after short delay
-  setTimeout(()=> {
-    window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';
-  }, 1000);
-};
-</script>
+    function continueToContent() {
+      window.location.href = 'https://hackerfrankone.github.io/oppc/index.html?unlocked=paid';
+    }
+  </script>
 </body>
 </html>

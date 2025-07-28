@@ -153,13 +153,14 @@
       height: 0.75rem;
       vertical-align: middle;
     }
+    /* Popup Styles */
     .popup {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #1a1a1a;
+      background: #1a1a1a; /* Dark gray to keep hacker theme, removed red */
       color: #00FF00;
       border: 3px solid #00FF00;
       border-radius: 8px;
@@ -179,6 +180,9 @@
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+    }
+    .popup button:hover {
+      background-color: #e6b800;
     }
   </style>
 </head>
@@ -211,14 +215,13 @@
       </section>
     </form>
   </div>
-
   <!-- Popup for cache message -->
   <div id="cachePopup" class="popup">
     <p>*Don't delete oppc.us cache*</p>
     <button onclick="acknowledgePopup()">I acknowledge</button>
   </div>
 
-  <!-- Certification Groups -->
+  <!-- CompTIA Group -->
   <div class="cert-group" id="comptia">
     <div class="cert-icon" id="aplus">
       <img src="images/aplus.png" alt="A+ Certification" />
@@ -243,6 +246,7 @@
     </div>
   </div>
 
+  <!-- LPI Cert Group -->
   <div class="cert-group" id="other-certs">
     <div class="cert-icon" id="lpi">
       <img src="images/lpi.png" alt="LPI Certification" />
@@ -254,7 +258,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Floating Footer Buttons -->
   <div class="footer-buttons">
     <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
@@ -262,37 +266,58 @@
     <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
-  <!-- Salt Hash Validation -->
   <script>
-    document.addEventListener('DOMContentLoaded', async function() {
+    document.addEventListener('DOMContentLoaded', function() {
       try {
-        const storedHash = localStorage.getItem('oppcusTokenHash');
-        const salt = 'oppcus-salt-v1';
-        const fpData = navigator.userAgent + navigator.language + screen.width + screen.height + salt;
-        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fpData));
-        const deviceHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
-
-        if (storedHash === deviceHash) {
-          localStorage.setItem('unlocked', 'paid');
-        } else {
-          localStorage.removeItem('unlocked');
-        }
-
-        const isUnlocked = localStorage.getItem('unlocked') === 'paid';
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log('URL Params:', urlParams.toString());
+        const isUnlocked = localStorage.getItem('unlocked') === 'paid' || urlParams.get('unlocked') === 'paid';
+        console.log('LocalStorage unlocked:', localStorage.getItem('unlocked'), 'Is Unlocked:', isUnlocked);
         if (isUnlocked) {
+          // Set localStorage if only from query param and reload
+          if (urlParams.get('unlocked') === 'paid' && !localStorage.getItem('unlocked')) {
+            localStorage.setItem('unlocked', 'paid');
+            console.log('Set localStorage.unlocked to "paid" via query param, reloading...');
+            window.location.reload();
+            return; // Exit to let reload handle the rest
+          }
+          // Apply unlock changes
           document.querySelectorAll('a.locked').forEach(link => {
             link.textContent = link.textContent.replace(' 🔒', '');
-            link.href = link.dataset.url;
+            link.href = link.getAttribute('data-url') || '#';
             link.classList.remove('locked');
+            console.log('Unlocked link:', link.textContent);
           });
-          document.getElementById('discordButton').style.opacity = '1';
-          document.getElementById('discordButton').style.pointerEvents = 'auto';
-          document.getElementById('paypalContainer').style.display = 'none';
-          document.getElementById('noSignUpMessage').style.display = 'none';
-          document.getElementById('oneTimeMessage').style.display = 'none';
-          if (!localStorage.getItem('cacheAcknowledged')) {
-            document.getElementById('cachePopup').style.display = 'block';
+          const discordBtn = document.getElementById('discordButton');
+          if (discordBtn) {
+            discordBtn.style.opacity = '1';
+            discordBtn.style.pointerEvents = 'auto';
+            console.log('Discord button enabled');
           }
+          const paypalDiv = document.getElementById('paypalContainer');
+          if (paypalDiv) {
+            paypalDiv.style.display = 'none';
+            console.log('PayPal container hidden');
+          }
+          const noSignUpMessage = document.getElementById('noSignUpMessage');
+          if (noSignUpMessage) {
+            noSignUpMessage.style.display = 'none';
+            console.log('NoSignUpMessage hidden');
+          }
+          const oneTimeMessage = document.getElementById('oneTimeMessage');
+          if (oneTimeMessage) {
+            oneTimeMessage.style.display = 'none';
+            console.log('OneTimeMessage hidden');
+          }
+          if (!localStorage.getItem('cacheAcknowledged')) {
+            const popup = document.getElementById('cachePopup');
+            if (popup) {
+              popup.style.display = 'block';
+              console.log('Cache popup shown');
+            }
+          }
+        } else {
+          console.log('Content remains locked');
         }
       } catch (err) {
         console.error('Unlock error:', err);
@@ -301,26 +326,37 @@
 
     function acknowledgePopup() {
       localStorage.setItem('cacheAcknowledged', 'true');
-      document.getElementById('cachePopup').style.display = 'none';
+      const popup = document.getElementById('cachePopup');
+      if (popup) popup.style.display = 'none';
+      console.log('Cache acknowledged');
     }
   </script>
 
-  <!-- Live Count -->
   <script>
     const liveCountElement = document.getElementById('liveCountDisplay');
     const WORKER_URL = "https://student-live.oppcus2025.workers.dev/live-count";
+
     async function fetchLiveCount() {
       try {
         const response = await fetch(WORKER_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error('Network response was not ok');
+
         const data = await response.json();
-        liveCountElement.textContent = `Live Students Currently Online: ${data.count ?? 'Unavailable'}`;
-      } catch {
+        if (data.count !== undefined) {
+          liveCountElement.textContent = `Live Students Currently Online: ${data.count}`;
+        } else {
+          liveCountElement.textContent = 'Live count data unavailable';
+        }
+      } catch (err) {
         liveCountElement.textContent = 'Error fetching live count';
+        console.error('Fetch error:', err);
       }
     }
+
     fetchLiveCount();
     setInterval(fetchLiveCount, 10000);
   </script>
 
+  <script src="student-live.js"></script>
 </body>
 </html>

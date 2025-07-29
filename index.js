@@ -13,9 +13,8 @@ export default {
     const params = new URLSearchParams(bodyText);
     const payload = Object.fromEntries(params.entries());
 
-    console.log("Parsed PayPal payload:", JSON.stringify(payload, null, 2));
+    console.log("📦 Parsed PayPal payload:", JSON.stringify(payload, null, 2));
 
-    // Parse and sanitize fields
     const firstName = (payload.first_name || "").trim();
     const lastName = (payload.last_name || "").trim();
     const email = (payload.payer_email || "").trim();
@@ -26,10 +25,8 @@ export default {
       timeZone: "America/New_York",
     });
 
-    // Combine name properly
     const fullName = [firstName, lastName].filter(Boolean).join(" ").trim() || "N/A";
 
-    // Build the Discord message
     const discordMessage = {
       content: "📥 New PayPal purchase received!",
       embeds: [
@@ -37,44 +34,26 @@ export default {
           title: "🛒 PayPal Purchase",
           color: 0x00ff99,
           fields: [
-            {
-              name: "👤 Name",
-              value: fullName,
-              inline: true,
-            },
-            {
-              name: "📧 Email",
-              value: email || "N/A",
-              inline: true,
-            },
-            {
-              name: "💵 Amount",
-              value: `$${amount} ${currency}`,
-              inline: true,
-            },
-            {
-              name: "📦 Item",
-              value: item,
-              inline: false,
-            },
-            {
-              name: "🕓 Time",
-              value: time,
-              inline: false,
-            },
+            { name: "👤 Name", value: fullName, inline: true },
+            { name: "📧 Email", value: email || "N/A", inline: true },
+            { name: "💵 Amount", value: `$${amount} ${currency}`, inline: true },
+            { name: "📦 Item", value: item, inline: false },
+            { name: "🕓 Time", value: time, inline: false },
           ],
-          footer: {
-            text: "🛒 PayPal Notification Bot",
-          },
+          footer: { text: "🛒 PayPal Notification Bot" },
           timestamp: new Date().toISOString(),
         },
       ],
     };
 
-    // Send to Discord webhook
-    const webhookURL = env.DISCORD_WEBHOOK;
+    if (!env.DISCORD_WEBHOOK) {
+      console.error("DISCORD_WEBHOOK is not defined in environment variables");
+      return new Response("Server misconfiguration", { status: 500 });
+    }
 
-    const discordResponse = await fetch(webhookURL, {
+    console.log("🔁 Sending this payload to Discord:", JSON.stringify(discordMessage, null, 2));
+
+    const discordResponse = await fetch(env.DISCORD_WEBHOOK, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +63,7 @@ export default {
 
     if (!discordResponse.ok) {
       const errorText = await discordResponse.text();
-      console.error("Failed to send to Discord:", errorText);
+      console.error("❌ Discord Webhook Error:", discordResponse.status, errorText);
       return new Response("Failed to send to Discord", { status: 500 });
     }
 

@@ -20,7 +20,6 @@ export default {
     const email = (payload.payer_email || "").trim();
     const amount = (payload.mc_gross || "0.00").trim();
     const currency = (payload.mc_currency || "USD").trim();
-    const item = (payload.item_name || "Unspecified Item").trim();
     const time = new Date().toLocaleString("en-US", {
       timeZone: "America/New_York",
     });
@@ -34,13 +33,30 @@ export default {
           title: "🛒 PayPal Purchase",
           color: 0x00ff99,
           fields: [
-            { name: "👤 Name", value: fullName, inline: true },
-            { name: "📧 Email", value: email || "N/A", inline: true },
-            { name: "💵 Amount", value: `$${amount} ${currency}`, inline: true },
-            { name: "📦 Item", value: item, inline: false },
-            { name: "🕓 Time", value: time, inline: false },
+            {
+              name: "👤 Name",
+              value: fullName,
+              inline: true,
+            },
+            {
+              name: "📧 Email",
+              value: email || "N/A",
+              inline: true,
+            },
+            {
+              name: "💵 Amount",
+              value: `$${amount} ${currency}`,
+              inline: true,
+            },
+            {
+              name: "🕓 Time",
+              value: time,
+              inline: false,
+            },
           ],
-          footer: { text: "🛒 PayPal Notification Bot" },
+          footer: {
+            text: "🛒 PayPal Notification Bot",
+          },
           timestamp: new Date().toISOString(),
         },
       ],

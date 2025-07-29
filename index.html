@@ -297,6 +297,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('paypalContainer').style.display = 'none';
       document.getElementById('noSignUpMessage').style.display = 'none';
       document.getElementById('oneTimeMessage').style.display = 'none';
+      document.querySelector('.details-message').style.display = 'none'; // Hide details-message in paid version
       if (!localStorage.getItem('cacheAcknowledged')) {
         document.getElementById('cachePopup').style.display = 'block';
       }
@@ -311,7 +312,6 @@ function acknowledgePopup() {
   document.getElementById('cachePopup').style.display = 'none';
 }
 </script>
-
 
   <!-- Live Count -->
   <script>

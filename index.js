@@ -15,6 +15,7 @@ export default {
 
     console.log("📦 Parsed PayPal payload:", JSON.stringify(payload, null, 2));
 
+    // Extract values
     const firstName = (payload.first_name || "").trim();
     const lastName = (payload.last_name || "").trim();
     const email = (payload.payer_email || "").trim();
@@ -24,8 +25,16 @@ export default {
       timeZone: "America/New_York",
     });
 
+    // Additional Debugging
+    console.log(`First Name: ${firstName}`);
+    console.log(`Last Name: ${lastName}`);
+    console.log(`Email: ${email}`);
+    console.log(`Amount: $${amount} ${currency}`);
+    console.log(`Time: ${time}`);
+
     const fullName = [firstName, lastName].filter(Boolean).join(" ").trim() || "N/A";
 
+    // Discord Payload
     const discordMessage = {
       content: "📥 New PayPal purchase received!",
       embeds: [

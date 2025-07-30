@@ -1,1 +1,206 @@
-//placeholder
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CompTIA Linux+ Terminal Simulator</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #00ff00;
+      font-family: monospace, monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #terminal {
+      background: #0b0b0b;
+      padding: 40px 15px 15px 15px;
+      flex-grow: 2;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: #111;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    #commandInput {
+      background: #0b0b0b;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 8px;
+      flex: 1 1 50%;
+      min-width: 250px;
+      outline: none;
+      caret-color: #0f0;
+    }
+    button {
+      background-color: #222;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+    #questionBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    #answerBox {
+      background: #111;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      color: #0f0;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    #backButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      border-radius: 3px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: monospace;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <button id="backButton" onclick="goBack()">← Back</button>
+
+  <div id="terminal"></div>
+
+  <div id="inputArea">
+    <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
+    <button onclick="submitCommand()">Submit</button>
+    <button onclick="clearTerminal()">Clear</button>
+    <button onclick="showAnswer()">Show Answer</button>
+  </div>
+
+  <div id="questionBox"></div>
+  <div id="answerBox"></div>
+
+  <script>
+    const terminalOutput = document.getElementById('terminal');
+    const commandInput = document.getElementById('commandInput');
+    const answerBox = document.getElementById('answerBox');
+    const questionBox = document.getElementById('questionBox');
+
+    const pbqs = [
+      { question: "Display the current kernel version of the system.", answer: "uname -r" },
+      { question: "Create a new group named 'developers'.", answer: "sudo groupadd developers" },
+      { question: "Set the permissions of 'config.conf' to -rw-r-----.", answer: "chmod 640 config.conf" },
+      { question: "Restart the Apache web server service.", answer: "sudo systemctl restart apache2" },
+      { question: "List all block devices on the system.", answer: "lsblk" },
+      { question: "Add a user 'alice' to the 'developers' group.", answer: "sudo usermod -aG developers alice" },
+      { question: "Display the system logs for the current boot.", answer: "journalctl -b" },
+      { question: "Create a tar archive named 'backup.tar.gz' of the '/etc' directory.", answer: "tar -czf backup.tar.gz /etc" },
+      { question: "Check the status of the firewall service.", answer: "sudo systemctl status firewalld" },
+      { question: "Display the network interfaces and their IP addresses.", answer: "ip addr show" },
+      { question: "Change the ownership of 'data' directory to user 'bob' and group 'developers'.", answer: "sudo chown bob:developers data" },
+      { question: "Search for all files named 'config' under '/etc'.", answer: "find /etc -name config" },
+      { question: "Install the 'nginx' package using the apt package manager.", answer: "sudo apt install nginx" },
+      { question: "Display the last 10 lines of '/var/log/syslog'.", answer: "tail -n 10 /var/log/syslog" },
+      { question: "Create a symbolic link named 'link.txt' pointing to 'file.txt'.", answer: "ln -s file.txt link.txt" },
+      { question: "Show the disk usage of all directories in the current path.", answer: "du -h --max-depth=1" },
+      { question: "Modify the '/etc/hosts' file to map 'localhost' to '127.0.0.1'.", answer: "sudo nano /etc/hosts" },
+      { question: "Stop the 'cron' service.", answer: "sudo systemctl stop cron" },
+      { question: "List all running processes owned by the user 'alice'.", answer: "ps -u alice" },
+      { question: "Check the available memory on the system.", answer: "free -h" }
+    ];
+
+    let currentPBQ = 0;
+    let history = [];
+    let historyIndex = -1;
+    let currentPath = "/home/student";
+
+    function printToTerminal(text = "") {
+      terminalOutput.innerHTML += text + "\n";
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function clearTerminal() {
+      terminalOutput.innerHTML = `student@comptia:${currentPath}$\n`;
+      answerBox.innerText = "";
+      questionBox.innerHTML = `PBQ ${currentPBQ + 1}: ${pbqs[currentPBQ].question}`;
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function showAnswer() {
+      const pbq = pbqs[currentPBQ];
+      answerBox.innerText = `Answer:\n${pbq.answer}`;
+    }
+
+    function submitCommand() {
+      const input = commandInput.value.trim();
+      if (input === '') return;
+
+      printToTerminal(`student@comptia:${currentPath}$ ${input}`);
+      history.push(input);
+      historyIndex = history.length;
+      const expected = pbqs[currentPBQ].answer.trim();
+
+      if (input === expected) {
+        printToTerminal("\n✅ Correct command!");
+        setTimeout(() => {
+          currentPBQ = (currentPBQ + 1) % pbqs.length;
+          clearTerminal();
+        }, 5000);  // 5-second delay before next question
+      } else {
+        printToTerminal("❌ Incorrect. Try again.");
+      }
+
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          commandInput.value = history[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          commandInput.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          commandInput.value = "";
+        }
+        e.preventDefault();
+      } else if (e.key === "Enter") {
+        submitCommand();
+        e.preventDefault();
+      }
+    });
+
+    // Bootup
+    clearTerminal();
+  </script>
+</body>
+</html>

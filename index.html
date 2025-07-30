@@ -34,9 +34,11 @@
       font-style: italic;
       opacity: 0.8;
       margin-bottom: 10px;
+      background-color: #000;
     }
     .cert-group {
       margin-bottom: 20px;
+      background-color: #000;
     }
     .cert-icon {
       display: inline-block;
@@ -44,6 +46,7 @@
       cursor: pointer;
       transition: transform 0.2s;
       position: relative;
+      background-color: #000;
     }
     .cert-icon:hover {
       transform: scale(1.1);
@@ -57,6 +60,7 @@
     }
     #other-certs {
       margin-top: 30px;
+      background-color: #000;
     }
     .footer-buttons {
       position: fixed;
@@ -67,6 +71,7 @@
       gap: 30px;
       align-items: flex-start;
       z-index: 9999;
+      background-color: #000;
     }
     .circle-button {
       width: 100px;
@@ -141,6 +146,7 @@
       align-content: start;
       gap: 0.5rem;
       margin-top: 0px;
+      background-color: #000;
     }
     #paypalContainer img {
       max-width: 80%;
@@ -148,6 +154,7 @@
     }
     #paypalContainer section {
       font-size: 0.65rem;
+      background-color: #000;
     }
     #paypalContainer section img {
       height: 0.75rem;
@@ -159,7 +166,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #1a1a1a;
+      background: #000;
       color: #00FF00;
       border: 3px solid #00FF00;
       border-radius: 8px;
@@ -186,8 +193,8 @@
   <h1>OPPCUS</h1>
 
   <!-- Total and Live Count Display -->
-  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px;">Total OPPC Students: 31</div>
-  <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold;">Loading live count...</div>
+  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px; background-color: #000;">Total OPPC Students: 31</div>
+  <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold; background-color: #000;">Loading live count...</div>
 
   <div class="highlight-message" id="noSignUpMessage">
     NO sign up | NO ads | NO cookies | NO BS 
@@ -241,6 +248,14 @@
         <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
       </div>
     </div>
+
+    <!-- ✅ New Linux+ Container -->
+    <div class="cert-icon" id="linuxPlus">
+      <img src="images/linuxplus.jpg" alt="Linux+ Certification" />
+      <div class="hover-box">
+        <a href="#" class="locked" data-url="linuxplus/linuxplus.html">Study Guide 🔒</a>
+      </div>
+    </div>
   </div>
 
   <div class="cert-group" id="other-certs">
@@ -263,13 +278,11 @@
   </div>
 
   <!-- Salt Hash Validation -->
-  <!-- Unlock Logic -->
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
   try {
     const params = new URLSearchParams(window.location.search);
 
-    // ✅ Unlock if URL contains ?unlocked=paid
     if (params.get('unlocked') === 'paid') {
       localStorage.setItem('unlocked', 'paid');
     }
@@ -284,7 +297,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       localStorage.setItem('unlocked', 'paid');
     }
 
-    // ✅ Check unlock status
     const isUnlocked = localStorage.getItem('unlocked') === 'paid';
     if (isUnlocked) {
       document.querySelectorAll('a.locked').forEach(link => {
@@ -297,7 +309,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('paypalContainer').style.display = 'none';
       document.getElementById('noSignUpMessage').style.display = 'none';
       document.getElementById('oneTimeMessage').style.display = 'none';
-      document.querySelector('.details-message').style.display = 'none'; // Hide details-message in paid version
+      document.querySelector('.details-message').style.display = 'none';
       if (!localStorage.getItem('cacheAcknowledged')) {
         document.getElementById('cachePopup').style.display = 'block';
       }

@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
   <title>CompTIA Linux+ Certification Quiz</title>
-  <link rel="icon" type="image/png" href="images/oppcus.png" />
   <style>
     * {
       box-sizing: border-box;
@@ -195,7 +195,329 @@
     <div class="score" id="score"></div>
   </div>
 
-  // input questions here //
+  <script>
+    const questions = [
+      {
+        question: "Which command displays the current directory in Linux?",
+        choices: ["ls", "pwd", "cd", "dir"],
+        answer: "pwd"
+      },
+      {
+        question: "What is the purpose of the 'chmod' command?",
+        choices: ["Change file ownership", "Change file permissions", "Modify file content", "Move files"],
+        answer: "Change file permissions"
+      },
+      {
+        question: "Which file system is commonly used for Linux installations?",
+        choices: ["NTFS", "FAT32", "ext4", "HFS+"],
+        answer: "ext4"
+      },
+      {
+        question: "Which command is used to install software packages in Ubuntu?",
+        choices: ["yum install", "apt install", "dnf install", "rpm -i"],
+        answer: "apt install"
+      },
+      {
+        question: "What does the 'grep' command do?",
+        choices: ["Copy files", "Search for text patterns", "List directory contents", "Edit files"],
+        answer: "Search for text patterns"
+      },
+      {
+        question: "Which command shows running processes in Linux?",
+        choices: ["ls", "top", "cat", "mv"],
+        answer: "top"
+      },
+      {
+        question: "What is the default shell in most Linux distributions?",
+        choices: ["csh", "zsh", "bash", "ksh"],
+        answer: "bash"
+      },
+      {
+        question: "Which command is used to create a new user in Linux?",
+        choices: ["adduser", "newuser", "usercreate", "mkuser"],
+        answer: "adduser"
+      },
+      {
+        question: "What does the 'sudo' command do?",
+        choices: ["Shuts down the system", "Runs a command as superuser", "Lists users", "Changes directories"],
+        answer: "Runs a command as superuser"
+      },
+      {
+        question: "Which file contains user account information?",
+        choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/users"],
+        answer: "/etc/passwd"
+      },
+      {
+        question: "What is the purpose of the 'crontab' command?",
+        choices: ["Manage system logs", "Schedule tasks", "Monitor processes", "Edit files"],
+        answer: "Schedule tasks"
+      },
+      {
+        question: "Which command displays disk usage?",
+        choices: ["df", "du", "lsblk", "fdisk"],
+        answer: "du"
+      },
+      {
+        question: "What does the 'tar' command do?",
+        choices: ["Compresses files", "Archives files", "Encrypts files", "Moves files"],
+        answer: "Archives files"
+      },
+      {
+        question: "Which command is used to change file ownership?",
+        choices: ["chmod", "chown", "chgrp", "own"],
+        answer: "chown"
+      },
+      {
+        question: "What is the purpose of the '/etc/fstab' file?",
+        choices: ["Stores user passwords", "Defines file system mounts", "Lists running services", "Configures network settings"],
+        answer: "Defines file system mounts"
+      },
+      {
+        question: "Which command updates the package list in Debian-based systems?",
+        choices: ["apt update", "yum update", "dnf update", "zypper refresh"],
+        answer: "apt update"
+      },
+      {
+        question: "What does the 'ps' command display?",
+        choices: ["Disk usage", "Running processes", "Network status", "File permissions"],
+        answer: "Running processes"
+      },
+      {
+        question: "Which command is used to terminate a process?",
+        choices: ["stop", "kill", "end", "quit"],
+        answer: "kill"
+      },
+      {
+        question: "What is the purpose of the 'systemctl' command?",
+        choices: ["Manage system services", "Edit system files", "Monitor network traffic", "Update packages"],
+        answer: "Manage system services"
+      },
+      {
+        question: "Which protocol is used for secure remote access in Linux?",
+        choices: ["FTP", "Telnet", "SSH", "RDP"],
+        answer: "SSH"
+      },
+      {
+        question: "What does the 'lsblk' command show?",
+        choices: ["Network interfaces", "Block devices", "Running processes", "File permissions"],
+        answer: "Block devices"
+      },
+      {
+        question: "Which command displays network configuration details?",
+        choices: ["ifconfig", "netstat", "ip addr", "route"],
+        answer: "ip addr"
+      },
+      {
+        question: "What is the purpose of the '/etc/hosts' file?",
+        choices: ["Stores user credentials", "Maps hostnames to IP addresses", "Configures firewall rules", "Lists active services"],
+        answer: "Maps hostnames to IP addresses"
+      },
+      {
+        question: "Which command compresses a file using gzip?",
+        choices: ["zip", "gzip", "bzip2", "compress"],
+        answer: "gzip"
+      },
+      {
+        question: "What does the 'find' command do?",
+        choices: ["Searches for files", "Lists directories", "Edits files", "Moves files"],
+        answer: "Searches for files"
+      },
+      {
+        question: "Which file stores group information in Linux?",
+        choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"],
+        answer: "/etc/group"
+      },
+      {
+        question: "What is the purpose of the 'iptables' command?",
+        choices: ["Manage file permissions", "Configure firewall rules", "Monitor processes", "Update packages"],
+        answer: "Configure firewall rules"
+      },
+      {
+        question: "Which command displays the last few lines of a file?",
+        choices: ["head", "tail", "cat", "less"],
+        answer: "tail"
+      },
+      {
+        question: "What does the 'rsync' command do?",
+        choices: ["Synchronizes files", "Compresses files", "Edits files", "Lists files"],
+        answer: "Synchronizes files"
+      },
+      {
+        question: "Which command checks disk integrity?",
+        choices: ["fsck", "chkdsk", "diskpart", "fdisk"],
+        answer: "fsck"
+      },
+      {
+        question: "What is the default port for SSH?",
+        choices: ["21", "22", "23", "80"],
+        answer: "22"
+      },
+      {
+        question: "Which command displays the manual page for another command?",
+        choices: ["help", "man", "info", "doc"],
+        answer: "man"
+      },
+      {
+        question: "What does the 'whoami' command display?",
+        choices: ["Current user", "System uptime", "Disk usage", "Network status"],
+        answer: "Current user"
+      },
+      {
+        question: "Which command is used to mount a file system?",
+        choices: ["mount", "umount", "fsck", "mkfs"],
+        answer: "mount"
+      },
+      {
+        question: "What is the purpose of the 'yum' command in Red Hat-based systems?",
+        choices: ["Manage users", "Update packages", "Monitor processes", "Edit files"],
+        answer: "Update packages"
+      },
+      {
+        question: "Which command displays system uptime?",
+        choices: ["uptime", "time", "date", "who"],
+        answer: "uptime"
+      },
+      {
+        question: "What does the 'scp' command do?",
+        choices: ["Copies files securely over SSH", "Compresses files", "Lists files", "Edits files"],
+        answer: "Copies files securely over SSH"
+      },
+      {
+        question: "Which file configures the DNS resolver?",
+        choices: ["/etc/hosts", "/etc/resolv.conf", "/etc/fstab", "/etc/passwd"],
+        answer: "/etc/resolv.conf"
+      },
+      {
+        question: "What is the purpose of the 'awk' command?",
+        choices: ["Text processing", "File compression", "Network monitoring", "User management"],
+        answer: "Text processing"
+      },
+      {
+        question: "Which command creates a new directory?",
+        choices: ["mkdir", "rmdir", "touch", "cd"],
+        answer: "mkdir"
+      },
+      {
+        question: "What does the 'journalctl' command display?",
+        choices: ["System logs", "File permissions", "Network status", "Disk usage"],
+        answer: "System logs"
+      },
+      {
+        question: "Which command is used to unmount a file system?",
+        choices: ["mount", "umount", "fsck", "mkfs"],
+        answer: "umount"
+      },
+      {
+        question: "What is the purpose of the 'selinux' command?",
+        choices: ["Manage firewall rules", "Control security policies", "Update packages", "Monitor processes"],
+        answer: "Control security policies"
+      },
+      {
+        question: "Which command displays the kernel version?",
+        choices: ["uname -r", "cat /proc/version", "lsb_release -a", "hostnamectl"],
+        answer: "uname -r"
+      },
+      {
+        question: "What does the 'chgrp' command do?",
+        choices: ["Change file ownership", "Change group ownership", "Modify permissions", "Edit files"],
+        answer: "Change group ownership"
+      },
+      {
+        question: "Which command lists open network ports?",
+        choices: ["netstat -tulpn", "ip addr", "ifconfig", "route"],
+        answer: "netstat -tulpn"
+      },
+      {
+        question: "What is the purpose of the '/etc/shadow' file?",
+        choices: ["Stores user passwords", "Lists groups", "Defines mounts", "Maps hostnames"],
+        answer: "Stores user passwords"
+      },
+      {
+        question: "Which command displays file contents page by page?",
+        choices: ["cat", "more", "less", "tail"],
+        answer: "less"
+      },
+      {
+        question: "What does the 'dd' command do?",
+        choices: ["Copies and converts files", "Compresses files", "Lists files", "Edits files"],
+        answer: "Copies and converts files"
+      },
+      {
+        question: "Which command is used to create a symbolic link?",
+        choices: ["ln -s", "link", "symlink", "mklink"],
+        answer: "ln -s"
+      },
+      {
+        question: "What is the purpose of the '/boot' directory?",
+        choices: ["Stores user files", "Contains boot loader files", "Logs system events", "Holds temporary files"],
+        answer: "Contains boot loader files"
+      },
+      {
+        question: "Which command displays CPU and memory usage?",
+        choices: ["top", "ps", "free", "df"],
+        answer: "top"
+      },
+      {
+        question: "What does the 'passwd' command do?",
+        choices: ["Changes user password", "Lists users", "Modifies permissions", "Edits files"],
+        answer: "Changes user password"
+      },
+      {
+        question: "Which command checks for open ports on a remote host?",
+        choices: ["nmap", "netstat", "ping", "traceroute"],
+        answer: "nmap"
+      },
+      {
+        question: "What is the purpose of the 'grub' configuration file?",
+        choices: ["Manages user accounts", "Configures boot loader", "Sets firewall rules", "Updates packages"],
+        answer: "Configures boot loader"
+      },
+      {
+        question: "Which command displays the current environment variables?",
+        choices: ["env", "set", "export", "printenv"],
+        answer: "printenv"
+      },
+      {
+        question: "What does the 'cut' command do?",
+        choices: ["Extracts sections from files", "Compresses files", "Lists files", "Edits files"],
+        answer: "Extracts sections from files"
+      },
+      {
+        question: "Which command restarts a service in systemd?",
+        choices: ["systemctl restart", "service restart", "init.d restart", "stop"],
+        answer: "systemctl restart"
+      },
+      {
+        question: "What is the purpose of the 'visudo' command?",
+        choices: ["Edits the sudoers file", "Lists users", "Changes permissions", "Updates packages"],
+        answer: "Edits the sudoers file"
+      },
+      {
+        question: "Which command displays the routing table in Linux?",
+        choices: ["route", "ip route", "netstat -r", "ifconfig"],
+        answer: "ip route"
+      },
+      {
+        question: "What does the 'lscpu' command display?",
+        choices: ["CPU information", "Memory usage", "Disk usage", "Network status"],
+        answer: "CPU information"
+      },
+      {
+        question: "Which command creates a new file system?",
+        choices: ["mkfs", "fsck", "mount", "fdisk"],
+        answer: "mkfs"
+      },
+      {
+        question: "What is the purpose of the '/var/log' directory?",
+        choices: ["Stores user files", "Contains system logs", "Holds boot files", "Temporary files"],
+        answer: "Contains system logs"
+      },
+      {
+        question: "Which command displays the current hostname?",
+        choices: ["hostname", "whoami", "uname", "host"],
+        answer: "hostname"
+      }
+    ];
 
     // Shuffle array elements (for questions or choices)
     function shuffle(array) {

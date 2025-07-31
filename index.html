@@ -3,11 +3,11 @@
 <head>  
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self'; 
+    default-src 'self' https://raw.githubusercontent.com https://hackerfrankone.github.io; 
     script-src 'self' 'unsafe-inline'; 
     style-src 'self' 'unsafe-inline'; 
     img-src 'self' https://www.paypalobjects.com; 
-    frame-src 'none';
+    frame-src 'self' https://raw.githubusercontent.com https://hackerfrankone.github.io;
     connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
   <title>OPPCUS Home Page</title>
@@ -291,7 +291,7 @@
   </div>
 
   <!-- Privacy Policy Link -->
-  <a href="oppc/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
+  <a href="https://raw.githubusercontent.com/hackerfrankone/oppcus2025/main/oppc/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
 
   <!-- Footer -->
   <div class="footer-buttons">

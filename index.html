@@ -209,14 +209,25 @@
       cursor: pointer;
       font-weight: bold;
     }
+    .top-left-stats {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      text-align: left;
+      font-weight: bold;
+      background-color: #000;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
-  <h1>OPPCUS</h1>
-
   <!-- Total and Live Count Display -->
-  <div id="totalOppcStudents" style="font-weight: bold; margin-bottom: 6px; background-color: #000;">Total Members: 37</div>
-  <div id="liveCountDisplay" style="margin-bottom: 20px; font-weight: bold; background-color: #000;">Loading live count...</div>
+  <div class="top-left-stats">
+    <div id="totalOppcStudents">Total Members: 37</div>
+    <div id="liveCountDisplay">Members Currently Online: Loading...</div>
+  </div>
+
+  <h1>OPPCUS</h1>
 
   <div class="highlight-message" id="noSignUpMessage">
     NO sign up | NO ads | NO cookies | NO BS 
@@ -271,7 +282,6 @@
       </div>
     </div>
 
-    <!-- ✅ New Linux+ Container -->
     <div class="cert-icon" id="linuxPlus">
       <img src="images/linuxplus.jpg" alt="Linux+ Certification" />
       <div class="hover-box">

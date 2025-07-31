@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://hackerfrankone.github.io; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline'; 
+    img-src 'self' https://www.paypalobjects.com; 
+    frame-src 'self' https://hackerfrankone.github.io;
+    object-src 'self' https://hackerfrankone.github.io;
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+  <title>Ubuntu Terminal Simulator</title>
+  <link rel="icon" type="image/png" href="images/oppcus.png" />
+  <style>
+    body {
+      background-color: #000;
+      color: #00FF00;
+      font-family: monospace;
+      text-align: center;
+      padding: 30px;
+      margin: 0;
+      position: relative;
+    }
+    #terminal {
+      background: #000;
+      padding: 20px;
+      margin-bottom: 10px;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #00FF00;
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+    #inputArea {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #000;
+    }
+    #commandInput {
+      background: #000;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 8px;
+      flex: 1;
+      min-width: 200px;
+      outline: none;
+      caret-color: #00FF00;
+      border-radius: 3px;
+    }
+    .circle-button {
+      width: 100px;
+      height: 100px;
+      background-color: #000;
+      border: 2px solid #00FF00;
+      border-radius: 50%;
+      color: #00FF00;
+      font-weight: bold;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .circle-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #00FF00;
+    }
+    #backButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #000;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      color: #00FF00;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+    #backButton:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00FF00;
+    }
+    #rebootButton {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <a id="backButton" href="index.html">← Back</a>
+  <div id="terminal">student@ubuntu:/home/student$ </div>
+  <div id="inputArea">
+    <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
+    <button onclick="submitCommand()">Submit</button>
+  </div>
+  <div id="rebootButton">
+    <div class="circle-button" onclick="rebootTerminal()">Reboot Terminal</div>
+  </div>
+
+  <script>
+    const terminalOutput = document.getElementById('terminal');
+    const commandInput = document.getElementById('commandInput');
+    let currentPath = "/home/student";
+    let fileSystem = { "/home/student": [] };
+
+    function printToTerminal(text = "") {
+      terminalOutput.innerHTML += text + "\n";
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function updatePrompt() {
+      terminalOutput.innerHTML = terminalOutput.innerHTML.replace(/student@ubuntu:.*$/, `student@ubuntu:${currentPath}$ `);
+    }
+
+    function rebootTerminal() {
+      fileSystem = { "/home/student": [] };
+      terminalOutput.innerHTML = "student@ubuntu:/home/student$ ";
+    }
+
+    function submitCommand() {
+      const input = commandInput.value.trim().toLowerCase();
+      if (input === '') return;
+
+      printToTerminal(`student@ubuntu:${currentPath}$ ${input}`);
+      const [command, ...args] = input.split(" ");
+
+      switch (command) {
+        case "ls":
+          const contents = fileSystem[currentPath] || [];
+          printToTerminal(contents.length > 0 ? contents.join(" ") : "No files or directories");
+          break;
+        case "mkdir":
+          if (args.length > 0) {
+            const dirName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].includes(dirName)) {
+              fileSystem[currentPath].push(dirName);
+              printToTerminal(`Directory '${dirName}' created`);
+            } else {
+              printToTerminal(`Directory '${dirName}' already exists`);
+            }
+          } else {
+            printToTerminal("Usage: mkdir <directory_name>");
+          }
+          break;
+        case "touch":
+          if (args.length > 0) {
+            const fileName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].includes(fileName)) {
+              fileSystem[currentPath].push(fileName);
+              printToTerminal(`File '${fileName}' created`);
+            } else {
+              printToTerminal(`File '${fileName}' already exists`);
+            }
+          } else {
+            printToTerminal("Usage: touch <file_name>");
+          }
+          break;
+        case "cd":
+          if (args.length > 0) {
+            const newPath = args[0];
+            if (newPath === "..") {
+              const parts = currentPath.split("/").filter(p => p);
+              if (parts.length > 1) parts.pop();
+              currentPath = "/" + parts.join("/");
+            } else if (newPath === "/") {
+              currentPath = "/home/student";
+            } else if (fileSystem[currentPath] && fileSystem[currentPath].includes(newPath)) {
+              currentPath += "/" + newPath;
+            } else {
+              printToTerminal(`cd: ${newPath}: No such file or directory`);
+              break;
+            }
+            updatePrompt();
+          } else {
+            printToTerminal("Usage: cd <directory>");
+          }
+          break;
+        default:
+          printToTerminal(`Command '${command}' not recognized`);
+      }
+
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submitCommand();
+        e.preventDefault();
+      }
+    });
+
+    // Initial prompt
+    printToTerminal();
+  </script>
+</body>
+</html>

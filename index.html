@@ -94,6 +94,27 @@
       transform: scale(1.1);
       box-shadow: 0 0 20px #00FF00;
     }
+    .privacy-link {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: #00FF00;
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-decoration: none;
+      z-index: 9999;
+      background-color: #000;
+      padding: 10px;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .privacy-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00FF00;
+      text-decoration: underline;
+    }
     .hover-box {
       display: none;
       position: absolute;
@@ -268,6 +289,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Privacy Policy Link -->
+  <a href="oppc/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
 
   <!-- Footer -->
   <div class="footer-buttons">

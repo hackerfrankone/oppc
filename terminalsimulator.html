@@ -162,7 +162,8 @@
     }
 
     function updatePrompt() {
-      terminalOutput.innerHTML = terminalOutput.innerHTML.replace(/student@ubuntu:.*$/, `student@ubuntu:${currentPath}$ `);
+      terminalOutput.innerHTML = terminalOutput.innerHTML.replace(/student@ubuntu:.*$/, "") + `student@ubuntu:${currentPath}$ `;
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
     function rebootTerminal() {
@@ -181,7 +182,7 @@
         "/root": [],
         "/home/student": []
       };
-      installedPackages = {};
+      installedPackages = {}; // Reset installed packages on reboot
       currentPath = "/home/student";
       clearTerminal();
     }
@@ -251,18 +252,18 @@
           if (["grep", "find"].includes(packageName)) {
             if (!installedPackages[packageName]) {
               installedPackages[packageName] = true;
-              printToTerminal(`Reading package lists... Done`);
-              printToTerminal(`Building dependency tree... Done`);
-              printToTerminal(`The following NEW packages will be installed:`);
+              printToTerminal("Reading package lists... Done");
+              printToTerminal("Building dependency tree... Done");
+              printToTerminal("The following NEW packages will be installed:");
               printToTerminal(`  ${packageName}`);
-              printToTerminal(`0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.`);
-              printToTerminal(`Need to get 0 B of archives. After this operation, 0 B of additional disk space will be used.`);
+              printToTerminal("0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.");
+              printToTerminal("Need to get 0 B of archives. After this operation, 0 B of additional disk space will be used.");
               printToTerminal(`Setting up ${packageName} (1.0-1) ...`);
-              printToTerminal(`Processing triggers for man-db (2.9.1-1) ...`);
-              printToTerminal(`Done! ${packageName} is now installed.`);
+              printToTerminal("Processing triggers for man-db (2.9.1-1) ...");
+              printToTerminal("Done! ${packageName} is now installed.");
             } else {
               printToTerminal(`${packageName} is already the newest version (1.0-1).`);
-              printToTerminal(`0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`);
+              printToTerminal("0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.");
             }
           } else {
             printToTerminal(`E: Unable to locate package ${packageName}`);
@@ -270,6 +271,8 @@
         } else {
           printToTerminal("apt: missing package name");
         }
+        updatePrompt(); // Add new prompt after apt output
+        commandInput.value = ''; // Clear input for next command
         return;
       }
 
@@ -411,7 +414,10 @@
           }
       }
 
-      commandInput.value = '';
+      if (command !== "sudo" || (args[0] !== "apt" || args[1] !== "install")) {
+        updatePrompt(); // Add new prompt after command output, except for apt install
+      }
+      commandInput.value = ''; // Clear input for next command
     }
 
     commandInput.addEventListener("keydown", (e) => {

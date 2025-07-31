@@ -134,10 +134,21 @@
     const commandInput = document.getElementById('commandInput');
     let currentPath = "/home/student";
     let fileSystem = {
-      "/": ["home"],
+      "/": ["bin", "etc", "var", "usr", "lib", "tmp", "dev", "proc", "boot", "home", "root"],
+      "/bin": [],
+      "/etc": [],
+      "/var": [],
+      "/usr": ["bin", "lib"],
+      "/lib": [],
+      "/tmp": [],
+      "/dev": [],
+      "/proc": [],
+      "/boot": [],
       "/home": ["student"],
+      "/root": [],
       "/home/student": []
     };
+    let installedPackages = {}; // Track installed packages
     let history = [];
     let historyIndex = -1;
 
@@ -156,17 +167,27 @@
 
     function rebootTerminal() {
       fileSystem = {
-        "/": ["home"],
+        "/": ["bin", "etc", "var", "usr", "lib", "tmp", "dev", "proc", "boot", "home", "root"],
+        "/bin": [],
+        "/etc": [],
+        "/var": [],
+        "/usr": ["bin", "lib"],
+        "/lib": [],
+        "/tmp": [],
+        "/dev": [],
+        "/proc": [],
+        "/boot": [],
         "/home": ["student"],
+        "/root": [],
         "/home/student": []
       };
+      installedPackages = {};
       currentPath = "/home/student";
       clearTerminal();
     }
 
     function getAbsolutePath(relativePath) {
       if (relativePath.startsWith("/")) {
-        // Handle absolute paths
         const parts = relativePath.split("/").filter(p => p);
         let path = "/";
         for (let part of parts) {
@@ -182,6 +203,38 @@
       return currentPath + (currentPath === "/" ? "" : "/") + relativePath;
     }
 
+    function getCompletions(input) {
+      const [command, ...args] = input.trim().split(" ");
+      const commands = ["ls", "pwd", "uname", "mkdir", "touch", "cd", "clear", "file", "grep", "find"];
+      let matches = [];
+
+      if (!args.length) {
+        matches = commands.filter(cmd => cmd.startsWith(command));
+      } else {
+        const dir = fileSystem[currentPath] || [];
+        matches = dir.filter(item => item.startsWith(args[args.length - 1]));
+      }
+
+      return matches;
+    }
+
+    function handleTabCompletion() {
+      const input = commandInput.value;
+      const matches = getCompletions(input);
+
+      if (matches.length === 1) {
+        const [command, ...args] = input.trim().split(" ");
+        if (!args.length) {
+          commandInput.value = matches[0];
+        } else {
+          const lastArg = args[args.length - 1];
+          commandInput.value = input.replace(lastArg, matches[0]) + (input.endsWith(" ") ? " " : "");
+        }
+      } else if (matches.length > 1) {
+        printToTerminal(matches.join(" "));
+      }
+    }
+
     function submitCommand() {
       const input = commandInput.value.trim();
       if (input === '') return;
@@ -189,85 +242,173 @@
       printToTerminal(`student@ubuntu:${currentPath}$ ${input}`);
       history.push(input);
       historyIndex = history.length;
-      const [command, ...args] = input.split(" ");
+      const [firstWord, ...args] = input.split(" ");
+      const command = firstWord.toLowerCase();
 
-      // Handle commands starting with /
-      if (command.startsWith("/")) {
-        printToTerminal(`bash: ${command}: No such file or directory`);
-      } else {
-        switch (command) {
-          case "ls":
-            const dir = fileSystem[currentPath] || [];
-            printToTerminal(`total ${dir.length}`);
-            printToTerminal(dir.length > 0 ? dir.join(" ") : "");
-            break;
-          case "pwd":
-            printToTerminal(currentPath);
-            break;
-          case "uname":
-            if (args[0] === "-r") {
-              printToTerminal("5.15.0-73-generic");
+      if (command === "sudo" && args[0] === "apt" && args[1] === "install") {
+        const packageName = args[2];
+        if (packageName) {
+          if (["grep", "find"].includes(packageName)) {
+            if (!installedPackages[packageName]) {
+              installedPackages[packageName] = true;
+              printToTerminal(`Reading package lists... Done`);
+              printToTerminal(`Building dependency tree... Done`);
+              printToTerminal(`The following NEW packages will be installed:`);
+              printToTerminal(`  ${packageName}`);
+              printToTerminal(`0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.`);
+              printToTerminal(`Need to get 0 B of archives. After this operation, 0 B of additional disk space will be used.`);
+              printToTerminal(`Setting up ${packageName} (1.0-1) ...`);
+              printToTerminal(`Processing triggers for man-db (2.9.1-1) ...`);
+              printToTerminal(`Done! ${packageName} is now installed.`);
             } else {
-              printToTerminal("uname: invalid option -- '" + args[0] + "'");
-              printToTerminal("Usage: uname [OPTION]... Try 'uname --help' for more information.");
+              printToTerminal(`${packageName} is already the newest version (1.0-1).`);
+              printToTerminal(`0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.`);
             }
-            break;
-          case "mkdir":
-            if (args.length > 0) {
-              const dirName = args[0];
-              if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
-              if (!fileSystem[currentPath].includes(dirName)) {
-                fileSystem[currentPath].push(dirName);
-                const absPath = getAbsolutePath(dirName);
-                fileSystem[absPath] = [];
-                printToTerminal(`mkdir: created directory '${dirName}'`);
-              } else {
-                printToTerminal(`mkdir: cannot create directory '${dirName}': File exists`);
-              }
-            } else {
-              printToTerminal("mkdir: missing operand");
-              printToTerminal("Try 'mkdir --help' for more information.");
-            }
-            break;
-          case "touch":
-            if (args.length > 0) {
-              const fileName = args[0];
-              if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
-              if (!fileSystem[currentPath].includes(fileName)) {
-                fileSystem[currentPath].push(fileName);
-                printToTerminal(`touch: created file '${fileName}'`);
-              } else {
-                printToTerminal(`touch: cannot create file '${fileName}': File exists`);
-              }
-            } else {
-              printToTerminal("touch: missing operand");
-              printToTerminal("Try 'touch --help' for more information.");
-            }
-            break;
-          case "cd":
-            if (args.length > 0) {
-              const newPath = args[0];
-              const absPath = getAbsolutePath(newPath);
-              if (fileSystem[absPath] || newPath === "/") {
-                currentPath = absPath;
-              } else if (newPath === ".." && currentPath !== "/") {
-                const parts = currentPath.split("/").filter(p => p);
-                parts.pop();
-                currentPath = "/" + parts.join("/") || "/";
-              } else {
-                printToTerminal(`cd: ${newPath}: No such file or directory`);
-              }
-              updatePrompt();
-            } else {
-              printToTerminal("cd: missing operand");
-            }
-            break;
-          case "clear":
-            clearTerminal();
-            break;
-          default:
-            printToTerminal(`bash: ${command}: command not found`);
+          } else {
+            printToTerminal(`E: Unable to locate package ${packageName}`);
+          }
+        } else {
+          printToTerminal("apt: missing package name");
         }
+        return;
+      }
+
+      switch (command) {
+        case "ls":
+          const dir = fileSystem[currentPath] || [];
+          printToTerminal(`total ${dir.length}`);
+          printToTerminal(dir.length > 0 ? dir.join(" ") : "");
+          break;
+        case "pwd":
+          printToTerminal(currentPath);
+          break;
+        case "uname":
+          if (args[0] === "-r") {
+            printToTerminal("5.15.0-73-generic");
+          } else {
+            printToTerminal("uname: invalid option -- '" + args[0] + "'");
+            printToTerminal("Usage: uname [OPTION]... Try 'uname --help' for more information.");
+          }
+          break;
+        case "mkdir":
+          if (args.length > 0) {
+            const dirName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].includes(dirName)) {
+              fileSystem[currentPath].push(dirName);
+              const absPath = getAbsolutePath(dirName);
+              fileSystem[absPath] = [];
+              printToTerminal(`mkdir: created directory '${dirName}'`);
+            } else {
+              printToTerminal(`mkdir: cannot create directory '${dirName}': File exists`);
+            }
+          } else {
+            printToTerminal("mkdir: missing operand");
+            printToTerminal("Try 'mkdir --help' for more information.");
+          }
+          break;
+        case "touch":
+          if (args.length > 0) {
+            const fileName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].includes(fileName)) {
+              fileSystem[currentPath].push(fileName);
+              printToTerminal(`touch: created file '${fileName}'`);
+            } else {
+              printToTerminal(`touch: cannot create file '${fileName}': File exists`);
+            }
+          } else {
+            printToTerminal("touch: missing operand");
+            printToTerminal("Try 'touch --help' for more information.");
+          }
+          break;
+        case "cd":
+          if (args.length > 0) {
+            const newPath = args[0];
+            const absPath = getAbsolutePath(newPath);
+            if (fileSystem[absPath] || newPath === "/") {
+              currentPath = absPath;
+            } else if (newPath === ".." && currentPath !== "/") {
+              const parts = currentPath.split("/").filter(p => p);
+              parts.pop();
+              currentPath = "/" + parts.join("/") || "/";
+            } else {
+              printToTerminal(`cd: ${newPath}: No such file or directory`);
+            }
+            updatePrompt();
+          } else {
+            printToTerminal("cd: missing operand");
+          }
+          break;
+        case "clear":
+          clearTerminal();
+          break;
+        case "file":
+          if (args.length > 0) {
+            const target = args[0];
+            const absPath = getAbsolutePath(target);
+            const dirContent = fileSystem[currentPath] || [];
+            if (dirContent.includes(target)) {
+              printToTerminal(`${target}: ${fileSystem[absPath] ? "directory" : "regular file, text"}`);
+            } else {
+              printToTerminal(`file: ${target}: No such file or directory`);
+            }
+          } else {
+            printToTerminal("file: missing operand");
+            printToTerminal("Try 'file --help' for more information.");
+          }
+          break;
+        case "grep":
+          if (installedPackages["grep"]) {
+            if (args.length > 0) {
+              const pattern = args[0];
+              const dirContent = fileSystem[currentPath] || [];
+              const matches = dirContent.filter(item => item.includes(pattern));
+              if (matches.length > 0) {
+                printToTerminal(matches.join("\n"));
+              } else {
+                printToTerminal("");
+              }
+            } else {
+              printToTerminal("grep: missing pattern");
+              printToTerminal("Try 'grep --help' for more information.");
+            }
+          } else {
+            printToTerminal("bash: grep: command not found");
+          }
+          break;
+        case "find":
+          if (installedPackages["find"]) {
+            if (args.length > 0) {
+              const target = args[0];
+              let results = [];
+              function searchFS(path) {
+                const items = fileSystem[path] || [];
+                items.forEach(item => {
+                  const fullPath = getAbsolutePath(item);
+                  results.push(fullPath);
+                  if (fileSystem[fullPath]) searchFS(fullPath);
+                });
+              }
+              searchFS(currentPath);
+              const matches = results.filter(item => item.includes(target));
+              if (matches.length > 0) {
+                printToTerminal(matches.join("\n"));
+              } else {
+                printToTerminal("");
+              }
+            } else {
+              printToTerminal("find: missing argument");
+              printToTerminal("Try 'find --help' for more information.");
+            }
+          } else {
+            printToTerminal("bash: find: command not found");
+          }
+          break;
+        default:
+          if (command !== "sudo") {
+            printToTerminal(`bash: ${command}: command not found`);
+          }
       }
 
       commandInput.value = '';
@@ -291,6 +432,9 @@
           historyIndex = history.length;
           commandInput.value = "";
         }
+        e.preventDefault();
+      } else if (e.key === "Tab") {
+        handleTabCompletion();
         e.preventDefault();
       }
     });

@@ -116,11 +116,21 @@
     const terminalOutput = document.getElementById('terminal');
     const commandInput = document.getElementById('commandInput');
     let currentPath = "/home/student";
-    let fileSystem = { "/home/student": [] };
+    let fileSystem = {
+      "/": ["home"],
+      "/home": ["student"],
+      "/home/student": []
+    };
+    let history = [];
+    let historyIndex = -1;
 
     function printToTerminal(text = "") {
       terminalOutput.innerHTML += text + "\n";
       terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function clearTerminal() {
+      terminalOutput.innerHTML = `student@ubuntu:${currentPath}$ `;
     }
 
     function updatePrompt() {
@@ -128,72 +138,119 @@
     }
 
     function rebootTerminal() {
-      fileSystem = { "/home/student": [] };
-      terminalOutput.innerHTML = "student@ubuntu:/home/student$ ";
+      fileSystem = {
+        "/": ["home"],
+        "/home": ["student"],
+        "/home/student": []
+      };
+      currentPath = "/home/student";
+      clearTerminal();
+    }
+
+    function getAbsolutePath(relativePath) {
+      if (relativePath.startsWith("/")) {
+        // Handle absolute paths
+        const parts = relativePath.split("/").filter(p => p);
+        let path = "/";
+        for (let part of parts) {
+          path = getAbsolutePath(path + (path === "/" ? "" : "/") + part);
+        }
+        return path;
+      }
+      const parts = currentPath.split("/").filter(p => p);
+      if (relativePath === "..") {
+        parts.pop();
+        return "/" + parts.join("/") || "/";
+      }
+      return currentPath + (currentPath === "/" ? "" : "/") + relativePath;
     }
 
     function submitCommand() {
-      const input = commandInput.value.trim().toLowerCase();
+      const input = commandInput.value.trim();
       if (input === '') return;
 
       printToTerminal(`student@ubuntu:${currentPath}$ ${input}`);
+      history.push(input);
+      historyIndex = history.length;
       const [command, ...args] = input.split(" ");
 
-      switch (command) {
-        case "ls":
-          const contents = fileSystem[currentPath] || [];
-          printToTerminal(contents.length > 0 ? contents.join(" ") : "No files or directories");
-          break;
-        case "mkdir":
-          if (args.length > 0) {
-            const dirName = args[0];
-            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
-            if (!fileSystem[currentPath].includes(dirName)) {
-              fileSystem[currentPath].push(dirName);
-              printToTerminal(`Directory '${dirName}' created`);
+      // Handle commands starting with /
+      if (command.startsWith("/")) {
+        printToTerminal(`bash: ${command}: No such file or directory`);
+      } else {
+        switch (command) {
+          case "ls":
+            const dir = fileSystem[currentPath] || [];
+            printToTerminal(`total ${dir.length}`);
+            printToTerminal(dir.length > 0 ? dir.join(" ") : "");
+            break;
+          case "pwd":
+            printToTerminal(currentPath);
+            break;
+          case "uname":
+            if (args[0] === "-r") {
+              printToTerminal("5.15.0-73-generic");
             } else {
-              printToTerminal(`Directory '${dirName}' already exists`);
+              printToTerminal("uname: invalid option -- '" + args[0] + "'");
+              printToTerminal("Usage: uname [OPTION]... Try 'uname --help' for more information.");
             }
-          } else {
-            printToTerminal("Usage: mkdir <directory_name>");
-          }
-          break;
-        case "touch":
-          if (args.length > 0) {
-            const fileName = args[0];
-            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
-            if (!fileSystem[currentPath].includes(fileName)) {
-              fileSystem[currentPath].push(fileName);
-              printToTerminal(`File '${fileName}' created`);
+            break;
+          case "mkdir":
+            if (args.length > 0) {
+              const dirName = args[0];
+              if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+              if (!fileSystem[currentPath].includes(dirName)) {
+                fileSystem[currentPath].push(dirName);
+                const absPath = getAbsolutePath(dirName);
+                fileSystem[absPath] = [];
+                printToTerminal(`mkdir: created directory '${dirName}'`);
+              } else {
+                printToTerminal(`mkdir: cannot create directory '${dirName}': File exists`);
+              }
             } else {
-              printToTerminal(`File '${fileName}' already exists`);
+              printToTerminal("mkdir: missing operand");
+              printToTerminal("Try 'mkdir --help' for more information.");
             }
-          } else {
-            printToTerminal("Usage: touch <file_name>");
-          }
-          break;
-        case "cd":
-          if (args.length > 0) {
-            const newPath = args[0];
-            if (newPath === "..") {
-              const parts = currentPath.split("/").filter(p => p);
-              if (parts.length > 1) parts.pop();
-              currentPath = "/" + parts.join("/");
-            } else if (newPath === "/") {
-              currentPath = "/home/student";
-            } else if (fileSystem[currentPath] && fileSystem[currentPath].includes(newPath)) {
-              currentPath += "/" + newPath;
+            break;
+          case "touch":
+            if (args.length > 0) {
+              const fileName = args[0];
+              if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+              if (!fileSystem[currentPath].includes(fileName)) {
+                fileSystem[currentPath].push(fileName);
+                printToTerminal(`touch: created file '${fileName}'`);
+              } else {
+                printToTerminal(`touch: cannot create file '${fileName}': File exists`);
+              }
             } else {
-              printToTerminal(`cd: ${newPath}: No such file or directory`);
-              break;
+              printToTerminal("touch: missing operand");
+              printToTerminal("Try 'touch --help' for more information.");
             }
-            updatePrompt();
-          } else {
-            printToTerminal("Usage: cd <directory>");
-          }
-          break;
-        default:
-          printToTerminal(`Command '${command}' not recognized`);
+            break;
+          case "cd":
+            if (args.length > 0) {
+              const newPath = args[0];
+              const absPath = getAbsolutePath(newPath);
+              if (fileSystem[absPath] || newPath === "/") {
+                currentPath = absPath;
+              } else if (newPath === ".." && currentPath !== "/") {
+                const parts = currentPath.split("/").filter(p => p);
+                parts.pop();
+                currentPath = "/" + parts.join("/") || "/";
+              } else {
+                printToTerminal(`cd: ${newPath}: No such file or directory`);
+              }
+              updatePrompt();
+            } else {
+              printToTerminal("cd: missing operand");
+            }
+            break;
+          case "clear":
+            clearTerminal();
+            break;
+          default:
+            printToTerminal(`bash: ${command}: command not found`);
+        }
       }
 
       commandInput.value = '';
@@ -203,6 +260,21 @@
       if (e.key === "Enter") {
         submitCommand();
         e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          commandInput.value = history[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          commandInput.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          commandInput.value = "";
+        }
+        e.preventDefault();
       }
     });
 
@@ -210,4 +282,4 @@
     printToTerminal();
   </script>
 </body>
-</html>
+</html>v

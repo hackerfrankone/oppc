@@ -358,7 +358,7 @@ function acknowledgePopup() {
       try {
         const response = await fetch(WORKER_URL, { cache: "no-store" });
         const data = await response.json();
-        liveCountElement.textContent = `Live members Currently Online: ${data.count ?? 'Unavailable'}`;
+        liveCountElement.textContent = `Members Currently Online: ${data.count ?? 'Unavailable'}`;
       } catch {
         liveCountElement.textContent = 'Error fetching live count';
       }

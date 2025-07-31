@@ -25,7 +25,7 @@
     }
     #terminal {
       background: #000;
-      padding: 20px;
+      padding: 40px 20px 20px 20px; /* Increased top padding to move prompt down */
       margin-bottom: 10px;
       border: 2px solid #00FF00;
       border-radius: 5px;
@@ -53,6 +53,23 @@
       outline: none;
       caret-color: #00FF00;
       border-radius: 3px;
+    }
+    .submit-button {
+      background-color: #000;
+      border: 2px solid #00FF00;
+      color: #00FF00;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-family: monospace;
+      font-weight: bold;
+      box-shadow: 0 0 8px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .submit-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00FF00;
+      background-color: #00FF00;
+      color: #000;
     }
     .circle-button {
       width: 100px;
@@ -106,7 +123,7 @@
   <div id="terminal">student@ubuntu:/home/student$ </div>
   <div id="inputArea">
     <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
-    <button onclick="submitCommand()">Submit</button>
+    <button class="submit-button" onclick="submitCommand()">Submit</button>
   </div>
   <div id="rebootButton">
     <div class="circle-button" onclick="rebootTerminal()">Reboot Terminal</div>
@@ -282,4 +299,4 @@
     printToTerminal();
   </script>
 </body>
-</html>v
+</html>

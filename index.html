@@ -209,24 +209,9 @@
       cursor: pointer;
       font-weight: bold;
     }
-    .top-left-stats {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      text-align: left;
-      font-weight: bold;
-      background-color: #000;
-      z-index: 9999;
-    }
   </style>
 </head>
 <body>
-  <!-- Total and Live Count Display -->
-  <div class="top-left-stats">
-    <div id="totalOppcStudents">Total Members: 45</div>
-    <div id="liveCountDisplay">Members Currently Online: Loading...</div>
-  </div>
-
   <h1>OPPCUS</h1>
 
   <div class="highlight-message" id="noSignUpMessage">
@@ -368,23 +353,6 @@ function acknowledgePopup() {
   document.getElementById('cachePopup').style.display = 'none';
 }
 </script>
-
-  <!-- Live Count -->
-  <script>
-    const liveCountElement = document.getElementById('liveCountDisplay');
-    const WORKER_URL = "https://student-live.oppcus2025.workers.dev/live-count";
-    async function fetchLiveCount() {
-      try {
-        const response = await fetch(WORKER_URL, { cache: "no-store" });
-        const data = await response.json();
-        liveCountElement.textContent = `Members Currently Online: ${data.count ?? 'Unavailable'}`;
-      } catch {
-        liveCountElement.textContent = 'Error fetching live count';
-      }
-    }
-    fetchLiveCount();
-    setInterval(fetchLiveCount, 10000);
-  </script>
 
 </body>
 </html>

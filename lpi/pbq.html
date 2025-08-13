@@ -166,7 +166,10 @@
 
     function toggleCLI() {
       if (cliBox.style.display === "none" || cliBox.style.display === "") {
-        cliBox.innerText = pbqs.map(p => p.answer).join("\n");
+        // Get every unique command word from all answers
+        const allWords = pbqs.flatMap(p => p.answer.split(/\s+/));
+        const uniqueCmds = [...new Set(allWords)].sort();
+        cliBox.innerText = uniqueCmds.join("\n");
         cliBox.style.display = "block";
       } else {
         cliBox.style.display = "none";

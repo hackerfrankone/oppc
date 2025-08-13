@@ -28,6 +28,7 @@
 
     .back-button,
     .pbq-button,
+    .ports-button,
     .restart-button {
       position: fixed;
       top: 1rem;
@@ -53,6 +54,10 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .ports-button {
+      left: calc(1rem + 6rem + 0.5rem + 5rem + 0.5rem);
+    }
+
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
@@ -61,6 +66,7 @@
 
     .back-button:hover,
     .pbq-button:hover,
+    .ports-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -147,6 +153,48 @@
       text-align: center;
     }
 
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      background: black;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      border: 2px solid #00FF00;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      text-align: left;
+      font-size: clamp(0.9rem, 2.5vw, 0.9rem);
+      border-radius: 5px;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #00FF00;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      color: #ffffff;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -168,6 +216,7 @@
 
       .back-button,
       .pbq-button,
+      .ports-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
@@ -177,8 +226,16 @@
         left: calc(1rem + 5rem + 0.5rem);
       }
 
+      .ports-button {
+        left: calc(1rem + 5rem + 0.5rem + 4rem + 0.5rem);
+      }
+
       .restart-button {
         top: calc(0.5rem + 2rem + 0.5rem);
+      }
+
+      .modal-content {
+        font-size: clamp(0.8rem, 2.5vw, 0.8rem);
       }
     }
   </style>
@@ -186,6 +243,7 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <button class="ports-button" onclick="showPortsModal()">Ports</button>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -193,6 +251,44 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+  </div>
+
+  <div id="portsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closePortsModal()">&times;</span>
+      <h2>Common Ports</h2>
+      <ul>
+        <li><strong>20/21 (FTP):</strong> File Transfer Protocol. Port 20 for data transfer, 21 for control. Used for transferring files, but unencrypted and less secure.</li>
+        <li><strong>22 (SSH):</strong> Secure Shell. Used for secure remote access and management of systems over an encrypted connection.</li>
+        <li><strong>23 (Telnet):</strong> Unencrypted remote access protocol. Rarely used due to security risks but may appear in legacy systems.</li>
+        <li><strong>25 (SMTP):</strong> Simple Mail Transfer Protocol. Used for sending emails, often paired with SMTPS for secure transmission.</li>
+        <li><strong>53 (DNS):</strong> Domain Name System. Resolves domain names to IP addresses, critical for network communication.</li>
+        <li><strong>80 (HTTP):</strong> Hypertext Transfer Protocol. Used for unencrypted web traffic, vulnerable to interception.</li>
+        <li><strong>110 (POP3):</strong> Post Office Protocol v3. Retrieves emails from a server, typically unencrypted unless paired with SSL/TLS.</li>
+        <li><strong>143 (IMAP):</strong> Internet Message Access Protocol. Retrieves and manages emails on a server, supports folder synchronization.</li>
+        <li><strong>443 (HTTPS):</strong> HTTP Secure. Encrypted web traffic using SSL/TLS, standard for secure websites.</li>
+        <li><strong>445 (SMB):</strong> Server Message Block. Used for file sharing and printer sharing in Windows environments, often targeted by attacks.</li>
+        <li><strong>3389 (RDP):</strong> Remote Desktop Protocol. Enables remote desktop connections to Windows systems, requires strong security to prevent unauthorized access.</li>
+        <li><strong>137-139 (NetBIOS):</strong> Network Basic Input/Output System. Used for legacy Windows networking services like file and printer sharing.</li>
+        <li><strong>161/162 (SNMP):</strong> Simple Network Management Protocol. Used for monitoring and managing network devices; 161 for queries, 162 for traps.</li>
+        <li><strong>389 (LDAP):</strong> Lightweight Directory Access Protocol. Manages directory services, such as user authentication in Active Directory.</li>
+        <li><strong>636 (LDAPS):</strong> LDAP Secure. Encrypted version of LDAP using SSL/TLS for secure directory access.</li>
+        <li><strong>993 (IMAPS):</strong> IMAP Secure. Encrypted email retrieval using SSL/TLS for secure access to mail servers.</li>
+        <li><strong>995 (POP3S):</strong> POP3 Secure. Encrypted email retrieval using SSL/TLS, enhancing security for email access.</li>
+        <li><strong>1812/1813 (RADIUS):</strong> Remote Authentication Dial-In User Service. Used for authentication, authorization, and accounting in network access.</li>
+        <li><strong>123 (NTP):</strong> Network Time Protocol. Synchronizes clocks across systems, critical for time-sensitive operations like logging.</li>
+        <li><strong>514 (Syslog):</strong> System Logging Protocol. Collects and stores log messages for system monitoring and auditing.</li>
+        <li><strong>2049 (NFS):</strong> Network File System. Enables file sharing across Unix/Linux systems, requires careful configuration for security.</li>
+        <li><strong>3268/3269 (Global Catalog):</strong> Used by Active Directory for global catalog queries (3268) and secure queries over SSL (3269).</li>
+        <li><strong>1433 (MSSQL):</strong> Microsoft SQL Server. Used for database communication, often targeted in attacks if not secured.</li>
+        <li><strong>3306 (MySQL):</strong> MySQL Database. Default port for MySQL database connections, needs protection against unauthorized access.</li>
+        <li><strong>5432 (PostgreSQL):</strong> PostgreSQL Database. Default port for PostgreSQL database connections, requires secure configuration.</li>
+        <li><strong>1723 (PPTP):</strong> Point-to-Point Tunneling Protocol. Used for VPN connections, but considered less secure than modern alternatives.</li>
+        <li><strong>1701 (L2TP):</strong> Layer 2 Tunneling Protocol. Used for VPNs, often paired with IPsec for encryption.</li>
+        <li><strong>500 (IPsec):</strong> Internet Protocol Security. Used for secure VPN connections and encrypted communications.</li>
+        <li><strong>1194 (OpenVPN):</strong> OpenVPN Protocol. Commonly used for secure, open-source VPN connections, highly configurable.</li>
+      </ul>
+    </div>
   </div>
 
   <script>
@@ -555,6 +651,7 @@
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
     const restartButton = document.querySelector(".restart-button");
+    const portsModal = document.getElementById("portsModal");
 
     // Display the current question and its shuffled choices
     function showQuestion() {
@@ -624,6 +721,25 @@
       shuffle(questions);
       showQuestion();
     }
+
+    // Show ports modal
+    function showPortsModal() {
+      console.log('Showing ports modal');
+      portsModal.style.display = 'flex';
+    }
+
+    // Close ports modal
+    function closePortsModal() {
+      console.log('Closing ports modal');
+      portsModal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === portsModal) {
+        closePortsModal();
+      }
+    });
 
     // Randomize question order at start
     shuffle(questions);

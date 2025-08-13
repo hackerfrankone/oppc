@@ -28,6 +28,7 @@
 
     .back-button,
     .pbq-button,
+    .topology-button,
     .osi-button,
     .restart-button {
       position: fixed;
@@ -54,8 +55,12 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .topology-button {
+      left: calc(1rem + 6rem + 0.5rem + 4.5rem);
+    }
+
     .osi-button {
-      left: calc(1rem + 6rem + 0.5rem + 6rem + 0.5rem);
+      left: calc(1rem + 6rem + 0.5rem + 4.5rem + 0.5rem + 15rem);
     }
 
     .restart-button {
@@ -66,6 +71,7 @@
 
     .back-button:hover,
     .pbq-button:hover,
+    .topology-button:hover,
     .osi-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
@@ -174,6 +180,7 @@
 
       .back-button,
       .pbq-button,
+      .topology-button,
       .osi-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
@@ -184,8 +191,12 @@
         left: calc(1rem + 5rem + 0.5rem);
       }
 
+      .topology-button {
+        left: calc(1rem + 5rem + 0.5rem + 4.5rem);
+      }
+
       .osi-button {
-        left: calc(1rem + 5rem + 0.5rem + 5rem + 0.5rem);
+        left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 14rem);
       }
 
       .restart-button {
@@ -197,7 +208,8 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
-  <a href="osi.html" class="osi-button">Open Systems Interconnection model</a>
+  <a href="topology.html" class="topology-button">Network Topologies</a>
+  <a href="osi.html" class="osi-button">OSI Model</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">

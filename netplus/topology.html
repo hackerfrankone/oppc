@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Network Topologies for Beginners</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .topology-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      margin-top: 4rem;
+    }
+    .topology-diagram {
+      background: #111;
+      border: 2px solid #00FF00;
+      padding: 1rem;
+      border-radius: 5px;
+      white-space: pre;
+      text-align: left;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+      margin-bottom: 1rem;
+    }
+    .topology {
+      color: #00FF00;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .topology:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      background: black;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      border: 2px solid #00FF00;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      text-align: left;
+      font-size: clamp(0.9rem, 2.5vw, 0.9rem);
+      border-radius: 5px;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #00FF00;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      color: #ffffff;
+    }
+    .modal-content h2, .modal-content h3 {
+      margin: 0.5rem 0;
+    }
+    .modal-content ul, .modal-content ol {
+      margin: 0.5rem 0;
+      padding-left: 20px;
+    }
+    .modal-content li {
+      margin-bottom: 0.3rem;
+    }
+    .modal-content pre {
+      background: #111;
+      padding: 10px;
+      border: 1px solid #00FF00;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+      .topology-content {
+        max-width: 95%;
+      }
+      .back-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+      .topology-diagram {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+      }
+      .modal-content {
+        font-size: clamp(0.8rem, 2.5vw, 0.8rem);
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="netplus.html" class="back-button">← Back</a>
+
+  <div class="topology-content">
+    <div class="topology-diagram">
+      <span class="topology" onclick="showModal('Star')">Star</span>:
+           [Internet]
+              |
+            [Router]
+              |
+            [Switch]
+           /  |  \
+         [PC1][PC2][Server]
+
+      <span class="topology" onclick="showModal('Bus')">Bus</span>:
+         [PC1]----[PC2]----[Server]
+
+      <span class="topology" onclick="showModal('Ring')">Ring</span>:
+         [PC1]----[PC2]
+           |         |
+        [Server]---[Router]
+
+      <span class="topology" onclick="showModal('Mesh')">Mesh</span>:
+         [PC1]----[PC2]
+          | \    / |
+          |  [Server]
+          |  /    \ |
+        [Router]---[Switch]
+
+      <span class="topology" onclick="showModal('Tree')">Tree</span>:
+            [Router]
+              |
+           [Switch1]
+           /      \
+       [Switch2] [Switch3]
+         /   \      |
+       [PC1][PC2] [Server]
+
+      <span class="topology" onclick="showModal('Hybrid')">Hybrid</span>:
+           [Router]
+           /      \
+       [Switch] [PC1]---[PC2]
+         /  \              |
+       [PC3][Server]----[PC4]
+    </div>
+    <p>Click a topology name (e.g., Star, Bus) to learn how it works, its setup, and more.</p>
+  </div>
+
+  <div id="infoModal" class="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    const infoModal = document.getElementById('infoModal');
+    const modalContent = document.getElementById('modalContent');
+
+    const topologyInfo = {
+      Star: `
+<h2>Star Topology</h2>
+<p>In a star topology, all devices (like PCs and servers) connect to a central hub, usually a switch or router. It's like a wheel where the hub is the center and devices are the spokes.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Connect a switch or router to the internet (via a modem).</li>
+  <li>Plug each device (PCs, servers) into the switch using Ethernet cables.</li>
+  <li>Configure the switch/router with IP addresses (e.g., <code>192.168.1.1</code> for the router).</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>Moderate. If a device or cable fails, only that device loses connection. If the central hub fails, the whole network goes down.</p>
+<h3>Cost</h3>
+<p>Mid-expensive. Needs a switch/router and cables for each device, but setup is simple compared to mesh.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Easy:</strong> Check if the hub is powered on or if cables are loose (use a cable tester).</li>
+  <li>Test connectivity with <code>ping 192.168.1.1</code> to reach the router.</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Small offices, homes, or schools where simplicity is key.</li>
+  <li>Networks needing easy expansion (just add more cables to the hub).</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>Secure the hub with a strong password and firewall rules (<code>iptables</code>).</li>
+  <li>Monitor traffic to detect intrusions (use free tools like Wireshark).</li>
+</ul>
+      `,
+      Bus: `
+<h2>Bus Topology</h2>
+<p>In a bus topology, all devices connect to a single cable (the "bus"). It's like a long rope with devices tied to it.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Lay a single backbone cable (e.g., coaxial).</li>
+  <li>Connect devices to the cable using T-connectors.</li>
+  <li>Add terminators at both ends to prevent signal bounce.</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>Low. If the main cable breaks, the entire network stops working. Device failures don't affect others, though.</p>
+<h3>Cost</h3>
+<p>Not expensive. Uses one main cable, so it's cheaper than star or mesh.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Moderate-Hard:</strong> A cable break stops everything. Use a cable tester to find the fault.</li>
+  <li>Check terminators with a multimeter for signal issues.</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Older networks or very small setups with few devices.</li>
+  <li>Temporary networks where cost is a big concern.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>All devices see all traffic, so use encryption (e.g., WPA3 for wireless segments).</li>
+  <li>Monitor with <code>tcpdump</code> to spot unauthorized access.</li>
+</ul>
+      `,
+      Ring: `
+<h2>Ring Topology</h2>
+<p>In a ring topology, each device connects to two others, forming a circle. Data travels in one direction around the loop.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Connect each device to the next using cables (e.g., fiber or Ethernet).</li>
+  <li>Ensure the loop is complete with no breaks.</li>
+  <li>Use special hardware (e.g., FDDI) for high-speed rings.</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>Low to moderate. A single device or cable failure breaks the loop unless a dual-ring is used (more expensive).</p>
+<h3>Cost</h3>
+<p>Mid-expensive. Needs more cabling than bus but less than mesh; special hardware can add cost.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Hard:</strong> A break stops the whole network. Use <code>traceroute</code> to find the faulty device.</li>
+  <li>Check cable connections with a tester.</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Older WANs or specific networks like FDDI.</li>
+  <li>Small networks needing predictable data flow.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>Monitor for loop breaches with IDS (e.g., Snort, free).</li>
+  <li>Secure devices with strong authentication.</li>
+</ul>
+      `,
+      Mesh: `
+<h2>Mesh Topology</h2>
+<p>In a mesh topology, every device connects to every other device (full mesh) or many others (partial mesh). It's like a web of connections.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Connect each device to others with cables (lots of cables for full mesh).</li>
+  <li>Configure routing protocols (e.g., OSPF with <code>router ospf 1</code>) for efficient data paths.</li>
+  <li>Use high-end routers/switches for large networks.</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>High. Multiple paths mean if one connection fails, data can reroute through others.</p>
+<h3>Cost</h3>
+<p>Expensive. Requires many cables and powerful hardware compared to star or bus.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Moderate:</strong> Multiple paths make failures less impactful but routing issues are complex. Check with <code>netstat -r</code>.</li>
+  <li>Use network monitors (e.g., Zabbix, free) for path analysis.</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Data centers or critical systems needing high reliability.</li>
+  <li>Military or emergency networks where downtime isn't an option.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>Monitor all connections with <code>nmap</code> for rogue devices.</li>
+  <li>Use encryption for data across multiple paths.</li>
+</ul>
+      `,
+      Tree: `
+<h2>Tree Topology</h2>
+<p>Tree topology combines star and bus, with a main "trunk" (bus) and "branches" (star networks). It's like a family tree of devices.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Connect a main router to a primary switch (trunk).</li>
+  <li>Attach secondary switches to the primary switch, each forming a star with devices.</li>
+  <li>Configure VLANs to separate traffic (<code>vlan 10</code>).</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>Moderate. Device failures affect only their branch; trunk failure disrupts all branches.</p>
+<h3>Cost</h3>
+<p>Mid-expensive. More switches and cables than star but less complex than mesh.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Moderate-Hard:</strong> Check trunk and branch connections with cable testers.</li>
+  <li>Verify VLAN settings with <code>show vlan brief</code> (Cisco).</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Large companies with multiple departments.</li>
+  <li>Campus networks with many buildings.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>Use VLANs to isolate branches (<code>switch(config)# vlan 20</code>).</li>
+  <li>Monitor with tools like Nagios (free) for unusual activity.</li>
+</ul>
+      `,
+      Hybrid: `
+<h2>Hybrid Topology</h2>
+<p>Hybrid topology mixes two or more topologies (e.g., star + ring). It's customized to fit specific needs.</p>
+<h3>How It's Set Up</h3>
+<ul>
+  <li>Combine elements like a star hub with a ring for servers.</li>
+  <li>Use switches, routers, and cables to connect devices in mixed patterns.</li>
+  <li>Configure routing and VLANs for smooth data flow.</li>
+</ul>
+<h3>Fault Tolerance</h3>
+<p>Varies. Depends on the mixed topologies (e.g., star part is less tolerant, mesh part is more tolerant).</p>
+<h3>Cost</h3>
+<p>Mid-expensive to expensive. Varies based on combined topologies but often more than star.</p>
+<h3>Troubleshooting</h3>
+<ul>
+  <li><strong>Hard:</strong> Mixed setups make issues complex. Use <code>ping</code>, <code>traceroute</code>, or network mappers (e.g., SolarWinds).</li>
+  <li>Check each topology segment separately.</li>
+</ul>
+<h3>Use Cases</h3>
+<ul>
+  <li>Large, complex networks like universities or hospitals.</li>
+  <li>Networks needing flexibility for different areas.</li>
+</ul>
+<h3>Security</h3>
+<ul>
+  <li>Apply zero-trust (verify all access) with tools like Okta.</li>
+  <li>Monitor all segments with IDS (e.g., Snort).</li>
+</ul>
+      `
+    };
+
+    const topologyComparison = `
+<h2>Topology Comparison</h2>
+<p>Here's how the topologies stack up:</p>
+<pre>
+Topology | Scalability | Fault Tolerance | Cost         | Troubleshooting | Use Case
+---------+-------------+----------------+--------------+-----------------+---------------
+Star     | High        | Moderate       | Mid-expensive| Easy            | Offices, homes
+Bus      | Low         | Low            | Not expensive| Moderate-Hard   | Old/small setups
+Ring     | Moderate    | Low-Moderate   | Mid-expensive| Hard            | WANs, FDDI
+Mesh     | High        | High           | Expensive    | Moderate        | Data centers
+Tree     | High        | Moderate       | Mid-expensive| Moderate-Hard   | Enterprises
+Hybrid   | High        | Varies         | Varies       | Hard            | Complex networks
+</pre>
+<h3>Troubleshooting Tips for Beginners</h3>
+<ol>
+  <li><strong>Check Connections:</strong> Ensure cables are plugged in. Use a cable tester for bad cables.</li>
+  <li><strong>Test Reachability:</strong> Type <code>ping 192.168.1.1</code> to check if devices respond.</li>
+  <li><strong>Look at Lights:</strong> Switches/routers have LEDs; blinking green usually means it's working.</li>
+  <li><strong>Check Settings:</strong> Verify IP addresses with <code>ip a</code> on Linux or <code>ipconfig</code> on Windows.</li>
+  <li><strong>Ask for Help:</strong> Use free tools like Wireshark to see network traffic or ask a network admin.</li>
+</ol>
+<h3>Security Tips</h3>
+<ul>
+  <li>Use strong passwords on routers and switches.</li>
+  <li>Turn on firewalls (<code>ufw enable</code> on Linux).</li>
+  <li>Watch for weird activity with free tools like Wireshark or <code>nmap</code>.</li>
+</ul>
+    `;
+
+    function showModal(topology) {
+      modalContent.innerHTML = topologyInfo[topology] + topologyComparison;
+      modalContent.innerHTML += '<span class="close-button" onclick="closeModal()">&times;</span>';
+      infoModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      console.log('Closing info modal');
+      infoModal.style.display = 'none';
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === infoModal) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

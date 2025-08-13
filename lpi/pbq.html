@@ -106,11 +106,14 @@
       position: relative;
       max-width: 90%;
       max-height: 90vh;
+      text-align: center;
     }
     .modal-content img {
       max-width: 100%;
       max-height: 80vh;
       border: 2px solid #0f0;
+      display: block;
+      margin: 0 auto;
     }
     .close-button {
       position: absolute;
@@ -145,7 +148,7 @@
   <div id="chmodModal" class="modal">
     <div class="modal-content">
       <span class="close-button" onclick="closeModal()">&times;</span>
-      <img src="images/chmod.png" alt="chmod permissions guide" />
+      <img src="images/chmod.png" alt="chmod permissions guide" onerror="console.error('Failed to load image: images/chmod.png');" />
     </div>
   </div>
 
@@ -208,10 +211,12 @@
     }
 
     function showChmodImage() {
+      console.log('Attempting to show chmod modal with image: images/chmod.png');
       chmodModal.style.display = 'flex';
     }
 
     function closeModal() {
+      console.log('Closing chmod modal');
       chmodModal.style.display = 'none';
     }
 

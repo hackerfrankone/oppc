@@ -89,7 +89,7 @@
     #chmodButton {
       left: 80px;
     }
-    /* Modal styles for chmod image pop-up */
+    /* Modal styles for chmod explanation pop-up */
     .modal {
       display: none;
       position: fixed;
@@ -106,14 +106,14 @@
       position: relative;
       max-width: 90%;
       max-height: 90vh;
-      text-align: center;
-    }
-    .modal-content img {
-      max-width: 100%;
-      max-height: 80vh;
+      background: #0b0b0b;
+      color: #0f0;
+      font-family: monospace;
+      padding: 20px;
       border: 2px solid #0f0;
-      display: block;
-      margin: 0 auto;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      text-align: left;
     }
     .close-button {
       position: absolute;
@@ -130,7 +130,7 @@
 </head>
 <body>
   <button id="backButton" onclick="goBack()">← Back</button>
-  <button id="chmodButton" onclick="showChmodImage()">chmod</button>
+  <button id="chmodButton" onclick="showChmodExplanation()">chmod</button>
 
   <div id="terminal"></div>
 
@@ -144,11 +144,77 @@
   <div id="questionBox"></div>
   <div id="answerBox"></div>
 
-  <!-- Modal for chmod image -->
+  <!-- Modal for chmod explanation -->
   <div id="chmodModal" class="modal">
     <div class="modal-content">
       <span class="close-button" onclick="closeModal()">&times;</span>
-      <img src="images/chmod.png" alt="chmod permissions guide" onerror="console.error('Failed to load image: images/chmod.png');" />
+      <h2>Understanding chmod Permissions</h2>
+      <p>The <code>chmod</code> command in Linux changes file or directory permissions. Permissions define who can read, write, or execute a file or directory.</p>
+      
+      <h3>Permission Types</h3>
+      <p>Permissions are divided into three categories:</p>
+      <ul>
+        <li><strong>Owner (u):</strong> The user who owns the file.</li>
+        <li><strong>Group (g):</strong> Users in the file's group.</li>
+        <li><strong>Others (o):</strong> All other users.</li>
+      </ul>
+
+      <h3>Permission Levels</h3>
+      <p>Each category can have these permissions:</p>
+      <ul>
+        <li><strong>Read (r):</strong> Permission to read the file or list directory contents (value: 4).</li>
+        <li><strong>Write (w):</strong> Permission to modify the file or create/delete files in a directory (value: 2).</li>
+        <li><strong>Execute (x):</strong> Permission to run the file (e.g., scripts) or access a directory (value: 1).</li>
+      </ul>
+
+      <h3>Numeric Notation</h3>
+      <p>Permissions are often set using a three-digit octal number (e.g., 754):</p>
+      <ul>
+        <li>First digit: Owner permissions</li>
+        <li>Second digit: Group permissions</li>
+        <li>Third digit: Others permissions</li>
+      </ul>
+      <p>Each digit is the sum of permission values:</p>
+      <ul>
+        <li>4 (read) + 2 (write) + 1 (execute) = 7 (rwx)</li>
+        <li>4 (read) + 1 (execute) = 5 (r-x)</li>
+        <li>4 (read) = 4 (r--)</li>
+        <li>0 = no permissions (---)</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod 754 file</code> sets:</p>
+      <ul>
+        <li>Owner: rwx (7)</li>
+        <li>Group: r-x (5)</li>
+        <li>Others: r-- (4)</li>
+      </ul>
+
+      <h3>Symbolic Notation</h3>
+      <p>You can also use letters to set permissions:</p>
+      <ul>
+        <li><code>u</code> (owner), <code>g</code> (group), <code>o</code> (others), or <code>a</code> (all).</li>
+        <li>Operators: <code>+</code> (add), <code>-</code> (remove), <code>=</code> (set exactly).</li>
+        <li>Permissions: <code>r</code>, <code>w</code>, <code>x</code>.</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod u+rwx,g+rx,o+r file</code> sets the same as <code>chmod 754 file</code>.</p>
+
+      <h3>Directory Permissions</h3>
+      <p>Directories use the same permissions, but:</p>
+      <ul>
+        <li><strong>Read:</strong> List contents.</li>
+        <li><strong>Write:</strong> Create, delete, or rename files in the directory.</li>
+        <li><strong>Execute:</strong> Enter the directory or access its contents.</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod 555 directory</code> allows read and execute for all but no write.</p>
+
+      <h3>Common Examples</h3>
+      <ul>
+        <li><code>chmod 777 file</code>: Full permissions for all (rwx for owner, group, others).</li>
+        <li><code>chmod 644 file</code>: Owner can read/write (rw-), group and others can read (r--).</li>
+        <li><code>chmod 755 directory</code>: Owner has full access, group and others can read and enter.</li>
+      </ul>
+
+      <h3>Viewing Permissions</h3>
+      <p>Use <code>ls -l</code> to see permissions, displayed as <code>-rwxr-xr-x</code> or <code>drwxr-xr-x</code> (for directories).</p>
     </div>
   </div>
 
@@ -210,8 +276,8 @@
       answerBox.innerText = `Answer:\n${pbq.answer}`;
     }
 
-    function showChmodImage() {
-      console.log('Attempting to show chmod modal with image: images/chmod.png');
+    function showChmodExplanation() {
+      console.log('Showing chmod explanation modal');
       chmodModal.style.display = 'flex';
     }
 

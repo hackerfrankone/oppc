@@ -40,7 +40,6 @@
       gap: 10px;
       align-items: center;
       background: #000;
-      margin-bottom: 20px;
     }
     #commandInput {
       background: #000;
@@ -65,7 +64,6 @@
       font-weight: bold;
       box-shadow: 0 0 8px #00FF00;
       transition: transform 0.2s, box-shadow 0.3s;
-      border-radius: 3px;
     }
     .submit-button:hover {
       transform: scale(1.05);
@@ -89,8 +87,6 @@
       box-shadow: 0 0 12px #00FF00;
       transition: transform 0.2s, box-shadow 0.3s;
       cursor: pointer;
-      user-select: none;
-      margin-left: auto;
     }
     .circle-button:hover {
       transform: scale(1.1);
@@ -110,158 +106,456 @@
       box-shadow: 0 0 12px #00FF00;
       transition: transform 0.2s, box-shadow 0.3s;
       text-decoration: none;
-      user-select: none;
-      z-index: 1002;
     }
     #backButton:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px #00FF00;
     }
-    #cliButtonContainer {
+    #rebootButton {
       position: fixed;
       top: 10px;
       right: 10px;
-      z-index: 1001;
-    }
-    /* Popup overlay */
-    #cliPopupOverlay {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-    }
-    /* Popup content */
-    #cliPopup {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #000;
-      border: 3px solid #00FF00;
-      border-radius: 8px;
-      padding: 20px 40px 40px 40px;
-      width: 320px;
-      max-height: 80vh;
-      overflow-y: auto;
-      color: #00FF00;
-      font-family: monospace;
-      white-space: pre-wrap;
-      user-select: text;
-      box-shadow: 0 0 15px #00FF00;
-    }
-    #cliPopup h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 1.25rem;
-      font-weight: bold;
-      text-align: center;
-      user-select: none;
-    }
-    #cliPopupClose {
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1.5rem;
-      user-select: none;
-      color: #00FF00;
-      line-height: 1;
-    }
-    #cliCommandsList {
-      margin-top: 10px;
-      line-height: 1.4;
-      font-size: 1rem;
-      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <a id="backButton" href="index.html" title="Go Back">← Back</a>
-
+  <a id="backButton" href="index.html">← Back</a>
   <div id="terminal">student@ubuntu:/home/student$ </div>
-
   <div id="inputArea">
     <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
     <button class="submit-button" onclick="submitCommand()">Submit</button>
   </div>
-
-  <div id="cliButtonContainer">
-    <div class="circle-button" id="cliButton" title="Show CLI Commands">CLI CMDS</div>
+  <div id="rebootButton">
+    <div class="circle-button" onclick="rebootTerminal()">Reboot Terminal</div>
   </div>
 
-  <!-- CLI Commands Popup -->
-  <div id="cliPopupOverlay">
-    <div id="cliPopup">
-      <div id="cliPopupClose" title="Close">×</div>
-      <h2>Linux CLI Commands</h2>
-      <pre id="cliCommandsList"></pre>
-    </div>
-  </div>
+  <script>
+    const terminalOutput = document.getElementById('terminal');
+    const commandInput = document.getElementById('commandInput');
+    let currentPath = "/home/student";
+    let fileSystem = {
+      "/": ["bin", "etc", "var", "usr", "lib", "tmp", "dev", "proc", "boot", "home", "root"],
+      "/bin": [],
+      "/etc": [{ name: "passwd", content: "student:x:1000:1000:Student User:/home/student:/bin/bash" }],
+      "/var": [],
+      "/usr": ["bin", "lib"],
+      "/usr/bin": [],
+      "/lib": [],
+      "/tmp": [],
+      "/dev": [],
+      "/proc": [],
+      "/boot": [],
+      "/home": ["student"],
+      "/root": [],
+      "/home/student": [
+        { name: "readme.txt", content: "Welcome to your Ubuntu terminal simulator!\nTry commands like ls, cat, whoami, or sudo apt install grep." },
+        { name: "notes.txt", content: "This is a sample note file.\nFeel free to edit with touch or rm to remove." }
+      ]
+    };
+    let installedPackages = { grep: true, find: true }; // Start with grep and find installed
+    let history = [];
+    let historyIndex = -1;
 
-<script>
-  const terminalOutput = document.getElementById('terminal');
-  const commandInput = document.getElementById('commandInput');
-  const cliButton = document.getElementById('cliButton');
-  const cliPopupOverlay = document.getElementById('cliPopupOverlay');
-  const cliPopupClose = document.getElementById('cliPopupClose');
-  const cliCommandsList = document.getElementById('cliCommandsList');
-
-  // Sample one-word Linux CLI commands
-  const linuxCommands = [
-    "ls", "pwd", "cd", "mkdir", "rm", "rmdir", "touch", "cat", "echo",
-    "grep", "find", "chmod", "chown", "mv", "cp", "ps", "kill", "top",
-    "df", "du", "uname", "whoami", "ifconfig", "ping", "ssh", "scp",
-    "tar", "zip", "unzip", "sudo", "apt", "nano", "vi", "exit", "clear"
-  ];
-
-  // Show popup and populate commands list
-  cliButton.addEventListener('click', () => {
-    cliCommandsList.textContent = linuxCommands.join('\n');
-    cliPopupOverlay.style.display = 'block';
-  });
-
-  // Close popup on X click
-  cliPopupClose.addEventListener('click', () => {
-    cliPopupOverlay.style.display = 'none';
-  });
-
-  // Close popup when clicking outside the popup content
-  cliPopupOverlay.addEventListener('click', (e) => {
-    if (e.target === cliPopupOverlay) {
-      cliPopupOverlay.style.display = 'none';
-    }
-  });
-
-  // Basic command submit (simple echo back)
-  function submitCommand() {
-    const input = commandInput.value.trim();
-    if (!input) return;
-
-    terminalOutput.innerHTML += `student@ubuntu:/home/student$ ${input}\n`;
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-
-    // For demo: just echo command
-    if (input.toLowerCase() === 'clear') {
-      terminalOutput.innerHTML = "student@ubuntu:/home/student$ ";
-    } else {
-      terminalOutput.innerHTML += `bash: ${input}: command not found\n`;
+    function printToTerminal(text = "") {
+      terminalOutput.innerHTML += text + "\n";
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
-    commandInput.value = '';
-    commandInput.focus();
-    terminalOutput.scrollTop = terminalOutput.scrollHeight;
-  }
-
-  // Allow pressing Enter to submit command
-  commandInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      submitCommand();
+    function clearTerminal() {
+      terminalOutput.innerHTML = `student@ubuntu:${currentPath}$ `;
     }
-  });
-</script>
+
+    function updatePrompt() {
+      terminalOutput.innerHTML = terminalOutput.innerHTML.replace(/student@ubuntu:.*$/, "") + `student@ubuntu:${currentPath}$ `;
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function rebootTerminal() {
+      fileSystem = {
+        "/": ["bin", "etc", "var", "usr", "lib", "tmp", "dev", "proc", "boot", "home", "root"],
+        "/bin": [],
+        "/etc": [{ name: "passwd", content: "student:x:1000:1000:Student User:/home/student:/bin/bash" }],
+        "/var": [],
+        "/usr": ["bin", "lib"],
+        "/usr/bin": [],
+        "/lib": [],
+        "/tmp": [],
+        "/dev": [],
+        "/proc": [],
+        "/boot": [],
+        "/home": ["student"],
+        "/root": [],
+        "/home/student": [
+          { name: "readme.txt", content: "Welcome to your Ubuntu terminal simulator!\nTry commands like ls, cat, whoami, or sudo apt install grep." },
+          { name: "notes.txt", content: "This is a sample note file.\nFeel free to edit with touch or rm to remove." }
+        ]
+      };
+      installedPackages = { grep: true, find: true };
+      currentPath = "/home/student";
+      clearTerminal();
+    }
+
+    function getAbsolutePath(relativePath) {
+      if (relativePath.startsWith("/")) {
+        const parts = relativePath.split("/").filter(p => p);
+        let path = "/";
+        for (let part of parts) {
+          path = getAbsolutePath(path + (path === "/" ? "" : "/") + part);
+        }
+        return path;
+      }
+      const parts = currentPath.split("/").filter(p => p);
+      if (relativePath === "..") {
+        parts.pop();
+        return "/" + parts.join("/") || "/";
+      }
+      return currentPath + (currentPath === "/" ? "" : "/") + relativePath;
+    }
+
+    function getCompletions(input) {
+      const [command, ...args] = input.trim().split(" ");
+      const commands = ["ls", "pwd", "uname", "mkdir", "touch", "cd", "clear", "file", "grep", "find", "whoami", "cat", "rm", "mv", "cp"];
+      let matches = [];
+
+      if (!args.length) {
+        matches = commands.filter(cmd => cmd.startsWith(command));
+      } else {
+        const dir = (fileSystem[currentPath] || []).map(item => item.name || item);
+        matches = dir.filter(item => item.startsWith(args[args.length - 1]));
+      }
+
+      return matches;
+    }
+
+    function handleTabCompletion() {
+      const input = commandInput.value;
+      const matches = getCompletions(input);
+
+      if (matches.length === 1) {
+        const [command, ...args] = input.trim().split(" ");
+        if (!args.length) {
+          commandInput.value = matches[0];
+        } else {
+          const lastArg = args[args.length - 1];
+          commandInput.value = input.replace(lastArg, matches[0]) + (input.endsWith(" ") ? " " : "");
+        }
+      } else if (matches.length > 1) {
+        printToTerminal(matches.join(" "));
+      }
+    }
+
+    function submitCommand() {
+      const input = commandInput.value.trim();
+      if (input === '') return;
+
+      printToTerminal(`student@ubuntu:${currentPath}$ ${input}`);
+      history.push(input);
+      historyIndex = history.length;
+      const [firstWord, ...args] = input.split(" ");
+      const command = firstWord.toLowerCase();
+
+      if (command === "sudo" && args[0] === "apt" && args[1] === "install") {
+        const packageName = args[2];
+        if (packageName) {
+          if (["grep", "find"].includes(packageName)) {
+            if (!installedPackages[packageName]) {
+              installedPackages[packageName] = true;
+              printToTerminal("Reading package lists... Done");
+              printToTerminal("Building dependency tree... Done");
+              printToTerminal("The following NEW packages will be installed:");
+              printToTerminal(`  ${packageName}`);
+              printToTerminal("0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.");
+              printToTerminal("Need to get 0 B of archives. After this operation, 0 B of additional disk space will be used.");
+              printToTerminal(`Setting up ${packageName} (1.0-1) ...`);
+              printToTerminal("Processing triggers for man-db (2.9.1-1) ...");
+              printToTerminal(`Done! ${packageName} is now installed.`);
+            } else {
+              printToTerminal(`${packageName} is already the newest version (1.0-1).`);
+              printToTerminal("0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.");
+            }
+          } else {
+            printToTerminal(`E: Unable to locate package ${packageName}`);
+          }
+        } else {
+          printToTerminal("apt: missing package name");
+        }
+        updatePrompt();
+        commandInput.value = '';
+        return;
+      }
+
+      switch (command) {
+        case "ls":
+          const dir = (fileSystem[currentPath] || []).map(item => item.name || item);
+          printToTerminal(`total ${dir.length}`);
+          printToTerminal(dir.length > 0 ? dir.join(" ") : "");
+          break;
+        case "pwd":
+          printToTerminal(currentPath);
+          break;
+        case "uname":
+          if (args[0] === "-r") {
+            printToTerminal("5.15.0-73-generic");
+          } else {
+            printToTerminal("uname: invalid option -- '" + args[0] + "'");
+            printToTerminal("Usage: uname [OPTION]... Try 'uname --help' for more information.");
+          }
+          break;
+        case "mkdir":
+          if (args.length > 0) {
+            const dirName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].some(item => item.name === dirName || item === dirName)) {
+              fileSystem[currentPath].push(dirName);
+              const absPath = getAbsolutePath(dirName);
+              fileSystem[absPath] = [];
+              printToTerminal(`mkdir: created directory '${dirName}'`);
+            } else {
+              printToTerminal(`mkdir: cannot create directory '${dirName}': File exists`);
+            }
+          } else {
+            printToTerminal("mkdir: missing operand");
+            printToTerminal("Try 'mkdir --help' for more information.");
+          }
+          break;
+        case "touch":
+          if (args.length > 0) {
+            const fileName = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            if (!fileSystem[currentPath].some(item => item.name === fileName || item === fileName)) {
+              fileSystem[currentPath].push({ name: fileName, content: "" });
+              printToTerminal(`touch: created file '${fileName}'`);
+            } else {
+              printToTerminal(`touch: cannot create file '${fileName}': File exists`);
+            }
+          } else {
+            printToTerminal("touch: missing operand");
+            printToTerminal("Try 'touch --help' for more information.");
+          }
+          break;
+        case "cd":
+          if (args.length > 0) {
+            const newPath = args[0];
+            const absPath = getAbsolutePath(newPath);
+            if (fileSystem[absPath] || newPath === "/") {
+              currentPath = absPath;
+            } else if (newPath === ".." && currentPath !== "/") {
+              const parts = currentPath.split("/").filter(p => p);
+              parts.pop();
+              currentPath = "/" + parts.join("/") || "/";
+            } else {
+              printToTerminal(`cd: ${newPath}: No such file or directory`);
+            }
+            updatePrompt();
+          } else {
+            printToTerminal("cd: missing operand");
+          }
+          break;
+        case "clear":
+          clearTerminal();
+          break;
+        case "file":
+          if (args.length > 0) {
+            const target = args[0];
+            const absPath = getAbsolutePath(target);
+            const dirContent = fileSystem[currentPath] || [];
+            const item = dirContent.find(item => item.name === target || item === target);
+            if (item) {
+              printToTerminal(`${target}: ${fileSystem[absPath] ? "directory" : "regular file, text"}`);
+            } else {
+              printToTerminal(`file: ${target}: No such file or directory`);
+            }
+          } else {
+            printToTerminal("file: missing operand");
+            printToTerminal("Try 'file --help' for more information.");
+          }
+          break;
+        case "grep":
+          if (installedPackages["grep"]) {
+            if (args.length > 1) {
+              const pattern = args[0];
+              const fileName = args[1];
+              const dirContent = fileSystem[currentPath] || [];
+              const file = dirContent.find(item => item.name === fileName);
+              if (file && file.content) {
+                const lines = file.content.split("\n").filter(line => line.includes(pattern));
+                if (lines.length > 0) {
+                  printToTerminal(lines.join("\n"));
+                }
+              } else {
+                printToTerminal(`grep: ${fileName}: No such file or directory`);
+              }
+            } else {
+              printToTerminal("grep: missing pattern or file");
+              printToTerminal("Try 'grep --help' for more information.");
+            }
+          } else {
+            printToTerminal("bash: grep: command not found");
+          }
+          break;
+        case "find":
+          if (installedPackages["find"]) {
+            if (args.length > 0) {
+              const target = args[0];
+              let results = [];
+              function searchFS(path) {
+                const items = fileSystem[path] || [];
+                items.forEach(item => {
+                  const fullPath = getAbsolutePath(item.name || item);
+                  results.push(fullPath);
+                  if (fileSystem[fullPath]) searchFS(fullPath);
+                });
+              }
+              searchFS(currentPath);
+              const matches = results.filter(item => item.includes(target));
+              if (matches.length > 0) {
+                printToTerminal(matches.join("\n"));
+              } else {
+                printToTerminal("");
+              }
+            } else {
+              printToTerminal("find: missing argument");
+              printToTerminal("Try 'find --help' for more information.");
+            }
+          } else {
+            printToTerminal("bash: find: command not found");
+          }
+          break;
+        case "whoami":
+          printToTerminal("student");
+          break;
+        case "cat":
+          if (args.length > 0) {
+            const fileName = args[0];
+            const dirContent = fileSystem[currentPath] || [];
+            const file = dirContent.find(item => item.name === fileName);
+            if (file && file.content !== undefined) {
+              printToTerminal(file.content);
+            } else {
+              printToTerminal(`cat: ${fileName}: No such file or directory`);
+            }
+          } else {
+            printToTerminal("cat: missing operand");
+            printToTerminal("Try 'cat --help' for more information.");
+          }
+          break;
+        case "rm":
+          if (args.length > 0) {
+            const target = args[0];
+            if (!fileSystem[currentPath]) fileSystem[currentPath] = [];
+            const index = fileSystem[currentPath].findIndex(item => item.name === target || item === target);
+            if (index !== -1) {
+              const item = fileSystem[currentPath][index];
+              if (fileSystem[getAbsolutePath(target)]) {
+                printToTerminal(`rm: cannot remove '${target}': Is a directory`);
+              } else {
+                fileSystem[currentPath].splice(index, 1);
+                printToTerminal(`rm: removed '${target}'`);
+              }
+            } else {
+              printToTerminal(`rm: cannot remove '${target}': No such file or directory`);
+            }
+          } else {
+            printToTerminal("rm: missing operand");
+            printToTerminal("Try 'rm --help' for more information.");
+          }
+          break;
+        case "mv":
+          if (args.length === 2) {
+            const source = args[0];
+            const dest = args[1];
+            const dirContent = fileSystem[currentPath] || [];
+            const index = dirContent.findIndex(item => item.name === source || item === source);
+            if (index !== -1) {
+              const item = dirContent[index];
+              const destPath = getAbsolutePath(dest);
+              if (fileSystem[destPath] || destPath === "/") {
+                const targetDir = fileSystem[destPath];
+                if (!targetDir.some(i => i.name === source || i === source)) {
+                  targetDir.push(item);
+                  fileSystem[currentPath].splice(index, 1);
+                  printToTerminal(`mv: moved '${source}' to '${dest}'`);
+                } else {
+                  printToTerminal(`mv: cannot move '${source}' to '${dest}': File exists`);
+                }
+              } else {
+                fileSystem[currentPath][index] = { ...item, name: dest };
+                printToTerminal(`mv: renamed '${source}' to '${dest}'`);
+              }
+            } else {
+              printToTerminal(`mv: cannot stat '${source}': No such file or directory`);
+            }
+          } else {
+            printToTerminal("mv: missing source or destination");
+            printToTerminal("Try 'mv --help' for more information.");
+          }
+          break;
+        case "cp":
+          if (args.length === 2) {
+            const source = args[0];
+            const dest = args[1];
+            const dirContent = fileSystem[currentPath] || [];
+            const item = dirContent.find(item => item.name === source);
+            if (item) {
+              const destPath = getAbsolutePath(dest);
+              if (fileSystem[destPath] || destPath === "/") {
+                const targetDir = fileSystem[destPath];
+                if (!targetDir.some(i => i.name === source)) {
+                  targetDir.push({ ...item });
+                  printToTerminal(`cp: copied '${source}' to '${dest}'`);
+                } else {
+                  printToTerminal(`cp: cannot copy '${source}' to '${dest}': File exists`);
+                }
+              } else {
+                fileSystem[currentPath].push({ ...item, name: dest });
+                printToTerminal(`cp: copied '${source}' to '${dest}'`);
+              }
+            } else {
+              printToTerminal(`cp: cannot stat '${source}': No such file or directory`);
+            }
+          } else {
+            printToTerminal("cp: missing source or destination");
+            printToTerminal("Try 'cp --help' for more information.");
+          }
+          break;
+        default:
+          if (command !== "sudo") {
+            printToTerminal(`bash: ${command}: command not found`);
+          }
+      }
+
+      if (command !== "sudo" || (args[0] !== "apt" || args[1] !== "install")) {
+        updatePrompt();
+      }
+      commandInput.value = '';
+    }
+
+    commandInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submitCommand();
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          commandInput.value = history[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          commandInput.value = history[historyIndex];
+        } else {
+          historyIndex = history.length;
+          commandInput.value = "";
+        }
+        e.preventDefault();
+      } else if (e.key === "Tab") {
+        handleTabCompletion();
+        e.preventDefault();
+      }
+    });
+
+    printToTerminal();
+  </script>
 </body>
 </html>

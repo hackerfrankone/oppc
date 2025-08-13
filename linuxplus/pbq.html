@@ -70,10 +70,9 @@
       font-family: monospace;
       white-space: pre-wrap;
     }
-    #backButton {
+    #backButton, #chmodButton {
       position: fixed;
       top: 10px;
-      left: 10px;
       border-radius: 3px;
       background-color: #0f0;
       color: #000;
@@ -84,10 +83,54 @@
       font-family: monospace;
       z-index: 10;
     }
+    #backButton {
+      left: 10px;
+    }
+    #chmodButton {
+      left: 80px;
+    }
+    /* Modal styles for chmod explanation pop-up */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      background: #0b0b0b;
+      color: #0f0;
+      font-family: monospace;
+      padding: 20px;
+      border: 2px solid #0f0;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #0f0;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
   <button id="backButton" onclick="goBack()">← Back</button>
+  <button id="chmodButton" onclick="showChmodExplanation()">chmod</button>
 
   <div id="terminal"></div>
 
@@ -101,11 +144,86 @@
   <div id="questionBox"></div>
   <div id="answerBox"></div>
 
+  <!-- Modal for chmod explanation -->
+  <div id="chmodModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <h2>Understanding chmod Permissions</h2>
+      <p>The <code>chmod</code> command in Linux changes file or directory permissions. Permissions define who can read, write, or execute a file or directory.</p>
+      
+      <h3>Permission Types</h3>
+      <p>Permissions are divided into three categories:</p>
+      <ul>
+        <li><strong>Owner (u):</strong> The user who owns the file.</li>
+        <li><strong>Group (g):</strong> Users in the file's group.</li>
+        <li><strong>Others (o):</strong> All other users.</li>
+      </ul>
+
+      <h3>Permission Levels</h3>
+      <p>Each category can have these permissions:</p>
+      <ul>
+        <li><strong>Read (r):</strong> Permission to read the file or list directory contents (value: 4).</li>
+        <li><strong>Write (w):</strong> Permission to modify the file or create/delete files in a directory (value: 2).</li>
+        <li><strong>Execute (x):</strong> Permission to run the file (example, scripts) or access a directory (value: 1).</li>
+      </ul>
+
+      <h3>Numeric Notation</h3>
+      <p>Permissions are often set using a three-digit octal number (example, 754):</p>
+      <ul>
+        <li>First digit: Owner permissions</li>
+        <li>Second digit: Group permissions</li>
+        <li>Third digit: Others permissions</li>
+      </ul>
+      <p>Each digit is the sum of permission values:</p>
+      <ul>
+        <li>4 (read) + 2 (write) + 1 (execute) = 7 (rwx)</li>
+        <li>4 (read) + 1 (execute) = 5 (r-x)</li>
+        <li>4 (read) = 4 (r--)</li>
+        <li>0 = no permissions (---)</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod 754 file</code> sets:</p>
+      <ul>
+        <li>Owner: rwx (7)</li>
+        <li>Group: r-x (5)</li>
+        <li>Others: r-- (4)</li>
+      </ul>
+
+      <h3>Symbolic Notation</h3>
+      <p>You can also use letters to set permissions:</p>
+      <ul>
+        <li><code>u</code> (owner), <code>g</code> (group), <code>o</code> (others), or <code>a</code> (all).</li>
+        <li>Operators: <code>+</code> (add), <code>-</code> (remove), <code>=</code> (set exactly).</li>
+        <li>Permissions: <code>r</code>, <code>w</code>, <code>x</code>.</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod u+rwx,g+rx,o+r file</code> sets the same as <code>chmod 754 file</code>.</p>
+
+      <h3>Directory Permissions</h3>
+      <p>Directories use the same permissions, but:</p>
+      <ul>
+        <li><strong>Read:</strong> List contents.</li>
+        <li><strong>Write:</strong> Create, delete, or rename files in the directory.</li>
+        <li><strong>Execute:</strong> Enter the directory or access its contents.</li>
+      </ul>
+      <p><strong>Example:</strong> <code>chmod 555 directory</code> allows read and execute for all but no write.</p>
+
+      <h3>Common Examples</h3>
+      <ul>
+        <li><code>chmod 777 file</code>: Full permissions for all (rwx for owner, group, others).</li>
+        <li><code>chmod 644 file</code>: Owner can read/write (rw-), group and others can read (r--).</li>
+        <li><code>chmod 755 directory</code>: Owner has full access, group and others can read and enter.</li>
+      </ul>
+
+      <h3>Viewing Permissions</h3>
+      <p>Use <code>ls -l</code> to see permissions, displayed as <code>-rwxr-xr-x</code> or <code>drwxr-xr-x</code> (for directories).</p>
+    </div>
+  </div>
+
   <script>
     const terminalOutput = document.getElementById('terminal');
     const commandInput = document.getElementById('commandInput');
     const answerBox = document.getElementById('answerBox');
     const questionBox = document.getElementById('questionBox');
+    const chmodModal = document.getElementById('chmodModal');
 
     const pbqs = [
       { question: "Display the current kernel version of the system.", answer: "uname -r" },
@@ -155,6 +273,16 @@
       answerBox.innerText = `Answer:\n${pbq.answer}`;
     }
 
+    function showChmodExplanation() {
+      console.log('Showing chmod explanation modal');
+      chmodModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      console.log('Closing chmod modal');
+      chmodModal.style.display = 'none';
+    }
+
     function submitCommand() {
       const input = commandInput.value.trim();
       if (input === '') return;
@@ -196,6 +324,13 @@
       } else if (e.key === "Enter") {
         submitCommand();
         e.preventDefault();
+      }
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === chmodModal) {
+        closeModal();
       }
     });
 

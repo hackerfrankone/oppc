@@ -191,7 +191,7 @@
          /  \              |
        [PC3][Server]----[PC4]
     </div>
-    <p>Click a topology name (e.g., Star, Bus) to learn how it works, its setup, and more.</p>
+    <p>Click a topology name to learn how it works, its setup, and more.</p>
   </div>
 
   <div id="infoModal" class="modal">
@@ -210,7 +210,7 @@
 <ul>
   <li>Connect a switch or router to the internet (via a modem).</li>
   <li>Plug each device (PCs, servers) into the switch using Ethernet cables.</li>
-  <li>Configure the switch/router with IP addresses (e.g., <code>192.168.1.1</code> for the router).</li>
+  <li>Configure the switch/router with IP addresses (example, <code>192.168.1.1</code> for the router).</li>
 </ul>
 <h3>Fault Tolerance</h3>
 <p>Moderate. If a device or cable fails, only that device loses connection. If the central hub fails, the whole network goes down.</p>
@@ -237,7 +237,7 @@
 <p>In a bus topology, all devices connect to a single cable (the "bus"). It's like a long rope with devices tied to it.</p>
 <h3>How It's Set Up</h3>
 <ul>
-  <li>Lay a single backbone cable (e.g., coaxial).</li>
+  <li>Lay a single backbone cable (example, coaxial).</li>
   <li>Connect devices to the cable using T-connectors.</li>
   <li>Add terminators at both ends to prevent signal bounce.</li>
 </ul>
@@ -257,7 +257,7 @@
 </ul>
 <h3>Security</h3>
 <ul>
-  <li>All devices see all traffic, so use encryption (e.g., WPA3 for wireless segments).</li>
+  <li>All devices see all traffic, so use encryption (example, WPA3 for wireless segments).</li>
   <li>Monitor with <code>tcpdump</code> to spot unauthorized access.</li>
 </ul>
       `,
@@ -266,9 +266,9 @@
 <p>In a ring topology, each device connects to two others, forming a circle. Data travels in one direction around the loop.</p>
 <h3>How It's Set Up</h3>
 <ul>
-  <li>Connect each device to the next using cables (e.g., fiber or Ethernet).</li>
+  <li>Connect each device to the next using cables (example, fiber or Ethernet).</li>
   <li>Ensure the loop is complete with no breaks.</li>
-  <li>Use special hardware (e.g., FDDI) for high-speed rings.</li>
+  <li>Use special hardware (example, FDDI) for high-speed rings.</li>
 </ul>
 <h3>Fault Tolerance</h3>
 <p>Low to moderate. A single device or cable failure breaks the loop unless a dual-ring is used (more expensive).</p>
@@ -286,7 +286,7 @@
 </ul>
 <h3>Security</h3>
 <ul>
-  <li>Monitor for loop breaches with IDS (e.g., Snort, free).</li>
+  <li>Monitor for loop breaches with IDS (example, Snort, free).</li>
   <li>Secure devices with strong authentication.</li>
 </ul>
       `,
@@ -296,7 +296,7 @@
 <h3>How It's Set Up</h3>
 <ul>
   <li>Connect each device to others with cables (lots of cables for full mesh).</li>
-  <li>Configure routing protocols (e.g., OSPF with <code>router ospf 1</code>) for efficient data paths.</li>
+  <li>Configure routing protocols (example, OSPF with <code>router ospf 1</code>) for efficient data paths.</li>
   <li>Use high-end routers/switches for large networks.</li>
 </ul>
 <h3>Fault Tolerance</h3>
@@ -306,7 +306,7 @@
 <h3>Troubleshooting</h3>
 <ul>
   <li><strong>Moderate:</strong> Multiple paths make failures less impactful but routing issues are complex. Check with <code>netstat -r</code>.</li>
-  <li>Use network monitors (e.g., Zabbix, free) for path analysis.</li>
+  <li>Use network monitors (example, Zabbix, free) for path analysis.</li>
 </ul>
 <h3>Use Cases</h3>
 <ul>
@@ -350,7 +350,7 @@
       `,
       Hybrid: `
 <h2>Hybrid Topology</h2>
-<p>Hybrid topology mixes two or more topologies (e.g., star + ring). It's customized to fit specific needs.</p>
+<p>Hybrid topology mixes two or more topologies (example, star + ring). It's customized to fit specific needs.</p>
 <h3>How It's Set Up</h3>
 <ul>
   <li>Combine elements like a star hub with a ring for servers.</li>

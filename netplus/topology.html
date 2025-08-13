@@ -216,20 +216,10 @@
 <p>Moderate. If a device or cable fails, only that device loses connection. If the central hub fails, the whole network goes down.</p>
 <h3>Cost</h3>
 <p>Mid-expensive. Needs a switch/router and cables for each device, but setup is simple compared to mesh.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Easy:</strong> Check if the hub is powered on or if cables are loose (use a cable tester).</li>
-  <li>Test connectivity with <code>ping 192.168.1.1</code> to reach the router.</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Small offices, homes, or schools where simplicity is key.</li>
   <li>Networks needing easy expansion (just add more cables to the hub).</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>Secure the hub with a strong password and firewall rules (<code>iptables</code>).</li>
-  <li>Monitor traffic to detect intrusions (use free tools like Wireshark).</li>
 </ul>
       `,
       Bus: `
@@ -245,20 +235,10 @@
 <p>Low. If the main cable breaks, the entire network stops working. Device failures don't affect others, though.</p>
 <h3>Cost</h3>
 <p>Not expensive. Uses one main cable, so it's cheaper than star or mesh.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Moderate-Hard:</strong> A cable break stops everything. Use a cable tester to find the fault.</li>
-  <li>Check terminators with a multimeter for signal issues.</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Older networks or very small setups with few devices.</li>
   <li>Temporary networks where cost is a big concern.</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>All devices see all traffic, so use encryption (example, WPA3 for wireless segments).</li>
-  <li>Monitor with <code>tcpdump</code> to spot unauthorized access.</li>
 </ul>
       `,
       Ring: `
@@ -274,20 +254,10 @@
 <p>Low to moderate. A single device or cable failure breaks the loop unless a dual-ring is used (more expensive).</p>
 <h3>Cost</h3>
 <p>Mid-expensive. Needs more cabling than bus but less than mesh; special hardware can add cost.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Hard:</strong> A break stops the whole network. Use <code>traceroute</code> to find the faulty device.</li>
-  <li>Check cable connections with a tester.</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Older WANs or specific networks like FDDI.</li>
   <li>Small networks needing predictable data flow.</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>Monitor for loop breaches with IDS (example, Snort, free).</li>
-  <li>Secure devices with strong authentication.</li>
 </ul>
       `,
       Mesh: `
@@ -303,20 +273,10 @@
 <p>High. Multiple paths mean if one connection fails, data can reroute through others.</p>
 <h3>Cost</h3>
 <p>Expensive. Requires many cables and powerful hardware compared to star or bus.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Moderate:</strong> Multiple paths make failures less impactful but routing issues are complex. Check with <code>netstat -r</code>.</li>
-  <li>Use network monitors (example, Zabbix, free) for path analysis.</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Data centers or critical systems needing high reliability.</li>
   <li>Military or emergency networks where downtime isn't an option.</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>Monitor all connections with <code>nmap</code> for rogue devices.</li>
-  <li>Use encryption for data across multiple paths.</li>
 </ul>
       `,
       Tree: `
@@ -332,20 +292,10 @@
 <p>Moderate. Device failures affect only their branch; trunk failure disrupts all branches.</p>
 <h3>Cost</h3>
 <p>Mid-expensive. More switches and cables than star but less complex than mesh.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Moderate-Hard:</strong> Check trunk and branch connections with cable testers.</li>
-  <li>Verify VLAN settings with <code>show vlan brief</code> (Cisco).</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Large companies with multiple departments.</li>
   <li>Campus networks with many buildings.</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>Use VLANs to isolate branches (<code>switch(config)# vlan 20</code>).</li>
-  <li>Monitor with tools like Nagios (free) for unusual activity.</li>
 </ul>
       `,
       Hybrid: `
@@ -361,20 +311,10 @@
 <p>Varies. Depends on the mixed topologies (e.g., star part is less tolerant, mesh part is more tolerant).</p>
 <h3>Cost</h3>
 <p>Mid-expensive to expensive. Varies based on combined topologies but often more than star.</p>
-<h3>Troubleshooting</h3>
-<ul>
-  <li><strong>Hard:</strong> Mixed setups make issues complex. Use <code>ping</code>, <code>traceroute</code>, or network mappers (e.g., SolarWinds).</li>
-  <li>Check each topology segment separately.</li>
-</ul>
 <h3>Use Cases</h3>
 <ul>
   <li>Large, complex networks like universities or hospitals.</li>
   <li>Networks needing flexibility for different areas.</li>
-</ul>
-<h3>Security</h3>
-<ul>
-  <li>Apply zero-trust (verify all access) with tools like Okta.</li>
-  <li>Monitor all segments with IDS (e.g., Snort).</li>
 </ul>
       `
     };
@@ -383,29 +323,15 @@
 <h2>Topology Comparison</h2>
 <p>Here's how the topologies stack up:</p>
 <pre>
-Topology | Scalability | Fault Tolerance | Cost         | Troubleshooting | Use Case
----------+-------------+----------------+--------------+-----------------+---------------
-Star     | High        | Moderate       | Mid-expensive| Easy            | Offices, homes
-Bus      | Low         | Low            | Not expensive| Moderate-Hard   | Old/small setups
-Ring     | Moderate    | Low-Moderate   | Mid-expensive| Hard            | WANs, FDDI
-Mesh     | High        | High           | Expensive    | Moderate        | Data centers
-Tree     | High        | Moderate       | Mid-expensive| Moderate-Hard   | Enterprises
-Hybrid   | High        | Varies         | Varies       | Hard            | Complex networks
+Topology | Scalability | Fault Tolerance | Cost         | Use Case
+---------+-------------+----------------+--------------+---------------
+Star     | High        | Moderate       | Mid-expensive| Offices, homes
+Bus      | Low         | Low            | Not expensive| Old/small setups
+Ring     | Moderate    | Low-Moderate   | Mid-expensive| WANs, FDDI
+Mesh     | High        | High           | Expensive    | Data centers
+Tree     | High        | Moderate       | Mid-expensive| Enterprises
+Hybrid   | High        | Varies         | Varies       | Complex networks
 </pre>
-<h3>Troubleshooting Tips for Beginners</h3>
-<ol>
-  <li><strong>Check Connections:</strong> Ensure cables are plugged in. Use a cable tester for bad cables.</li>
-  <li><strong>Test Reachability:</strong> Type <code>ping 192.168.1.1</code> to check if devices respond.</li>
-  <li><strong>Look at Lights:</strong> Switches/routers have LEDs; blinking green usually means it's working.</li>
-  <li><strong>Check Settings:</strong> Verify IP addresses with <code>ip a</code> on Linux or <code>ipconfig</code> on Windows.</li>
-  <li><strong>Ask for Help:</strong> Use free tools like Wireshark to see network traffic or ask a network admin.</li>
-</ol>
-<h3>Security Tips</h3>
-<ul>
-  <li>Use strong passwords on routers and switches.</li>
-  <li>Turn on firewalls (<code>ufw enable</code> on Linux).</li>
-  <li>Watch for weird activity with free tools like Wireshark or <code>nmap</code>.</li>
-</ul>
     `;
 
     function showModal(topology) {

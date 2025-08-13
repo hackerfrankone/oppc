@@ -70,10 +70,9 @@
       font-family: monospace;
       white-space: pre-wrap;
     }
-    #backButton {
+    #backButton, #chmodButton {
       position: fixed;
       top: 10px;
-      left: 10px;
       border-radius: 3px;
       background-color: #0f0;
       color: #000;
@@ -84,10 +83,51 @@
       font-family: monospace;
       z-index: 10;
     }
+    #backButton {
+      left: 10px;
+    }
+    #chmodButton {
+      left: 80px;
+    }
+    /* Modal styles for chmod image pop-up */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+    }
+    .modal-content img {
+      max-width: 100%;
+      max-height: 80vh;
+      border: 2px solid #0f0;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #0f0;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
   <button id="backButton" onclick="goBack()">← Back</button>
+  <button id="chmodButton" onclick="showChmodImage()">chmod</button>
 
   <div id="terminal"></div>
 
@@ -101,11 +141,20 @@
   <div id="questionBox"></div>
   <div id="answerBox"></div>
 
+  <!-- Modal for chmod image -->
+  <div id="chmodModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <img src="images/chmod.png" alt="chmod permissions guide" />
+    </div>
+  </div>
+
   <script>
     const terminalOutput = document.getElementById('terminal');
     const commandInput = document.getElementById('commandInput');
     const answerBox = document.getElementById('answerBox');
     const questionBox = document.getElementById('questionBox');
+    const chmodModal = document.getElementById('chmodModal');
 
     const pbqs = [
       { question: "How do you view the current files in the directory?", answer: "ls" },
@@ -158,6 +207,14 @@
       answerBox.innerText = `Answer:\n${pbq.answer}`;
     }
 
+    function showChmodImage() {
+      chmodModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      chmodModal.style.display = 'none';
+    }
+
     function submitCommand() {
       const input = commandInput.value.trim();
       if (input === '') return;
@@ -199,6 +256,13 @@
       } else if (e.key === "Enter") {
         submitCommand();
         e.preventDefault();
+      }
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === chmodModal) {
+        closeModal();
       }
     });
 

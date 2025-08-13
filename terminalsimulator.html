@@ -111,7 +111,7 @@
       transform: scale(1.05);
       box-shadow: 0 0 20px #00FF00;
     }
-    #rebootButton {
+    #cliCmdsButton {
       position: fixed;
       top: 10px;
       right: 10px;
@@ -125,8 +125,8 @@
     <input type="text" id="commandInput" placeholder="Type command here..." autocomplete="off" autofocus />
     <button class="submit-button" onclick="submitCommand()">Submit</button>
   </div>
-  <div id="rebootButton">
-    <div class="circle-button" onclick="rebootTerminal()">Reboot Terminal</div>
+  <div id="cliCmdsButton">
+    <div class="circle-button" onclick="showCliCommands()">CLI CMDS</div>
   </div>
 
   <script>
@@ -152,7 +152,7 @@
         { name: "notes.txt", content: "This is a sample note file.\nFeel free to edit with touch or rm to remove." }
       ]
     };
-    let installedPackages = { grep: true, find: true }; // Start with grep and find installed
+    let installedPackages = { grep: true, find: true };
     let history = [];
     let historyIndex = -1;
 
@@ -170,29 +170,58 @@
       terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
-    function rebootTerminal() {
-      fileSystem = {
-        "/": ["bin", "etc", "var", "usr", "lib", "tmp", "dev", "proc", "boot", "home", "root"],
-        "/bin": [],
-        "/etc": [{ name: "passwd", content: "student:x:1000:1000:Student User:/home/student:/bin/bash" }],
-        "/var": [],
-        "/usr": ["bin", "lib"],
-        "/usr/bin": [],
-        "/lib": [],
-        "/tmp": [],
-        "/dev": [],
-        "/proc": [],
-        "/boot": [],
-        "/home": ["student"],
-        "/root": [],
-        "/home/student": [
-          { name: "readme.txt", content: "Welcome to your Ubuntu terminal simulator!\nTry commands like ls, cat, whoami, or sudo apt install grep." },
-          { name: "notes.txt", content: "This is a sample note file.\nFeel free to edit with touch or rm to remove." }
-        ]
-      };
-      installedPackages = { grep: true, find: true };
-      currentPath = "/home/student";
-      clearTerminal();
+    function showCliCommands() {
+      const commands = [
+        "ls - List directory contents",
+        "cd [dir] - Change directory",
+        "pwd - Print working directory",
+        "mkdir [dir] - Create a directory",
+        "touch [file] - Create or update a file",
+        "cat [file] - Display file contents",
+        "rm [file/dir] - Remove a file or directory",
+        "mv [source] [dest] - Move or rename files/directories",
+        "cp [source] [dest] - Copy files/directories",
+        "grep [pattern] [file] - Search text using patterns",
+        "find [path] [name] - Search for files",
+        "whoami - Display current user",
+        "uname [option] - Display system information",
+        "sudo apt install [package] - Install a package",
+        "clear - Clear the terminal screen",
+        "file [name] - Determine file type",
+        "chmod [permissions] [file] - Change file permissions",
+        "chown [owner] [file] - Change file ownership",
+        "ps - Display running processes",
+        "kill [pid] - Terminate a process",
+        "top - Display system tasks",
+        "df - Show disk usage",
+        "du [dir] - Show directory space usage",
+        "tar -czf [archive.tar.gz] [files] - Create tar archive",
+        "tar -xzf [archive.tar.gz] - Extract tar archive",
+        "wget [url] - Download files from the web",
+        "curl [url] - Transfer data from/to a server",
+        "ping [host] - Check network connectivity",
+        "netstat - Display network connections",
+        "ssh [user@host] - Secure shell to remote system",
+        "scp [source] [dest] - Securely copy files remotely",
+        "man [command] - Display manual for a command",
+        "history - Show command history",
+        "echo [text] - Display text or variables",
+        "export [var=value] - Set environment variable",
+        "alias [name='command'] - Create command alias",
+        "ln -s [target] [link] - Create symbolic link",
+        "head [file] - Show first lines of a file",
+        "tail [file] - Show last lines of a file",
+        "less [file] - View file with pagination",
+        "more [file] - View file with pagination",
+        "wc [file] - Count words, lines, characters",
+        "sort [file] - Sort lines in a file",
+        "uniq [file] - Remove duplicate lines",
+        "cut [file] - Extract sections from lines",
+        "sed [expression] [file] - Stream editor for text",
+        "awk [pattern] [file] - Pattern scanning and processing"
+      ];
+      printToTerminal("\n=== Common Linux CLI Commands ===\n" + commands.join("\n"));
+      updatePrompt();
     }
 
     function getAbsolutePath(relativePath) {

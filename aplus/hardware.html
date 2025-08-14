@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Hardware Types</title>
+  <link rel="icon" type="image/png" href="images/oppcus.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      padding: 2rem;
+      margin-top: 3rem; /* Added to shift content down */
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .card {
+      background: transparent;
+      border: 2px solid #00FF00;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+    }
+
+    .card p {
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .container { 
+        padding: 1rem;
+        margin-top: 2.5rem; /* Adjusted for mobile to avoid overlap */
+      }
+      .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+      .card img { height: 120px; }
+      .card h3 { font-size: clamp(0.9rem, 2.5vw, 1rem); }
+      .card p { font-size: clamp(0.8rem, 2.2vw, 0.9rem); }
+      .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <a href="aplus.html" class="back-button">← Back</a>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <img src="images/chassis-tower.png" alt="Tower Chassis Placeholder" />
+        <h3>Tower Chassis</h3>
+        <p>Full-size desktop chassis, supports ATX motherboards, multiple drives, and expansion cards.</p>
+      </div>
+      <div class="card">
+        <img src="images/chassis-mini-itx.png" alt="Mini-ITX Chassis Placeholder" />
+        <h3>Mini-ITX Chassis</h3>
+        <p>Compact chassis for Mini-ITX motherboards, ideal for small form factor PCs.</p>
+      </div>
+      <div class="card">
+        <img src="images/ssd.png" alt="SSD Placeholder" />
+        <h3>SSD (Solid State Drive)</h3>
+        <p>Flash-based storage, faster than HDD, used for OS and applications.</p>
+      </div>
+      <div class="card">
+        <img src="images/hdd.png" alt="HDD Placeholder" />
+        <h3>HDD (Hard Disk Drive)</h3>
+        <p>Magnetic storage, higher capacity, slower than SSD, used for mass storage.</p>
+      </div>
+      <div class="card">
+        <img src="images/mouse-optical.png" alt="Optical Mouse Placeholder" />
+        <h3>Optical Mouse</h3>
+        <p>Uses light to track movement, common input device for PCs.</p>
+      </div>
+      <div class="card">
+        <img src="images/mouse-laser.png" alt="Laser Mouse Placeholder" />
+        <h3>Laser Mouse</h3>
+        <p>Uses laser for precise tracking, suitable for high-DPI tasks.</p>
+      </div>
+      <div class="card">
+        <img src="images/keyboard-mechanical.png" alt="Mechanical Keyboard Placeholder" />
+        <h3>Mechanical Keyboard</h3>
+        <p>Uses individual switches per key, durable, tactile feedback.</p>
+      </div>
+      <div class="card">
+        <img src="images/keyboard-membrane.png" alt="Membrane Keyboard Placeholder" />
+        <h3>Membrane Keyboard</h3>
+        <p>Uses pressure pads, quieter, commonly used in laptops and budget PCs.</p>
+      </div>
+      <div class="card">
+        <img src="images/monitor-lcd.png" alt="LCD Monitor Placeholder" />
+        <h3>LCD Monitor</h3>
+        <p>Liquid Crystal Display, common, energy-efficient, slim design.</p>
+      </div>
+      <div class="card">
+        <img src="images/monitor-oled.png" alt="OLED Monitor Placeholder" />
+        <h3>OLED Monitor</h3>
+        <p>Organic LED, superior color and contrast, used in high-end displays.</p>
+      </div>
+      <div class="card">
+        <img src="images/monitor-led.png" alt="LED Monitor Placeholder" />
+        <h3>LED Monitor</h3>
+        <p>Backlit LCD using LEDs, brighter, more energy-efficient than traditional LCD.</p>
+      </div>
+      <div class="card">
+        <img src="images/cpu.png" alt="CPU Placeholder" />
+        <h3>CPU (Central Processing Unit)</h3>
+        <p>Processes instructions, brain of the computer, fits specific motherboard sockets.</p>
+      </div>
+      <div class="card">
+        <img src="images/gpu.png" alt="GPU Placeholder" />
+        <h3>GPU (Graphics Processing Unit)</h3>
+        <p>Handles graphics rendering, essential for gaming and video editing.</p>
+      </div>
+      <div class="card">
+        <img src="images/ram-dimm.png" alt="DIMM RAM Placeholder" />
+        <h3>DIMM RAM</h3>
+        <p>Desktop memory, physically larger, used in PCs for temporary data storage.</p>
+      </div>
+      <div class="card">
+        <img src="images/ram-sodimm.png" alt="SO-DIMM RAM Placeholder" />
+        <h3>SO-DIMM RAM</h3>
+        <p>Smaller RAM for laptops, used for temporary data storage.</p>
+      </div>
+      <div class="card">
+        <img src="images/motherboard-atx.png" alt="ATX Motherboard Placeholder" />
+        <h3>ATX Motherboard</h3>
+        <p>Standard size, supports multiple expansion slots and components.</p>
+      </div>
+      <div class="card">
+        <img src="images/motherboard-micro-atx.png" alt="Micro-ATX Motherboard Placeholder" />
+        <h3>Micro-ATX Motherboard</h3>
+        <p>Smaller than ATX, fewer slots, used in compact systems.</p>
+      </div>
+      <div class="card">
+        <img src="images/psu.png" alt="Power Supply Unit Placeholder" />
+        <h3>Power Supply Unit (PSU)</h3>
+        <p>Converts AC to DC, powers all PC components.</p>
+      </div>
+      <div class="card">
+        <img src="images/cooling-fan.png" alt="Cooling Fan Placeholder" />
+        <h3>Cooling Fan</h3>
+        <p>Air-based cooling for CPUs, GPUs, or chassis to prevent overheating.</p>
+      </div>
+      <div class="card">
+        <img src="images/cooling-liquid.png" alt="Liquid Cooling Placeholder" />
+        <h3>Liquid Cooling</h3>
+        <p>Uses liquid to dissipate heat, efficient for high-performance systems.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

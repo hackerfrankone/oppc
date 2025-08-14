@@ -7,10 +7,7 @@
   <title>CompTIA A+ Certification Quiz</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -26,9 +23,7 @@
       position: relative;
     }
 
-    .back-button,
-    .pbq-button,
-    .restart-button {
+    .back-button, .pbq-button, .connector-button, .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -45,23 +40,16 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .back-button {
-      left: 1rem;
-    }
-
-    .pbq-button {
-      left: calc(1rem + 6rem + 0.5rem);
-    }
-
+    .back-button { left: 1rem; }
+    .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
+    .connector-button { left: calc(1rem + 12rem + 1rem); }
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
       display: none;
     }
 
-    .back-button:hover,
-    .pbq-button:hover,
-    .restart-button:hover {
+    .back-button:hover, .pbq-button:hover, .connector-button:hover, .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -85,18 +73,9 @@
       scrollbar-color: #00FF00 transparent;
     }
 
-    .question::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .question::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .question::-webkit-scrollbar-thumb {
-      background: #00FF00;
-      border-radius: 3px;
-    }
+    .question::-webkit-scrollbar { width: 6px; }
+    .question::-webkit-scrollbar-track { background: transparent; }
+    .question::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 3px; }
 
     .choices {
       display: flex;
@@ -124,68 +103,28 @@
       font-size: clamp(0.9rem, 2.8vw, 1rem);
     }
 
-    .choice:hover:not(.disabled) {
-      background-color: #00FF00;
-      color: black;
-    }
+    .choice:hover:not(.disabled) { background-color: #00FF00; color: black; }
+    .choice.disabled { pointer-events: none; opacity: 0.5; }
 
-    .choice.disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
-
-    .feedback {
-      margin-top: 1rem;
-      font-size: clamp(0.9rem, 3vw, 1rem);
-      min-height: 2rem;
-      text-align: center;
-    }
-
-    .score {
-      margin-top: 1rem;
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
-      text-align: center;
-    }
+    .feedback { margin-top: 1rem; font-size: clamp(0.9rem, 3vw, 1rem); min-height: 2rem; text-align: center; }
+    .score { margin-top: 1rem; font-size: clamp(1rem, 3.5vw, 1.2rem); text-align: center; }
 
     @media (max-width: 600px) {
-      body {
-        padding: 0.5rem;
-      }
-
-      .quiz-content {
-        max-width: 95%;
-      }
-
-      .question {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-        max-height: 25vh;
-      }
-
-      .choice {
-        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
-        padding: 0.5rem;
-      }
-
-      .back-button,
-      .pbq-button,
-      .restart-button {
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
-        padding: 0.4rem 0.8rem;
-      }
-
-      .pbq-button {
-        left: calc(1rem + 5rem + 0.5rem);
-      }
-
-      .restart-button {
-        top: calc(0.5rem + 2rem + 0.5rem);
-      }
+      body { padding: 0.5rem; }
+      .quiz-content { max-width: 95%; }
+      .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
+      .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
+      .back-button, .pbq-button, .connector-button, .restart-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .pbq-button { left: calc(1rem + 5rem + 0.5rem); }
+      .restart-button { top: calc(0.5rem + 2rem + 0.5rem); }
+      .connector-button { left: calc(1rem + 10rem + 0.5rem); }
     }
   </style>
 </head>
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <a href="connectortypes.html" class="connector-button">Connector Types</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -195,7 +134,7 @@
     <div class="score" id="score"></div>
   </div>
 
-  <script>
+ <script>
     const questions = [
       {
         question: "Which device is used to connect multiple network segments?",
@@ -704,7 +643,6 @@
       }
     ];
 
-    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -721,7 +659,6 @@
     const scoreElement = document.getElementById("score");
     const restartButton = document.querySelector(".restart-button");
 
-    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
@@ -730,7 +667,6 @@
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
-      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -743,35 +679,23 @@
       });
     }
 
-    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
-      if (selected === correct) {
-        correctAnswers++;
-        feedbackElement.textContent = "✅ Correct!";
-      } else {
-        incorrectAnswers++;
-        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
-      }
+      if (selected === correct) { correctAnswers++; feedbackElement.textContent = "✅ Correct!"; } 
+      else { incorrectAnswers++; feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`; }
 
-      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
         div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
       });
 
-      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
+        if (currentQuestion < questions.length) showQuestion();
+        else {
           questionElement.textContent = "Quiz Complete!";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
@@ -781,7 +705,6 @@
       }, 5000);
     }
 
-    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
@@ -790,7 +713,6 @@
       showQuestion();
     }
 
-    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

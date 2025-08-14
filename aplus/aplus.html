@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  Apprentice: Here's the updated HTML with the "Hardware" button moved further to the right to avoid overlap:
+
+<xaiArtifact artifact_id="26fc44a8-434f-4f5c-bbee-8bb75a372a36" artifact_version_id="9d9cb595-a81a-4ed6-a5dc-bc0daf418974" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
   <title>CompTIA A+ Certification Quiz</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
@@ -23,7 +31,7 @@
       position: relative;
     }
 
-    .back-button, .pbq-button, .connector-button, .restart-button {
+    .back-button, .pbq-button, .connector-button, .hardware-button, .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -43,13 +51,14 @@
     .back-button { left: 1rem; }
     .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
     .connector-button { left: calc(1rem + 11rem); }
+    .hardware-button { left: calc(1rem + 24rem); }
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
       display: none;
     }
 
-    .back-button:hover, .pbq-button:hover, .connector-button:hover, .restart-button:hover {
+    .back-button:hover, .pbq-button:hover, .connector-button:hover, .hardware-button:hover, .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -114,9 +123,10 @@
       .quiz-content { max-width: 95%; }
       .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
       .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
-      .back-button, .pbq-button, .connector-button, .restart-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .back-button, .pbq-button, .connector-button, .hardware-button, .restart-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
       .pbq-button { left: calc(1rem + 5rem + 0.5rem); }
       .connector-button { left: calc(1rem + 9rem); }
+      .hardware-button { left: calc(1rem + 21rem); }
       .restart-button { top: calc(0.5rem + 2rem + 0.5rem); }
     }
   </style>
@@ -125,6 +135,7 @@
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
   <a href="connectortypes.html" class="connector-button">Connector Types</a>
+  <a href="hardware.html" class="hardware-button">Hardware</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -212,6 +223,8 @@
         answer: "System Restore"
       },
       {
+
+
         question: "Which RAID level offers redundancy and performance?",
         choices: ["RAID 0", "RAID 1", "RAID 5", "RAID 6"],
         answer: "RAID 5"

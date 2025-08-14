@@ -23,31 +23,32 @@
       position: relative;
     }
 
-    .back-button, .pbq-button, .connector-button, .restart-button {
-      position: fixed;
-      top: 1rem;
-      background: transparent;
-      color: #00FF00;
-      border: 2px solid #00FF00;
-      padding: 0.5rem 1rem;
-      font-family: 'Courier New', monospace;
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-      z-index: 9999;
-      -webkit-tap-highlight-color: transparent;
-    }
+.back-button, .pbq-button, .connector-button, .restart-button {
+  position: fixed;
+  top: 1rem;
+  background: transparent;
+  color: #00FF00;
+  border: 2px solid #00FF00;
+  padding: 0.5rem 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+  z-index: 9999;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    .back-button { left: 1rem; }
-    .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
-    .connector-button { left: calc(1rem + 12rem + 1rem); }
-    .restart-button {
-      top: calc(1rem + 2.5rem + 0.5rem);
-      left: 1rem;
-      display: none;
-    }
+.back-button { left: 1rem; }
+.pbq-button { left: calc(1rem + 6rem + 0.5rem); }
+.connector-button { left: calc(1rem + 13.2rem); } /* updated */
+.restart-button {
+  top: calc(1rem + 2.5rem + 0.5rem);
+  left: 1rem;
+  display: none;
+}
+
 
     .back-button:hover, .pbq-button:hover, .connector-button:hover, .restart-button:hover {
       background-color: #00FF00;

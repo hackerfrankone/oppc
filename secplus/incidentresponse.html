@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Security+ Incident Response</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      padding: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.3rem, 3.5vw, 1.5rem);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #00FF00;
+    }
+
+    h2 {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      margin: 1rem 0 0.3rem;
+      color: #00FF00;
+      border-bottom: 1px solid #00FF00;
+      padding-bottom: 0.2rem;
+    }
+
+    p {
+      line-height: 1.4;
+      margin: 0.3rem 0;
+      word-wrap: break-word;
+    }
+
+    ul {
+      margin: 0.3rem 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.3rem;
+      font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .content {
+        max-width: 95%;
+        padding: 0.5rem;
+      }
+
+      h1 {
+        font-size: clamp(1.1rem, 3vw, 1.3rem);
+      }
+
+      h2 {
+        font-size: clamp(0.9rem, 2.8vw, 1rem);
+      }
+
+      p, li {
+        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+      }
+
+      .back-button {
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        padding: 0.3rem 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="secplus.html" class="back-button">← Back</a>
+
+  <div class="content">
+    <h1>Security+ Incident Response Steps</h1>
+    
+    <h2>1. Preparation</h2>
+    <p>Prepare for incidents by setting up plans, tools, and training to respond effectively.</p>
+    <ul>
+      <li>Create an incident response plan with roles and procedures.</li>
+      <li>Train staff and run tabletop exercises.</li>
+      <li>Deploy monitoring tools (example: SIEM) and maintain asset inventories.</li>
+    </ul>
+
+    <h2>2. Identify | Detect</h2>
+    <p>Detect potential incidents through monitoring and alerts to minimize damage.</p>
+    <ul>
+      <li>Use IDS and SIEM for real-time anomaly detection.</li>
+      <li>Analyze logs for signs like failed logins.</li>
+      <li>Encourage users to report suspicious activity.</li>
+    </ul>
+
+    <h2>3. Analyze | Is It an Actual Threat</h2>
+    <p>Confirm if an event is a real threat and assess its scope and impact.</p>
+    <ul>
+      <li>Verify incidents using tools (example: Wireshark).</li>
+      <li>Identify affected systems and attack type.</li>
+      <li>Collect evidence while preserving chain of custody.</li>
+    </ul>
+
+    <h2>4. Containment | Isolate the Machine</h2>
+    <p>Limit incident spread by isolating affected systems without disrupting operations.</p>
+    <ul>
+      <li>Disconnect compromised devices from the network.</li>
+      <li>Use network segmentation for long-term containment.</li>
+      <li>Preserve data for forensics and apply temporary fixes.</li>
+    </ul>
+
+    <h2>5. Eradication</h2>
+    <p>Remove threats completely from affected systems.</p>
+    <ul>
+      <li>Delete malware using antivirus tools.</li>
+      <li>Patch vulnerabilities and reset compromised credentials.</li>
+      <li>Rebuild systems from clean backups if needed.</li>
+    </ul>
+
+    <h2>6. Recovery</h2>
+    <p>Restore systems to normal operation and strengthen security.</p>
+    <ul>
+      <li>Restore data from backups and reconnect systems.</li>
+      <li>Test functionality and add controls (example: MFA).</li>
+      <li>Monitor for signs of re-infection.</li>
+    </ul>
+
+    <h2>7. Lessons Learned | Analysis and Report</h2>
+    <p>Analyze the incident to improve future responses and document findings.</p>
+    <ul>
+      <li>Review incident causes and response effectiveness.</li>
+      <li>Update plans and policies based on findings.</li>
+      <li>Report to stakeholders and meet compliance requirements.</li>
+    </ul>
+  </div>
+</body>
+</html>

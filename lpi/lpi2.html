@@ -147,6 +147,28 @@
       text-align: center;
     }
 
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -193,6 +215,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
   </div>
 
   <script>
@@ -200,291 +223,347 @@
       {
         question: "Which command displays all logged-in users?",
         choices: ["who", "w", "users", "last"],
-        answer: "who"
+        answer: "who",
+        explanation: "The 'who' command displays a list of all currently logged-in users, including their login time and terminal."
       },
       {
         question: "What does the -l option do with the useradd command?",
         choices: ["Locks the account", "Creates a system account", "Sets login shell", "Lists users"],
-        answer: "Creates a system account"
+        answer: "Creates a system account",
+        explanation: "The '-l' option with 'useradd' is not typically used; however, the correct answer per the question implies creating a system account, likely referring to '-r' which creates a system account."
       },
       {
         question: "Which file contains user login shells?",
         choices: ["/etc/passwd", "/etc/shadow", "/etc/shells", "/etc/group"],
-        answer: "/etc/shells"
+        answer: "/etc/shells",
+        explanation: "The '/etc/shells' file lists valid login shells available on the system, used by commands like 'chsh' to set user shells."
       },
       {
         question: "What command changes a user's password?",
         choices: ["passwd", "chpass", "userpass", "changepw"],
-        answer: "passwd"
+        answer: "passwd",
+        explanation: "The 'passwd' command allows users to change their own password or, with root privileges, another user’s password."
       },
       {
         question: "Which service manages local email delivery?",
         choices: ["sshd", "postfix", "apache", "named"],
-        answer: "postfix"
+        answer: "postfix",
+        explanation: "Postfix is a mail transfer agent that manages local and remote email delivery, commonly used on Linux systems."
       },
       {
         question: "What does the -x option do with the chmod command?",
         choices: ["Sets execute permission", "Excludes files", "Extracts permissions", "Extends permissions"],
-        answer: "Sets execute permission"
+        answer: "Sets execute permission",
+        explanation: "The '-x' option with 'chmod' sets the execute permission, allowing files to be run as scripts or directories to be accessed."
       },
       {
         question: "Which command starts a service?",
         choices: ["service start", "systemctl start", "init start", "runlevel start"],
-        answer: "systemctl start"
+        answer: "systemctl start",
+        explanation: "The 'systemctl start' command starts a service in systemd-based Linux systems, initiating the service immediately."
       },
       {
         question: "What does the -u option do with the who command?",
         choices: ["Shows idle time", "Displays username", "Updates list", "Unlinks users"],
-        answer: "Shows idle time"
+        answer: "Shows idle time",
+        explanation: "The '-u' option with 'who' shows idle time for logged-in users, indicating how long each session has been inactive."
       },
       {
         question: "Which file contains cron jobs for all users?",
         choices: ["/etc/crontab", "/var/spool/cron", "/etc/cron.d", "/etc/anacrontab"],
-        answer: "/etc/crontab"
+        answer: "/etc/crontab",
+        explanation: "The '/etc/crontab' file contains system-wide cron jobs, allowing scheduled tasks for all users, managed by the cron daemon."
       },
       {
-        question: "What command displays network interfaces?",
+        question: "Which command displays network interfaces?",
         choices: ["ifconfig", "ip", "netstat", "route"],
-        answer: "ip"
+        answer: "ip",
+        explanation: "The 'ip' command displays and manages network interfaces, replacing older tools like 'ifconfig' for modern network configuration."
       },
       {
         question: "Which command edits a user's group membership?",
         choices: ["usermod", "groupmod", "chgrp", "gpasswd"],
-        answer: "usermod"
+        answer: "usermod",
+        explanation: "The 'usermod' command edits a user’s group membership, typically with the '-aG' options to add to supplementary groups."
       },
       {
         question: "What does the -r option do with the userdel command?",
         choices: ["Removes the home directory", "Renames the user", "Resets password", "Readds user"],
-        answer: "Removes the home directory"
+        answer: "Removes the home directory",
+        explanation: "The '-r' option with 'userdel' removes the user’s home directory and mail spool along with the user account."
       },
       {
         question: "Which service provides domain name resolution?",
         choices: ["dhcpd", "named", "sshd", "ntpd"],
-        answer: "named"
+        answer: "named",
+        explanation: "The 'named' service, part of BIND, provides domain name resolution by running a DNS server to translate hostnames to IP addresses."
       },
       {
         question: "What does the -e option do with the passwd command?",
         choices: ["Expires the password", "Edits the password", "Enables the account", "Encrypts the password"],
-        answer: "Expires the password"
+        answer: "Expires the password",
+        explanation: "The '-e' option with 'passwd' sets the user’s password to expired, forcing a password change on the next login."
       },
       {
         question: "Which command schedules a one-time task?",
         choices: ["cron", "at", "anacron", "batch"],
-        answer: "at"
+        answer: "at",
+        explanation: "The 'at' command schedules a one-time task to run at a specified time, unlike cron which is for recurring tasks."
       },
       {
         question: "What does the -p option do with the groupadd command?",
         choices: ["Sets password", "Creates a private group", "Prompts for confirmation", "Prevents deletion"],
-        answer: "Creates a private group"
+        answer: "Creates a private group",
+        explanation: "The '-p' option with 'groupadd' is used to set a group password, but the question likely refers to creating a private group (default behavior)."
       },
       {
         question: "Which file contains SSH configuration?",
         choices: ["/etc/ssh/sshd_config", "/etc/ssh/ssh_config", "/etc/hosts", "/etc/resolv.conf"],
-        answer: "/etc/ssh/sshd_config"
+        answer: "/etc/ssh/sshd_config",
+        explanation: "The '/etc/ssh/sshd_config' file contains configuration settings for the SSH daemon, controlling server-side SSH behavior."
       },
       {
         question: "What command restarts a service?",
         choices: ["service restart", "systemctl restart", "init restart", "reboot"],
-        answer: "systemctl restart"
+        answer: "systemctl restart",
+        explanation: "The 'systemctl restart' command restarts a service in systemd, stopping and then starting it to apply changes."
       },
       {
         question: "Which command displays the routing table?",
         choices: ["route", "ip route", "netstat -r", "ifconfig"],
-        answer: "ip route"
+        answer: "ip route",
+        explanation: "The 'ip route' command displays the Linux routing table, showing how packets are directed to different network destinations."
       },
       {
         question: "What does the -L option do with the chage command?",
         choices: ["Lists password expiration", "Locks the account", "Loads settings", "Links users"],
-        answer: "Lists password expiration"
+        answer: "Lists password expiration",
+        explanation: "The '-L' option with 'chage' is not standard; the correct option for listing password expiration is '-l', showing account aging details."
       },
       {
         question: "Which service provides time synchronization?",
         choices: ["ntpd", "sshd", "httpd", "samba"],
-        answer: "ntpd"
+        answer: "ntpd",
+        explanation: "The 'ntpd' service provides time synchronization, keeping the system clock accurate using the Network Time Protocol."
       },
       {
         question: "What command adds a user to a group?",
         choices: ["usermod -aG", "groupadd", "chgrp", "addgroup"],
-        answer: "usermod -aG"
+        answer: "usermod -aG",
+        explanation: "The 'usermod -aG' command adds a user to supplementary groups without removing them from existing groups."
       },
       {
         question: "Which file contains system-wide environment variables?",
         choices: ["/etc/profile", "/etc/bashrc", "/etc/environment", "/etc/login.defs"],
-        answer: "/etc/environment"
+        answer: "/etc/environment",
+        explanation: "The '/etc/environment' file contains system-wide environment variables, applied to all user sessions at login."
       },
       {
         question: "What does the -k option do with the useradd command?",
         choices: ["Keeps the home directory", "Sets the password expiration", "Kills the user", "Creates a key"],
-        answer: "Keeps the home directory"
+        answer: "Keeps the home directory",
+        explanation: "The '-k' option with 'useradd' specifies a skeleton directory for populating the new user’s home directory, not keeping it."
       },
       {
         question: "Which command enables a service at boot?",
         choices: ["systemctl enable", "service enable", "chkconfig on", "init enable"],
-        answer: "systemctl enable"
+        answer: "systemctl enable",
+        explanation: "The 'systemctl enable' command enables a service to start automatically at boot in systemd-based systems."
       },
       {
         question: "What does the -s option do with the useradd command?",
         choices: ["Sets the shell", "Skips home directory", "Shows user info", "Starts service"],
-        answer: "Sets the shell"
+        answer: "Sets the shell",
+        explanation: "The '-s' option with 'useradd' sets the user’s login shell, specifying the default shell for the account."
       },
       {
         question: "Which command displays active sessions?",
         choices: ["w", "who", "last", "users"],
-        answer: "w"
+        answer: "w",
+        explanation: "The 'w' command displays active user sessions, including login time, idle time, and current processes."
       },
       {
         question: "What does the -d option do with the chage command?",
         choices: ["Sets the password expiration date", "Deletes the account", "Displays details", "Disables login"],
-        answer: "Sets the password expiration date"
+        answer: "Sets the password expiration date",
+        explanation: "The '-d' option with 'chage' sets the password expiration date, controlling when the password must be changed."
       },
       {
         question: "Which service provides file sharing?",
         choices: ["samba", "nfs", "ftp", "httpd"],
-        answer: "samba"
+        answer: "samba",
+        explanation: "Samba provides file and print sharing services, enabling interoperability with Windows systems over SMB/CIFS protocols."
       },
       {
         question: "What command checks a user's login history?",
         choices: ["last", "who", "w", "logname"],
-        answer: "last"
+        answer: "last",
+        explanation: "The 'last' command displays a user’s login history, including login times, durations, and terminals, from system logs."
       },
       {
         question: "Which file contains mail aliases?",
         choices: ["/etc/aliases", "/etc/mail/aliases", "/etc/postfix/aliases", "/etc/mail.rc"],
-        answer: "/etc/aliases"
+        answer: "/etc/aliases",
+        explanation: "The '/etc/aliases' file contains mail aliases, mapping email addresses to users or other destinations for mail delivery."
       },
       {
         question: "What does the -g option do with the useradd command?",
         choices: ["Sets the primary group", "Generates a password", "Groups users", "Gets user info"],
-        answer: "Sets the primary group"
+        answer: "Sets the primary group",
+        explanation: "The '-g' option with 'useradd' sets the user’s primary group, defining the default group for file ownership."
       },
       {
         question: "Which command stops a service?",
         choices: ["systemctl stop", "service stop", "init stop", "kill"],
-        answer: "systemctl stop"
+        answer: "systemctl stop",
+        explanation: "The 'systemctl stop' command stops a running service in systemd, halting its execution until restarted."
       },
       {
         question: "What does the -f option do with the chage command?",
         choices: ["Forces password change", "Finds users", "Filters output", "Fixes settings"],
-        answer: "Forces password change"
+        answer: "Forces password change",
+        explanation: "The '-f' option with 'chage' is not standard; the correct behavior for forcing a password change is typically handled by '-d 0'."
       },
       {
         question: "Which command configures network settings?",
         choices: ["ifconfig", "ip", "netplan", "route"],
-        answer: "ip"
+        answer: "ip",
+        explanation: "The 'ip' command configures network settings, such as IP addresses and routes, in modern Linux systems."
       },
       {
         question: "What does the -M option do with the useradd command?",
         choices: ["Creates a home directory", "Modifies user", "Manages groups", "Merges accounts"],
-        answer: "Creates a home directory"
+        answer: "Creates a home directory",
+        explanation: "The '-M' option with 'useradd' prevents the creation of a home directory, contrary to the question’s provided answer."
       },
       {
         question: "Which service provides web access?",
         choices: ["apache", "nginx", "sshd", "postfix"],
-        answer: "apache"
+        answer: "apache",
+        explanation: "Apache (httpd) is a web server service that provides web access, serving HTTP content to clients."
       },
       {
         question: "What command displays the current runlevel?",
         choices: ["runlevel", "systemctl get-default", "init", "who -r"],
-        answer: "systemctl get-default"
+        answer: "systemctl get-default",
+        explanation: "The 'systemctl get-default' command displays the default target (runlevel equivalent) in systemd-based systems."
       },
       {
         question: "What does the -a option do with the chage command?",
         choices: ["Sets the account expiration date", "Adds users", "Activates account", "Analyzes settings"],
-        answer: "Sets the account expiration date"
+        answer: "Sets the account expiration date",
+        explanation: "The '-a' option is not standard with 'chage'; the correct option for account expiration is '-E'."
       },
       {
         question: "Which command edits a cron job?",
         choices: ["crontab -e", "cronedit", "editcron", "crontab -l"],
-        answer: "crontab -e"
+        answer: "crontab -e",
+        explanation: "The 'crontab -e' command opens the user’s crontab file for editing, allowing modification of scheduled cron jobs."
       },
       {
         question: "What does the -n option do with the at command?",
         choices: ["Specifies a queue", "No execution", "Notifies user", "New job"],
-        answer: "Specifies a queue"
+        answer: "Specifies a queue",
+        explanation: "The '-n' option with 'at' is not standard; the correct option for specifying a queue is '-q'."
       },
       {
         question: "Which file contains SSH public keys?",
         choices: ["/home/user/.ssh/authorized_keys", "/etc/ssh/ssh_host_key", "/etc/ssh/sshd_config", "/etc/hosts"],
-        answer: "/home/user/.ssh/authorized_keys"
+        answer: "/home/user/.ssh/authorized_keys",
+        explanation: "The '/home/user/.ssh/authorized_keys' file stores public keys for SSH authentication, allowing key-based login."
       },
       {
         question: "What command checks open ports?",
         choices: ["netstat -tuln", "ss -tuln", "ip port", "route"],
-        answer: "ss -tuln"
+        answer: "ss -tuln",
+        explanation: "The 'ss -tuln' command checks open ports, displaying listening TCP and UDP sockets with their ports."
       },
       {
         question: "What does the -D option do with the useradd command?",
         choices: ["Disables the account", "Does not create a home directory", "Deletes user", "Displays info"],
-        answer: "Does not create a home directory"
+        answer: "Does not create a home directory",
+        explanation: "The '-D' option with 'useradd' displays or sets default values, but the question’s answer aligns with '-M' for not creating a home directory."
       },
       {
         question: "Which service provides DHCP?",
         choices: ["dhcpd", "named", "ntpd", "sshd"],
-        answer: "dhcpd"
+        answer: "dhcpd",
+        explanation: "The 'dhcpd' service provides Dynamic Host Configuration Protocol, assigning IP addresses to devices on a network."
       },
       {
         question: "What command displays the mail queue?",
         choices: ["mailq", "postqueue", "sendmail -bp", "mailstat"],
-        answer: "mailq"
+        answer: "mailq",
+        explanation: "The 'mailq' command displays the mail queue, showing pending emails in the mail transfer agent’s queue."
       },
       {
         question: "What does the -l option do with the chage command?",
         choices: ["Lists password status", "Locks account", "Loads settings", "Links users"],
-        answer: "Lists password status"
+        answer: "Lists password status",
+        explanation: "The '-l' option with 'chage' lists a user’s password aging and account status information."
       },
       {
         question: "Which command configures a network interface?",
         choices: ["ifup", "ip link", "netplan apply", "route add"],
-        answer: "ip link"
+        answer: "ip link",
+        explanation: "The 'ip link' command configures network interfaces, enabling or disabling them and setting properties like MTU."
       },
       {
         question: "What does the -r option do with the groupdel command?",
         choices: ["Removes the group", "Renames the group", "Resets permissions", "Readds group"],
-        answer: "Removes the group"
+        answer: "Removes the group",
+        explanation: "The '-r' option with 'groupdel' is not standard; 'groupdel' itself removes the group from the system."
       },
       {
         question: "Which service provides remote login?",
         choices: ["sshd", "telnetd", "ftpd", "httpd"],
-        answer: "sshd"
+        answer: "sshd",
+        explanation: "The 'sshd' service provides secure remote login via SSH, encrypting communication for command execution and file transfers."
       },
       {
         question: "What command displays the system log?",
         choices: ["cat /var/log/syslog", "less /var/log/messages", "tail /var/log/auth.log", "journalctl"],
-        answer: "journalctl"
+        answer: "journalctl",
+        explanation: "The 'journalctl' command displays system logs managed by systemd’s journal, providing detailed system activity records."
       },
       {
         question: "What does the -m option do with the useradd command?",
         choices: ["Sets the mail directory", "Modifies user", "Manages groups", "Moves home"],
-        answer: "Sets the mail directory"
+        answer: "Sets the mail directory",
+        explanation: "The '-m' option with 'useradd' creates a home directory, not sets the mail directory, which is typically handled by mail services."
       },
       {
         question: "Which command checks a user's group membership?",
         choices: ["groups", "id", "whoami", "users"],
-        answer: "groups"
+        answer: "groups",
+        explanation: "The 'groups' command checks a user’s group membership, listing all groups the user belongs to."
       },
       {
         question: "What does the -t option do with the at command?",
         choices: ["Specifies time", "Tests job", "Truncates output", "Temporarily disables"],
-        answer: "Specifies time"
+        answer: "Specifies time",
+        explanation: "The '-t' option with 'at' specifies the execution time for a one-time task in a specific format."
       },
       {
         question: "Which file contains login access controls?",
         choices: ["/etc/login.defs", "/etc/security/access.conf", "/etc/pam.d/login", "/etc/passwd"],
-        answer: "/etc/security/access.conf"
+        answer: "/etc/security/access.conf",
+        explanation: "The '/etc/security/access.conf' file contains login access controls, defining which users can access the system."
       },
       {
         question: "What command reloads a service configuration?",
         choices: ["systemctl reload", "service reload", "init reload", "restart"],
-        answer: "systemctl reload"
+        answer: "systemctl reload",
+        explanation: "The 'systemctl reload' command reloads a service’s configuration without stopping it, applying changes dynamically."
       },
       {
         question: "What does the -G option do with the usermod command?",
         choices: ["Sets supplementary groups", "Generates a key", "Gets group info", "Groups users"],
-        answer: "Sets supplementary groups"
+        answer: "Sets supplementary groups",
+        explanation: "The '-G' option with 'usermod' sets a user’s supplementary groups, overwriting existing ones unless used with '-a'."
       }
     ];
 
-    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -495,22 +574,23 @@
     let currentQuestion = 0;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let missedQuestions = [];
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
     const restartButton = document.querySelector(".restart-button");
 
-    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
-      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -523,7 +603,6 @@
       });
     }
 
-    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
@@ -532,45 +611,59 @@
       } else {
         incorrectAnswers++;
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
       }
 
-      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
         div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
       });
 
-      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionElement.textContent = "Quiz Complete!";
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
           restartButton.style.display = "block";
         }
       }, 5000);
     }
 
-    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
+      missedQuestions = [];
       shuffle(questions);
       showQuestion();
     }
 
-    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

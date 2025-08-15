@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Security+ CIA Triad</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 800px;
+      text-align: left;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      padding: 1rem;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      background: black;
+      max-height: 80vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .content h1 {
+      font-size: clamp(1.5rem, 4vw, 1.8rem);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .content h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+      margin-bottom: 1rem;
+    }
+
+    .cia-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cia-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .cia-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .cia-button.active {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .section {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .section.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .section p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .section li {
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .section strong {
+      color: #00FF00;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .content {
+        max-width: 95%;
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+      }
+
+      .back-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+
+      .cia-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .cia-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="secplus.html" class="back-button">← Back</a>
+
+  <div class="content">
+    <h1>Security+ CIA Triad</h1>
+    <div class="cia-buttons">
+      <button class="cia-button active" data-section="confidentiality">Confidentiality</button>
+      <button class="cia-button" data-section="integrity">Integrity</button>
+      <button class="cia-button" data-section="availability">Availability</button>
+    </div>
+
+    <div id="confidentiality" class="section active">
+      <h2>Confidentiality</h2>
+      <p>Confidentiality ensures that data is accessible only to authorized individuals and is protected from unauthorized access. It is a critical component of the CIA triad, focusing on maintaining the privacy and secrecy of sensitive information.</p>
+      <ul>
+        <li><strong>Encryption:</strong> Protects data by converting it into an unreadable format using algorithms like AES or RSA. Only those with the correct key can decrypt and access the data.</li>
+        <li><strong>Access Controls:</strong> Mechanisms like passwords, biometrics, and multi-factor authentication (MFA) ensure only authorized users can access systems or data.</li>
+        <li><strong>Data Classification:</strong> Categorizing data based on sensitivity (e.g., public, confidential, top-secret) to apply appropriate security measures.</li>
+        <li><strong>Secure Communication Protocols:</strong> Protocols like TLS/SSL (e.g., HTTPS on port 443) encrypt data in transit to prevent interception.</li>
+        <li><strong>Role-Based Access Control (RBAC):</strong> Assigns permissions based on user roles, limiting access to what is necessary for job functions.</li>
+        <li><strong>Data Masking:</strong> Obscures sensitive data (e.g., replacing credit card numbers with asterisks) to prevent exposure during processing or testing.</li>
+        <li><strong>Physical Security:</strong> Measures like locked server rooms or secure facilities prevent unauthorized physical access to systems storing sensitive data.</li>
+      </ul>
+      <p>Confidentiality is vital in industries like healthcare (e.g., HIPAA compliance) and finance, where data breaches can lead to significant privacy violations. Common threats include eavesdropping, social engineering, and insider threats.</p>
+    </div>
+
+    <div id="integrity" class="section">
+      <h2>Integrity</h2>
+      <p>Integrity ensures that data is accurate, complete, and trustworthy. It prevents unauthorized modifications, whether intentional or accidental, to maintain the reliability of information.</p>
+      <ul>
+        <li><strong>Hashing:</strong> Uses algorithms like SHA-256 to create a unique fingerprint of data, allowing detection of any unauthorized changes.</li>
+        <li><strong>Digital Signatures:</strong> Verifies the authenticity and integrity of a message or document using public/private key pairs, ensuring it hasn't been altered.</li>
+        <li><strong>File Permissions:</strong> Restricts who can modify data, preventing unauthorized changes (e.g., read-only access for certain users).</li>
+        <li><strong>Version Control:</strong> Tracks changes to data or code, allowing rollback to previous versions if unauthorized modifications occur.</li>
+        <li><strong>Checksums:</strong> Validates data integrity during transfers by comparing computed values to detect corruption or tampering.</li>
+        <li><strong>Backup and Recovery:</strong> Regular backups ensure data can be restored to a known good state if integrity is compromised.</li>
+        <li><strong>Change Management:</strong> Formal processes to control and document changes to systems or data, reducing the risk of unauthorized alterations.</li>
+      </ul>
+      <p>Integrity is crucial for systems like financial transactions or medical records, where altered data can lead to severe consequences. Threats to integrity include malware, unauthorized access, and human error.</p>
+    </div>
+
+    <div id="availability" class="section">
+      <h2>Availability</h2>
+      <p>Availability ensures that systems, applications, and data are accessible to authorized users when needed. It focuses on maintaining operational systems and protecting against disruptions.</p>
+      <ul>
+        <li><strong>Redundancy:</strong> Implements failover systems, such as clustered servers or backup power supplies, to ensure continuous operation during failures.</li>
+        <li><strong>Disaster Recovery (DR):</strong> Plans and systems to restore operations after incidents like natural disasters or cyberattacks (e.g., ransomware).</li>
+        <li><strong>Distributed Denial of Service (DDoS) Protection:</strong> Mitigates attacks that overwhelm systems, ensuring resources remain accessible to legitimate users.</li>
+        <li><strong>High Availability (HA) Systems:</strong> Uses load balancers and failover clusters to minimize downtime (e.g., 99.999% uptime).</li>
+        <li><strong>Regular Maintenance:</strong> Applies patches and updates to prevent vulnerabilities that could disrupt system availability.</li>
+        <li><strong>Network Security:</strong> Firewalls, intrusion detection systems (IDS), and secure configurations (e.g., closing unused ports like 23/Telnet) prevent attacks that disrupt services.</li>
+        <li><strong>Scalability:</strong> Ensures systems can handle increased demand, such as during traffic spikes, to maintain performance and access.</li>
+      </ul>
+      <p>Availability is critical for services like e-commerce or emergency systems, where downtime can lead to financial loss or safety risks. Common threats include DDoS attacks, hardware failures, and power outages.</p>
+    </div>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('.cia-button');
+    const sections = document.querySelectorAll('.section');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const sectionId = button.getAttribute('data-section');
+
+        // Remove active class from all buttons and sections
+        buttons.forEach(btn => btn.classList.remove('active'));
+        sections.forEach(section => {
+          section.classList.remove('active');
+          section.style.display = 'none'; // Ensure non-active sections are hidden
+        });
+
+        // Add active class to clicked button and corresponding section
+        button.classList.add('active');
+        const activeSection = document.getElementById(sectionId);
+        activeSection.classList.add('active');
+        activeSection.style.display = 'block'; // Explicitly show the active section
+      });
+    });
+  </script>
+</body>
+</html>

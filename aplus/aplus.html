@@ -18,12 +18,12 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center; /* Fixed: Changed from 'Aztec' to 'center' */
+      align-items: center;
       padding: 1rem;
       position: relative;
     }
 
-    .back-button, .pbq-button, .connector-button, .hardware-button, .restart-button {
+    .back-button, .pbq-button, .connector-button, .hardware-button, .printers-button, .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -44,13 +44,14 @@
     .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
     .connector-button { left: calc(1rem + 11rem); }
     .hardware-button { left: calc(1rem + 24rem); }
+    .printers-button { left: calc(1rem + 32rem); }
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
       display: none;
     }
 
-    .back-button:hover, .pbq-button:hover, .connector-button:hover, .hardware-button:hover, .restart-button:hover {
+    .back-button:hover, .pbq-button:hover, .connector-button:hover, .hardware-button:hover, .printers-button:hover, .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -58,9 +59,9 @@
     .quiz-content {
       width: 100%;
       max-width: 600px;
-      text-align: center; /* Fixed: Changed from 'left' to 'center' */
+      text-align: center;
       font-size: clamp(0.9rem, 3vw, 1rem);
-      margin: 0 auto; /* Added to ensure horizontal centering */
+      margin: 0 auto;
     }
 
     .question {
@@ -85,7 +86,7 @@
       gap: 0.6rem;
       width: 100%;
       max-width: 500px;
-      margin: 0 auto; /* Fixed: Ensures choices are centered */
+      margin: 0 auto;
       min-height: 200px;
     }
 
@@ -96,7 +97,7 @@
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
       user-select: none;
-      text-align: left; /* Kept as left for choice text alignment */
+      text-align: left;
       word-wrap: break-word;
       line-height: 1.3;
       min-height: 3rem;
@@ -114,10 +115,10 @@
     .missed-questions {
       margin-top: 2rem;
       font-size: clamp(0.9rem, 3vw, 1rem);
-      text-align: left; /* Kept as left for detailed text */
+      text-align: left;
       width: 100%;
       max-width: 600px;
-      margin: 0 auto; /* Added to center the missed questions section */
+      margin: 0 auto;
     }
 
     .missed-question {
@@ -139,10 +140,14 @@
       .quiz-content { max-width: 95%; }
       .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
       .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
-      .back-button, .pbq-button, .connector-button, .hardware-button, .restart-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .back-button, .pbq-button, .connector-button, .hardware-button, .printers-button, .restart-button { 
+        font-size: clamp(0.9rem, 2.5vw, 1rem); 
+        padding: 0.4rem 0.8rem; 
+      }
       .pbq-button { left: calc(1rem + 5rem + 0.5rem); }
       .connector-button { left: calc(1rem + 9rem); }
       .hardware-button { left: calc(1rem + 21rem); }
+      .printers-button { left: calc(1rem + 29rem); }
       .restart-button { top: calc(0.5rem + 2rem + 0.5rem); }
     }
   </style>
@@ -152,6 +157,7 @@
   <a href="pbq.html" class="pbq-button">PBQ</a>
   <a href="connectortypes.html" class="connector-button">Connector Types</a>
   <a href="hardware.html" class="hardware-button">Hardware</a>
+  <a href="printers.html" class="printers-button">Printers</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">

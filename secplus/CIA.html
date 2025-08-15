@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; script-src 'self' 'unsafe-inline';">
   <title>Security+ CIA Triad</title>
   <style>
     * {
@@ -17,7 +16,6 @@
       background-color: black;
       font-family: 'Courier New', monospace;
       color: #00FF00;
-      user-select: none;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -41,7 +39,6 @@
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
       z-index: 9999;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .back-button:hover {
@@ -119,13 +116,10 @@
 
     .section {
       display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
     }
 
     .section.active {
       display: block;
-      opacity: 1;
     }
 
     .section p {
@@ -232,25 +226,49 @@
   </div>
 
   <script>
-    const buttons = document.querySelectorAll('.cia-button');
-    const sections = document.querySelectorAll('.section');
+    function showSection(sectionId) {
+      console.log("[DEBUG] Attempting to show section: " + sectionId);
+      
+      // Get all buttons and sections
+      const buttons = document.querySelectorAll(".cia-button");
+      const sections = document.querySelectorAll(".section");
 
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const sectionId = button.getAttribute('data-section');
+      // Hide all sections and remove active class from buttons
+      sections.forEach(section => {
+        section.style.display = "none";
+        section.classList.remove("active");
+        console.log("[DEBUG] Hiding section: " + section.id);
+      });
+      buttons.forEach(button => {
+        button.classList.remove("active");
+        console.log("[DEBUG] Removing active class from button: " + button.textContent);
+      });
 
-        // Remove active class from all buttons and sections
-        buttons.forEach(btn => btn.classList.remove('active'));
-        sections.forEach(section => {
-          section.classList.remove('active');
-          section.style.display = 'none'; // Ensure non-active sections are hidden
+      // Show the selected section and highlight its button
+      const activeSection = document.getElementById(sectionId);
+      const activeButton = document.querySelector(`.cia-button[data-section="${sectionId}"]`);
+      if (activeSection && activeButton) {
+        activeSection.style.display = "block";
+        activeSection.classList.add("active");
+        activeButton.classList.add("active");
+        console.log("[DEBUG] Showing section: " + sectionId + ", Activating button: " + activeButton.textContent);
+      } else {
+        console.error("[ERROR] Section or button not found for ID: " + sectionId);
+      }
+    }
+
+    // Initialize with Confidentiality section on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("[DEBUG] Page loaded, initializing Confidentiality section");
+      showSection("confidentiality");
+
+      // Add event listeners to buttons
+      document.querySelectorAll(".cia-button").forEach(button => {
+        button.addEventListener("click", () => {
+          const sectionId = button.getAttribute("data-section");
+          console.log("[DEBUG] Button clicked: " + sectionId);
+          showSection(sectionId);
         });
-
-        // Add active class to clicked button and corresponding section
-        button.classList.add('active');
-        const activeSection = document.getElementById(sectionId);
-        activeSection.classList.add('active');
-        activeSection.style.display = 'block'; // Explicitly show the active section
       });
     });
   </script>

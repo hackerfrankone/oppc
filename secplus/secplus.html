@@ -158,6 +158,28 @@
       text-align: center;
     }
 
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -212,6 +234,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
   </div>
 
   <script>
@@ -219,342 +242,410 @@
       {
         question: "Which type of attack involves guessing passwords?",
         choices: ["Phishing", "Brute Force", "DDoS", "Man-in-the-Middle"],
-        answer: "Brute Force"
+        answer: "Brute Force",
+        explanation: "A brute force attack involves systematically trying all possible combinations of passwords or encryption keys until the correct one is found. This attack exploits weak passwords or poorly protected systems, often using automated tools to guess credentials rapidly. It can be mitigated with strong password policies, account lockout mechanisms, and multi-factor authentication."
       },
       {
         question: "What is the primary purpose of a firewall?",
         choices: ["Increase network speed", "Block unauthorized traffic", "Manage user accounts", "Optimize memory"],
-        answer: "Block unauthorized traffic"
+        answer: "Block unauthorized traffic",
+        explanation: "A firewall is a network security device that monitors and filters incoming and outgoing network traffic based on predefined security rules. Its primary purpose is to block unauthorized access while allowing legitimate traffic, acting as a barrier between trusted and untrusted networks."
       },
       {
         question: "Which protocol secures web traffic?",
         choices: ["HTTP", "HTTPS", "FTP", "SMTP"],
-        answer: "HTTPS"
+        answer: "HTTPS",
+        explanation: "HTTPS (Hypertext Transfer Protocol Secure) uses SSL/TLS encryption to secure web traffic, protecting data integrity and confidentiality during transmission. Unlike HTTP, which is unencrypted, HTTPS ensures that sensitive information like login credentials or payment details is safeguarded from interception."
       },
       {
         question: "What is a common symptom of a phishing attempt?",
         choices: ["Official-looking email", "Request for sensitive information", "Clear sender verification", "No attachments"],
-        answer: "Request for sensitive information"
+        answer: "Request for sensitive information",
+        explanation: "Phishing attempts often involve fraudulent emails or messages that trick users into providing sensitive information, such as login credentials or financial details. These messages may mimic legitimate sources, urging users to act quickly, often through malicious links or forms."
       },
       {
         question: "Which encryption standard is considered obsolete?",
         choices: ["AES", "RSA", "WEP", "SHA-256"],
-        answer: "WEP"
+        answer: "WEP",
+        explanation: "WEP (Wired Equivalent Privacy) is an outdated wireless security protocol with significant vulnerabilities, such as weak encryption and easily crackable keys. It has been replaced by more secure standards like WPA2 and WPA3 for protecting Wi-Fi networks."
       },
       {
         question: "What does CIA triad stand for?",
         choices: ["Confidentiality, Integrity, Availability", "Control, Identification, Authentication", "Confidentiality, Intrusion, Access", "Centralized, Integrated, Authorized"],
-        answer: "Confidentiality, Integrity, Availability"
+        answer: "Confidentiality, Integrity, Availability",
+        explanation: "The CIA triad is a foundational security model comprising Confidentiality (protecting data from unauthorized access), Integrity (ensuring data accuracy and trustworthiness), and Availability (ensuring data and systems are accessible to authorized users). It guides the development of security policies and controls."
       },
       {
         question: "Which type of malware encrypts files for ransom?",
         choices: ["Trojan", "Ransomware", "Spyware", "Worm"],
-        answer: "Ransomware"
+        answer: "Ransomware",
+        explanation: "Ransomware is a type of malware that encrypts a victim's files, rendering them inaccessible until a ransom is paid, typically in cryptocurrency. It often spreads through phishing emails or malicious downloads and can be mitigated with regular backups and robust security measures."
       },
       {
         question: "What is the purpose of a VPN?",
         choices: ["Increase bandwidth", "Encrypt and secure remote connections", "Optimize CPU usage", "Manage storage"],
-        answer: "Encrypt and secure remote connections"
+        answer: "Encrypt and secure remote connections",
+        explanation: "A VPN (Virtual Private Network) creates a secure, encrypted tunnel for data transmission over the internet, protecting remote connections from interception. It masks the user's IP address and ensures privacy, especially on public Wi-Fi networks."
       },
       {
         question: "Which port is used for SSH?",
         choices: ["21", "22", "23", "80"],
-        answer: "22"
+        answer: "22",
+        explanation: "SSH (Secure Shell) uses port 22 to provide secure remote access to systems, allowing encrypted command-line communication. It is widely used for managing servers and transferring files securely, replacing insecure protocols like Telnet."
       },
       {
         question: "What is a zero-day exploit?",
         choices: ["A patch released on day zero", "An attack targeting unknown vulnerabilities", "A known security fix", "A routine software update"],
-        answer: "An attack targeting unknown vulnerabilities"
+        answer: "An attack targeting unknown vulnerabilities",
+        explanation: "A zero-day exploit targets vulnerabilities in software that are unknown to the vendor or unpatched at the time of the attack. These are dangerous because there is no immediate defense, requiring rapid response through patches or mitigation strategies once discovered."
       },
       {
         question: "Which authentication method uses a physical token?",
         choices: ["Password", "Biometrics", "Multi-factor Authentication", "Single Sign-On"],
-        answer: "Multi-factor Authentication"
+        answer: "Multi-factor Authentication",
+        explanation: "Multi-factor Authentication (MFA) requires multiple forms of verification, such as a password and a physical token (e.g., a smart card or authenticator device). This enhances security by combining something you know, have, or are, making unauthorized access more difficult."
       },
       {
         question: "What does DDoS stand for?",
         choices: ["Distributed Denial of Service", "Direct Data Operation System", "Dynamic Data Optimization Service", "Decentralized Defense Operating System"],
-        answer: "Distributed Denial of Service"
+        answer: "Distributed Denial of Service",
+        explanation: "A DDoS (Distributed Denial of Service) attack floods a target system or network with excessive traffic from multiple sources, overwhelming its resources and disrupting availability. It is often executed using botnets and can be mitigated with traffic filtering and load balancing."
       },
       {
         question: "Which tool is used to perform a penetration test?",
         choices: ["Wireshark", "Nmap", "Task Manager", "Disk Cleanup"],
-        answer: "Nmap"
+        answer: "Nmap",
+        explanation: "Nmap (Network Mapper) is a powerful tool used in penetration testing to scan networks, identify open ports, and detect vulnerabilities. It helps security professionals assess system weaknesses by mapping network configurations and services."
       },
       {
         question: "What is the purpose of a security information and event management (SIEM) system?",
         choices: ["Increase network speed", "Centralize log analysis and monitoring", "Optimize hardware performance", "Manage user accounts"],
-        answer: "Centralize log analysis and monitoring"
+        answer: "Centralize log analysis and monitoring",
+        explanation: "A SIEM system collects and analyzes log data from various sources to detect and respond to security incidents. It provides real-time monitoring, correlation of events, and alerts, helping organizations identify threats and ensure compliance."
       },
       {
         question: "Which protocol is used for secure file transfer?",
         choices: ["FTP", "SFTP", "TFTP", "HTTP"],
-        answer: "SFTP"
+        answer: "SFTP",
+        explanation: "SFTP (Secure File Transfer Protocol) uses SSH to provide encrypted file transfers, ensuring data confidentiality and integrity. Unlike FTP, which is unencrypted, SFTP protects sensitive data during transmission over networks."
       },
       {
         question: "What is a common vector for malware distribution?",
         choices: ["Email attachments", "Official software updates", "Verified websites", "System logs"],
-        answer: "Email attachments"
+        answer: "Email attachments",
+        explanation: "Email attachments are a common vector for malware distribution, often delivered through phishing emails. Malicious files, such as infected PDFs or executables, can install malware when opened, emphasizing the need for email filtering and user awareness."
       },
       {
         question: "Which security control prevents unauthorized physical access?",
         choices: ["Firewall", "Mantrap", "IDS", "Encryption"],
-        answer: "Mantrap"
+        answer: "Mantrap",
+        explanation: "A mantrap is a physical security control that uses two sets of doors to restrict access, ensuring only authorized individuals can enter a secure area. It prevents tailgating and enhances physical security in high-risk environments."
       },
       {
         question: "What does PKI stand for?",
         choices: ["Public Key Infrastructure", "Private Key Interface", "Packet Key Integration", "Public Knowledge Index"],
-        answer: "Public Key Infrastructure"
+        answer: "Public Key Infrastructure",
+        explanation: "PKI (Public Key Infrastructure) is a framework for managing digital certificates and public-private key pairs. It enables secure communication, authentication, and data integrity through certificate authorities (CAs) that issue and validate certificates."
       },
       {
         question: "Which attack involves intercepting network traffic?",
         choices: ["Phishing", "Man-in-the-Middle", "SQL Injection", "Brute Force"],
-        answer: "Man-in-the-Middle"
+        answer: "Man-in-the-Middle",
+        explanation: "A Man-in-the-Middle (MitM) attack involves an attacker intercepting communication between two parties to steal data or manipulate messages. It can be mitigated with encryption protocols like HTTPS and secure authentication mechanisms."
       },
       {
         question: "What is the purpose of a honeypot?",
         choices: ["Block all traffic", "Detect and study attacks", "Encrypt data", "Manage user access"],
-        answer: "Detect and study attacks"
+        answer: "Detect and study attacks",
+        explanation: "A honeypot is a decoy system designed to attract and monitor attackers, allowing security teams to study attack methods and improve defenses. It helps detect unauthorized access and analyze malicious behavior without risking critical systems."
       },
       {
         question: "Which wireless security protocol is most secure?",
         choices: ["WEP", "WPA", "WPA2", "WPA3"],
-        answer: "WPA3"
+        answer: "WPA3",
+        explanation: "WPA3 (Wi-Fi Protected Access 3) is the most secure wireless security protocol, offering stronger encryption and protection against brute force attacks compared to WEP, WPA, and WPA2. It enhances Wi-Fi security with features like individualized data encryption."
       },
       {
         question: "What is a characteristic of a rootkit?",
         choices: ["Easily detectable", "Hides its presence", "Increases system speed", "Manages user accounts"],
-        answer: "Hides its presence"
+        answer: "Hides its presence",
+        explanation: "A rootkit is a type of malware that hides its presence on a system, often by modifying the operating system or other software. It grants attackers persistent, privileged access, making detection difficult without specialized tools."
       },
       {
         question: "Which port is used for HTTPS?",
         choices: ["80", "443", "21", "25"],
-        answer: "443"
+        answer: "443",
+        explanation: "HTTPS uses port 443 to secure web traffic with SSL/TLS encryption. This port ensures that data transmitted between a browser and a web server remains confidential and protected from interception."
       },
       {
         question: "What is the purpose of a disaster recovery plan?",
         choices: ["Optimize network performance", "Restore operations after an incident", "Increase storage capacity", "Manage user permissions"],
-        answer: "Restore operations after an incident"
+        answer: "Restore operations after an incident",
+        explanation: "A disaster recovery plan outlines procedures to restore critical systems and operations after a disruptive event, such as a cyberattack or natural disaster. It focuses on minimizing downtime and ensuring business continuity."
       },
       {
         question: "Which type of attack floods a network with traffic?",
         choices: ["Phishing", "DDoS", "Spoofing", "Replay"],
-        answer: "DDoS"
+        answer: "DDoS",
+        explanation: "A DDoS (Distributed Denial of Service) attack overwhelms a network or system with excessive traffic, disrupting service availability. It uses multiple compromised devices to flood the target, requiring mitigation strategies like traffic filtering."
       },
       {
         question: "What is the role of a security awareness training?",
         choices: ["Increase hardware speed", "Educate users on security practices", "Optimize memory usage", "Manage network settings"],
-        answer: "Educate users on security practices"
+        answer: "Educate users on security practices",
+        explanation: "Security awareness training educates users on recognizing and avoiding security threats, such as phishing or social engineering. It promotes best practices, like strong password creation and safe internet usage, to reduce human-related security risks."
       },
       {
         question: "Which encryption algorithm is widely used for securing data?",
         choices: ["DES", "AES", "MD5", "SHA-1"],
-        answer: "AES"
+        answer: "AES",
+        explanation: "AES (Advanced Encryption Standard) is a widely used symmetric encryption algorithm known for its strength and efficiency. It secures data in various applications, including VPNs and disk encryption, and is considered a standard for secure data protection."
       },
       {
         question: "What is a common sign of a compromised account?",
         choices: ["Increased login attempts", "Fast system performance", "More storage space", "Improved network speed"],
-        answer: "Increased login attempts"
+        answer: "Increased login attempts",
+        explanation: "A common sign of a compromised account is increased login attempts, often indicating unauthorized access or brute force attacks. Monitoring login activity and implementing account lockout policies can help detect and prevent such incidents."
       },
       {
         question: "Which security measure uses a challenge-response test?",
         choices: ["CAPTCHA", "Password", "Biometrics", "Token"],
-        answer: "CAPTCHA"
+        answer: "CAPTCHA",
+        explanation: "CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) uses challenge-response tests, such as image selection or text input, to verify that a user is not a bot, preventing automated attacks on websites."
       },
       {
         question: "What does VLAN segmentation achieve?",
         choices: ["Increases bandwidth", "Isolates network traffic", "Encrypts data", "Manage user accounts"],
-        answer: "Isolates network traffic"
+        answer: "Isolates network traffic",
+        explanation: "VLAN (Virtual Local Area Network) segmentation isolates network traffic by grouping devices into separate virtual networks, even on the same physical infrastructure. This enhances security by limiting the spread of attacks and restricting access to sensitive resources."
       },
       {
         question: "Which protocol is used for email retrieval?",
         choices: ["POP3", "SMTP", "IMAP", "HTTP"],
-        answer: "POP3"
+        answer: "POP3",
+        explanation: "POP3 (Post Office Protocol version 3) is used for retrieving emails from a server, typically downloading them to a local device. Unlike IMAP, which keeps emails on the server, POP3 is simpler but less flexible for multi-device access."
       },
       {
         question: "What is the purpose of a security patch?",
         choices: ["Increase CPU speed", "Fix vulnerabilities", "Optimize network performance", "Manage storage"],
-        answer: "Fix vulnerabilities"
+        answer: "Fix vulnerabilities",
+        explanation: "A security patch is a software update designed to fix vulnerabilities or bugs that could be exploited by attackers. Regular patching is critical to maintaining system security and preventing exploits like zero-day attacks."
       },
       {
         question: "Which attack exploits weak passwords?",
         choices: ["Phishing", "Dictionary Attack", "DDoS", "Buffer Overflow"],
-        answer: "Dictionary Attack"
+        answer: "Dictionary Attack",
+        explanation: "A dictionary attack uses a precompiled list of common words or phrases to guess passwords, exploiting weak or predictable credentials. It can be mitigated with strong, complex passwords and account lockout mechanisms."
       },
       {
         question: "What is the role of an intrusion detection system (IDS)?",
         choices: ["Prevent all attacks", "Monitor and alert on suspicious activity", "Encrypt network traffic", "Manage user access"],
-        answer: "Monitor and alert on suspicious activity"
+        answer: "Monitor and alert on suspicious activity",
+        explanation: "An IDS (Intrusion Detection System) monitors network or system activity for suspicious behavior, generating alerts for potential threats. It complements other security measures by identifying attacks but does not actively prevent them."
       },
       {
         question: "Which port is used for FTP?",
         choices: ["20/21", "22", "23", "25"],
-        answer: "20/21"
+        answer: "20/21",
+        explanation: "FTP (File Transfer Protocol) uses ports 20 and 21. Port 21 handles control commands, while port 20 is used for data transfer. FTP is unencrypted, making it less secure than SFTP for file transfers."
       },
       {
         question: "What is a characteristic of a zero trust architecture?",
         choices: ["Trust all devices", "Verify every access request", "Allow unrestricted access", "Minimize encryption"],
-        answer: "Verify every access request"
+        answer: "Verify every access request",
+        explanation: "Zero trust architecture assumes no device or user is inherently trusted, requiring verification for every access request. It uses strict authentication, least privilege principles, and continuous monitoring to enhance security."
       },
       {
         question: "Which type of malware spreads without user interaction?",
         choices: ["Trojan", "Worm", "Spyware", "Ransomware"],
-        answer: "Worm"
+        answer: "Worm",
+        explanation: "A worm is a type of malware that spreads automatically across networks without user interaction, exploiting vulnerabilities to infect systems. Unlike viruses, worms do not require a host file and can rapidly propagate."
       },
       {
         question: "What is the purpose of a backup retention policy?",
         choices: ["Increase network speed", "Define data storage duration", "Optimize hardware performance", "Manage user accounts"],
-        answer: "Define data storage duration"
+        answer: "Define data storage duration",
+        explanation: "A backup retention policy defines how long backup data is stored and when it is deleted or archived. It ensures compliance, optimizes storage, and supports recovery needs while balancing resource constraints."
       },
       {
         question: "Which security control requires periodic password changes?",
         choices: ["Multi-factor Authentication", "Password Policy", "Biometrics", "Token"],
-        answer: "Password Policy"
+        answer: "Password Policy",
+        explanation: "A password policy defines requirements for password creation and management, often mandating periodic changes to reduce the risk of unauthorized access. It may also enforce complexity and length requirements."
       },
       {
         question: "What does a mantrap prevent?",
         choices: ["Network attacks", "Unauthorized physical entry", "Data encryption", "Software crashes"],
-        answer: "Unauthorized physical entry"
+        answer: "Unauthorized physical entry",
+        explanation: "A mantrap prevents unauthorized physical entry by using two interlocked doors, allowing only one to open at a time after authentication. It enhances security in sensitive areas by preventing tailgating."
       },
       {
         question: "Which protocol secures remote logins?",
         choices: ["Telnet", "SSH", "FTP", "HTTP"],
-        answer: "SSH"
+        answer: "SSH",
+        explanation: "SSH (Secure Shell) secures remote logins by providing encrypted communication for command-line access and file transfers. It replaces insecure protocols like Telnet, ensuring data confidentiality and integrity."
       },
       {
         question: "What is a common vector for social engineering?",
         choices: ["System updates", "Pretexting", "Network logs", "Hardware diagnostics"],
-        answer: "Pretexting"
+        answer: "Pretexting",
+        explanation: "Pretexting is a social engineering technique where attackers create a fabricated scenario to trick victims into divulging sensitive information or granting access. It relies on deception and manipulation to exploit human trust."
       },
       {
         question: "Which encryption type uses a pair of keys?",
         choices: ["Symmetric", "Asymmetric", "Hashing", "Steganography"],
-        answer: "Asymmetric"
+        answer: "Asymmetric",
+        explanation: "Asymmetric encryption uses a pair of keys: a public key for encryption and a private key for decryption. It enables secure communication without sharing secret keys, commonly used in protocols like SSL/TLS and PKI."
       },
       {
         question: "What is the purpose of a risk assessment?",
         choices: ["Increase storage capacity", "Identify and prioritize risks", "Optimize CPU performance", "Manage user permissions"],
-        answer: "Identify and prioritize risks"
+        answer: "Identify and prioritize risks",
+        explanation: "A risk assessment identifies, analyzes, and prioritizes potential security risks to an organization’s assets. It helps determine appropriate controls and mitigation strategies to reduce vulnerabilities and threats."
       },
       {
         question: "Which attack injects malicious code into a database?",
         choices: ["Phishing", "SQL Injection", "Cross-Site Scripting", "Buffer Overflow"],
-        answer: "SQL Injection"
+        answer: "SQL Injection",
+        explanation: "SQL Injection involves inserting malicious SQL code into a database query, exploiting vulnerabilities to manipulate or steal data. It can be prevented with input validation, parameterized queries, and proper database configuration."
       },
       {
         question: "What is the role of a security operations center (SOC)?",
         choices: ["Develop software", "Monitor and respond to security incidents", "Manage hardware", "Optimize network speed"],
-        answer: "Monitor and respond to security incidents"
+        answer: "Monitor and respond to security incidents",
+        explanation: "A SOC (Security Operations Center) monitors, detects, and responds to security incidents in real-time, using tools like SIEM systems. It coordinates incident response, threat hunting, and mitigation to protect the organization."
       },
       {
         question: "Which port is used for SMTP?",
         choices: ["25", "110", "143", "993"],
-        answer: "25"
+        answer: "25",
+        explanation: "SMTP (Simple Mail Transfer Protocol) uses port 25 to send emails between servers. For secure email transmission, SMTPS uses port 465 or 587, incorporating SSL/TLS encryption."
       },
       {
         question: "What is a characteristic of a botnet?",
         choices: ["Single device control", "Network of compromised devices", "Encrypted data storage", "User authentication"],
-        answer: "Network of compromised devices"
+        answer: "Network of compromised devices",
+        explanation: "A botnet is a network of compromised devices (bots) controlled by an attacker to perform malicious tasks, such as DDoS attacks or spam distribution. Infected devices are often unaware of their involvement."
       },
       {
         question: "Which security measure protects against data leakage?",
         choices: ["DLP", "IDS", "Firewall", "VPN"],
-        answer: "DLP"
+        answer: "DLP",
+        explanation: "DLP (Data Loss Prevention) systems monitor and control data to prevent unauthorized access or leakage. They enforce policies to protect sensitive information, such as intellectual property or personal data, from being shared or stolen."
       },
       {
         question: "What is the purpose of a penetration test?",
         choices: ["Optimize network performance", "Simulate an attack to find weaknesses", "Increase storage capacity", "Manage user accounts"],
-        answer: "Simulate an attack to find weaknesses"
+        answer: "Simulate an attack to find weaknesses",
+        explanation: "A penetration test simulates a cyberattack to identify vulnerabilities in systems, networks, or applications. It helps organizations assess their security posture and implement fixes before real attackers exploit weaknesses."
       },
       {
         question: "Which attack spoofs the source IP address?",
         choices: ["Phishing", "IP Spoofing", "DDoS", "Replay"],
-        answer: "IP Spoofing"
+        answer: "IP Spoofing",
+        explanation: "IP Spoofing involves forging the source IP address in network packets to disguise the attacker’s identity. It is often used in attacks like DDoS to obscure the origin of malicious traffic."
       },
       {
         question: "What is the role of a certificate authority (CA)?",
         choices: ["Manage user accounts", "Issue and validate digital certificates", "Optimize hardware", "Monitor network traffic"],
-        answer: "Issue and validate digital certificates"
+        answer: "Issue and validate digital certificates",
+        explanation: "A CA (Certificate Authority) issues and validates digital certificates, which verify the identity of entities in secure communications. It is a critical component of PKI, ensuring trust in protocols like HTTPS."
       },
       {
         question: "Which security framework focuses on risk management?",
         choices: ["ISO 27001", "TCP/IP", "OSI Model", "ITIL"],
-        answer: "ISO 27001"
+        answer: "ISO 27001",
+        explanation: "ISO 27001 is an international standard for information security management systems, focusing on risk management. It provides a framework for identifying, assessing, and mitigating risks to ensure data security and compliance."
       },
       {
         question: "What is a common sign of a ransomware attack?",
         choices: ["Increased system speed", "Files encrypted with ransom note", "More storage space", "Improved network connectivity"],
-        answer: "Files encrypted with ransom note"
+        answer: "Files encrypted with ransom note",
+        explanation: "A ransomware attack typically encrypts files and leaves a ransom note demanding payment for decryption keys. It disrupts access to critical data, highlighting the importance of backups and endpoint protection."
       },
       {
         question: "Which protocol is used for network time synchronization?",
         choices: ["NTP", "SNMP", "DHCP", "DNS"],
-        answer: "NTP"
+        answer: "NTP",
+        explanation: "NTP (Network Time Protocol) synchronizes clocks across networked devices, ensuring accurate timekeeping for logs and security events. It uses port 123 and is critical for time-sensitive operations."
       },
       {
         question: "What is the purpose of a security audit?",
         choices: ["Increase bandwidth", "Evaluate compliance and security controls", "Optimize CPU usage", "Manage user permissions"],
-        answer: "Evaluate compliance and security controls"
+        answer: "Evaluate compliance and security controls",
+        explanation: "A security audit evaluates an organization’s security controls and compliance with standards or regulations. It identifies gaps, ensures policies are followed, and recommends improvements to strengthen security."
       },
       {
         question: "Which attack exploits unpatched software?",
         choices: ["Phishing", "Zero-Day", "Brute Force", "DDoS"],
-        answer: "Zero-Day"
+        answer: "Zero-Day",
+        explanation: "A zero-day attack exploits unpatched software vulnerabilities before a fix is available. These attacks are particularly dangerous because they target unknown weaknesses, requiring proactive monitoring and rapid patching."
       },
       {
         question: "What is the role of a firewall rule?",
         choices: ["Increase storage capacity", "Control inbound and outbound traffic", "Optimize memory usage", "Manage user accounts"],
-        answer: "Control inbound and outbound traffic"
+        answer: "Control inbound and outbound traffic",
+        explanation: "A firewall rule defines criteria for allowing or blocking network traffic based on factors like IP addresses, ports, or protocols. It enforces security policies to protect networks from unauthorized access."
       },
       {
         question: "Which security measure uses behavioral analysis?",
         choices: ["IDS", "UEBA", "DLP", "VPN"],
-        answer: "UEBA"
+        answer: "UEBA",
+        explanation: "UEBA (User and Entity Behavior Analytics) uses behavioral analysis to detect anomalies in user or system activity, identifying potential threats like insider attacks or compromised accounts through deviations from normal patterns."
       },
       {
         question: "What is a characteristic of a supply chain attack?",
         choices: ["Direct user targeting", "Compromises third-party vendors", "Encrypted data transfer", "Network speed optimization"],
-        answer: "Compromises third-party vendors"
+        answer: "Compromises third-party vendors",
+        explanation: "A supply chain attack targets an organization by compromising its third-party vendors or suppliers, exploiting trusted relationships. It can introduce malicious code or backdoors into software or hardware, requiring robust vendor security assessments."
       },
       {
         question: "Which port is used for IMAP?",
         choices: ["110", "143", "993", "995"],
-        answer: "143"
+        answer: "143",
+        explanation: "IMAP (Internet Message Access Protocol) uses port 143 for email retrieval, allowing users to manage emails directly on the server. Secure IMAP uses port 993 with SSL/TLS encryption."
       },
       {
         question: "What is the purpose of a incident response plan?",
         choices: ["Increase hardware speed", "Handle and mitigate security incidents", "Optimize network performance", "Manage user accounts"],
-        answer: "Handle and mitigate security incidents"
+        answer: "Handle and mitigate security incidents",
+        explanation: "An incident response plan outlines procedures for detecting, responding to, and mitigating security incidents. It ensures a structured approach to minimize damage, recover systems, and prevent future incidents."
       },
       {
-        question: "Which attack involves reusing captured data?",
+        question: "Which attack involves reusing captured holder data?",
         choices: ["Replay", "Phishing", "Spoofing", "SQL Injection"],
-        answer: "Replay"
+        answer: "Replay",
+        explanation: "A replay attack involves capturing and reusing valid data, such as authentication credentials, to gain unauthorized access. It can be prevented with time-stamped or nonce-based protocols to ensure data freshness."
       },
       {
         question: "What is the role of a security policy?",
         choices: ["Increase storage capacity", "Define organizational security standards", "Optimize CPU performance", "Manage network settings"],
-        answer: "Define organizational security standards"
+        answer: "Define organizational security standards",
+        explanation: "A security policy defines an organization’s security standards, rules, and procedures to protect assets and ensure compliance. It guides employees and systems in maintaining a secure environment."
       },
       {
-        question: "Which security tool detects anomalies in traffic?",
+        question: "Which security tool detects anomalies in traffic personally identifiable information?",
         choices: ["Firewall", "IDS", "DLP", "VPN"],
-        answer: "IDS"
+        answer: "IDS",
+        explanation: "An IDS (Intrusion Detection System) detects anomalies in network traffic by monitoring for suspicious patterns or behaviors. It alerts administrators to potential threats, such as unauthorized access or attacks."
       },
       {
         question: "What is a common sign of a data breach?",
         choices: ["Fast system performance", "Unauthorized access or data exfiltration", "Increased storage", "Improved network speed"],
-        answer: "Unauthorized access or data exfiltration"
+        answer: "Unauthorized access or data exfiltration",
+        explanation: "A data breach is indicated by unauthorized access or data exfiltration, where sensitive information is accessed or stolen. Signs include unusual account activity or data appearing in unauthorized locations."
       },
       {
         question: "Which protocol secures email communication?",
         choices: ["POP3", "IMAP", "SMTPS", "HTTP"],
-        answer: "SMTPS"
+        answer: "SMTPS",
+        explanation: "SMTPS (Simple Mail Transfer Protocol Secure) secures email communication using SSL/TLS encryption, typically on port 465 or 587. It protects email transmission from interception and tampering."
       },
       {
         question: "What is the purpose of a risk register?",
         choices: ["Increase bandwidth", "Document and track risks", "Optimize hardware performance", "Manage user permissions"],
-        answer: "Document and track risks"
+        answer: "Document and track risks",
+        explanation: "A risk register is a tool used to document and track identified risks, their likelihood, impact, and mitigation strategies. It helps organizations prioritize and manage risks systematically."
       }
     ];
 
@@ -569,10 +660,12 @@
     let currentQuestion = 0;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let missedQuestions = [];
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
     const restartButton = document.querySelector(".restart-button");
 
     // Display the current question and its shuffled choices
@@ -581,6 +674,7 @@
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
@@ -606,6 +700,12 @@
       } else {
         incorrectAnswers++;
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
       }
 
       // Disable all choices and highlight correct/incorrect
@@ -630,6 +730,22 @@
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          // Display missed questions with explanations
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
           restartButton.style.display = "block";
         }
       }, 5000);
@@ -640,6 +756,7 @@
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
+      missedQuestions = [];
       shuffle(questions);
       showQuestion();
     }

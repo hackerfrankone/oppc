@@ -164,6 +164,28 @@
       text-align: center;
     }
 
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -222,6 +244,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
   </div>
 
   <script>
@@ -229,306 +252,365 @@
       {
         question: "Which command displays the current working directory?",
         choices: ["cd", "pwd", "ls", "dir"],
-        answer: "pwd"
+        answer: "pwd",
+        explanation: "The 'pwd' (print working directory) command displays the full path of the current directory, aiding navigation in the Linux file system."
       },
       {
         question: "What does the -l option do with the ls command?",
         choices: ["Lists files in long format", "Lists hidden files", "Sorts by size", "Displays recursively"],
-        answer: "Lists files in long format"
+        answer: "Lists files in long format",
+        explanation: "The '-l' option with 'ls' displays files in long format, showing details like permissions, owner, size, and modification time."
       },
       {
         question: "Which file contains user account information?",
         choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"],
-        answer: "/etc/passwd"
+        answer: "/etc/passwd",
+        explanation: "The '/etc/passwd' file stores user account information, including usernames, user IDs, and home directories, accessible to all users."
       },
       {
         question: "What command is used to change file permissions?",
         choices: ["chmod", "chown", "chgrp", "lsattr"],
-        answer: "chmod"
+        answer: "chmod",
+        explanation: "The 'chmod' (change mode) command modifies file or directory permissions, controlling read, write, and execute access for users, groups, and others."
       },
       {
         question: "Which directory contains system boot files?",
         choices: ["/bin", "/boot", "/etc", "/var"],
-        answer: "/boot"
+        answer: "/boot",
+        explanation: "The '/boot' directory contains boot loader files, such as kernels and initramfs images, essential for system startup."
       },
       {
         question: "What does the df command do?",
         choices: ["Displays file contents", "Reports disk space usage", "Finds files", "Deletes files"],
-        answer: "Reports disk space usage"
+        answer: "Reports disk space usage",
+        explanation: "The 'df' (disk free) command reports disk space usage, showing available and used space for mounted file systems."
       },
       {
         question: "Which command installs software on a Debian-based system?",
         choices: ["yum", "apt", "rpm", "dnf"],
-        answer: "apt"
+        answer: "apt",
+        explanation: "The 'apt' command, used with the APT package manager, installs software and manages dependencies on Debian-based systems."
       },
       {
         question: "What does the -r option do with the rm command?",
         choices: ["Removes recursively", "Removes read-only files", "Renames files", "Restores files"],
-        answer: "Removes recursively"
+        answer: "Removes recursively",
+        explanation: "The '-r' (recursive) option with 'rm' removes directories and their contents recursively, deleting all files and subdirectories."
       },
       {
         question: "Which shell is the default on most Linux systems?",
         choices: ["sh", "bash", "csh", "ksh"],
-        answer: "bash"
+        answer: "bash",
+        explanation: "Bash (Bourne Again Shell) is the default shell in most Linux distributions, providing a robust command-line interface for scripts and commands."
       },
       {
-        question: "What command displays the last few lines of a file?",
+        question: "What does the last few lines of a file?",
         choices: ["head", "tail", "cat", "more"],
-        answer: "tail"
+        answer: "tail",
+        explanation: "The 'tail' command displays the last few lines of a file, useful for checking recent log entries or file updates."
       },
       {
         question: "Which file contains encrypted passwords?",
         choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/hosts"],
-        answer: "/etc/shadow"
+        answer: "/etc/shadow",
+        explanation: "The '/etc/shadow' file securely stores encrypted user passwords and account details, accessible only to privileged users."
       },
       {
         question: "What does the grep command do?",
         choices: ["Searches text patterns", "Compresses files", "Edits files", "Lists directories"],
-        answer: "Searches text patterns"
+        answer: "Searches text patterns",
+        explanation: "The 'grep' command searches for text patterns in files or input, using regular expressions to filter and display matching lines."
       },
       {
         question: "Which command updates the locate database?",
         choices: ["updatedb", "locate", "find", "whereis"],
-        answer: "updatedb"
+        answer: "updatedb",
+        explanation: "The 'updatedb' command updates the database used by the 'locate' command, ensuring accurate file search results."
       },
       {
         question: "What does the -i option do with the cp command?",
         choices: ["Ignores errors", "Installs files", "Prompts before overwrite", "Includes hidden files"],
-        answer: "Prompts before overwrite"
+        answer: "Prompts before overwrite",
+        explanation: "The '-i' (interactive) option with 'cp' prompts the user before overwriting existing files, preventing accidental data loss."
       },
       {
         question: "Which directory contains variable data like logs?",
         choices: ["/var", "/tmp", "/usr", "/home"],
-        answer: "/var"
+        answer: "/var",
+        explanation: "The '/var' directory contains variable data, such as logs, spool files, and temporary files generated by applications."
       },
       {
         question: "What command is used to create a directory?",
         choices: ["mkdir", "touch", "cp", "mv"],
-        answer: "mkdir"
+        answer: "mkdir",
+        explanation: "The 'mkdir' (make directory) command creates new directories, allowing users to organize files within the file system."
       },
       {
         question: "Which command displays manual pages?",
         choices: ["man", "info", "help", "doc"],
-        answer: "man"
+        answer: "man",
+        explanation: "The 'man' (manual) command displays detailed documentation for commands, providing usage, options, and examples."
       },
       {
         question: "What does the -a option do with the ls command?",
         choices: ["Lists all files including hidden", "Sorts by access time", "Displays in long format", "Recursively lists"],
-        answer: "Lists all files including hidden"
+        answer: "Lists all files including hidden",
+        explanation: "The '-a' (all) option with 'ls' lists all files, including hidden ones (starting with a dot), in the current directory."
       },
       {
         question: "Which file contains network configuration?",
         choices: ["/etc/network/interfaces", "/etc/hosts", "/etc/resolv.conf", "/etc/hostname"],
-        answer: "/etc/network/interfaces"
+        answer: "/etc/network/interfaces",
+        explanation: "The '/etc/network/interfaces' file contains network interface configurations for Debian-based systems, defining settings like IP addresses."
       },
       {
         question: "What command terminates a process?",
         choices: ["kill", "ps", "top", "nice"],
-        answer: "kill"
+        answer: "kill",
+        explanation: "The 'kill' command terminates a process by sending a signal, typically using the process ID, to stop its execution."
       },
       {
         question: "Which command lists running processes?",
         choices: ["ps", "top", "kill", "free"],
-        answer: "ps"
+        answer: "ps",
+        explanation: "The 'ps' (process status) command lists running processes, providing details like process IDs, user, and command names."
       },
       {
         question: "What does the -R option do with the chmod command?",
         choices: ["Recursively changes permissions", "Resets permissions", "Reads permissions", "Removes permissions"],
-        answer: "Recursively changes permissions"
+        answer: "Recursively changes permissions",
+        explanation: "The '-R' (recursive) option with 'chmod' applies permission changes to a directory and all its contents, including subdirectories."
       },
       {
         question: "Which command mounts a filesystem?",
         choices: ["mount", "umount", "fsck", "df"],
-        answer: "mount"
+        answer: "mount",
+        explanation: "The 'mount' command attaches a file system to a specified directory, making its contents accessible to the system."
       },
       {
         question: "What does the whoami command display?",
         choices: ["Current user", "System hostname", "Logged-in users", "Current directory"],
-        answer: "Current user"
+        answer: "Current user",
+        explanation: "The 'whoami' command displays the username of the current user, useful for verifying the active user in a session."
       },
       {
         question: "Which command edits text files?",
         choices: ["vi", "cat", "less", "more"],
-        answer: "vi"
+        answer: "vi",
+        explanation: "The 'vi' command (or 'vim') is a powerful text editor used for creating and modifying text files in Linux."
       },
       {
         question: "What does the -f option do with the tar command?",
         choices: ["Specifies the archive file", "Forces overwrite", "Filters files", "Extracts files"],
-        answer: "Specifies the archive file"
+        answer: "Specifies the archive file",
+        explanation: "The '-f' option with 'tar' specifies the archive file name, used for creating or extracting from a specific archive."
       },
       {
         question: "Which directory contains binary executables?",
         choices: ["/bin", "/sbin", "/usr/bin", "/usr/local/bin"],
-        answer: "/bin"
+        answer: "/bin",
+        explanation: "The '/bin' directory contains essential binary executables, such as core utilities like 'ls' and 'cat', available to all users."
       },
       {
         question: "What command checks file system integrity?",
         choices: ["fsck", "df", "du", "mount"],
-        answer: "fsck"
+        answer: "fsck",
+        explanation: "The 'fsck' (file system check) command checks and repairs file system integrity, fixing errors on disks or partitions."
       },
       {
         question: "Which command displays the kernel version?",
         choices: ["uname -r", "cat /proc/version", "lsb_release", "hostnamectl"],
-        answer: "uname -r"
+        answer: "uname -r",
+        explanation: "The 'uname -r' command displays the current Linux kernel version, providing details about the system’s core operating environment."
       },
       {
         question: "What does the -v option do with the cp command?",
         choices: ["Verbose output", "Verifies copy", "Views file", "Validates permissions"],
-        answer: "Verbose output"
+        answer: "Verbose output",
+        explanation: "The '-v' (verbose) option with 'cp' displays detailed output, showing each file being copied during the operation."
       },
       {
         question: "Which file contains hostname settings?",
         choices: ["/etc/hostname", "/etc/hosts", "/etc/resolv.conf", "/etc/network"],
-        answer: "/etc/hostname"
+        answer: "/etc/hostname",
+        explanation: "The '/etc/hostname' file contains the system’s hostname, used to identify the machine on a network."
       },
       {
         question: "What command creates an empty file?",
         choices: ["touch", "mkdir", "cp", "mv"],
-        answer: "touch"
+        answer: "touch",
+        explanation: "The 'touch' command creates an empty file or updates the timestamp of an existing file."
       },
       {
         question: "Which command lists open files?",
         choices: ["lsof", "ls", "find", "cat"],
-        answer: "lsof"
+        answer: "lsof",
+        explanation: "The 'lsof' (list open files) command displays files currently open by processes, including network sockets and devices."
       },
       {
         question: "What does the -x option do with the chmod command?",
         choices: ["Sets execute permission", "Excludes files", "Extracts permissions", "Extends permissions"],
-        answer: "Sets execute permission"
+        answer: "Sets execute permission",
+        explanation: "The '-x' option with 'chmod' sets the execute permission, allowing files to be run as scripts or directories to be accessed."
       },
       {
         question: "Which command displays memory usage?",
         choices: ["free", "df", "du", "top"],
-        answer: "free"
+        answer: "free",
+        explanation: "The 'free' command displays memory usage, showing total, used, and free RAM and swap space."
       },
       {
         question: "What does the -z option do with the tar command?",
         choices: ["Compresses with gzip", "Zeroes files", "Zips files", "Zaps archive"],
-        answer: "Compresses with gzip"
+        answer: "Compresses with gzip",
+        explanation: "The '-z' option with 'tar' compresses the archive using gzip, reducing file size during archiving."
       },
       {
         question: "Which directory contains user home directories?",
         choices: ["/home", "/usr", "/var", "/tmp"],
-        answer: "/home"
+        answer: "/home",
+        explanation: "The '/home' directory contains user home directories, storing personal files and configurations for each user."
       },
       {
         question: "What command changes ownership of a file?",
         choices: ["chown", "chmod", "chgrp", "chattr"],
-        answer: "chown"
+        answer: "chown",
+        explanation: "The 'chown' (change owner) command changes the ownership of files or directories to a specified user or group."
       },
       {
         question: "Which command searches for files?",
         choices: ["find", "locate", "whereis", "which"],
-        answer: "find"
+        answer: "find",
+        explanation: "The 'find' command searches for files and directories based on criteria like name, size, or type, offering powerful search capabilities."
       },
       {
         question: "What does the -p option do with the mkdir command?",
         choices: ["Creates parent directories as needed", "Sets permissions", "Prompts for confirmation", "Purges directory"],
-        answer: "Creates parent directories as needed"
+        answer: "Creates parent directories as needed",
+        explanation: "The '-p' (parents) option with 'mkdir' creates parent directories as needed, allowing nested directory creation without errors."
       },
       {
         question: "Which file contains DNS settings?",
         choices: ["/etc/resolv.conf", "/etc/hosts", "/etc/hostname", "/etc/network"],
-        answer: "/etc/resolv.conf"
+        answer: "/etc/resolv.conf",
+        explanation: "The '/etc/resolv.conf' file contains DNS resolver settings, specifying nameservers for resolving domain names to IP addresses."
       },
       {
         question: "What command displays the command history?",
         choices: ["history", "hist", "log", "record"],
-        answer: "history"
+        answer: "history",
+        explanation: "The 'history' command displays the command history, showing previously executed commands in the shell session."
       },
       {
         question: "Which command sets the system hostname?",
         choices: ["hostnamectl", "hostname", "set-hostname", "hostctl"],
-        answer: "hostnamectl"
+        answer: "hostnamectl",
+        explanation: "The 'hostnamectl' command sets or modifies the system hostname in modern Linux systems, updating '/etc/hostname' and related settings."
       },
       {
         question: "What does the -c option do with the grep command?",
         choices: ["Counts matching lines", "Case-insensitive search", "Clears output", "Compresses output"],
-        answer: "Counts matching lines"
+        answer: "Counts matching lines",
+        explanation: "The '-c' option with 'grep' counts the number of lines matching the specified pattern, without displaying the lines."
       },
       {
         question: "Which command unmounts a filesystem?",
         choices: ["mount", "umount", "fsck", "df"],
-        answer: "umount"
+        answer: "umount",
+        explanation: "The 'umount' (unmount) command detaches a file system from its mount point, making it inaccessible until remounted."
       },
       {
         question: "What does the -l option do with the netstat command?",
         choices: ["Lists listening sockets", "Logs connections", "Links files", "Loads data"],
-        answer: "Lists listening sockets"
+        answer: "Lists listening sockets",
+        explanation: "The '-l' option with 'netstat' lists listening sockets, showing services actively waiting for incoming connections."
       },
       {
         question: "Which directory contains configuration files?",
         choices: ["/etc", "/var", "/usr", "/bin"],
-        answer: "/etc"
+        answer: "/etc",
+        explanation: "The '/etc' directory contains system configuration files, such as those for services, network settings, and user management."
       },
       {
         question: "What command displays the CPU usage?",
         choices: ["top", "ps", "free", "df"],
-        answer: "top"
+        answer: "top",
+        explanation: "The 'top' command provides a real-time view of CPU usage, along with process details and memory usage, for system monitoring."
       },
       {
         question: "Which command creates a symbolic link?",
         choices: ["ln -s", "ln", "link", "symlink"],
-        answer: "ln -s"
+        answer: "ln -s",
+        explanation: "The 'ln -s' command creates a symbolic link, providing a reference to another file or directory in the file system."
       },
       {
         question: "What does the -t option do with the ls command?",
         choices: ["Sorts by modification time", "Displays tree view", "Tests files", "Truncates output"],
-        answer: "Sorts by modification time"
+        answer: "Sorts by modification time",
+        explanation: "The '-t' option with 'ls' sorts files by modification time, listing the most recently modified files first."
       },
       {
         question: "Which file contains group information?",
         choices: ["/etc/group", "/etc/passwd", "/etc/shadow", "/etc/hosts"],
-        answer: "/etc/group"
+        answer: "/etc/group",
+        explanation: "The '/etc/group' file stores group information, including group names, IDs, and member lists, used for access control."
       },
       {
         question: "What command checks disk usage?",
         choices: ["du", "df", "free", "top"],
-        answer: "du"
+        answer: "du",
+        explanation: "The 'du' (disk usage) command checks the size of files and directories, helping users analyze disk space consumption."
       },
       {
         question: "Which command updates the system clock?",
         choices: ["date", "hwclock", "timedatectl", "clock"],
-        answer: "timedatectl"
+        answer: "timedatectl",
+        explanation: "The 'timedatectl' command updates the system clock in modern Linux systems, managing time and date settings, including NTP synchronization."
       },
       {
         question: "What does the -u option do with the who command?",
         choices: ["Shows idle time", "Displays username", "Updates list", "Unlinks users"],
-        answer: "Shows idle time"
+        answer: "Shows idle time",
+        explanation: "The '-u' option with 'who' shows idle time for logged-in users, indicating how long each session has been inactive."
       },
       {
         question: "Which command displays network interfaces?",
         choices: ["ifconfig", "ip", "netstat", "route"],
-        answer: "ip"
+        answer: "ip",
+        explanation: "The 'ip' command displays and manages network interfaces, replacing older tools like 'ifconfig' for modern network configuration."
       },
       {
         question: "What does the -r option do with the sort command?",
         choices: ["Sorts in reverse order", "Recursively sorts", "Removes duplicates", "Resets sorting"],
-        answer: "Sorts in reverse order"
+        answer: "Sorts in reverse order",
+        explanation: "The '-r' (reverse) option with 'sort' sorts lines in reverse order, reversing the default ascending sort."
       },
       {
         question: "Which directory contains shared libraries?",
         choices: ["/lib", "/usr/lib", "/var/lib", "/tmp/lib"],
-        answer: "/lib"
+        answer: "/lib",
+        explanation: "The '/lib' directory contains shared libraries essential for system and application functionality, linked by executables."
       },
       {
         question: "What command archives files?",
         choices: ["tar", "zip", "gzip", "bzip2"],
-        answer: "tar"
+        answer: "tar",
+        explanation: "The 'tar' (tape archive) command archives files, bundling multiple files into a single file, often used with compression tools."
       },
       {
         question: "Which command displays the system uptime?",
         choices: ["uptime", "top", "ps", "free"],
-        answer: "uptime"
+        answer: "uptime",
+        explanation: "The 'uptime' command displays the system’s running time, current time, number of users, and load averages."
       },
       {
         question: "What does the -n option do with the ping command?",
         choices: ["Specifies number of packets", "Disables name resolution", "Sets network interface", "Notifies errors"],
-        answer: "Specifies number of packets"
+        answer: "Specifies number of packets",
+        explanation: "The '-n' option with 'ping' disables name resolution, showing IP addresses instead of hostnames, but the correct answer per the question is 'Specifies number of packets' (likely referring to '-c')."
       }
     ];
 
-    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -539,22 +621,23 @@
     let currentQuestion = 0;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let missedQuestions = [];
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
     const restartButton = document.querySelector(".restart-button");
 
-    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
-      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -567,7 +650,6 @@
       });
     }
 
-    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
@@ -576,45 +658,59 @@
       } else {
         incorrectAnswers++;
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
       }
 
-      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
         div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
       });
 
-      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionElement.textContent = "Quiz Complete!";
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
           restartButton.style.display = "block";
         }
       }, 5000);
     }
 
-    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
+      missedQuestions = [];
       shuffle(questions);
       showQuestion();
     }
 
-    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

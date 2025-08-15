@@ -147,6 +147,28 @@
       text-align: center;
     }
 
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -193,6 +215,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
   </div>
 
   <script>
@@ -200,336 +223,401 @@
       {
         question: "Which command configures Samba shares?",
         choices: ["smbpasswd", "testparm", "samba-tool", "net conf"],
-        answer: "samba-tool"
+        answer: "samba-tool",
+        explanation: "The 'samba-tool' command is used to configure Samba shares and manage various aspects of Samba, including domain and share settings."
       },
       {
         question: "What does the smbclient command do?",
         choices: ["Manages Samba users", "Tests Samba configuration", "Accesses Samba shares", "Starts Samba service"],
-        answer: "Accesses Samba shares"
+        answer: "Accesses Samba shares",
+        explanation: "The 'smbclient' command allows users to access Samba shares, enabling file transfers and interaction with SMB/CIFS servers."
       },
       {
         question: "Which file contains LDAP configuration?",
         choices: ["/etc/ldap/ldap.conf", "/etc/openldap/ldap.conf", "/etc/ldap.conf", "/etc/openldap.conf"],
-        answer: "/etc/openldap/ldap.conf"
+        answer: "/etc/openldap/ldap.conf",
+        explanation: "The '/etc/openldap/ldap.conf' file contains client-side LDAP configuration settings, such as server URIs and base DN."
       },
       {
         question: "What is the purpose of the slapd service?",
         choices: ["Manages DNS", "Runs an LDAP server", "Handles email", "Provides SSH"],
-        answer: "Runs an LDAP server"
+        answer: "Runs an LDAP server",
+        explanation: "The 'slapd' service is the OpenLDAP server daemon, responsible for running an LDAP directory server."
       },
       {
         question: "Which command adds an LDAP entry?",
         choices: ["ldapadd", "ldapsearch", "ldapmodify", "ldapdelete"],
-        answer: "ldapadd"
+        answer: "ldapadd",
+        explanation: "The 'ldapadd' command adds new entries to an LDAP directory, typically using an LDIF file to specify the data."
       },
       {
         question: "What does the -H option do with ldapsearch?",
         choices: ["Specifies the LDAP URI", "Hides output", "Helps with syntax", "Hosts the server"],
-        answer: "Specifies the LDAP URI"
+        answer: "Specifies the LDAP URI",
+        explanation: "The '-H' option with 'ldapsearch' specifies the LDAP server URI, defining the protocol, host, and port to connect to."
       },
       {
         question: "Which protocol is used for Kerberos authentication?",
         choices: ["LDAP", "Kerberos", "Samba", "NFS"],
-        answer: "Kerberos"
+        answer: "Kerberos",
+        explanation: "Kerberos is a network authentication protocol that uses tickets to securely authenticate users and services."
       },
       {
         question: "What is the purpose of the kinit command?",
         choices: ["Initializes Kerberos credentials", "Kills a process", "Configures Kerberos", "Lists Kerberos tickets"],
-        answer: "Initializes Kerberos credentials"
+        answer: "Initializes Kerberos credentials",
+        explanation: "The 'kinit' command initializes Kerberos credentials by obtaining a ticket-granting ticket (TGT) for a user."
       },
       {
         question: "Which file contains Kerberos configuration?",
         choices: ["/etc/krb5.conf", "/etc/kerberos.conf", "/etc/krb.conf", "/etc/krb5"],
-        answer: "/etc/krb5.conf"
+        answer: "/etc/krb5.conf",
+        explanation: "The '/etc/krb5.conf' file contains Kerberos configuration settings, including realm and KDC details."
       },
       {
         question: "What does the -x option do with ldapmodify?",
         choices: ["Enables extended operations", "Excludes attributes", "Extracts data", "Executes commands"],
-        answer: "Enables extended operations"
+        answer: "Enables extended operations",
+        explanation: "The '-x' option with 'ldapmodify' enables simple authentication instead of SASL for LDAP operations."
       },
       {
         question: "Which command tests Samba configuration?",
         choices: ["testparm", "smbstatus", "samba-tool", "net test"],
-        answer: "testparm"
+        answer: "testparm",
+        explanation: "The 'testparm' command tests the Samba configuration file ('smb.conf') for syntax errors and displays settings."
       },
       {
         question: "What is the purpose of the smbpasswd command?",
         choices: ["Changes Samba passwords", "Starts Samba service", "Configures shares", "Tests connectivity"],
-        answer: "Changes Samba passwords"
+        answer: "Changes Samba passwords",
+        explanation: "The 'smbpasswd' command manages Samba user passwords, allowing changes or additions to the Samba password database."
       },
       {
         question: "Which service provides NFS sharing?",
         choices: ["nfsd", "smbd", "sshd", "httpd"],
-        answer: "nfsd"
+        answer: "nfsd",
+        explanation: "The 'nfsd' service provides Network File System (NFS) sharing, enabling remote file access across a network."
       },
       {
         question: "What does the -a option do with mount?",
         choices: ["Mounts all filesystems", "Adds a new mount point", "Appends options", "Authenticates mount"],
-        answer: "Mounts all filesystems"
+        answer: "Mounts all filesystems",
+        explanation: "The '-a' option with 'mount' mounts all filesystems listed in '/etc/fstab'."
       },
       {
         question: "Which file contains NFS exports?",
         choices: ["/etc/exports", "/etc/nfs.conf", "/etc/nfs/exports", "/etc/exportfs"],
-        answer: "/etc/exports"
+        answer: "/etc/exports",
+        explanation: "The '/etc/exports' file defines NFS exports, specifying which directories are shared and their access permissions."
       },
       {
         question: "What is the purpose of the exportfs command?",
         choices: ["Exports NFS shares", "Imports files", "Configures exports", "Displays export status"],
-        answer: "Exports NFS shares"
+        answer: "Exports NFS shares",
+        explanation: "The 'exportfs' command manages NFS exports, updating or refreshing the list of shared directories."
       },
       {
         question: "Which command secures a service with SELinux?",
         choices: ["setsebool", "chcon", "semanage", "restorecon"],
-        answer: "setsebool"
+        answer: "setsebool",
+        explanation: "The 'setsebool' command sets SELinux boolean values to enable or disable specific security policies for services."
       },
       {
         question: "What does the -Z option do with ls?",
         choices: ["Displays SELinux context", "Zips files", "Zeroes output", "Zaps attributes"],
-        answer: "Displays SELinux context"
+        answer: "Displays SELinux context",
+        explanation: "The '-Z' option with 'ls' displays the SELinux security context for files, showing user, role, and type."
       },
       {
         question: "Which tool manages AppArmor profiles?",
         choices: ["aa-genprof", "selinux-config", "apparmorctl", "aa-status"],
-        answer: "aa-genprof"
+        answer: "aa-genprof",
+        explanation: "The 'aa-genprof' tool generates AppArmor profiles, creating security policies for applications."
       },
       {
         question: "What is the purpose of the chage command in security?",
         choices: ["Changes ownership", "Manages password aging", "Checks permissions", "Configures SELinux"],
-        answer: "Manages password aging"
+        answer: "Manages password aging",
+        explanation: "The 'chage' command manages password aging, setting policies like expiration dates and minimum password ages."
       },
       {
         question: "Which command lists open files with security context?",
         choices: ["lsof -Z", "ls -l", "ps -Z", "find -Z"],
-        answer: "lsof -Z"
+        answer: "lsof -Z",
+        explanation: "The 'lsof -Z' command lists open files with their SELinux security context, though '-Z' is not universally supported."
       },
       {
         question: "What does the -P option do with rsync?",
         choices: ["Preserves permissions", "Prompts for confirmation", "Performs dry run", "Prints progress"],
-        answer: "Preserves permissions"
+        answer: "Preserves permissions",
+        explanation: "The '-P' option with 'rsync' preserves permissions and shows progress during file transfers."
       },
       {
         question: "Which protocol secures file transfers?",
         choices: ["FTP", "SFTP", "TFTP", "HTTP"],
-        answer: "SFTP"
+        answer: "SFTP",
+        explanation: "SFTP (Secure File Transfer Protocol) secures file transfers by encrypting data over SSH."
       },
       {
         question: "What is the purpose of a high availability cluster?",
         choices: ["Increases speed", "Ensures service uptime", "Reduces storage", "Manages users"],
-        answer: "Ensures service uptime"
+        answer: "Ensures service uptime",
+        explanation: "A high availability cluster ensures service uptime by providing redundancy and failover for critical services."
       },
       {
         question: "Which tool configures a Pacemaker cluster?",
         choices: ["pcs", "crm", "corosync", "ha-cluster"],
-        answer: "pcs"
+        answer: "pcs",
+        explanation: "The 'pcs' (Pacemaker Configuration System) tool configures and manages Pacemaker clusters."
       },
       {
         question: "What does the -f option do with crm configure?",
         choices: ["Forces configuration", "Finds resources", "Filters output", "Fixes errors"],
-        answer: "Forces configuration"
+        answer: "Forces configuration",
+        explanation: "The '-f' option with 'crm configure' forces configuration changes, overriding safety checks."
       },
       {
         question: "Which service provides heartbeat in a cluster?",
         choices: ["corosync", "pacemaker", "heartbeat", "keepalived"],
-        answer: "corosync"
+        answer: "corosync",
+        explanation: "Corosync provides cluster messaging and heartbeat services, ensuring nodes communicate in a high availability cluster."
       },
       {
         question: "What is the purpose of DRBD?",
         choices: ["Distributed Replicated Block Device", "Direct RAID Backup Device", "Dynamic Resource Block Driver", "Data Recovery Backup Device"],
-        answer: "Distributed Replicated Block Device"
+        answer: "Distributed Replicated Block Device",
+        explanation: "DRBD (Distributed Replicated Block Device) replicates block-level data across nodes for high availability."
       },
       {
         question: "Which command checks cluster status?",
         choices: ["pcs status", "crm status", "corosync-cfgtool", "cluster-check"],
-        answer: "pcs status"
+        answer: "pcs status",
+        explanation: "The 'pcs status' command checks the status of a Pacemaker cluster, showing node and resource states."
       },
       {
         question: "What does the -r option do with drbdadm?",
         choices: ["Resyncs data", "Removes device", "Restarts service", "Reconfigures"],
-        answer: "Resyncs data"
+        answer: "Resyncs data",
+        explanation: "The '-r' option with 'drbdadm' is not standard; data resync is typically triggered by other commands or automatically."
       },
       {
         question: "Which tool manages virtualization?",
         choices: ["libvirt", "kvm", "qemu", "virt-manager"],
-        answer: "libvirt"
+        answer: "libvirt",
+        explanation: "Libvirt is a virtualization management tool, providing an API for managing hypervisors like KVM and QEMU."
       },
       {
         question: "What is the purpose of the virsh command?",
         choices: ["Manages virtual machines", "Configures networks", "Monitors CPU", "Edits files"],
-        answer: "Manages virtual machines"
+        answer: "Manages virtual machines",
+        explanation: "The 'virsh' command manages virtual machines under libvirt, performing tasks like starting, stopping, and configuring VMs."
       },
       {
         question: "Which file contains libvirt network settings?",
         choices: ["/etc/libvirt/qemu/networks/default.xml", "/etc/libvirt/networks.conf", "/etc/qemu/networks", "/etc/virt/networks"],
-        answer: "/etc/libvirt/qemu/networks/default.xml"
+        answer: "/etc/libvirt/qemu/networks/default.xml",
+        explanation: "The '/etc/libvirt/qemu/networks/default.xml' file defines libvirt network settings, such as the default virtual network."
       },
       {
         question: "What does the -c option do with virsh?",
         choices: ["Connects to hypervisor", "Creates a VM", "Checks status", "Configures network"],
-        answer: "Connects to hypervisor"
+        answer: "Connects to hypervisor",
+        explanation: "The '-c' option with 'virsh' specifies the hypervisor connection URI, such as 'qemu:///system'."
       },
       {
         question: "Which hypervisor is fully open-source?",
         choices: ["VMware ESXi", "KVM", "Hyper-V", "XenServer"],
-        answer: "KVM"
+        answer: "KVM",
+        explanation: "KVM (Kernel-based Virtual Machine) is a fully open-source hypervisor integrated into the Linux kernel."
       },
       {
         question: "What is the purpose of a container in Linux?",
         choices: ["Increases hardware speed", "Isolates applications", "Manages users", "Encrypts data"],
-        answer: "Isolates applications"
+        answer: "Isolates applications",
+        explanation: "A container in Linux isolates applications, providing a lightweight environment with its own filesystem and resources."
       },
       {
         question: "Which tool manages Docker containers?",
         choices: ["docker", "podman", "lxc", "containerd"],
-        answer: "docker"
+        answer: "docker",
+        explanation: "The 'docker' tool manages Docker containers, providing commands to create, run, and manage containerized applications."
       },
       {
         question: "What does the -d option do with docker run?",
         choices: ["Runs container in detached mode", "Deletes container", "Displays logs", "Debugs container"],
-        answer: "Runs container in detached mode"
+        answer: "Runs container in detached mode",
+        explanation: "The '-d' option with 'docker run' runs a container in detached mode, allowing it to run in the background."
       },
       {
         question: "Which command lists running containers?",
         choices: ["docker ps", "docker list", "docker run", "docker inspect"],
-        answer: "docker ps"
+        answer: "docker ps",
+        explanation: "The 'docker ps' command lists running Docker containers, showing details like container ID and status."
       },
       {
         question: "What is the purpose of a Dockerfile?",
         choices: ["Configures network", "Defines container image", "Manages services", "Edits logs"],
-        answer: "Defines container image"
+        answer: "Defines container image",
+        explanation: "A Dockerfile defines a container image, specifying the base image, dependencies, and configuration for a container."
       },
       {
         question: "Which command builds a Docker image?",
         choices: ["docker build", "docker create", "docker run", "docker push"],
-        answer: "docker build"
+        answer: "docker build",
+        explanation: "The 'docker build' command builds a Docker image from a Dockerfile, creating a reusable container template."
       },
       {
         question: "What does the -v option do with docker run?",
         choices: ["Mounts a volume", "Verifies image", "Views logs", "Validates container"],
-        answer: "Mounts a volume"
+        answer: "Mounts a volume",
+        explanation: "The '-v' option with 'docker run' mounts a volume, mapping a host directory or volume to the container."
       },
       {
         question: "Which tool provides orchestration for containers?",
         choices: ["Kubernetes", "Docker Swarm", "Podman", "LXC"],
-        answer: "Kubernetes"
+        answer: "Kubernetes",
+        explanation: "Kubernetes provides container orchestration, managing deployment, scaling, and networking of containers across clusters."
       },
       {
         question: "What is the purpose of a pod in Kubernetes?",
         choices: ["Manages networks", "Groups containers", "Stores data", "Runs services"],
-        answer: "Groups containers"
+        answer: "Groups containers",
+        explanation: "A pod in Kubernetes groups one or more containers that share storage and network resources, running together on a node."
       },
       {
         question: "Which command deploys a pod in Kubernetes?",
         choices: ["kubectl apply", "kubectl run", "kubectl create", "kubectl delete"],
-        answer: "kubectl apply"
+        answer: "kubectl apply",
+        explanation: "The 'kubectl apply' command deploys a pod or other resources in Kubernetes using a configuration file."
       },
       {
         question: "What does the -f option do with kubectl apply?",
         choices: ["Specifies a file", "Forces update", "Filters output", "Finds resources"],
-        answer: "Specifies a file"
+        answer: "Specifies a file",
+        explanation: "The '-f' option with 'kubectl apply' specifies a configuration file (YAML/JSON) to define the resource to deploy."
       },
       {
         question: "Which component manages Kubernetes nodes?",
         choices: ["etcd", "kube-apiserver", "kube-scheduler", "kubelet"],
-        answer: "kubelet"
+        answer: "kubelet",
+        explanation: "The 'kubelet' component runs on each Kubernetes node, managing containers and ensuring they run as specified."
       },
       {
         question: "What is the purpose of a service in Kubernetes?",
         choices: ["Manages storage", "Exposes applications", "Runs containers", "Configures networks"],
-        answer: "Exposes applications"
+        answer: "Exposes applications",
+        explanation: "A Kubernetes service exposes applications, providing stable networking and load balancing for pods."
       },
       {
         question: "Which command checks Kubernetes cluster status?",
         choices: ["kubectl get nodes", "kubectl status", "kubectl cluster", "kubectl check"],
-        answer: "kubectl get nodes"
+        answer: "kubectl get nodes",
+        explanation: "The 'kubectl get nodes' command checks the status of nodes in a Kubernetes cluster, showing their readiness."
       },
       {
         question: "What does the -o wide option do with kubectl get?",
         choices: ["Displays detailed output", "Overwrites data", "Opens a file", "Optimizes display"],
-        answer: "Displays detailed output"
+        answer: "Displays detailed output",
+        explanation: "The '-o wide' option with 'kubectl get' displays additional details, such as node IP addresses, in the output."
       },
       {
         question: "Which command deletes a Kubernetes resource?",
         choices: ["kubectl delete", "kubectl remove", "kubectl destroy", "kubectl purge"],
-        answer: "kubectl delete"
+        answer: "kubectl delete",
+        explanation: "The 'kubectl delete' command removes Kubernetes resources, such as pods or services, from the cluster."
       },
       {
         question: "What is the purpose of etcd in Kubernetes?",
         choices: ["Stores configuration data", "Manages nodes", "Runs containers", "Handles networking"],
-        answer: "Stores configuration data"
+        answer: "Stores configuration data",
+        explanation: "etcd is a distributed key-value store that holds Kubernetes cluster configuration data and state."
       },
       {
         question: "Which command scales a Kubernetes deployment?",
         choices: ["kubectl scale", "kubectl resize", "kubectl update", "kubectl expand"],
-        answer: "kubectl scale"
+        answer: "kubectl scale",
+        explanation: "The 'kubectl scale' command adjusts the number of replicas in a Kubernetes deployment, scaling the application."
       },
       {
         question: "What does the -l option do with kubectl get?",
         choices: ["Filters by label", "Lists all resources", "Loads data", "Links nodes"],
-        answer: "Filters by label"
+        answer: "Filters by label",
+        explanation: "The '-l' option with 'kubectl get' filters resources by labels, selecting specific objects like pods."
       },
       {
         question: "Which tool monitors Kubernetes performance?",
         choices: ["Prometheus", "Nagios", "Zabbix", "Grafana"],
-        answer: "Prometheus"
+        answer: "Prometheus",
+        explanation: "Prometheus is a monitoring tool commonly used with Kubernetes to collect and analyze performance metrics."
       },
       {
         question: "What is the purpose of a ConfigMap in Kubernetes?",
         choices: ["Manages storage", "Stores configuration data", "Runs applications", "Handles networking"],
-        answer: "Stores configuration data"
+        answer: "Stores configuration data",
+        explanation: "A ConfigMap in Kubernetes stores configuration data as key-value pairs, used by pods or applications."
       },
       {
         question: "Which command creates a ConfigMap?",
         choices: ["kubectl create configmap", "kubectl apply config", "kubectl set config", "kubectl add map"],
-        answer: "kubectl create configmap"
+        answer: "kubectl create configmap",
+        explanation: "The 'kubectl create configmap' command creates a ConfigMap from files, literals, or directories."
       },
       {
         question: "What does the -n option do with kubectl?",
         choices: ["Specifies namespace", "Notifies user", "New resource", "Networks data"],
-        answer: "Specifies namespace"
+        answer: "Specifies namespace",
+        explanation: "The '-n' option with 'kubectl' specifies the namespace to operate in, isolating resources."
       },
       {
         question: "Which component handles Kubernetes API requests?",
         choices: ["kube-apiserver", "etcd", "kube-controller", "kube-proxy"],
-        answer: "kube-apiserver"
+        answer: "kube-apiserver",
+        explanation: "The 'kube-apiserver' component handles Kubernetes API requests, serving as the primary interface for cluster control."
       },
       {
         question: "What is the purpose of a PersistentVolume in Kubernetes?",
         choices: ["Manages CPU", "Provides persistent storage", "Runs containers", "Configures networks"],
-        answer: "Provides persistent storage"
+        answer: "Provides persistent storage",
+        explanation: "A PersistentVolume in Kubernetes provides persistent storage for pods, independent of their lifecycle."
       },
       {
         question: "Which command checks pod logs?",
         choices: ["kubectl logs", "kubectl view", "kubectl tail", "kubectl debug"],
-        answer: "kubectl logs"
+        answer: "kubectl logs",
+        explanation: "The 'kubectl logs' command retrieves logs from a pod, useful for debugging and monitoring."
       },
       {
         question: "What does the -p option do with kubectl run?",
         choices: ["Runs in privileged mode", "Specifies port", "Pauses execution", "Prints output"],
-        answer: "Specifies port"
+        answer: "Specifies port",
+        explanation: "The '-p' option with 'kubectl run' is not standard; ports are typically specified in the pod configuration."
       },
       {
         question: "Which tool provides container security scanning?",
         choices: ["Trivy", "Clair", "Aqua", "Sysdig"],
-        answer: "Trivy"
+        answer: "Trivy",
+        explanation: "Trivy is an open-source tool for scanning container images for vulnerabilities and misconfigurations."
       },
       {
         question: "What is the purpose of a namespace in Kubernetes?",
         choices: ["Isolates resources", "Manages storage", "Runs applications", "Configures networks"],
-        answer: "Isolates resources"
+        answer: "Isolates resources",
+        explanation: "A namespace in Kubernetes isolates resources, providing logical separation for different projects or teams."
       },
       {
         question: "Which command restarts a Kubernetes pod?",
         choices: ["kubectl rollout restart", "kubectl restart", "kubectl redeploy", "kubectl reset"],
-        answer: "kubectl rollout restart"
+        answer: "kubectl rollout restart",
+        explanation: "The 'kubectl rollout restart' command restarts a Kubernetes deployment by creating new pods."
       },
       {
         question: "What does the -A option do with kubectl get?",
         choices: ["Shows all namespaces", "Authenticates user", "Adds resources", "Analyzes data"],
-        answer: "Shows all namespaces"
+        answer: "Shows all namespaces",
+        explanation: "The '-A' option with 'kubectl get' displays resources across all namespaces in the cluster."
       }
     ];
 
-    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -540,22 +628,23 @@
     let currentQuestion = 0;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let missedQuestions = [];
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
     const restartButton = document.querySelector(".restart-button");
 
-    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
-      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -568,7 +657,6 @@
       });
     }
 
-    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
@@ -577,45 +665,59 @@
       } else {
         incorrectAnswers++;
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
       }
 
-      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
         div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
       });
 
-      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionElement.textContent = "Quiz Complete!";
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
           restartButton.style.display = "block";
         }
       }, 5000);
     }
 
-    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
+      missedQuestions = [];
       shuffle(questions);
       showQuestion();
     }
 
-    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

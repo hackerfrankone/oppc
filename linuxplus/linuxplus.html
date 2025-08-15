@@ -147,6 +147,28 @@
       text-align: center;
     }
 
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 0.5rem;
@@ -193,6 +215,7 @@
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
   </div>
 
   <script>
@@ -200,326 +223,389 @@
       {
         question: "Which command displays the current directory in Linux?",
         choices: ["ls", "pwd", "cd", "dir"],
-        answer: "pwd"
+        answer: "pwd",
+        explanation: "The 'pwd' (print working directory) command displays the full path of the current directory, helping users navigate the Linux file system."
       },
       {
         question: "What is the purpose of the 'chmod' command?",
         choices: ["Change file ownership", "Change file permissions", "Modify file content", "Move files"],
-        answer: "Change file permissions"
+        answer: "Change file permissions",
+        explanation: "The 'chmod' (change mode) command modifies file or directory permissions, controlling read, write, and execute access for users, groups, and others."
       },
       {
         question: "Which file system is commonly used for Linux installations?",
         choices: ["NTFS", "FAT32", "ext4", "HFS+"],
-        answer: "ext4"
+        answer: "ext4",
+        explanation: "The ext4 (fourth extended file system) is widely used for Linux installations due to its reliability, performance, and support for large file sizes."
       },
       {
         question: "Which command is used to install software packages in Ubuntu?",
         choices: ["yum install", "apt install", "dnf install", "rpm -i"],
-        answer: "apt install"
+        answer: "apt install",
+        explanation: "The 'apt install' command, used with the APT package manager in Ubuntu, installs software packages and resolves dependencies automatically."
       },
       {
         question: "What does the 'grep' command do?",
         choices: ["Copy files", "Search for text patterns", "List directory contents", "Edit files"],
-        answer: "Search for text patterns"
+        answer: "Search for text patterns",
+        explanation: "The 'grep' command searches for text patterns in files or input, using regular expressions to filter and display matching lines."
       },
       {
         question: "Which command shows running processes in Linux?",
         choices: ["ls", "top", "cat", "mv"],
-        answer: "top"
+        answer: "top",
+        explanation: "The 'top' command displays real-time information about running processes, including CPU and memory usage, allowing system monitoring."
       },
       {
         question: "What is the default shell in most Linux distributions?",
         choices: ["csh", "zsh", "bash", "ksh"],
-        answer: "bash"
+        answer: "bash",
+        explanation: "Bash (Bourne Again Shell) is the default shell in most Linux distributions, providing a command-line interface for executing commands and scripts."
       },
       {
         question: "Which command is used to create a new user in Linux?",
         choices: ["adduser", "newuser", "usercreate", "mkuser"],
-        answer: "adduser"
+        answer: "adduser",
+        explanation: "The 'adduser' command creates a new user in Linux, prompting for user details and setting up a home directory and password."
       },
       {
         question: "What does the 'sudo' command do?",
         choices: ["Shuts down the system", "Runs a command as superuser", "Lists users", "Changes directories"],
-        answer: "Runs a command as superuser"
+        answer: "Runs a command as superuser",
+        explanation: "The 'sudo' (superuser do) command allows authorized users to execute commands with superuser privileges, enhancing security by limiting root access."
       },
       {
         question: "Which file contains user account information?",
         choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/users"],
-        answer: "/etc/passwd"
+        answer: "/etc/passwd",
+        explanation: "The '/etc/passwd' file stores user account information, including usernames, user IDs, and home directories, readable by all users."
       },
       {
         question: "What is the purpose of the 'crontab' command?",
         choices: ["Manage system logs", "Schedule tasks", "Monitor processes", "Edit files"],
-        answer: "Schedule tasks"
+        answer: "Schedule tasks",
+        explanation: "The 'crontab' command manages cron jobs, allowing users to schedule tasks to run automatically at specified times or intervals."
       },
       {
         question: "Which command displays disk usage?",
         choices: ["df", "du", "lsblk", "fdisk"],
-        answer: "du"
+        answer: "du",
+        explanation: "The 'du' (disk usage) command displays the size of files and directories, helping users analyze disk space consumption."
       },
       {
         question: "What does the 'tar' command do?",
         choices: ["Compresses files", "Archives files", "Encrypts files", "Moves files"],
-        answer: "Archives files"
+        answer: "Archives files",
+        explanation: "The 'tar' (tape archive) command creates or extracts archives, bundling multiple files into a single file, often used with compression tools like gzip."
       },
       {
         question: "Which command is used to change file ownership?",
         choices: ["chmod", "chown", "chgrp", "own"],
-        answer: "chown"
+        answer: "chown",
+        explanation: "The 'chown' (change owner) command changes the ownership of files or directories, assigning them to a specific user or group."
       },
       {
         question: "What is the purpose of the '/etc/fstab' file?",
         choices: ["Stores user passwords", "Defines file system mounts", "Lists running services", "Configures network settings"],
-        answer: "Defines file system mounts"
+        answer: "Defines file system mounts",
+        explanation: "The '/etc/fstab' file defines file system mounts, specifying which partitions or devices are mounted at boot and their mount options."
       },
       {
         question: "Which command updates the package list in Debian-based systems?",
         choices: ["apt update", "yum update", "dnf update", "zypper refresh"],
-        answer: "apt update"
+        answer: "apt update",
+        explanation: "The 'apt update' command refreshes the package list in Debian-based systems, syncing with repositories to fetch the latest package information."
       },
       {
         question: "What does the 'ps' command display?",
         choices: ["Disk usage", "Running processes", "Network status", "File permissions"],
-        answer: "Running processes"
+        answer: "Running processes",
+        explanation: "The 'ps' (process status) command displays a snapshot of running processes, including process IDs, user, and command details."
       },
       {
         question: "Which command is used to terminate a process?",
         choices: ["stop", "kill", "end", "quit"],
-        answer: "kill"
+        answer: "kill",
+        explanation: "The 'kill' command terminates a process by sending a signal, typically using the process ID, to stop its execution."
       },
       {
         question: "What is the purpose of the 'systemctl' command?",
         choices: ["Manage system services", "Edit system files", "Monitor network traffic", "Update packages"],
-        answer: "Manage system services"
+        answer: "Manage system services",
+        explanation: "The 'systemctl' command manages system services in systemd-based Linux distributions, allowing start, stop, enable, or disable actions."
       },
       {
         question: "Which protocol is used for secure remote access in Linux?",
         choices: ["FTP", "Telnet", "SSH", "RDP"],
-        answer: "SSH"
+        answer: "SSH",
+        explanation: "SSH (Secure Shell) provides secure remote access to Linux systems, encrypting communication for command execution and file transfers."
       },
       {
         question: "What does the 'lsblk' command show?",
         choices: ["Network interfaces", "Block devices", "Running processes", "File permissions"],
-        answer: "Block devices"
+        answer: "Block devices",
+        explanation: "The 'lsblk' (list block devices) command displays information about block devices, such as disks and partitions, including their mount points."
       },
       {
         question: "Which command displays network configuration details?",
         choices: ["ifconfig", "netstat", "ip addr", "route"],
-        answer: "ip addr"
+        answer: "ip addr",
+        explanation: "The 'ip addr' command displays detailed network configuration, including IP addresses, interfaces, and their statuses, replacing the older 'ifconfig'."
       },
       {
         question: "What is the purpose of the '/etc/hosts' file?",
         choices: ["Stores user credentials", "Maps hostnames to IP addresses", "Configures firewall rules", "Lists active services"],
-        answer: "Maps hostnames to IP addresses"
+        answer: "Maps hostnames to IP addresses",
+        explanation: "The '/etc/hosts' file maps hostnames to IP addresses, allowing local resolution of network names without querying a DNS server."
       },
       {
         question: "Which command compresses a file using gzip?",
         choices: ["zip", "gzip", "bzip2", "compress"],
-        answer: "gzip"
+        answer: "gzip",
+        explanation: "The 'gzip' command compresses files, reducing their size, and is commonly used with 'tar' for creating compressed archives."
       },
       {
         question: "What does the 'find' command do?",
         choices: ["Searches for files", "Lists directories", "Edits files", "Moves files"],
-        answer: "Searches for files"
+        answer: "Searches for files",
+        explanation: "The 'find' command searches for files and directories based on criteria like name, size, or type, enabling powerful file system searches."
       },
       {
         question: "Which file stores group information in Linux?",
         choices: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow"],
-        answer: "/etc/group"
+        answer: "/etc/group",
+        explanation: "The '/etc/group' file stores group information, including group names, IDs, and member lists, used for access control."
       },
       {
         question: "What is the purpose of the 'iptables' command?",
         choices: ["Manage file permissions", "Configure firewall rules", "Monitor processes", "Update packages"],
-        answer: "Configure firewall rules"
+        answer: "Configure firewall rules",
+        explanation: "The 'iptables' command configures firewall rules in Linux, controlling network traffic by filtering packets based on defined policies."
       },
       {
         question: "Which command displays the last few lines of a file?",
         choices: ["head", "tail", "cat", "less"],
-        answer: "tail"
+        answer: "tail",
+        explanation: "The 'tail' command displays the last few lines of a file, useful for checking recent log entries or file updates."
       },
       {
         question: "What does the 'rsync' command do?",
         choices: ["Synchronizes files", "Compresses files", "Edits files", "Lists files"],
-        answer: "Synchronizes files"
+        answer: "Synchronizes files",
+        explanation: "The 'rsync' command synchronizes files between directories or systems, efficiently transferring only changed data, often used for backups."
       },
       {
         question: "Which command checks disk integrity?",
         choices: ["fsck", "chkdsk", "diskpart", "fdisk"],
-        answer: "fsck"
+        answer: "fsck",
+        explanation: "The 'fsck' (file system check) command checks and repairs file system integrity, fixing errors on disks or partitions."
       },
       {
         question: "What is the default port for SSH?",
         choices: ["21", "22", "23", "80"],
-        answer: "22"
+        answer: "22",
+        explanation: "SSH (Secure Shell) uses port 22 for secure remote access, encrypting communication to protect data during remote sessions."
       },
       {
         question: "Which command displays the manual page for another command?",
         choices: ["help", "man", "info", "doc"],
-        answer: "man"
+        answer: "man",
+        explanation: "The 'man' (manual) command displays detailed documentation for other commands, providing usage, options, and examples."
       },
       {
         question: "What does the 'whoami' command display?",
         choices: ["Current user", "System uptime", "Disk usage", "Network status"],
-        answer: "Current user"
+        answer: "Current user",
+        explanation: "The 'whoami' command displays the username of the current user, useful for verifying the active user in a session."
       },
       {
         question: "Which command is used to mount a file system?",
         choices: ["mount", "umount", "fsck", "mkfs"],
-        answer: "mount"
+        answer: "mount",
+        explanation: "The 'mount' command attaches a file system to a specified directory, making its contents accessible to the system."
       },
       {
         question: "What is the purpose of the 'yum' command in Red Hat-based systems?",
         choices: ["Manage users", "Update packages", "Monitor processes", "Edit files"],
-        answer: "Update packages"
+        answer: "Update packages",
+        explanation: "The 'yum' (Yellowdog Updater Modified) command manages and updates packages in Red Hat-based systems, handling dependencies automatically."
       },
       {
         question: "Which command displays system uptime?",
         choices: ["uptime", "time", "date", "who"],
-        answer: "uptime"
+        answer: "uptime",
+        explanation: "The 'uptime' command displays the system's running time, current time, number of users, and load averages."
       },
       {
         question: "What does the 'scp' command do?",
         choices: ["Copies files securely over SSH", "Compresses files", "Lists files", "Edits files"],
-        answer: "Copies files securely over SSH"
+        answer: "Copies files securely over SSH",
+        explanation: "The 'scp' (secure copy) command copies files between systems securely over SSH, ensuring encrypted data transfer."
       },
       {
         question: "Which file configures the DNS resolver?",
         choices: ["/etc/hosts", "/etc/resolv.conf", "/etc/fstab", "/etc/passwd"],
-        answer: "/etc/resolv.conf"
+        answer: "/etc/resolv.conf",
+        explanation: "The '/etc/resolv.conf' file configures the DNS resolver, specifying nameservers for resolving domain names to IP addresses."
       },
       {
         question: "What is the purpose of the 'awk' command?",
         choices: ["Text processing", "File compression", "Network monitoring", "User management"],
-        answer: "Text processing"
+        answer: "Text processing",
+        explanation: "The 'awk' command processes and analyzes text, extracting and manipulating data based on patterns, commonly used in scripts."
       },
       {
         question: "Which command creates a new directory?",
         choices: ["mkdir", "rmdir", "touch", "cd"],
-        answer: "mkdir"
+        answer: "mkdir",
+        explanation: "The 'mkdir' (make directory) command creates new directories, allowing users to organize files within the file system."
       },
       {
         question: "What does the 'journalctl' command display?",
         choices: ["System logs", "File permissions", "Network status", "Disk usage"],
-        answer: "System logs"
+        answer: "System logs",
+        explanation: "The 'journalctl' command displays system logs managed by systemd’s journal, useful for troubleshooting and monitoring system activity."
       },
       {
         question: "Which command is used to unmount a file system?",
         choices: ["mount", "umount", "fsck", "mkfs"],
-        answer: "umount"
+        answer: "umount",
+        explanation: "The 'umount' (unmount) command detaches a file system from its mount point, making it inaccessible until remounted."
       },
       {
         question: "What is the purpose of the 'selinux' command?",
         choices: ["Manage firewall rules", "Control security policies", "Update packages", "Monitor processes"],
-        answer: "Control security policies"
+        answer: "Control security policies",
+        explanation: "The 'selinux' command manages Security-Enhanced Linux policies, enforcing mandatory access controls to enhance system security."
       },
       {
         question: "Which command displays the kernel version?",
         choices: ["uname -r", "cat /proc/version", "lsb_release -a", "hostnamectl"],
-        answer: "uname -r"
+        answer: "uname -r",
+        explanation: "The 'uname -r' command displays the current Linux kernel version, providing details about the system’s core operating environment."
       },
       {
         question: "What does the 'chgrp' command do?",
         choices: ["Change file ownership", "Change group ownership", "Modify permissions", "Edit files"],
-        answer: "Change group ownership"
+        answer: "Change group ownership",
+        explanation: "The 'chgrp' (change group) command changes the group ownership of files or directories, controlling group-based access."
       },
       {
         question: "Which command lists open network ports?",
         choices: ["netstat -tulpn", "ip addr", "ifconfig", "route"],
-        answer: "netstat -tulpn"
+        answer: "netstat -tulpn",
+        explanation: "The 'netstat -tulpn' command lists open network ports, showing listening services with their protocols, ports, and associated programs."
       },
       {
         question: "What is the purpose of the '/etc/shadow' file?",
         choices: ["Stores user passwords", "Lists groups", "Defines mounts", "Maps hostnames"],
-        answer: "Stores user passwords"
+        answer: "Stores user passwords",
+        explanation: "The '/etc/shadow' file securely stores encrypted user passwords and account details, accessible only to privileged users."
       },
       {
         question: "Which command displays file contents page by page?",
         choices: ["cat", "more", "less", "tail"],
-        answer: "less"
+        answer: "less",
+        explanation: "The 'less' command displays file contents page by page, allowing navigation with scrolling and searching capabilities."
       },
       {
         question: "What does the 'dd' command do?",
         choices: ["Copies and converts files", "Compresses files", "Lists files", "Edits files"],
-        answer: "Copies and converts files"
+        answer: "Copies and converts files",
+        explanation: "The 'dd' command copies and converts files or partitions, often used for creating disk images or low-level data transfers."
       },
       {
         question: "Which command is used to create a symbolic link?",
         choices: ["ln -s", "link", "symlink", "mklink"],
-        answer: "ln -s"
+        answer: "ln -s",
+        explanation: "The 'ln -s' command creates a symbolic link, providing a reference to another file or directory in the file system."
       },
       {
         question: "What is the purpose of the '/boot' directory?",
         choices: ["Stores user files", "Contains boot loader files", "Logs system events", "Holds temporary files"],
-        answer: "Contains boot loader files"
+        answer: "Contains boot loader files",
+        explanation: "The '/boot' directory contains boot loader files, such as kernels and initramfs images, essential for system startup."
       },
       {
         question: "Which command displays CPU and memory usage?",
         choices: ["top", "ps", "free", "df"],
-        answer: "top"
+        answer: "top",
+        explanation: "The 'top' command provides a real-time view of CPU and memory usage, along with process details, for system monitoring."
       },
       {
         question: "What does the 'passwd' command do?",
         choices: ["Changes user password", "Lists users", "Modifies permissions", "Edits files"],
-        answer: "Changes user password"
+        answer: "Changes user password",
+        explanation: "The 'passwd' command allows users to change their own password or, with root privileges, another user’s password."
       },
       {
         question: "Which command checks for open ports on a remote host?",
         choices: ["nmap", "netstat", "ping", "traceroute"],
-        answer: "nmap"
+        answer: "nmap",
+        explanation: "The 'nmap' (Network Mapper) command scans for open ports on a remote host, identifying services and potential vulnerabilities."
       },
       {
         question: "What is the purpose of the 'grub' configuration file?",
         choices: ["Manages user accounts", "Configures boot loader", "Sets firewall rules", "Updates packages"],
-        answer: "Configures boot loader"
+        answer: "Configures boot loader",
+        explanation: "The GRUB configuration file (e.g., /etc/grub.conf) configures the GRUB boot loader, defining boot menu options and kernel parameters."
       },
       {
         question: "Which command displays the current environment variables?",
         choices: ["env", "set", "export", "printenv"],
-        answer: "printenv"
+        answer: "printenv",
+        explanation: "The 'printenv' command displays the current environment variables, showing values like PATH or HOME used by the shell."
       },
       {
         question: "What does the 'cut' command do?",
         choices: ["Extracts sections from files", "Compresses files", "Lists files", "Edits files"],
-        answer: "Extracts sections from files"
+        answer: "Extracts sections from files",
+        explanation: "The 'cut' command extracts specific sections of text, such as columns or fields, from files or input, based on delimiters."
       },
       {
         question: "Which command restarts a service in systemd?",
         choices: ["systemctl restart", "service restart", "init.d restart", "stop"],
-        answer: "systemctl restart"
+        answer: "systemctl restart",
+        explanation: "The 'systemctl restart' command restarts a service in systemd, stopping and then starting it to apply changes or recover functionality."
       },
       {
         question: "What is the purpose of the 'visudo' command?",
         choices: ["Edits the sudoers file", "Lists users", "Changes permissions", "Updates packages"],
-        answer: "Edits the sudoers file"
+        answer: "Edits the sudoers file",
+        explanation: "The 'visudo' command safely edits the /etc/sudoers file, ensuring syntax validation to prevent errors in sudo privilege configurations."
       },
       {
         question: "Which command displays the routing table in Linux?",
         choices: ["route", "ip route", "netstat -r", "ifconfig"],
-        answer: "ip route"
+        answer: "ip route",
+        explanation: "The 'ip route' command displays the Linux routing table, showing how packets are directed to different network destinations."
       },
       {
         question: "What does the 'lscpu' command display?",
         choices: ["CPU information", "Memory usage", "Disk usage", "Network status"],
-        answer: "CPU information"
+        answer: "CPU information",
+        explanation: "The 'lscpu' command displays detailed CPU information, including architecture, cores, and clock speed, for system analysis."
       },
       {
         question: "Which command creates a new file system?",
         choices: ["mkfs", "fsck", "mount", "fdisk"],
-        answer: "mkfs"
+        answer: "mkfs",
+        explanation: "The 'mkfs' (make file system) command creates a new file system on a partition, such as ext4 or FAT32, preparing it for use."
       },
       {
         question: "What is the purpose of the '/var/log' directory?",
         choices: ["Stores user files", "Contains system logs", "Holds boot files", "Temporary files"],
-        answer: "Contains system logs"
+        answer: "Contains system logs",
+        explanation: "The '/var/log' directory contains system logs, such as syslog or journal logs, used for troubleshooting and monitoring system events."
       },
       {
         question: "Which command displays the current hostname?",
         choices: ["hostname", "whoami", "uname", "host"],
-        answer: "hostname"
+        answer: "hostname",
+        explanation: "The 'hostname' command displays the current system hostname, identifying the machine on a network or in logs."
       }
     ];
 
-    // Shuffle array elements (for questions or choices)
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -530,22 +616,23 @@
     let currentQuestion = 0;
     let correctAnswers = 0;
     let incorrectAnswers = 0;
+    let missedQuestions = [];
     const questionElement = document.getElementById("question");
     const choicesElement = document.getElementById("choices");
     const feedbackElement = document.getElementById("feedback");
     const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
     const restartButton = document.querySelector(".restart-button");
 
-    // Display the current question and its shuffled choices
     function showQuestion() {
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
       choicesElement.innerHTML = "";
       restartButton.style.display = "none";
 
-      // Shuffle choices for the current question
       const shuffledChoices = [...q.choices];
       shuffle(shuffledChoices);
 
@@ -558,7 +645,6 @@
       });
     }
 
-    // Handle answer selection, update score, and provide feedback
     function handleAnswer(selected) {
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
@@ -567,45 +653,59 @@
       } else {
         incorrectAnswers++;
         feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
       }
 
-      // Disable all choices and highlight correct/incorrect
       const choiceDivs = document.querySelectorAll(".choice");
       choiceDivs.forEach(div => {
         div.classList.add("disabled");
         div.onclick = null;
-        if (div.textContent === correct) {
-          div.style.borderColor = "#00FF00";
-        } else if (div.textContent === selected) {
-          div.style.borderColor = "red";
-        }
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
       });
 
-      // Move to next question or show results after 5 seconds
       setTimeout(() => {
         currentQuestion++;
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          questionElement.textContent = "Quiz Complete!";
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
           restartButton.style.display = "block";
         }
       }, 5000);
     }
 
-    // Restart the quiz
     function restartQuiz() {
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;
+      missedQuestions = [];
       shuffle(questions);
       showQuestion();
     }
 
-    // Randomize question order at start
     shuffle(questions);
     showQuestion();
   </script>

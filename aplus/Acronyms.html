@@ -71,10 +71,49 @@
     li {
       margin-bottom: 0.5rem;
     }
+    .clickable {
+      color: #00FFFF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: black;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 20px;
+      z-index: 10000;
+      max-width: 80%;
+      max-height: 80%;
+      overflow: auto;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+    }
+    .modal-content {
+      margin-bottom: 1rem;
+    }
+    .modal button {
+      background: transparent;
+      color: #00FF00;
+      border: 1px solid #00FF00;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+    }
+    .modal button:hover {
+      background: #00FF00;
+      color: black;
+    }
     @media (max-width: 600px) {
       body { padding: 0.5rem; }
       .content { max-width: 95%; margin-top: 3rem; }
       .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .modal { max-width: 90%; }
     }
   </style>
 </head>
@@ -86,157 +125,185 @@
     
     <h2>Acronyms List</h2>
     <ul>
-      <li>AAA - Authentication, Authorization, and Accounting</li>
-      <li>ACL - Access Control List</li>
-      <li>ADF - Automatic Document Feeder</li>
-      <li>AES - Advanced Encryption Standard</li>
-      <li>AMD - Advanced Micro Devices, Inc.</li>
-      <li>AP - Access Point</li>
-      <li>APFS - Apple File System</li>
-      <li>APIPA - Automatic Private Internet Protocol Addressing</li>
-      <li>ARM - Advanced RISC [Reduced Instruction Set Computer] Machine</li>
-      <li>ATX - Advanced Technology Extended</li>
-      <li>AUP - Acceptable Use Policy</li>
-      <li>BEC - Business Email Compromise</li>
-      <li>BIOS - Basic Input/Output System</li>
-      <li>BNC - Bayonet Neill-Concelman</li>
-      <li>BSOD - Blue Screen of Death</li>
-      <li>BYOD - Bring Your Own Device</li>
-      <li>CAC - Calling-card Authorization Computer</li>
-      <li>CIFS - Common Internet File System</li>
-      <li>CMDB - Configuration Management Database</li>
-      <li>CNAME - Canonical Name</li>
-      <li>CPU - Central Processing Unit</li>
-      <li>DB-9 - Serial Communications D-Shell Connector, 9 pins</li>
-      <li>DDoS - Distributed Denial of Service</li>
-      <li>DDR - Double Data Rate</li>
-      <li>DHCP - Dynamic Host Configuration Protocol</li>
-      <li>DIMM - Dual In-line Memory Module</li>
-      <li>DKIM - DomainKeys Identified Mail</li>
-      <li>DLP - Data Loss Prevention</li>
-      <li>DMARC - Domain-based Message Authentication, Reporting, and Conformance</li>
-      <li>DNS - Domain Name System</li>
-      <li>DoS - Denial of Service</li>
-      <li>DRM - Digital Rights Management</li>
-      <li>DSL - Digital Subscriber Line</li>
-      <li>DVI - Digital Visual Interface</li>
-      <li>ECC - Error-correcting Code</li>
-      <li>EDR - Endpoint Detection and Response</li>
-      <li>EFS - Encrypting File System</li>
-      <li>EOL - End-of-life</li>
-      <li>eSATA - External Serial Advanced Technology Attachment</li>
-      <li>ESD - Electrostatic Discharge</li>
-      <li>EULA - End-user License Agreement</li>
-      <li>exFAT - Extended File Allocation Table</li>
-      <li>FAT - File Allocation Table</li>
-      <li>FRT - Facial Recognition Technology</li>
-      <li>FTP - File Transfer Protocol</li>
-      <li>GFS - Grandfather-Father-Son</li>
-      <li>GPS - Global Positioning System</li>
-      <li>GPT - GUID [Globally Unique Identifier] Partition Table</li>
-      <li>GUID - Globally Unique Identifier</li>
-      <li>HDD - Hard Disk Drive</li>
-      <li>HDMI - High-definition Media Interface</li>
-      <li>HSM - Hardware Security Module</li>
-      <li>HTTP - Hypertext Transfer Protocol</li>
-      <li>HTTPS - Hypertext Transfer Protocol Secure</li>
-      <li>IaaS - Infrastructure as a Service</li>
-      <li>IAM - Identity Access Management</li>
-      <li>IMAP - Internet Mail Access Protocol</li>
-      <li>IOPS - Input/Output Operations Per Second</li>
-      <li>IoT - Internet of Things</li>
-      <li>IP - Internet Protocol</li>
-      <li>IPS - In-plane Switching</li>
-      <li>ISO - International Organization for Standardization</li>
-      <li>ITX - Information Technology eXtended</li>
-      <li>KVM - Keyboard-Video-Mouse</li>
-      <li>LAN - Local Area Network</li>
-      <li>LC - Lucent Connector</li>
-      <li>LCD - Liquid Crystal Display</li>
-      <li>LDAP - Lightweight Directory Access Protocol</li>
-      <li>LED - Light-emitting Diode</li>
-      <li>MAC - Media Access Control</li>
-      <li>MAN - Metropolitan Area Network</li>
-      <li>MBR - Master Boot Record</li>
-      <li>MDM - Mobile Device Management</li>
-      <li>MDR - Managed Detection and Response</li>
-      <li>MFA - Multifactor Authentication</li>
-      <li>MMC - Microsoft Management Console</li>
-      <li>MNDA - Mutual Non-Disclosure Agreement</li>
-      <li>mSATA - Mini-serial Advanced Technology Attachment</li>
-      <li>MSDS - Material Safety Data Sheet</li>
-      <li>MX - Mail Exchange</li>
-      <li>NDA - Non-Disclosure Agreement</li>
-      <li>NetBIOS - Network Basic Input/Output System</li>
-      <li>NFC - Near-field Communication</li>
-      <li>NIC - Network Interface Card</li>
-      <li>NTFS - New Technology File System</li>
-      <li>NTP - Network Time Protocol</li>
-      <li>NVMe - Non-volatile Memory Express</li>
-      <li>OLED - Organic Light-emitting Diode</li>
-      <li>ONT - Optical Network Terminal</li>
-      <li>OS - Operating System</li>
-      <li>OTP - One-time Password/Passcode</li>
-      <li>PaaS - Platform as a Service</li>
-      <li>PAM - Privileged Access Management</li>
-      <li>PAN - Personal Area Network</li>
-      <li>PC - Personal Computer</li>
-      <li>PCI - Peripheral Component Interconnect</li>
-      <li>PCIe - Peripheral Component Interconnect Express</li>
-      <li>PII - Personally Identifiable Information</li>
-      <li>PIN - Personal Identification Number</li>
-      <li>PIV - Personal Identity Verification</li>
-      <li>PoE - Power over Ethernet</li>
-      <li>POP - Post Office Protocol</li>
-      <li>POST - Power-on Self-test</li>
-      <li>PUP - Potentially Unwanted Program</li>
-      <li>RADIUS - Remote Authentication Dial-in User Server</li>
-      <li>RAID - Redundant Array of Independent Disks</li>
-      <li>RAM - Random-access Memory</li>
-      <li>RDP - Remote Desktop Protocol</li>
-      <li>ReFS - Resilient File System</li>
-      <li>RFID - Radio-frequency Identification</li>
-      <li>RJ11 - Registered Jack Function 11</li>
-      <li>RJ45 - Registered Jack Function 45</li>
-      <li>RMM - Remote Monitoring and Management</li>
-      <li>RSR - Rapid Security Response</li>
-      <li>SaaS - Software as a Service</li>
-      <li>SAML - Security Assertions Markup Language</li>
-      <li>SAN - Storage Area Network</li>
-      <li>SAS - Serial Attached SCSI [Small Computer System Interface]</li>
-      <li>SATA - Serial Advanced Technology Attachment</li>
-      <li>SC - Subscriber Connector</li>
-      <li>SCADA - Supervisory Control and Data Acquisition</li>
-      <li>SCSI - Small Computer System Interface</li>
-      <li>SIM - Subscriber Identity Module</li>
-      <li>SLA - Service-level Agreement</li>
-      <li>S.M.A.R.T - Self-monitoring Analysis and Reporting Technology</li>
-      <li>SMB - Server Message Block</li>
-      <li>SMS - Short Message Service</li>
-      <li>SMTP - Simple Mail Transfer Protocol</li>
-      <li>SODIMM - Small Outline Dual In-line Memory Module</li>
-      <li>SOHO - Small Office/Home Office</li>
-      <li>SOP - Standard Operating Procedure</li>
-      <li>SPF - Sender Policy Framework</li>
-      <li>SPICE - Simple Protocol for Independent Computing Environments</li>
-      <li>SQL - Structured Query Language</li>
-      <li>SSD - Solid-state Drive</li>
-      <li>SSH - Secure Shell</li>
-      <li>SSID - Service Set Identifier</li>
-      <li>SSO - Single Sign-on</li>
-      <li>ST - Straight Tip</li>
-      <li>TACACS - Terminal Access Controller Access-control System</li>
-      <li>TCP - Transmission Control Protocol</li>
-      <li>TKIP - Temporal Key Integrity Protocol</li>
-      <li>TN - Twisted Nematic</li>
-      <li>TOTP - Time-based One-time Password</li>
-      <li>TPM - Trusted Platform Module</li>
-      <li>UAC - User Account Control</li>
-      <li>UDP - User Datagram Protocol</li>
-      <li>UEFI - Unified Extensible Firmware Interface</li>
-      <li>UPnP - Universal Plug and Play</li>
-      <li>UPS - Uninterruptible Power Supply</li>
+      <li><span class="clickable" data-acronym="AAA" data-details="A framework for controlling access to computer resources: Authentication verifies identity (e.g., username/password), Authorization determines access rights (e.g., read/write permissions), and Accounting tracks user actions for auditing.">AAA</span> - Authentication, Authorization, and Accounting</li>
+      <li><span class="clickable" data-acronym="ACL" data-details="A set of rules that defines which users or systems can access specific resources, often used in firewalls or file systems to control permissions.">ACL</span> - Access Control List</li>
+      <li><span class="clickable" data-acronym="ADF" data-details="A feature in scanners and multifunction printers that automatically feeds multiple pages for scanning or copying, improving efficiency for bulk tasks.">ADF</span> - Automatic Document Feeder</li>
+      <li><span class="clickable" data-acronym="AES" data-details="A symmetric encryption algorithm widely used for securing data, offering strong protection with 128, 192, or 256-bit keys (e.g., in VPNs, disk encryption).">AES</span> - Advanced Encryption Standard</li>
+      <li><span class="clickable" data-acronym="AMD" data-details="A major semiconductor company producing CPUs and GPUs, known for Ryzen and Radeon products, competing with Intel and NVIDIA.">AMD</span> - Advanced Micro Devices, Inc.</li>
+      <li><span class="clickable" data-acronym="AP" data-details="A device that connects wireless devices to a wired network, enabling Wi-Fi access in homes or offices (e.g., a router’s wireless function).">AP</span> - Access Point</li>
+      <li><span class="clickable" data-acronym="APFS" data-details="Apple’s modern file system optimized for SSDs, offering encryption, snapshots, and efficient space management, used in macOS and iOS devices.">APFS</span> - Apple File System</li>
+      <li><span class="clickable" data-acronym="APIPA" data-details="Assigns IP addresses (169.254.x.x) automatically when DHCP fails, allowing limited local network communication but no internet access.">APIPA</span> - Automatic Private Internet Protocol Addressing</li>
+      <li><span class="clickable" data-acronym="ARM" data-details="A processor architecture using Reduced Instruction Set Computing (RISC), known for efficiency in mobile devices (e.g., Apple M1, smartphones).">ARM</span> - Advanced RISC [Reduced Instruction Set Computer] Machine</li>
+      <li><span class="clickable" data-acronym="ATX" data-details="A standard motherboard form factor by Intel, defining size and layout for desktop PCs, widely used for compatibility.">ATX</span> - Advanced Technology Extended</li>
+      <li><span class="clickable" data-acronym="AUP" data-details="A policy outlining rules for using IT resources, ensuring appropriate behavior on corporate or public networks.">AUP</span> - Acceptable Use Policy</li>
+      <li><span class="clickable" data-acronym="BEC" data-details="A phishing attack where attackers pose as executives to trick employees into transferring funds or sharing sensitive data.">BEC</span> - Business Email Compromise</li>
+      <li><span class="clickable" data-acronym="BIOS" data-details="Firmware that initializes hardware during PC startup and provides basic system control before the OS loads; largely replaced by UEFI.">BIOS</span> - Basic Input/Output System</li>
+      <li><span class="clickable" data-acronym="BNC" data-details="A coaxial cable connector used in older networking (e.g., 10Base2 Ethernet) and video applications, featuring a bayonet-style lock.">BNC</span> - Bayonet Neill-Concelman</li>
+      <li><span class="clickable" data-acronym="BSOD" data-details="A Windows error screen displayed after a critical system crash, showing diagnostic information to troubleshoot the issue.">BSOD</span> - Blue Screen of Death</li>
+      <li><span class="clickable" data-acronym="BYOD" data-details="A policy allowing employees to use personal devices for work, balancing flexibility with security challenges.">BYOD</span> - Bring Your Own Device</li>
+      <li><span class="clickable" data-acronym="CAC" data-details="A smart card used for secure identification and authentication, often in government or military settings (e.g., DoD access cards).">CAC</span> - Calling-card Authorization Computer</li>
+      <li><span class="clickable" data-acronym="CIFS" data-details="A version of the SMB protocol for sharing files, printers, and other resources over a network, common in Windows environments.">CIFS</span> - Common Internet File System</li>
+      <li><span class="clickable" data-acronym="CMDB" data-details="A database tracking IT assets and their configurations, used for managing infrastructure and dependencies.">CMDB</span> - Configuration Management Database</li>
+      <li><span class="clickable" data-acronym="CNAME" data-details="A DNS record that maps an alias (e.g., www) to a canonical domain name, simplifying domain management.">CNAME</span> - Canonical Name</li>
+      <li><span class="clickable" data-acronym="CPU" data-details="The main processor executing instructions, handling computations, and managing tasks in a computer.">CPU</span> - Central Processing Unit</li>
+      <li><span class="clickable" data-acronym="DB-9" data-details="A 9-pin D-sub connector used for serial communication, often for RS-232 connections in legacy devices.">DB-9</span> - Serial Communications D-Shell Connector, 9 pins</li>
+      <li><span class="clickable" data-acronym="DDoS" data-details="An attack flooding a network or server with traffic from multiple sources to disrupt availability.">DDoS</span> - Distributed Denial of Service</li>
+      <li><span class="clickable" data-acronym="DDR" data-details="A type of RAM with versions (e.g., DDR4, DDR5) that double data transfer rates for improved performance.">DDR</span> - Double Data Rate</li>
+      <li><span class="clickable" data-acronym="DHCP" data-details="A protocol that dynamically assigns IP addresses to devices on a network, simplifying configuration.">DHCP</span> - Dynamic Host Configuration Protocol</li>
+      <li><span class="clickable" data-acronym="DIMM" data-details="Physically larger RAM modules used in desktops and laptops, supporting high-speed tasks.">DIMM</span> - Dual In-line Memory Module</li>
+      <li><span class="clickable" data-acronym="DKIM" data-details="An email authentication method using cryptographic signatures to verify the sender’s domain and prevent spoofing.">DKIM</span> - DomainKeys Identified Mail</li>
+      <li><span class="clickable" data-acronym="DLP" data-details="Tools and policies to prevent unauthorized sharing or leakage of sensitive data (e.g., credit card numbers).">DLP</span> - Data Loss Prevention</li>
+      <li><span class="clickable" data-acronym="DMARC" data-details="A policy using DKIM and SPF to authenticate email and protect against phishing and spoofing.">DMARC</span> - Domain-based Message Authentication, Reporting, and Conformance</li>
+      <li><span class="clickable" data-acronym="DNS" data-details="Translates human-readable domain names (e.g., google.com) into IP addresses for network communication.">DNS</span> - Domain Name System</li>
+      <li><span class="clickable" data-acronym="DoS" data-details="An attack overwhelming a system with traffic to disrupt its availability, typically from a single source.">DoS</span> - Denial of Service</li>
+      <li><span class="clickable" data-acronym="DRM" data-details="Technologies restricting the use of digital content to protect copyrights (e.g., in streaming media).">DRM</span> - Digital Rights Management</li>
+      <li><span class="clickable" data-acronym="DSL" data-details="A technology for high-speed internet over existing copper telephone lines, common for home broadband.">DSL</span> - Digital Subscriber Line</li>
+      <li><span class="clickable" data-acronym="DVI" data-details="A digital video interface for connecting monitors, offering better quality than analog VGA.">DVI</span> - Digital Visual Interface</li>
+      <li><span class="clickable" data-acronym="ECC" data-details="Memory that detects and corrects data corruption, used in servers for reliability.">ECC</span> - Error-correcting Code</li>
+      <li><span class="clickable" data-acronym="EDR" data-details="Security software monitoring endpoints (e.g., laptops) for threats, with automated response capabilities.">EDR</span> - Endpoint Detection and Response</li>
+      <li><span class="clickable" data-acronym="EFS" data-details="A Windows feature for encrypting files and folders to protect sensitive data on NTFS drives.">EFS</span> - Encrypting File System</li>
+      <li><span class="clickable" data-acronym="EOL" data-details="When a product is no longer supported or updated by its manufacturer, requiring upgrades or replacements.">EOL</span> - End-of-life</li>
+      <li><span class="clickable" data-acronym="eSATA" data-details="An external version of SATA for connecting high-speed storage devices like external hard drives.">eSATA</span> - External Serial Advanced Technology Attachment</li>
+      <li><span class="clickable" data-acronym="ESD" data-details="Sudden electricity discharge that can damage electronic components; prevented with grounding measures.">ESD</span> - Electrostatic Discharge</li>
+      <li><span class="clickable" data-acronym="EULA" data-details="A legal agreement between a software provider and user, outlining usage terms and restrictions.">EULA</span> - End-user License Agreement</li>
+      <li><span class="clickable" data-acronym="exFAT" data-details="A file system optimized for flash drives, supporting large files and cross-platform compatibility (Windows, macOS).">exFAT</span> - Extended File Allocation Table</li>
+      <li><span class="clickable" data-acronym="FAT" data-details="An older file system (e.g., FAT16, FAT32) used in USB drives and SD cards, limited by file size and partition constraints.">FAT</span> - File Allocation Table</li>
+      <li><span class="clickable" data-acronym="FRT" data-details="Technology identifying individuals via facial features, used in security and authentication (e.g., phone unlocking).">FRT</span> - Facial Recognition Technology</li>
+      <li><span class="clickable" data-acronym="FTP" data-details="A protocol for transferring files between computers over a network, often used for website uploads.">FTP</span> - File Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="GFS" data-details="A backup strategy using daily, weekly, and monthly backups to ensure data retention and recovery.">GFS</span> - Grandfather-Father-Son</li>
+      <li><span class="clickable" data-acronym="GPS" data-details="A satellite-based system for determining location and time, used in navigation and tracking devices.">GPS</span> - Global Positioning System</li>
+      <li><span class="clickable" data-acronym="GPT" data-details="A modern disk partitioning standard supporting larger drives and more partitions than MBR, used with UEFI.">GPT</span> - GUID [Globally Unique Identifier] Partition Table</li>
+      <li><span class="clickable" data-acronym="GUID" data-details="A unique 128-bit identifier used in software and systems to tag objects or records uniquely.">GUID</span> - Globally Unique Identifier</li>
+      <li><span class="clickable" data-acronym="HDD" data-details="Traditional storage using spinning platters, slower and more fragile than SSDs but higher capacity for cost.">HDD</span> - Hard Disk Drive</li>
+      <li><span class="clickable" data-acronym="HDMI" data-details="A digital interface for transmitting high-definition video and audio over a single cable (e.g., TVs, monitors).">HDMI</span> - High-definition Media Interface</li>
+      <li><span class="clickable" data-acronym="HSM" data-details="A physical device storing and managing cryptographic keys for secure authentication and encryption.">HSM</span> - Hardware Security Module</li>
+      <li><span class="clickable" data-acronym="HTTP" data-details="The protocol for transferring web pages over the internet, used by browsers to request content.">HTTP</span> - Hypertext Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="HTTPS" data-details="HTTP with SSL/TLS encryption, ensuring secure data transfer for websites (e.g., online banking).">HTTPS</span> - Hypertext Transfer Protocol Secure</li>
+      <li><span class="clickable" data-acronym="IaaS" data-details="A cloud model providing virtualized computing resources (e.g., servers, storage) over the internet (e.g., AWS EC2).">IaaS</span> - Infrastructure as a Service</li>
+      <li><span class="clickable" data-acronym="IAM" data-details="A system for managing user identities and access permissions, ensuring secure resource access (e.g., AWS IAM).">IAM</span> - Identity Access Management</li>
+      <li><span class="clickable" data-acronym="IMAP" data-details="A protocol for accessing and managing email on a server, allowing multiple devices to sync messages.">IMAP</span> - Internet Mail Access Protocol</li>
+      <li><span class="clickable" data-acronym="IOPS" data-details="A metric measuring the performance of storage devices (e.g., SSDs) by input/output operations per second.">IOPS</span> - Input/Output Operations Per Second</li>
+      <li><span class="clickable" data-acronym="IoT" data-details="A network of connected devices (e.g., smart thermostats) communicating over the internet for automation and data collection.">IoT</span> - Internet of Things</li>
+      <li><span class="clickable" data-acronym="IP" data-details="A protocol for addressing and routing data packets across networks, foundational to the internet (e.g., IPv4, IPv6).">IP</span> - Internet Protocol</li>
+      <li><span class="clickable" data-acronym="IPS" data-details="A display technology offering better color accuracy and viewing angles than TN, used in high-quality monitors.">IPS</span> - In-plane Switching</li>
+      <li><span class="clickable" data-acronym="ISO" data-details="An international body creating standards for technology, manufacturing, and quality (e.g., ISO 27001 for security).">ISO</span> - International Organization for Standardization</li>
+      <li><span class="clickable" data-acronym="ITX" data-details="A compact motherboard form factor (e.g., Mini-ITX) for small PCs, balancing size and performance.">ITX</span> - Information Technology eXtended</li>
+      <li><span class="clickable" data-acronym="KVM" data-details="A device or software allowing control of multiple computers with one keyboard, monitor, and mouse.">KVM</span> - Keyboard-Video-Mouse</li>
+      <li><span class="clickable" data-acronym="LAN" data-details="A network connecting devices in a small area (e.g., home, office), typically using Ethernet or Wi-Fi.">LAN</span> - Local Area Network</li>
+      <li><span class="clickable" data-acronym="LC" data-details="A small fiber optic connector used in high-density networking applications for fast data transmission.">LC</span> - Lucent Connector</li>
+      <li><span class="clickable" data-acronym="LCD" data-details="A flat-panel display using liquid crystals to produce images, common in monitors and laptops.">LCD</span> - Liquid Crystal Display</li>
+      <li><span class="clickable" data-acronym="LDAP" data-details="A protocol for accessing and managing directory services, often for user authentication (e.g., Active Directory).">LDAP</span> - Lightweight Directory Access Protocol</li>
+      <li><span class="clickable" data-acronym="LED" data-details="A light source used in displays and indicators, offering energy efficiency and brightness (e.g., LED monitors).">LED</span> - Light-emitting Diode</li>
+      <li><span class="clickable" data-acronym="MAC" data-details="A unique hardware address assigned to network interfaces, used for communication at the data link layer.">MAC</span> - Media Access Control</li>
+      <li><span class="clickable" data-acronym="MAN" data-details="A network covering a city or large campus, connecting multiple LANs with high-speed links.">MAN</span> - Metropolitan Area Network</li>
+      <li><span class="clickable" data-acronym="MBR" data-details="A legacy disk partitioning scheme storing boot data, limited to 2TB drives and four primary partitions.">MBR</span> - Master Boot Record</li>
+      <li><span class="clickable" data-acronym="MDM" data-details="Software for managing, securing, and monitoring mobile devices in an organization (e.g., remote wipe).">MDM</span> - Mobile Device Management</li>
+      <li><span class="clickable" data-acronym="MDR" data-details="A managed cybersecurity service providing threat detection and response for networks and endpoints.">MDR</span> - Managed Detection and Response</li>
+      <li><span class="clickable" data-acronym="MFA" data-details="A security method requiring multiple forms of verification (e.g., password + SMS code) for access.">MFA</span> - Multifactor Authentication</li>
+      <li><span class="clickable" data-acronym="MMC" data-details="A Windows tool for hosting administrative snap-ins, used for system configuration (e.g., Device Manager).">MMC</span> - Microsoft Management Console</li>
+      <li><span class="clickable" data-acronym="MNDA" data-details="A two-way agreement preventing both parties from disclosing confidential information shared during business dealings.">MNDA</span> - Mutual produrre Non-Disclosure Agreement</li>
+      <li><span class="clickable" data-acronym="mSATA" data-details="A compact SATA interface for SSDs in laptops and small devices, now largely replaced by NVMe.">mSATA</span> - Mini-serial Advanced Technology Attachment</li>
+      <li><span class="clickable" data-acronym="MSDS" data-details="A document detailing the properties and hazards of chemicals, used for safe handling in workplaces.">MSDS</span> - Material Safety Data Sheet</li>
+      <li><span class="clickable" data-acronym="MX" data-details="A DNS record specifying the mail server responsible for receiving email for a domain.">MX</span> - Mail Exchange</li>
+      <li><span class="clickable" data-acronym="NDA" data-details="A legal agreement preventing one party from sharing confidential information provided by another.">NDA</span> - Non-Disclosure Agreement</li>
+      <li><span class="clickable" data-acronym="NetBIOS" data-details="A legacy networking protocol in Windows for name resolution and file sharing, now less common.">NetBIOS</span> - Network Basic Input/Output System</li>
+      <li><span class="clickable" data-acronym="NFC" data-details="A short-range wireless technology for contactless payments and data transfer (e.g., mobile payments).">NFC</span> - Near-field Communication</li>
+      <li><span class="clickable" data-acronym="NIC" data-details="Hardware enabling network connectivity, either wired (Ethernet) or wireless (Wi-Fi), in devices.">NIC</span> - Network Interface Card</li>
+      <li><span class="clickable" data-acronym="NTFS" data-details="A Windows file system supporting large files, encryption, and permissions, widely used for modern drives.">NTFS</span> - New Technology File System</li>
+      <li><span class="clickable" data-acronym="NTP" data-details="A protocol synchronizing clocks across networked devices, critical for security and logging accuracy.">NTP</span> - Network Time Protocol</li>
+      <li><span class="clickable" data-acronym="NVMe" data-details="A high-speed storage protocol using PCIe, offering faster performance than SATA for SSDs.">NVMe</span> - Non-volatile Memory Express</li>
+      <li><span class="clickable" data-acronym="OLED" data-details="A display technology with self-emitting pixels, offering better contrast and blacks than LCDs (e.g., smartphones).">OLED</span> - Organic Light-emitting Diode</li>
+      <li><span class="clickable" data-acronym="ONT" data-details="A device in fiber optic networks converting optical signals to electrical for home or office connectivity.">ONT</span> - Optical Network Terminal</li>
+      <li><span class="clickable" data-acronym="OS" data-details="Software managing hardware and software resources, providing a user interface (e.g., Windows, Linux).">OS</span> - Operating System</li>
+      <li><span class="clickable" data-acronym="OTP" data-details="A single-use password or code, often used in two-factor authentication for enhanced security.">OTP</span> - One-time Password/Passcode</li>
+      <li><span class="clickable" data-acronym="PaaS" data-details="A cloud model providing platforms for developing and deploying applications without managing underlying infrastructure.">PaaS</span> - Platform as a Service</li>
+      <li><span class="clickable" data-acronym="PAM" data-details="A security framework managing and monitoring privileged accounts to prevent unauthorized access.">PAM</span> - Privileged Access Management</li>
+      <li><span class="clickable" data-acronym="PAN" data-details="A short-range network for personal devices, often using Bluetooth or USB (e.g., phone-to-laptop).">PAN</span> - Personal Area Network</li>
+      <li><span class="clickable" data-acronym="PC" data-details="A general-purpose computer designed for individual use, running various operating systems like Windows or macOS.">PC</span> - Personal Computer</li>
+      <li><span class="clickable" data-acronym="PCI" data-details="A standard for connecting peripherals (e.g., sound cards) to a motherboard, now largely replaced by PCIe.">PCI</span> - Peripheral Component Interconnect</li>
+      <li><span class="clickable" data-acronym="PCIe" data-details="A high-speed interface for connecting components like GPUs and SSDs to a motherboard.">PCIe</span> - Peripheral Component Interconnect Express</li>
+      <li><span class="clickable" data-acronym="PII" data-details="Data that can identify an individual, such as names or Social Security numbers, protected under privacy laws.">PII</span> - Personally Identifiable Information</li>
+      <li><span class="clickable" data-acronym="PIN" data-details="A numeric code used for authentication, often in ATMs, phones, or secure access systems.">PIN</span> - Personal Identification Number</li>
+      <li><span class="clickable" data-acronym="PIV" data-details="A standard for smart card-based authentication, often used in government ID systems (e.g., CAC cards).">PIV</span> - Personal Identity Verification</li>
+      <li><span class="clickable" data-acronym="PoE" data-details="A technology delivering power and data over Ethernet cables, used for devices like IP cameras.">PoE</span> - Power over Ethernet</li>
+      <li><span class="clickable" data-acronym="POP" data-details="A protocol for downloading email from a server, typically deleting messages after retrieval (e.g., POP3).">POP</span> - Post Office Protocol</li>
+      <li><span class="clickable" data-acronym="POST" data-details="A diagnostic test run by BIOS/UEFI at startup to check hardware functionality before booting.">POST</span> - Power-on Self-test</li>
+      <li><span class="clickable" data-acronym="PUP" data-details="Software installed without clear user consent, often adware or bundled with legitimate programs.">PUP</span> - Potentially Unwanted Program</li>
+      <li><span class="clickable" data-acronym="RADIUS" data-details="A protocol for centralized authentication, authorization, and accounting for network access (e.g., VPNs).">RADIUS</span> - Remote Authentication Dial-in User Server</li>
+      <li><span class="clickable" data-acronym="RAID" data-details="A storage technology combining multiple drives for redundancy (e.g., RAID 1) or performance (e.g., RAID 0).">RAID</span> - Redundant Array of Independent Disks</li>
+      <li><span class="clickable" data-acronym="RAM" data-details="Volatile memory for temporary data storage, critical for running applications and multitasking.">RAM</span> - Random-access Memory</li>
+      <li><span class="clickable" data-acronym="RDP" data-details="A Microsoft protocol for remote access to Windows desktops and applications over a network.">RDP</span> - Remote Desktop Protocol</li>
+      <li><span class="clickable" data-acronym="ReFS" data-details="A Microsoft file system focused on data integrity and scalability, used in specific Windows environments.">ReFS</span> - Resilient File System</li>
+      <li><span class="clickable" data-acronym="RFID" data-details="A technology using radio waves to identify and track tags, used in inventory and access cards.">RFID</span> - Radio-frequency Identification</li>
+      <li><span class="clickable" data-acronym="RJ11" data-details="A connector for telephone lines, typically with four or six pins, used in analog phone systems.">RJ11</span> - Registered Jack Function 11</li>
+      <li><span class="clickable" data-acronym="RJ45" data-details="A connector for Ethernet cables, used in wired networking (e.g., LAN connections).">RJ45</span> - Registered Jack Function 45</li>
+      <li><span class="clickable" data-acronym="RMM" data-details="Software for remotely monitoring and managing IT systems, used by IT service providers for maintenance.">RMM</span> - Remote Monitoring and Management</li>
+      <li><span class="clickable" data-acronym="RSR" data-details="Apple’s system for delivering urgent security patches to devices without full OS updates.">RSR</span> - Rapid Security Response</li>
+      <li><span class="clickable" data-acronym="SaaS" data-details="A cloud model delivering software over the internet, maintained by providers (e.g., Google Workspace).">SaaS</span> - Software as a Service</li>
+      <li><span class="clickable" data-acronym="SAML" data-details="An XML-based standard for exchanging authentication and authorization data, enabling single sign-on.">SAML</span> - Security Assertions Markup Language</li>
+      <li><span class="clickable" data-acronym="SAN" data-details="A high-speed network connecting storage devices to servers, used for centralized data management.">SAN</span> - Storage Area Network</li>
+      <li><span class="clickable" data-acronym="SAS" data-details="A high-speed serial interface for connecting storage devices, used in enterprise servers.">SAS</span> - Serial Attached SCSI [Small Computer System Interface]</li>
+      <li><span class="clickable" data-acronym="SATA" data-details="A standard interface for connecting storage devices (e.g., HDDs, SSDs) to motherboards, widely used in PCs.">SATA</span> - Serial Advanced Technology Attachment</li>
+      <li><span class="clickable" data-acronym="SC" data-details="A fiber optic connector with a push-pull mechanism, used in networking for reliable connections.">SC</span> - Subscriber Connector</li>
+      <li><span class="clickable" data-acronym="SCADA" data-details="Systems for monitoring and controlling industrial processes, used in utilities and manufacturing.">SCADA</span> - Supervisory Control and Data Acquisition</li>
+      <li><span class="clickable" data-acronym="SCSI" data-details="A set of standards for connecting and transferring data between computers and peripherals, largely replaced by SAS/SATA.">SCSI</span> - Small Computer System Interface</li>
+      <li><span class="clickable" data-acronym="SIM" data-details="A card storing subscriber data for mobile network access, used in phones and tablets.">SIM</span> - Subscriber Identity Module</li>
+      <li><span class="clickable" data-acronym="SLA" data-details="A contract specifying the performance and availability standards for a service (e.g., uptime guarantees).">SLA</span> - Service-level Agreement</li>
+      <li><span class="clickable" data-acronym="S.M.A.R.T" data-details="A system monitoring drive health to predict failures, supported by most modern HDDs and SSDs.">S.M.A.R.T</span> - Self-monitoring Analysis and Reporting Technology</li>
+      <li><span class="clickable" data-acronym="SMB" data-details="A protocol for sharing files, printers, and resources over a network, primarily in Windows environments.">SMB</span> - Server Message Block</li>
+      <li><span class="clickable" data-acronym="SMS" data-details="A service for sending short text messages, often used for notifications or two-factor authentication.">SMS</span> - Short Message Service</li>
+      <li><span class="clickable" data-acronym="SMTP" data-details="A protocol for sending email across networks, used by email servers and clients.">SMTP</span> - Simple Mail Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="SODIMM" data-details="Smaller RAM modules designed for laptops and compact devices, compatible with DDR standards.">SODIMM</span> - Small Outline Dual In-line Memory Module</li>
+      <li><span class="clickable" data-acronym="SOHO" data-details="Small networks for home offices or small businesses, typically with fewer than 10 users.">SOHO</span> - Small Office/Home Office</li>
+      <li><span class="clickable" data-acronym="SOP" data-details="Documented procedures for consistent task execution, used in IT and business operations.">SOP</span> - Standard Operating Procedure</li>
+      <li><span class="clickable" data-acronym="SPF" data-details="An email authentication method listing authorized mail servers to prevent email spoofing.">SPF</span> - Sender Policy Framework</li>
+      <li><span class="clickable" data-acronym="SPICE" data-details="A protocol for remote access to virtual machines, offering high-performance display and device redirection.">SPICE</span> - Simple Protocol for Independent Computing Environments</li>
+      <li><span class="clickable" data-acronym="SQL" data-details="A language for managing and querying relational databases (e.g., MySQL, SQL Server).">SQL</span> - Structured Query Language</li>
+      <li><span class="clickable" data-acronym="SSD" data-details="Storage using flash memory, faster and more durable than HDDs, ideal for OS and applications.">SSD</span> - Solid-state Drive</li>
+      <li><span class="clickable" data-acronym="SSH" data-details="A protocol for secure remote access to systems, often used for managing servers via command line.">SSH</span> - Secure Shell</li>
+      <li><span class="clickable" data-acronym="SSID" data-details="The name of a Wi-Fi network, used to identify and connect to wireless access points.">SSID</span> - Service Set Identifier</li>
+      <li><span class="clickable" data-acronym="SSO" data-details="A system allowing users to access multiple applications with a single set of login credentials.">SSO</span> - Single Sign-on</li>
+      <li><span class="clickable" data-acronym="ST" data-details="A fiber optic connector with a bayonet-style twist lock, used in older networking setups.">ST</span> - Straight Tip</li>
+      <li><span class="clickable" data-acronym="TACACS" data-details="A protocol for authentication, authorization, and accounting, used in network devices like routers.">TACACS</span> - Terminal Access Controller Access-control System</li>
+      <li><span class="clickable" data-acronym="TCP" data-details="A reliable, connection-oriented protocol ensuring data delivery, used in applications like HTTP and FTP.">TCP</span> - Transmission Control Protocol</li>
+      <li><span class="clickable" data-acronym="TKIP" data-details="An older Wi-Fi encryption protocol, now deprecated due to security vulnerabilities, replaced by AES.">TKIP</span> - Temporal Key Integrity Protocol</li>
+      <li><span class="clickable" data-acronym="TN" data-details="A basic LCD technology with fast response times but limited color and viewing angles, used in budget monitors.">TN</span> - Twisted Nematic</li>
+      <li><span class="clickable" data-acronym="TOTP" data-details="A one-time password generated based on time, commonly used in two-factor authentication (e.g., authenticator apps).">TOTP</span> - Time-based One-time Password</li>
+      <li><span class="clickable" data-acronym="TPM" data-details="A hardware chip for secure cryptographic operations, used for encryption and authentication (e.g., Windows BitLocker).">TPM</span> - Trusted Platform Module</li>
+      <li><span class="clickable" data-acronym="UAC" data-details="A Windows security feature prompting users for permission before allowing system changes, enhancing security.">UAC</span> - User Account Control</li>
+      <li><span class="clickable" data-acronym="UDP" data-details="A connectionless protocol prioritizing speed over reliability, used in streaming and gaming applications.">UDP</span> - User Datagram Protocol</li>
+      <li><span class="clickable" data-acronym="UEFI" data-details="Modern firmware replacing BIOS, offering faster boot times, better security, and support for large drives.">UEFI</span> - Unified Extensible Firmware Interface</li>
+      <li><span class="clickable" data-acronym="UPnP" data-details="A protocol enabling devices to discover and connect automatically, often used for media streaming and gaming.">UPnP</span> - Universal Plug and Play</li>
+      <li><span class="clickable" data-acronym="UPS" data-details="A device providing backup power and surge protection, ensuring systems stay online during outages.">UPS</span> - Uninterruptible Power Supply</li>
     </ul>
   </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modal-content"></div>
+    <button onclick="document.getElementById('modal').style.display='none'">Close</button>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    document.querySelectorAll('.clickable').forEach(el => {
+      el.addEventListener('click', () => {
+        const acronym = el.getAttribute('data-acronym');
+        const details = el.getAttribute('data-details');
+        modalContent.innerHTML = `<strong>${acronym}</strong><br>${details}`;
+        modal.style.display = 'block';
+      });
+    });
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>

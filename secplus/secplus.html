@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
   <title>CompTIA Security+ </title>
@@ -29,6 +28,7 @@
     .back-button,
     .pbq-button,
     .ports-button,
+    .cia-button,
     .restart-button {
       position: fixed;
       top: 1rem;
@@ -58,6 +58,10 @@
       left: calc(1rem + 6rem + 0.5rem + 4.2rem);
     }
 
+    .cia-button {
+      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 6.2rem);
+    }
+
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
@@ -67,6 +71,7 @@
     .back-button:hover,
     .pbq-button:hover,
     .ports-button:hover,
+    .cia-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -175,6 +180,7 @@
       .back-button,
       .pbq-button,
       .ports-button,
+      .cia-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
@@ -187,6 +193,10 @@
       .ports-button {
         left: calc(1rem + 5rem + 0.5rem + 3.2rem);
       }
+
+      .cia-button {
+        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 5.2rem);
+      }
     }
   </style>
 </head>
@@ -194,6 +204,7 @@
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
   <a href="ports.html" class="ports-button">Ports</a>
+  <a href="CIA.html" class="cia-button">CIA</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -352,7 +363,7 @@
       },
       {
         question: "What does VLAN segmentation achieve?",
-        choices: ["Increases bandwidth", "Isolates network traffic", "Encrypts data", "Manages user accounts"],
+        choices: ["Increases bandwidth", "Isolates network traffic", "Encrypts data", "Manage user accounts"],
         answer: "Isolates network traffic"
       },
       {

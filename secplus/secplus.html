@@ -29,6 +29,7 @@
     .pbq-button,
     .ports-button,
     .cia-button,
+    .acronyms-button,
     .restart-button {
       position: fixed;
       top: 1rem;
@@ -62,6 +63,10 @@
       left: calc(1rem + 6rem + 0.5rem + 4.2rem + 6.2rem);
     }
 
+    .acronyms-button {
+      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 6.2rem + 4.2rem);
+    }
+
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
@@ -72,6 +77,7 @@
     .pbq-button:hover,
     .ports-button:hover,
     .cia-button:hover,
+    .acronyms-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -203,6 +209,7 @@
       .pbq-button,
       .ports-button,
       .cia-button,
+      .acronyms-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
@@ -219,6 +226,10 @@
       .cia-button {
         left: calc(1rem + 5rem + 0.5rem + 3.2rem + 5.2rem);
       }
+
+      .acronyms-button {
+        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 5.2rem + 4.2rem);
+      }
     }
   </style>
 </head>
@@ -227,6 +238,7 @@
   <a href="pbq.html" class="pbq-button">PBQ</a>
   <a href="ports.html" class="ports-button">Ports</a>
   <a href="CIA.html" class="cia-button">CIA</a>
+  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -303,7 +315,7 @@
         question: "Which authentication method uses a physical token?",
         choices: ["Password", "Biometrics", "Multi-factor Authentication", "Single Sign-On"],
         answer: "Multi-factor Authentication",
-        explanation: "Multi-factor Authentication (MFA) requires multiple forms of verification, such as a password and a physical token (e.g., a smart card or authenticator device). This enhances security by combining something you know, have, or are, making unauthorized access more difficult."
+        explanation: "Multi-factor Authentication (MFA) requires multiple forms of verification, such as a password and a physical token (example, a smart card or authenticator device). This enhances security by combining something you know, have, or are, making unauthorized access more difficult."
       },
       {
         question: "What does DDoS stand for?",
@@ -571,7 +583,7 @@
       },
       {
         question: "What is the purpose of a security audit?",
-        choices: ["Increase bandwidth", "Evaluate compliance and security controls", "Optimize CPU usage", "Manage user permissions"],
+        choices: ["Increase bandwidth", "Evaluate compliance and security controls", "Optimize hardware performance", "Manage user permissions"],
         answer: "Evaluate compliance and security controls",
         explanation: "A security audit evaluates an organization’s security controls and compliance with standards or regulations. It identifies gaps, ensures policies are followed, and recommends improvements to strengthen security."
       },

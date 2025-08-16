@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Security+ Acronyms Guide</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .content {
+      width: 100%;
+      max-width: 800px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      margin-top: 4rem;
+    }
+    h1, h2 {
+      color: #00FF00;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      border-bottom: 1px solid #00FF00;
+      padding-bottom: 0.5rem;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    .clickable {
+      color: #00FFFF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: black;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 20px;
+      z-index: 10000;
+      max-width: 80%;
+      max-height: 80%;
+      overflow: auto;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+    }
+    .modal-content {
+      margin-bottom: 1rem;
+    }
+    .modal button {
+      background: transparent;
+      color: #00FF00;
+      border: 1px solid #00FF00;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+    }
+    .modal button:hover {
+      background: #00FF00;
+      color: black;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .content { max-width: 95%; margin-top: 3rem; }
+      .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .modal { max-width: 90%; }
+    }
+  </style>
+</head>
+<body>
+  <a href="secplus.html" class="back-button">← Back</a>
+
+  <div class="content">
+    <h1>CompTIA Security+ Acronyms Guide</h1>
+    
+    <h2>Acronyms List</h2>
+    <ul>
+      <li><span class="clickable" data-acronym="AAA" data-details="A framework for securing systems: Authentication verifies identity, Authorization controls access rights, and Accounting logs activities for auditing.">AAA</span> - Authentication, Authorization, Accounting</li>
+      <li><span class="clickable" data-acronym="ACL" data-details="Rules defining which users or systems can access resources, used in firewalls, routers, or file systems for security.">ACL</span> - Access Control List</li>
+      <li><span class="clickable" data-acronym="AES" data-details="A symmetric encryption standard using 128, 192, or 256-bit keys, widely used for secure data protection (example, VPNs).">AES</span> - Advanced Encryption Standard</li>
+      <li><span class="clickable" data-acronym="AIS" data-details="A system for sharing cyber threat intelligence automatically, enabling rapid response to threats across organizations.">AIS</span> - Automated Indicator Sharing</li>
+      <li><span class="clickable" data-acronym="ALE" data-details="The expected monetary loss from a risk annually, calculated as SLE (Single Loss Expectancy) × ARO (Annualized Rate of Occurrence).">ALE</span> - Annual Loss Expectancy</li>
+      <li><span class="clickable" data-acronym="API" data-details="A set of rules for software applications to communicate, often secured to prevent unauthorized access or attacks.">API</span> - Application Programming Interface</li>
+      <li><span class="clickable" data-acronym="APT" data-details="Sophisticated, prolonged cyberattacks by skilled adversaries, often targeting sensitive data or systems (example, nation-state attacks).">APT</span> - Advanced Persistent Threat</li>
+      <li><span class="clickable" data-acronym="ARP" data-details="A protocol mapping IP addresses to MAC addresses for communication within a local network, vulnerable to spoofing.">ARP</span> - Address Resolution Protocol</li>
+      <li><span class="clickable" data-acronym="BIA" data-details="An assessment identifying critical business functions and the impact of disruptions, guiding disaster recovery planning.">BIA</span> - Business Impact Analysis</li>
+      <li><span class="clickable" data-acronym="CA" data-details="A trusted entity issuing and managing digital certificates for secure communication and authentication (example, SSL/TLS).">CA</span> - Certificate Authority</li>
+      <li><span class="clickable" data-acronym="CASB" data-details="Software securing cloud services by monitoring activity, enforcing policies, and preventing data leaks (example, in SaaS apps).">CASB</span> - Cloud Access Security Broker</li>
+      <li><span class="clickable" data-acronym="CIA" data-details="The security triad: Confidentiality ensures data privacy, Integrity prevents unauthorized changes, and Availability ensures access to resources.">CIA</span> - Confidentiality, Integrity, Availability</li>
+      <li><span class="clickable" data-acronym="CSP" data-details="A company providing cloud computing services, such as IaaS, PaaS, or SaaS (example, AWS, Microsoft Azure).">CSP</span> - Cloud Service Provider</li>
+      <li><span class="clickable" data-acronym="CVE" data-details="A standardized list of publicly disclosed cybersecurity vulnerabilities, each assigned a unique identifier for tracking.">CVE</span> - Common Vulnerabilities and Exposures</li>
+      <li><span class="clickable" data-acronym="CYOD" data-details="A policy allowing employees to choose from a pre-approved list of devices for work, balancing security and flexibility.">CYOD</span> - Choose Your Own Device</li>
+      <li><span class="clickable" data-acronym="DHCP" data-details="A protocol dynamically assigning IP addresses to devices, simplifying network configuration but requiring security to prevent unauthorized access.">DHCP</span> - Dynamic Host Configuration Protocol</li>
+      <li><span class="clickable" data-acronym="DKIM" data-details="An email authentication method using cryptographic signatures to verify the sender’s domain, reducing spoofing risks.">DKIM</span> - DomainKeys Identified Mail</li>
+      <li><span class="clickable" data-acronym="DLL" data-details="A shared library in Windows containing code or resources, vulnerable to injection attacks if not secured.">DLL</span> - Dynamic Link Library</li>
+      <li><span class="clickable" data-acronym="DLP" data-details="Tools and policies preventing unauthorized sharing or leakage of sensitive data, such as PII or corporate secrets.">DLP</span> - Data Loss Prevention</li>
+      <li><span class="clickable" data-acronym="DMARC" data-details="An email authentication protocol using SPF and DKIM to prevent phishing and enforce domain-based policies.">DMARC</span> - Domain-based Message Authentication, Reporting, and Conformance</li>
+      <li><span class="clickable" data-acronym="DNS" data-details="Translates domain names to IP addresses, critical for internet navigation but vulnerable to attacks like DNS spoofing.">DNS</span> - Domain Name System</li>
+      <li><span class="clickable" data-acronym="DoS" data-details="An attack overwhelming a system with traffic to disrupt availability, often a precursor to more complex attacks.">DoS</span> - Denial of Service</li>
+      <li><span class="clickable" data-acronym="DPO" data-details="A role responsible for ensuring compliance with data protection regulations, such as GDPR, within an organization.">DPO</span> - Data Protection Officer</li>
+      <li><span class="clickable" data-acronym="DRP" data-details="A plan outlining steps to restore IT systems and operations after a disaster, minimizing downtime and data loss.">DRP</span> - Disaster Recovery Plan</li>
+      <li><span class="clickable" data-acronym="EAP" data-details="A framework for secure authentication in networks, used in protocols like WPA-Enterprise for Wi-Fi security.">EAP</span> - Extensible Authentication Protocol</li>
+      <li><span class="clickable" data-acronym="FDE" data-details="Encryption of an entire storage device to protect data, commonly used with tools like BitLocker or FileVault.">FDE</span> - Full Disk Encryption</li>
+      <li><span class="clickable" data-acronym="HIDS" data-details="Software monitoring a single host for suspicious activity, detecting potential intrusions or malware.">HIDS</span> - Host-based Intrusion Detection System</li>
+      <li><span class="clickable" data-acronym="HIPS" data-details="Security software on a host that detects and prevents malicious activities, offering proactive protection.">HIPS</span> - Host-based Intrusion Prevention System</li>
+      <li><span class="clickable" data-acronym="HSM" data-details="A hardware device managing and protecting cryptographic keys, used for secure authentication and encryption.">HSM</span> - Hardware Security Module</li>
+      <li><span class="clickable" data-acronym="ICMP" data-details="A protocol for diagnostic and error messaging in IP networks, used by tools like ping, but exploitable in attacks.">ICMP</span> - Internet Control Message Protocol</li>
+      <li><span class="clickable" data-acronym="IDS" data-details="A system monitoring network or host activity to detect suspicious behavior or policy violations, alerting administrators.">IDS</span> - Intrusion Detection System</li>
+      <li><span class="clickable" data-acronym="IoC" data-details="Evidence of a security breach, such as unusual network traffic or malicious files, used to identify attacks.">IoC</span> - Indicator of Compromise</li>
+      <li><span class="clickable" data-acronym="IoT" data-details="A network of connected devices (example, smart cameras) communicating online, often requiring security to prevent attacks.">IoT</span> - Internet of Things</li>
+      <li><span class="clickable" data-acronym="IPS" data-details="A system actively blocking malicious activity in real-time, unlike IDS, which only alerts (example, blocking malware).">IPS</span> - Intrusion Prevention System</li>
+      <li><span class="clickable" data-acronym="ISP" data-details="A company providing internet access to users or organizations, such as Comcast or AT&T.">ISP</span> - Internet Service Provider</li>
+      <li><span class="clickable" data-acronym="KMS" data-details="A system for managing cryptographic keys, ensuring secure generation, storage, and rotation for encryption.">KMS</span> - Key Management System</li>
+      <li><span class="clickable" data-acronym="MAC" data-details="Mandatory Access Control enforces strict security policies based on labels, used in high-security environments.">MAC</span> - Mandatory Access Control</li>
+      <li><span class="clickable" data-acronym="MAC" data-details="A unique hardware address for network interfaces, used for communication at the data link layer.">MAC</span> - Media Access Control</li>
+      <li><span class="clickable" data-acronym="MAC" data-details="A cryptographic code verifying the integrity and authenticity of a message or data.">MAC</span> - Message Authentication Code</li>
+      <li><span class="clickable" data-acronym="MDM" data-details="Software managing and securing mobile devices, enforcing policies like remote wipe or app restrictions.">MDM</span> - Mobile Device Management</li>
+      <li><span class="clickable" data-acronym="MFA" data-details="A security method requiring multiple verification factors (example, password + token) to authenticate users.">MFA</span> - Multi-factor Authentication</li>
+      <li><span class="clickable" data-acronym="MSP" data-details="A third-party provider managing IT services, such as cybersecurity or network monitoring, for organizations.">MSP</span> - Managed Service Provider</li>
+      <li><span class="clickable" data-acronym="MTBF" data-details="The average time a system or component operates before failing, used to assess reliability.">MTBF</span> - Mean Time Between Failure</li>
+      <li><span class="clickable" data-acronym="NAC" data-details="A security solution controlling network access based on policies, ensuring only compliant devices connect.">NAC</span> - Network Access Control</li>
+      <li><span class="clickable" data-acronym="NFC" data-details="A short-range wireless technology for secure data exchange, used in contactless payments or access cards.">NFC</span> - Near-field Communication</li>
+      <li><span class="clickable" data-acronym="NTLM" data-details="A legacy Windows authentication protocol, less secure than modern alternatives like Kerberos.">NTLM</span> - New Technology LAN Manager</li>
+      <li><span class="clickable" data-acronym="NVD" data-details="A database of known cybersecurity vulnerabilities, maintained by NIST, used for vulnerability management.">NVD</span> - National Vulnerability Database</li>
+      <li><span class="clickable" data-acronym="OCSP" data-details="A protocol checking the revocation status of digital certificates in real-time to ensure validity.">OCSP</span> - Online Certificate Status Protocol</li>
+      <li><span class="clickable" data-acronym="PHI" data-details="Health information identifying individuals, protected under regulations like HIPAA (example, medical records).">PHI</span> - Protected Health Information</li>
+      <li><span class="clickable" data-acronym="PKI" data-details="A framework for managing digital certificates and encryption keys, enabling secure communication (example, SSL/TLS).">PKI</span> - Public Key Infrastructure</li>
+      <li><span class="clickable" data-acronym="RADIUS" data-details="A protocol for centralized authentication, authorization, and accounting, used for network access (example, VPNs).">RADIUS</span> - Remote Authentication Dial-in User Service</li>
+      <li><span class="clickable" data-acronym="RFC" data-details="A document outlining standards or protocols for the internet, published by the IETF (example, RFC 1918 for private IPs).">RFC</span> - Request for Comments</li>
+      <li><span class="clickable" data-acronym="RFID" data-details="A technology using radio waves to identify and track tags, used in access cards and inventory management.">RFID</span> - Radio-frequency Identification</li>
+      <li><span class="clickable" data-acronym="SAE" data-details="A secure Wi-Fi authentication method used in WPA3, improving protection against password attacks.">SAE</span> - Simultaneous Authentication of Equals</li>
+      <li><span class="clickable" data-acronym="SAM" data-details="A Windows database storing user credentials for local authentication, often targeted by attackers.">SAM</span> - Security Account Manager</li>
+      <li><span class="clickable" data-acronym="SAML" data-details="An XML-based standard for exchanging authentication data, enabling single sign-on across systems.">SAML</span> - Security Assertion Markup Language</li>
+      <li><span class="clickable" data-acronym="SDN" data-details="A network architecture separating control and data planes, enabling programmable and centralized management.">SDN</span> - Software-Defined Networking</li>
+      <li><span class="clickable" data-acronym="SED" data-details="A storage device with built-in encryption, automatically securing data without additional software.">SED</span> - Self-Encrypting Drive</li>
+      <li><span class="clickable" data-acronym="SHA" data-details="A family of cryptographic hash functions (example, SHA-256) used for data integrity and authentication.">SHA</span> - Secure Hash Algorithm</li>
+      <li><span class="clickable" data-acronym="SLA" data-details="A contract defining service standards, such as uptime or response times, between providers and clients.">SLA</span> - Service Level Agreement</li>
+      <li><span class="clickable" data-acronym="SOAR" data-details="A platform automating and orchestrating security operations, integrating tools for faster incident response.">SOAR</span> - Security Orchestration, Automation, and Response</li>
+      <li><span class="clickable" data-acronym="SPF" data-details="An email authentication method listing authorized mail servers to prevent spoofing and phishing.">SPF</span> - Sender Policy Framework</li>
+      <li><span class="clickable" data-acronym="SPOF" data-details="A critical component whose failure disrupts an entire system, targeted in high-availability designs.">SPOF</span> - Single Point of Failure</li>
+      <li><span class="clickable" data-acronym="SQL" data-details="A language for managing databases, vulnerable to injection attacks if not properly sanitized.">SQL</span> - Structured Query Language</li>
+      <li><span class="clickable" data-acronym="SSID" data-details="The name of a Wi-Fi network, used to identify and connect to wireless access points.">SSID</span> - Service Set Identifier</li>
+      <li><span class="clickable" data-acronym="SSL" data-details="A deprecated protocol for securing online communication, replaced by TLS for better security.">SSL</span> - Secure Sockets Layer</li>
+      <li><span class="clickable" data-acronym="SSO" data-details="A system allowing users to access multiple applications with one set of login credentials.">SSO</span> - Single Sign-On</li>
+      <li><span class="clickable" data-acronym="STIX" data-details="A standard for sharing structured cyber threat intelligence, used to describe threats and indicators.">STIX</span> - Structured Threat Information Expression</li>
+      <li><span class="clickable" data-acronym="TCP" data-details="A reliable, connection-oriented protocol ensuring data delivery, used in applications like HTTP and FTP.">TCP</span> - Transmission Control Protocol</li>
+      <li><span class="clickable" data-acronym="TLS" data-details="A protocol securing internet communication (example, HTTPS), succeeding SSL with improved security features.">TLS</span> - Transport Layer Security</li>
+      <li><span class="clickable" data-acronym="TPM" data-details="A hardware chip for secure cryptographic operations, used for encryption and authentication (example, BitLocker).">TPM</span> - Trusted Platform Module</li>
+      <li><span class="clickable" data-acronym="TTP" data-details="Methods and strategies used by attackers, documented to understand and counter cyber threats.">TTP</span> - Tactics, Techniques, and Procedures</li>
+      <li><span class="clickable" data-acronym="UDP" data-details="A connectionless protocol prioritizing speed, used in applications like streaming or DNS queries.">UDP</span> - User Datagram Protocol</li>
+      <li><span class="clickable" data-acronym="UPS" data-details="A device providing backup power and surge protection, ensuring systems stay online during outages.">UPS</span> - Uninterruptible Power Supply</li>
+      <li><span class="clickable" data-acronym="UTM" data-details="A comprehensive security appliance combining firewall, antivirus, IDS/IPS, and other protections.">UTM</span> - Unified Threat Management</li>
+      <li><span class="clickable" data-acronym="VLAN" data-details="A virtual network segmenting devices logically without additional hardware, improving security and management.">VLAN</span> - Virtual Local Area Network</li>
+      <li><span class="clickable" data-acronym="VPN" data-details="A secure connection over the internet, encrypting data to protect privacy and access remote networks.">VPN</span> - Virtual Private Network</li>
+      <li><span class="clickable" data-acronym="WAF" data-details="A firewall protecting web applications by filtering and monitoring HTTP traffic to block attacks.">WAF</span> - Web Application Firewall</li>
+      <li><span class="clickable" data-acronym="WPA" data-details="A Wi-Fi security protocol (example, WPA2, WPA3) protecting wireless networks with encryption and authentication.">WPA</span> - Wi-Fi Protected Access</li>
+      <li><span class="clickable" data-acronym="XDR" data-details="An advanced security platform integrating data from multiple sources for comprehensive threat detection and response.">XDR</span> - Extended Detection and Response</li>
+      <li><span class="clickable" data-acronym="XSRF" data-details="An attack tricking users into performing unintended actions on a website, exploiting trusted sessions.">XSRF</span> - Cross-Site Request Forgery</li>
+    </ul>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modal-content"></div>
+    <button onclick="document.getElementById('modal').style.display='none'">Close</button>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    document.querySelectorAll('.clickable').forEach(el => {
+      el.addEventListener('click', () => {
+        const acronym = el.getAttribute('data-acronym');
+        const details = el.getAttribute('data-details');
+        modalContent.innerHTML = `<strong>${acronym}</strong><br>${details}`;
+        modal.style.display = 'block';
+      });
+    });
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

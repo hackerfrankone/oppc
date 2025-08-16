@@ -23,7 +23,7 @@
       position: relative;
     }
 
-    .back-button, .pbq-button, .connector-button, .hardware-button, .printers-button, .acronyms-button, .restart-button {
+    .back-button, .pbq-button, .acronyms-button, .connector-button, .hardware-button, .printers-button, .restart-button {
       position: fixed;
       top: 1rem;
       background: transparent;
@@ -42,17 +42,17 @@
 
     .back-button { left: 1rem; }
     .pbq-button { left: calc(1rem + 6rem + 0.5rem); }
-    .connector-button { left: calc(1rem + 11rem); }
-    .hardware-button { left: calc(1rem + 24rem); }
-    .printers-button { left: calc(1rem + 32rem); }
-    .acronyms-button { left: calc(1rem + 41rem); }
+    .acronyms-button { left: calc(1rem + 6rem + 0.5rem + 4.2rem); }
+    .connector-button { left: calc(1rem + 6rem + 0.5rem + 4.2rem + 8.2rem - 0.5rem); }
+    .hardware-button { left: calc(1rem + 6rem + 0.5rem + 4.2rem + 8.2rem - 0.5rem + 10.2rem + 2.5rem); }
+    .printers-button { left: calc(1rem + 6rem + 0.5rem + 4.2rem + 8.2rem - 0.5rem + 10.2rem + 2.5rem + 8.2rem); }
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
       display: none;
     }
 
-    .back-button:hover, .pbq-button:hover, .connector-button:hover, .hardware-button:hover, .printers-button:hover, .acronyms-button:hover, .restart-button:hover {
+    .back-button:hover, .pbq-button:hover, .acronyms-button:hover, .connector-button:hover, .hardware-button:hover, .printers-button:hover, .restart-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -141,15 +141,15 @@
       .quiz-content { max-width: 95%; }
       .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
       .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
-      .back-button, .pbq-button, .connector-button, .hardware-button, .printers-button, .acronyms-button, .restart-button { 
+      .back-button, .pbq-button, .acronyms-button, .connector-button, .hardware-button, .printers-button, .restart-button { 
         font-size: clamp(0.9rem, 2.5vw, 1rem); 
         padding: 0.4rem 0.8rem; 
       }
       .pbq-button { left: calc(1rem + 5rem + 0.5rem); }
-      .connector-button { left: calc(1rem + 9rem); }
-      .hardware-button { left: calc(1rem + 21rem); }
-      .printers-button { left: calc(1rem + 29rem); }
-      .acronyms-button { left: calc(1rem + 37rem); }
+      .acronyms-button { left: calc(1rem + 5rem + 0.5rem + 3.2rem); }
+      .connector-button { left: calc(1rem + 5rem + 0.5rem + 3.2rem + 7.5rem - 0.5rem); }
+      .hardware-button { left: calc(1rem + 5rem + 0.5rem + 3.2rem + 7.5rem - 0.5rem + 9rem + 2.5rem); }
+      .printers-button { left: calc(1rem + 5rem + 0.5rem + 3.2rem + 7.5rem - 0.5rem + 9rem + 2.5rem + 7.5rem); }
       .restart-button { top: calc(0.5rem + 2rem + 0.5rem); }
     }
   </style>
@@ -157,10 +157,10 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <a href="Acronyms.html" class="acronyms-button">Acronyms</a>
   <a href="connectortypes.html" class="connector-button">Connector Types</a>
   <a href="hardware.html" class="hardware-button">Hardware</a>
   <a href="printers.html" class="printers-button">Printers</a>
-  <a href="Acronyms.html" class="acronyms-button">Acronyms</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">

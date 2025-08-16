@@ -27,9 +27,9 @@
 
     .back-button,
     .pbq-button,
+    .acronyms-button,
     .ports-button,
     .cia-button,
-    .acronyms-button,
     .restart-button {
       position: fixed;
       top: 1rem;
@@ -55,16 +55,16 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
-    .ports-button {
+    .acronyms-button {
       left: calc(1rem + 6rem + 0.5rem + 4.2rem);
     }
 
-    .cia-button {
-      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 6.2rem);
+    .ports-button {
+      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 8.2rem);
     }
 
-    .acronyms-button {
-      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 6.2rem + 4.2rem);
+    .cia-button {
+      left: calc(1rem + 6rem + 0.5rem + 4.2rem + 8.2rem + 5.5rem);
     }
 
     .restart-button {
@@ -75,9 +75,9 @@
 
     .back-button:hover,
     .pbq-button:hover,
+    .acronyms-button:hover,
     .ports-button:hover,
     .cia-button:hover,
-    .acronyms-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -207,9 +207,9 @@
 
       .back-button,
       .pbq-button,
+      .acronyms-button,
       .ports-button,
       .cia-button,
-      .acronyms-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
@@ -219,16 +219,16 @@
         left: calc(1rem + 5rem + 0.5rem);
       }
 
-      .ports-button {
+      .acronyms-button {
         left: calc(1rem + 5rem + 0.5rem + 3.2rem);
       }
 
-      .cia-button {
-        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 5.2rem);
+      .ports-button {
+        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 7.5rem);
       }
 
-      .acronyms-button {
-        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 5.2rem + 4.2rem);
+      .cia-button {
+        left: calc(1rem + 5rem + 0.5rem + 3.2rem + 7.5rem + 4.2rem);
       }
     }
   </style>
@@ -236,9 +236,9 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
   <a href="ports.html" class="ports-button">Ports</a>
   <a href="CIA.html" class="cia-button">CIA</a>
-  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">

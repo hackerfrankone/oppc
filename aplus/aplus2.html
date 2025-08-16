@@ -5,7 +5,7 @@
   <link rel="icon" type="image/png" href="../images/oppcus.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
-  <title>CompTIA A+ Core 2 (220-1102) Quiz</title>
+  <title>CompTIA A+ Core 2 Quiz</title>
   <style>
     * {
       box-sizing: border-box;
@@ -28,6 +28,7 @@
 
     .back-button,
     .pbq-button,
+    .acronyms-button,
     .restart-button {
       position: fixed;
       top: 1rem;
@@ -53,6 +54,10 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .acronyms-button {
+      left: calc(1rem + 11rem);
+    }
+
     .restart-button {
       top: calc(1rem + 2.5rem + 0.5rem);
       left: 1rem;
@@ -61,6 +66,7 @@
 
     .back-button:hover,
     .pbq-button:hover,
+    .acronyms-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -190,6 +196,7 @@
 
       .back-button,
       .pbq-button,
+      .acronyms-button,
       .restart-button {
         font-size: clamp(0.9rem, 2.5vw, 1rem);
         padding: 0.4rem 0.8rem;
@@ -197,6 +204,10 @@
 
       .pbq-button {
         left: calc(1rem + 5rem + 0.5rem);
+      }
+
+      .acronyms-button {
+        left: calc(1rem + 9rem);
       }
 
       .restart-button {
@@ -208,6 +219,7 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
 
   <div class="quiz-content">
@@ -444,7 +456,7 @@
       },
       {
         question: "What is a common cause of application crashes?",
-        choices: ["Overheating", "Corrupted files or incompatible drivers", "Low network speed", "Excessive RAM usage"],
+        choices: ["Overheating", "Corrupted files or incompatible drivers", "Excessive network speed", "Low storage space"],
         answer: "Corrupted files or incompatible drivers",
         explanation: "Application crashes are commonly caused by corrupted files or incompatible drivers, which disrupt normal program execution, requiring updates or reinstallation."
       },

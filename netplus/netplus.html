@@ -22,8 +22,18 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 1rem;
-      position: relative;
+      padding: 0.5rem;
+    }
+
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      z-index: 9999;
     }
 
     .back-button,
@@ -32,45 +42,22 @@
     .topology-button,
     .osi-button,
     .restart-button {
-      position: fixed;
-      top: 1rem;
       background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
       padding: 0.5rem 1rem;
       font-family: 'Courier New', monospace;
-      font-size: clamp(1rem, 3vw, 1.2rem);
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
       border-radius: 5px;
       cursor: pointer;
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
-      z-index: 9999;
+      margin: 0;
+      width: fit-content;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .back-button {
-      left: 1rem;
-    }
-
-    .pbq-button {
-      left: calc(1rem + 6rem + 0.5rem);
-    }
-
-    .acronyms-button {
-      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 0.2rem);
-    }
-
-    .topology-button {
-      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 0.3rem + 0.2rem);
-    }
-
-    .osi-button {
-      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 15rem + 0.5rem + 0.3rem);
-    }
-
     .restart-button {
-      top: calc(1rem + 2.5rem + 0.5rem);
-      left: 1rem;
       display: none;
     }
 
@@ -88,7 +75,12 @@
       width: 100%;
       max-width: 600px;
       text-align: left;
-      font-size: clamp(0.9rem, 3vw, 1rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
     }
 
     .question {
@@ -101,6 +93,8 @@
       padding-right: 0.5rem;
       scrollbar-width: thin;
       scrollbar-color: #00FF00 transparent;
+      width: 100%;
+      text-align: center;
     }
 
     .question::-webkit-scrollbar {
@@ -157,12 +151,14 @@
       font-size: clamp(0.9rem, 3vw, 1rem);
       min-height: 2rem;
       text-align: center;
+      width: 100%;
     }
 
     .score {
       margin-top: 1rem;
       font-size: clamp(1rem, 3.5vw, 1.2rem);
       text-align: center;
+      width: 100%;
     }
 
     .missed-questions {
@@ -194,6 +190,7 @@
 
       .quiz-content {
         max-width: 95%;
+        padding: 0.5rem;
       }
 
       .question {
@@ -206,45 +203,32 @@
         padding: 0.5rem;
       }
 
+      .button-container {
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+
       .back-button,
       .pbq-button,
       .acronyms-button,
       .topology-button,
       .osi-button,
       .restart-button {
-        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
         padding: 0.4rem 0.8rem;
-      }
-
-      .pbq-button {
-        left: calc(1rem + 5rem + 0.5rem);
-      }
-
-      .acronyms-button {
-        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem + 0.2rem);
-      }
-
-      .topology-button {
-        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 0.3rem + 0.2rem);
-      }
-
-      .osi-button {
-        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 15rem + 0.5rem + 0.3rem);
-      }
-
-      .restart-button {
-        top: calc(0.5rem + 2rem + 0.5rem);
       }
     }
   </style>
 </head>
 <body>
-  <a href="../index.html" class="back-button">← Back</a>
-  <a href="pbq.html" class="pbq-button">PBQ</a>
-  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
-  <a href="topology.html" class="topology-button">Network Topologies</a>
-  <a href="osi.html" class="osi-button">OSI</a>
-  <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+  <div class="button-container">
+    <a href="../index.html" class="back-button">← Back</a>
+    <a href="pbq.html" class="pbq-button">PBQ</a>
+    <a href="acronyms.html" class="acronyms-button">Acronyms</a>
+    <a href="topology.html" class="topology-button">Network Topologies</a>
+    <a href="osi.html" class="osi-button">OSI</a>
+    <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+  </div>
 
   <div class="quiz-content">
     <div class="question" id="question"></div>

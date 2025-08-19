@@ -31,7 +31,6 @@
     .pdf-button,
     .restart-button {
       position: fixed;
-      top: 1rem;
       background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
@@ -47,21 +46,24 @@
     }
 
     .back-button {
+      top: 1rem;
       left: 1rem;
     }
 
     .pbq-button {
-      left: calc(1rem + 6rem + 0.5rem);
+      top: calc(1rem + 2.5rem);
+      left: 1rem;
     }
 
     .pdf-button {
-      left: calc(1rem + 6rem + 0.5rem + 4.5rem);
+      top: 1rem;
+      left: calc(1rem + 6rem + 0.5rem);
     }
 
     .hash-text {
       position: fixed;
       top: 1rem;
-      left: calc(1rem + 6rem + 0.5rem + 4.5rem + 9rem);
+      left: calc(1rem + 6rem + 0.5rem + 4.5rem + 5rem);
       color: #00FF00;
       font-family: 'Courier New', monospace;
       font-size: clamp(0.8rem, 2.5vw, 1rem);
@@ -70,7 +72,7 @@
     }
 
     .restart-button {
-      top: calc(1rem + 2.5rem + 0.5rem);
+      top: calc(1rem + 2.5rem + 2.5rem + 0.5rem);
       left: 1rem;
       display: none;
     }
@@ -213,21 +215,22 @@
         padding: 0.4rem 0.8rem;
       }
 
-      .pbq-button {
+      .pdf-button {
         left: calc(1rem + 5rem + 0.5rem);
       }
 
-      .pdf-button {
-        left: calc(1rem + 5rem + 0.5rem + 3.5rem);
-      }
-
       .hash-text {
-        left: calc(1rem + 5rem + 0.5rem + 3.5rem + 8rem);
+        left: calc(1rem + 5rem + 0.5rem + 3.5rem + 5rem);
         font-size: clamp(0.7rem, 2vw, 0.9rem);
       }
 
+      .pbq-button {
+        top: calc(0.5rem + 2rem);
+        left: 1rem;
+      }
+
       .restart-button {
-        top: calc(0.5rem + 2rem + 0.5rem);
+        top: calc(0.5rem + 2rem + 2rem + 0.5rem);
       }
     }
   </style>

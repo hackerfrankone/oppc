@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Acronyms Guide</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .content {
+      width: 100%;
+      max-width: 800px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      margin-top: 4rem;
+    }
+    h1, h2 {
+      color: #00FF00;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      border-bottom: 1px solid #00FF00;
+      padding-bottom: 0.5rem;
+    }
+    ul {
+      list-style-type: disc;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    .clickable {
+      color: #00FFFF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: black;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 20px;
+      z-index: 10000;
+      max-width: 80%;
+      max-height: 80%;
+      overflow: auto;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+    }
+    .modal-content {
+      margin-bottom: 1rem;
+    }
+    .modal button {
+      background: transparent;
+      color: #00FF00;
+      border: 1px solid #00FF00;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      border-radius: 5px;
+    }
+    .modal button:hover {
+      background: #00FF00;
+      color: black;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .content { max-width: 95%; margin-top: 3rem; }
+      .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .modal { max-width: 90%; }
+    }
+  </style>
+</head>
+<body>
+  <a href="netplus.html" class="back-button">← Back</a>
+
+  <div class="content">
+    <h1>CompTIA Network+ Acronyms Guide</h1>
+    
+    <h2>Select an Acronym for more information.</h2>
+    <ul>
+      <li><span class="clickable" data-acronym="A" data-details="A unique identifier assigned to a device on a network for communication purposes.">A</span> - Address</li>
+      <li><span class="clickable" data-acronym="AAA" data-details="A framework for controlling network access: Authentication verifies identity, Authorization determines permissions, Accounting tracks usage.">AAA</span> - Authentication, Authorization, and Accounting</li>
+      <li><span class="clickable" data-acronym="ACL" data-details="Rules defining which users or systems can access network resources, used in firewalls and routers.">ACL</span> - Access Control List</li>
+      <li><span class="clickable" data-acronym="AES" data-details="A symmetric encryption algorithm used in secure protocols like WPA2 and IPsec for data protection.">AES</span> - Advanced Encryption Standard</li>
+      <li><span class="clickable" data-acronym="AH" data-details="A protocol in IPsec providing data integrity and authentication without encryption.">AH</span> - Authentication Header</li>
+      <li><span class="clickable" data-acronym="AP" data-details="A device enabling Wi-Fi devices to connect to a wired network, common in wireless LANs.">AP</span> - Access Point</li>
+      <li><span class="clickable" data-acronym="API" data-details="A set of functions allowing applications to interact with network services or devices.">API</span> - Application Programming Interface</li>
+      <li><span class="clickable" data-acronym="APIPA" data-details="Assigns private IP addresses (169.254.x.x) when DHCP is unavailable, enabling local communication.">APIPA</span> - Automatic Private Internet Protocol Addressing</li>
+      <li><span class="clickable" data-acronym="ARP" data-details="Maps IP addresses to MAC addresses for communication within a local network.">ARP</span> - Address Resolution Protocol</li>
+      <li><span class="clickable" data-acronym="AUP" data-details="Rules governing the appropriate use of network resources in an organization.">AUP</span> - Acceptable Use Policy</li>
+      <li><span class="clickable" data-acronym="BGP" data-details="A protocol for exchanging routing information between autonomous systems on the internet.">BGP</span> - Border Gateway Protocol</li>
+      <li><span class="clickable" data-acronym="BNC" data-details="A coaxial connector used in older Ethernet networks like 10Base2.">BNC</span> - Bayonet Neill-Concelman</li>
+      <li><span class="clickable" data-acronym="BPDU" data-details="Packets used by Spanning Tree Protocol to prevent network loops in switches.">BPDU</span> - Bridge Protocol Data Unit</li>
+      <li><span class="clickable" data-acronym="BSS" data-details="A single wireless access point and its connected devices in a Wi-Fi network.">BSS</span> - Basic Service Set</li>
+      <li><span class="clickable" data-acronym="BSSID" data-details="The MAC address of a wireless access point in a Wi-Fi network.">BSSID</span> - Basic Service Set Identifier</li>
+      <li><span class="clickable" data-acronym="BYOD" data-details="A policy allowing personal devices to access corporate networks, requiring security measures.">BYOD</span> - Bring Your Own Device</li>
+      <li><span class="clickable" data-acronym="CAM" data-details="Memory in switches storing MAC address tables for forwarding decisions.">CAM</span> - Content-addressable Memory</li>
+      <li><span class="clickable" data-acronym="CARP" data-details="A protocol for providing high availability and redundancy in network devices.">CARP</span> - Common Address Redundancy Protocol</li>
+      <li><span class="clickable" data-acronym="CDP" data-details="A Cisco protocol for discovering directly connected network devices.">CDP</span> - Cisco Discovery Protocol</li>
+      <li><span class="clickable" data-acronym="CIDR" data-details="A method for allocating IP addresses to optimize address space usage.">CIDR</span> - Classless Inter-Domain Routing</li>
+      <li><span class="clickable" data-acronym="CLI" data-details="An interface for issuing commands to configure or manage network devices.">CLI</span> - Command Line Interface</li>
+      <li><span class="clickable" data-acronym="CoS" data-details="A mechanism to prioritize network traffic for quality of service.">CoS</span> - Class of Service</li>
+      <li><span class="clickable" data-acronym="CSMA/CA" data-details="A method to avoid collisions in wireless networks by checking before transmitting.">CSMA/CA</span> - Carrier Sense Multiple Access with Collision Avoidance</li>
+      <li><span class="clickable" data-acronym="CSMA/CD" data-details="A method to manage collisions in Ethernet networks by detecting and retransmitting.">CSMA/CD</span> - Carrier Sense Multiple Access with Collision Detection</li>
+      <li><span class="clickable" data-acronym="CSU/DSU" data-details="A device connecting digital networks to external lines, used in WAN connections.">CSU/DSU</span> - Channel Service Unit/Data Service Unit</li>
+      <li><span class="clickable" data-acronym="CWDM" data-details="A multiplexing technology using different wavelengths for fiber optic transmission.">CWDM</span> - Coarse Wavelength Division Multiplexing</li>
+      <li><span class="clickable" data-acronym="DAI" data-details="A security feature to prevent ARP spoofing by validating ARP requests.">DAI</span> - Dynamic ARP Inspection</li>
+      <li><span class="clickable" data-acronym="DDoS" data-details="An attack flooding a network with traffic from multiple sources to disrupt service.">DDoS</span> - Distributed Denial of Service</li>
+      <li><span class="clickable" data-acronym="DHCP" data-details="Dynamically assigns IP addresses to devices on a network for configuration.">DHCP</span> - Dynamic Host Configuration Protocol</li>
+      <li><span class="clickable" data-acronym="DNS" data-details="Translates domain names to IP addresses for network communication.">DNS</span> - Domain Name System</li>
+      <li><span class="clickable" data-acronym="DoS" data-details="An attack overwhelming a network or server to disrupt its availability.">DoS</span> - Denial of Service</li>
+      <li><span class="clickable" data-acronym="DWDM" data-details="A high-capacity multiplexing technology for fiber optic networks.">DWDM</span> - Dense Wavelength Division Multiplexing</li>
+      <li><span class="clickable" data-acronym="EIGRP" data-details="A Cisco routing protocol for efficient path selection in networks.">EIGRP</span> - Enhanced Interior Gateway Routing Protocol</li>
+      <li><span class="clickable" data-acronym="ESP" data-details="An IPsec protocol providing encryption, authentication, and integrity for data.">ESP</span> - Encapsulating Security Payload</li>
+      <li><span class="clickable" data-acronym="ESS" data-details="Multiple access points forming a single Wi-Fi network for extended coverage.">ESS</span> - Extended Service Set</li>
+      <li><span class="clickable" data-acronym="FTP" data-details="A protocol for transferring files over a network, used for uploads/downloads.">FTP</span> - File Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="FTPS" data-details="FTP with SSL/TLS encryption for secure file transfers over networks.">FTPS</span> - File Transfer Protocol Secure</li>
+      <li><span class="clickable" data-acronym="GRE" data-details="A tunneling protocol for encapsulating packets to create virtual networks.">GRE</span> - Generic Routing Encapsulation</li>
+      <li><span class="clickable" data-acronym="HTTP" data-details="A protocol for transferring web content, used by browsers to access websites.">HTTP</span> - HyperText Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="HTTPS" data-details="HTTP with SSL/TLS encryption for secure web communication.">HTTPS</span> - HyperText Transfer Protocol Secure</li>
+      <li><span class="clickable" data-acronym="IaC" data-details="Managing network infrastructure through code for automation and consistency.">IaC</span> - Infrastructure as Code</li>
+      <li><span class="clickable" data-acronym="ICMP" data-details="A protocol for diagnostic messages, used by tools like ping and traceroute.">ICMP</span> - Internet Control Message Protocol</li>
+      <li><span class="clickable" data-acronym="IDS" data-details="A system detecting suspicious network activity to identify potential threats.">IDS</span> - Intrusion Detection System</li>
+      <li><span class="clickable" data-acronym="IGMP" data-details="A protocol for managing multicast group memberships in IP networks.">IGMP</span> - Internet Group Management Protocol</li>
+      <li><span class="clickable" data-acronym="IKE" data-details="A protocol for establishing secure VPN connections in IPsec setups.">IKE</span> - Internet Key Exchange</li>
+      <li><span class="clickable" data-acronym="IPS" data-details="A system detecting and preventing network intrusions in real time.">IPS</span> - Intrusion Prevention System</li>
+      <li><span class="clickable" data-acronym="IPsec" data-details="A suite of protocols securing IP communications with encryption and authentication.">IPsec</span> - Internet Protocol Security</li>
+      <li><span class="clickable" data-acronym="IPv4" data-details="A 32-bit addressing protocol for routing data across networks.">IPv4</span> - Internet Protocol version 4</li>
+      <li><span class="clickable" data-acronym="IPv6" data-details="A 128-bit addressing protocol improving scalability and security over IPv4.">IPv6</span> - Internet Protocol version 6</li>
+      <li><span class="clickable" data-acronym="IS-IS" data-details="A link-state routing protocol used in large-scale IP networks.">IS-IS</span> - Intermediate System to Intermediate System</li>
+      <li><span class="clickable" data-acronym="LACP" data-details="A protocol for combining multiple links to increase bandwidth and redundancy.">LACP</span> - Link Aggregation Control Protocol</li>
+      <li><span class="clickable" data-acronym="LAN" data-details="A network connecting devices in a small area, like an office or home.">LAN</span> - Local Area Network</li>
+      <li><span class="clickable" data-acronym="LDAP" data-details="A protocol for accessing directory services, used for network authentication.">LDAP</span> - Lightweight Directory Access Protocol</li>
+      <li><span class="clickable" data-acronym="LLDP" data-details="A protocol for discovering network devices and their capabilities.">LLDP</span> - Link Layer Discovery Protocol</li>
+      <li><span class="clickable" data-acronym="MAC" data-details="A unique hardware address for network interfaces, used in data link layer.">MAC</span> - Media Access Control</li>
+      <li><span class="clickable" data-acronym="MAN" data-details="A network covering a city, connecting multiple LANs with high-speed links.">MAN</span> - Metropolitan Area Network</li>
+      <li><span class="clickable" data-acronym="MPLS" data-details="A routing technique using labels for efficient data forwarding in networks.">MPLS</span> - Multiprotocol Label Switching</li>
+      <li><span class="clickable" data-acronym="MTU" data-details="The largest packet size a network protocol can transmit, affecting performance.">MTU</span> - Maximum Transmission Unit</li>
+      <li><span class="clickable" data-acronym="NAT" data-details="Translates private IP addresses to public ones for internet access.">NAT</span> - Network Address Translation</li>
+      <li><span class="clickable" data-acronym="NTP" data-details="Synchronizes clocks across networked devices for accurate timekeeping.">NTP</span> - Network Time Protocol</li>
+      <li><span class="clickable" data-acronym="OSPF" data-details="A link-state routing protocol for efficient path selection in IP networks.">OSPF</span> - Open Shortest Path First</li>
+      <li><span class="clickable" data-acronym="PAN" data-details="A short-range network for personal devices, like Bluetooth connections.">PAN</span> - Personal Area Network</li>
+      <li><span class="clickable" data-acronym="PAT" data-details="A type of NAT mapping multiple private IPs to a single public IP using ports.">PAT</span> - Port Address Translation</li>
+      <li><span class="clickable" data-acronym="PoE" data-details="Delivers power and data over Ethernet cables for devices like IP cameras.">PoE</span> - Power over Ethernet</li>
+      <li><span class="clickable" data-acronym="QoS" data-details="Techniques to prioritize network traffic for performance and reliability.">QoS</span> - Quality of Service</li>
+      <li><span class="clickable" data-acronym="RADIUS" data-details="A protocol for centralized authentication, authorization, and accounting in networks.">RADIUS</span> - Remote Authentication Dial-in User Server</li>
+      <li><span class="clickable" data-acronym="RIP" data-details="A distance-vector routing protocol for small networks, now largely outdated.">RIP</span> - Routing Information Protocol</li>
+      <li><span class="clickable" data-acronym="RSTP" data-details="An enhanced Spanning Tree Protocol for faster network convergence.">RSTP</span> - Rapid Spanning Tree Protocol</li>
+      <li><span class="clickable" data-acronym="RTP" data-details="A protocol for real-time data transmission, used in VoIP and streaming.">RTP</span> - Real-time Transport Protocol</li>
+      <li><span class="clickable" data-acronym="SaaS" data-details="Cloud-based software delivery, accessible over the internet (example: Google Workspace).">SaaS</span> - Software as a Service</li>
+      <li><span class="clickable" data-acronym="SDN" data-details="A network management approach using software to control hardware infrastructure.">SDN</span> - Software-Defined Networking</li>
+      <li><span class="clickable" data-acronym="SD-WAN" data-details="A software-defined approach to managing wide-area networks for scalability.">SD-WAN</span> - Software-Defined Wide Area Network</li>
+      <li><span class="clickable" data-acronym="SFTP" data-details="A secure protocol for file transfers using SSH for encryption.">SFTP</span> - Secure File Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="SIP" data-details="A protocol for initiating and managing VoIP and multimedia sessions.">SIP</span> - Session Initiation Protocol</li>
+      <li><span class="clickable" data-acronym="SMTP" data-details="A protocol for sending email across networks, used by email servers.">SMTP</span> - Simple Mail Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="SNMP" data-details="A protocol for monitoring and managing network devices and performance.">SNMP</span> - Simple Network Management Protocol</li>
+      <li><span class="clickable" data-acronym="SSH" data-details="A protocol for secure remote access to network devices via command line.">SSH</span> - Secure Shell</li>
+      <li><span class="clickable" data-acronym="SSID" data-details="The name identifying a Wi-Fi network for device connections.">SSID</span> - Service Set Identifier</li>
+      <li><span class="clickable" data-acronym="SSL" data-details="An encryption protocol for secure data transfer, largely replaced by TLS.">SSL</span> - Secure Sockets Layer</li>
+      <li><span class="clickable" data-acronym="STP" data-details="A protocol preventing network loops in Ethernet switches.">STP</span> - Spanning Tree Protocol</li>
+      <li><span class="clickable" data-acronym="TACACS+" data-details="An enhanced protocol for authentication, authorization, and accounting in networks.">TACACS+</span> - Terminal Access Controller Access-Control System Plus</li>
+      <li><span class="clickable" data-acronym="TCP" data-details="A reliable protocol ensuring data delivery, used in HTTP and FTP.">TCP</span> - Transmission Control Protocol</li>
+      <li><span class="clickable" data-acronym="TFTP" data-details="A simple protocol for transferring files, used in network booting.">TFTP</span> - Trivial File Transfer Protocol</li>
+      <li><span class="clickable" data-acronym="TLS" data-details="A protocol for secure data transfer, replacing SSL in modern applications.">TLS</span> - Transport Layer Security</li>
+      <li><span class="clickable" data-acronym="UDP" data-details="A fast, connectionless protocol used in streaming and gaming applications.">UDP</span> - User Datagram Protocol</li>
+      <li><span class="clickable" data-acronym="VLAN" data-details="A logical network segment isolating traffic within a physical network.">VLAN</span> - Virtual Local Area Network</li>
+      <li><span class="clickable" data-acronym="VoIP" data-details="A technology for voice communication over IP networks, like internet telephony.">VoIP</span> - Voice over Internet Protocol</li>
+      <li><span class="clickable" data-acronym="VPN" data-details="A secure tunnel for private network access over the internet.">VPN</span> - Virtual Private Network</li>
+      <li><span class="clickable" data-acronym="VxLAN" data-details="A virtualization technology for scalable network overlays in data centers.">VxLAN</span> - Virtual Extensible Local Area Network</li>
+      <li><span class="clickable" data-acronym="WAN" data-details="A network connecting geographically distant locations, like the internet.">WAN</span> - Wide Area Network</li>
+      <li><span class="clickable" data-acronym="WEP" data-details="An outdated Wi-Fi security protocol, vulnerable and replaced by WPA/WPA2.">WEP</span> - Wired Equivalent Privacy</li>
+      <li><span class="clickable" data-acronym="WPA" data-details="A Wi-Fi security protocol improving on WEP, using TKIP encryption.">WPA</span> - Wi-Fi Protected Access</li>
+      <li><span class="clickable" data-acronym="WPA2" data-details="An enhanced Wi-Fi security protocol using AES encryption for better protection.">WPA2</span> - Wi-Fi Protected Access 2</li>
+      <li><span class="clickable" data-acronym="WPA3" data-details="The latest Wi-Fi security protocol with stronger encryption and authentication.">WPA3</span> - Wi-Fi Protected Access 3</li>
+      <li><span class="clickable" data-acronym="WPS" data-details="A method for easily connecting devices to Wi-Fi networks, often insecure.">WPS</span> - Wi-Fi Protected Setup</li>
+    </ul>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modal-content"></div>
+    <button onclick="document.getElementById('modal').style.display='none'">Close</button>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    document.querySelectorAll('.clickable').forEach(el => {
+      el.addEventListener('click', () => {
+        const acronym = el.getAttribute('data-acronym');
+        const details = el.getAttribute('data-details');
+        modalContent.innerHTML = `<strong>${acronym}</strong><br>${details}`;
+        modal.style.display = 'block';
+      });
+    });
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

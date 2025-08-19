@@ -28,6 +28,7 @@
 
     .back-button,
     .pbq-button,
+    .acronyms-button,
     .topology-button,
     .osi-button,
     .restart-button {
@@ -55,12 +56,16 @@
       left: calc(1rem + 6rem + 0.5rem);
     }
 
+    .acronyms-button {
+      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem);
+    }
+
     .topology-button {
-      left: calc(1rem + 6rem + 0.5rem + 4.5rem);
+      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 0.3rem);
     }
 
     .osi-button {
-      left: calc(1rem + 6rem + 0.5rem + 4.5rem + 0.5rem + 15rem);
+      left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 15rem + 0.5rem + 0.3rem);
     }
 
     .restart-button {
@@ -71,6 +76,7 @@
 
     .back-button:hover,
     .pbq-button:hover,
+    .acronyms-button:hover,
     .topology-button:hover,
     .osi-button:hover,
     .restart-button:hover {
@@ -202,6 +208,7 @@
 
       .back-button,
       .pbq-button,
+      .acronyms-button,
       .topology-button,
       .osi-button,
       .restart-button {
@@ -213,12 +220,16 @@
         left: calc(1rem + 5rem + 0.5rem);
       }
 
+      .acronyms-button {
+        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem);
+      }
+
       .topology-button {
-        left: calc(1rem + 5rem + 0.5rem + 4.5rem);
+        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 0.3rem);
       }
 
       .osi-button {
-        left: calc(1rem + 5rem + 0.5rem + 4.5rem + 0.5rem + 14rem);
+        left: calc(1rem + 4rem + 0.5rem + 4.5rem + 0.5rem + 7rem + 0.5rem + 15rem + 0.5rem + 0.3rem);
       }
 
       .restart-button {
@@ -230,6 +241,7 @@
 <body>
   <a href="../index.html" class="back-button">← Back</a>
   <a href="pbq.html" class="pbq-button">PBQ</a>
+  <a href="acronyms.html" class="acronyms-button">Acronyms</a>
   <a href="topology.html" class="topology-button">Network Topologies</a>
   <a href="osi.html" class="osi-button">OSI Model</a>
   <button class="restart-button" onclick="restartQuiz()">Start Over</button>
@@ -450,9 +462,9 @@
       },
       {
         question: "Which device operates at Layer 3 of the OSI model?",
-        choices: ["Switch", "Router", "Hub", "Bridge"],
+        choices: ["Switch", "Router", "Hub", "Firewall"],
         answer: "Router",
-        explanation: "A router operates at Layer 3 (Network layer), routing data between networks based on IP addresses, unlike switches, which operate at Layer 2."
+        explanation: "A router operates at Layer 3 (Network layer), routing data based on IP addresses, unlike switches, which operate at Layer 2."
       },
       {
         question: "What is the maximum number of hosts in a /24 subnet?",

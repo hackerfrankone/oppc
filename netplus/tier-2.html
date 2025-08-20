@@ -91,6 +91,11 @@
       color: black;
     }
 
+    .selected {
+      background-color: #00FF00;
+      color: black;
+    }
+
     .quiz-content {
       width: 100%;
       max-width: 600px;
@@ -247,16 +252,16 @@
 <body>
   <div class="button-container">
     <div class="top-buttons">
-      <a href="../../index.html" class="back-button">← Back</a>
+      <a href="../netplus.html" class="back-button">← Back</a>
       <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
       <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
       <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+      <a href="pbq.html" class="pbq-button">PBQ</a>
     </div>
     <div class="bottom-buttons">
-      <a href="pbq.html" class="pbq-button">PBQ</a>
       <a href="acronyms.html" class="acronyms-button">Acronyms</a>
-      <a href="cables.html" class="cables-button">Cables</a>
-      <a href="topology.html" class="topology-button">Network Topologies</a>
+      <a href="topology.html" class="cables-button">Network Topologies</a>
+      <a href="cables.html" class="topology-button">Cables</a>
       <a href="osi.html" class="osi-button">OSI</a>
       <button class="restart-button" onclick="restartQuiz()">Start Over</button>
     </div>
@@ -733,6 +738,38 @@
       shuffle(questions);
       showQuestion();
     }
+
+    // Highlight logic for tier buttons
+    function highlightTierButton(buttonClass) {
+      document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {
+        button.classList.remove('selected');
+      });
+      const selectedButton = document.querySelector(`.${buttonClass}`);
+      if (selectedButton) {
+        selectedButton.classList.add('selected');
+      }
+      localStorage.setItem('selectedTier', buttonClass);
+    }
+
+    // Load saved tier selection on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTier = localStorage.getItem('selectedTier');
+      if (savedTier) {
+        highlightTierButton(savedTier);
+      } else {
+        // Default to highlighting Tier 2 on this page
+        highlightTierButton('tier2-button');
+      }
+    });
+
+    // Add click event listeners to tier buttons
+    document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const buttonClass = e.target.classList[0];
+        highlightTierButton(buttonClass);
+        // Navigation happens normally via href
+      });
+    });
 
     shuffle(questions);
     showQuestion();

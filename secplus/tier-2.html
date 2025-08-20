@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA Security+ Tier 2</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .top-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .bottom-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .back-button,
+    .pbq-button,
+    .acronyms-button,
+    .topology-button,
+    .osi-button,
+    .cables-button,
+    .tier1-button,
+    .tier2-button,
+    .tier3-button,
+    .restart-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .restart-button {
+      display: none;
+    }
+
+    .back-button:hover,
+    .pbq-button:hover,
+    .acronyms-button:hover,
+    .topology-button:hover,
+    .osi-button:hover,
+    .cables-button:hover,
+    .tier1-button:hover,
+    .tier2-button:hover,
+    .tier3-button:hover,
+    .restart-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .quiz-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+      width: 100%;
+      text-align: center;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+      width: 100%;
+    }
+
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .quiz-content {
+        max-width: 95%;
+        padding: 0.5rem;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .button-container {
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+
+      .back-button,
+      .pbq-button,
+      .acronyms-button,
+      .topology-button,
+      .osi-button,
+      .cables-button,
+      .tier1-button,
+      .tier2-button,
+      .tier3-button,
+      .restart-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <div class="top-buttons">
+      <a href="index.html" class="back-button">← Back</a>
+      <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+    </div>
+    <div class="bottom-buttons">
+      <a href="pbq.html" class="pbq-button">PBQ</a>
+      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
+      <a href="cables.html" class="cables-button">Cables</a>
+      <a href="topology.html" class="topology-button">Network Topologies</a>
+      <a href="osi.html" class="osi-button">OSI</a>
+      <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "A user reports receiving a phishing email. What should be the first action?",
+        choices: ["Delete the email", "Report it to IT", "Click the link to verify", "Forward it to colleagues"],
+        answer: "Report it to IT",
+        explanation: "Reporting a phishing email to IT allows for investigation and mitigation, preventing further spread or compromise."
+      },
+      {
+        question: "Which security control is most effective against insider threats?",
+        choices: ["Firewall", "User behavior analytics", "Antivirus", "VPN"],
+        answer: "User behavior analytics",
+        explanation: "User behavior analytics monitors user activity to detect anomalies, helping identify insider threats."
+      },
+      {
+        question: "What is the purpose of a security operations center (SOC)?",
+        choices: ["Assign IP addresses", "Monitor and respond to incidents", "Encrypt data", "Filter web content"],
+        answer: "Monitor and respond to incidents",
+        explanation: "A SOC monitors and responds to security incidents, coordinating threat detection and response."
+      },
+      {
+        question: "Which protocol is used by 802.1X for network authentication?",
+        choices: ["EAP", "SNMP", "RADIUS", "TLS"],
+        answer: "EAP",
+        explanation: "802.1X uses EAP (Extensible Authentication Protocol) for secure network authentication, often with RADIUS."
+      },
+      {
+        question: "A website shows a 'Not Secure' warning. What is the likely cause?",
+        choices: ["Expired SSL certificate", "Incorrect DNS settings", "Firewall blocking port 80", "Duplicate IP address"],
+        answer: "Expired SSL certificate",
+        explanation: "An expired SSL certificate causes browsers to display a 'Not Secure' warning for HTTPS sites."
+      },
+      {
+        question: "Which type of firewall inspects packet headers and state information?",
+        choices: ["Packet-filtering", "Stateful inspection", "Proxy-based", "Application-layer"],
+        answer: "Stateful inspection",
+        explanation: "Stateful inspection firewalls track packet headers and connection states to make context-aware decisions."
+      },
+      {
+        question: "What is the purpose of a security information sharing platform?",
+        choices: ["Encrypt data", "Share threat intelligence", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Share threat intelligence",
+        explanation: "A security information sharing platform enables organizations to share threat intelligence for collective defense."
+      },
+      {
+        question: "Which command displays open ports on a Windows system?",
+        choices: ["netstat -an", "ipconfig", "tracert", "ping"],
+        answer: "netstat -an",
+        explanation: "The 'netstat -an' command displays open ports and their states on a Windows system."
+      },
+      {
+        question: "What is the benefit of using multi-factor authentication (MFA)?",
+        choices: ["Increased bandwidth", "Enhanced security", "Simplified access", "Reduced latency"],
+        answer: "Enhanced security",
+        explanation: "MFA enhances security by requiring multiple verification methods, reducing the risk of unauthorized access."
+      },
+      {
+        question: "Which type of attack exploits unpatched software vulnerabilities?",
+        choices: ["Phishing", "Zero-day", "DDoS", "Man-in-the-middle"],
+        answer: "Zero-day",
+        explanation: "Zero-day attacks exploit unpatched vulnerabilities before vendors release fixes."
+      },
+      {
+        question: "What is the purpose of a security configuration baseline?",
+        choices: ["Monitor traffic", "Standardize secure settings", "Assign IP addresses", "Encrypt data"],
+        answer: "Standardize secure settings",
+        explanation: "A security configuration baseline standardizes secure settings across systems to reduce vulnerabilities."
+      },
+      {
+        question: "Which protocol secures communications between a client and a domain controller?",
+        choices: ["Kerberos", "SNMP", "FTP", "HTTP"],
+        answer: "Kerberos",
+        explanation: "Kerberos secures authentication and communication between clients and domain controllers in Windows environments."
+      },
+      {
+        question: "A user cannot access a secure site. What should you check first?",
+        choices: ["Firewall rules", "DNS settings", "IP address", "Network cable"],
+        answer: "Firewall rules",
+        explanation: "Firewall rules blocking port 443 (HTTPS) are a common cause of secure site access issues."
+      },
+      {
+        question: "What is the purpose of a security token in MFA?",
+        choices: ["Encrypt data", "Generate one-time codes", "Monitor traffic", "Assign IP addresses"],
+        answer: "Generate one-time codes",
+        explanation: "A security token generates one-time codes for MFA, adding an extra layer of authentication."
+      },
+      {
+        question: "Which type of malware encrypts data and demands payment?",
+        choices: ["Trojan", "Ransomware", "Spyware", "Worm"],
+        answer: "Ransomware",
+        explanation: "Ransomware encrypts data and demands payment for decryption, often spreading via phishing."
+      },
+      {
+        question: "What is the purpose of a vulnerability management program?",
+        choices: ["Encrypt traffic", "Identify and mitigate vulnerabilities", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Identify and mitigate vulnerabilities",
+        explanation: "A vulnerability management program identifies, prioritizes, and mitigates vulnerabilities in systems."
+      },
+      {
+        question: "Which type of access control enforces strict security policies?",
+        choices: ["DAC", "MAC", "RBAC", "ABAC"],
+        answer: "MAC",
+        explanation: "MAC (Mandatory Access Control) enforces strict security policies, often used in high-security environments."
+      },
+      {
+        question: "What is the purpose of a network intrusion prevention system (IPS)?",
+        choices: ["Encrypt data", "Block malicious traffic", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Block malicious traffic",
+        explanation: "An IPS actively blocks malicious traffic based on detected threats, unlike an IDS which only alerts."
+      },
+      {
+        question: "Which command clears the DNS cache on a Windows system?",
+        choices: ["ipconfig /flushdns", "netstat -r", "arp -d", "tracert"],
+        answer: "ipconfig /flushdns",
+        explanation: "The 'ipconfig /flushdns' command clears the DNS resolver cache on a Windows system."
+      },
+      {
+        question: "What is the benefit of using a VPN with split tunneling?",
+        choices: ["Increased bandwidth", "Selective traffic routing", "Enhanced encryption", "Simplified configuration"],
+        answer: "Selective traffic routing",
+        explanation: "Split tunneling allows selective traffic routing through a VPN, optimizing performance for non-sensitive traffic."
+      },
+      {
+        question: "Which type of attack uses a fake Wi-Fi access point?",
+        choices: ["Evil twin", "DDoS", "Phishing", "Brute force"],
+        answer: "Evil twin",
+        explanation: "An evil twin attack uses a fake Wi-Fi access point to trick users into connecting, stealing data."
+      },
+      {
+        question: "What is the purpose of a security event log?",
+        choices: ["Encrypt data", "Record security-related activities", "Assign IP addresses", "Filter web content"],
+        answer: "Record security-related activities",
+        explanation: "A security event log records activities like logins or configuration changes for auditing and analysis."
+      },
+      {
+        question: "Which protocol is used for secure remote management of servers?",
+        choices: ["Telnet", "SSH", "HTTP", "SNMP"],
+        answer: "SSH",
+        explanation: "SSH (Secure Shell) is used for secure remote server management, encrypting communications over port 22."
+      },
+      {
+        question: "What is the purpose of a security awareness training program?",
+        choices: ["Encrypt traffic", "Reduce human error risks", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Reduce human error risks",
+        explanation: "Security awareness training reduces human error risks by educating users on security best practices."
+      },
+      {
+        question: "Which type of encryption is used by SSL/TLS?",
+        choices: ["Symmetric", "Asymmetric", "Hybrid", "Quantum"],
+        answer: "Hybrid",
+        explanation: "SSL/TLS uses hybrid encryption, combining asymmetric encryption for key exchange and symmetric for data transfer."
+      },
+      {
+        question: "A user reports slow access to a secure site. What should you check first?",
+        choices: ["Firewall rules", "DNS settings", "Certificate validity", "Network cable"],
+        answer: "Certificate validity",
+        explanation: "An expired or invalid certificate can cause slow access to secure sites due to browser warnings or errors."
+      },
+      {
+        question: "What is the purpose of a security control assessment?",
+        choices: ["Encrypt data", "Evaluate control effectiveness", "Monitor traffic", "Assign IP addresses"],
+        answer: "Evaluate control effectiveness",
+        explanation: "A security control assessment evaluates the effectiveness of security controls to ensure protection."
+      },
+      {
+        question: "Which type of attack exploits weak session IDs?",
+        choices: ["DDoS", "Session hijacking", "SQL injection", "Phishing"],
+        answer: "Session hijacking",
+        explanation: "Session hijacking exploits weak session IDs to take over a user’s session, gaining unauthorized access."
+      },
+      {
+        question: "What is the purpose of a network access control list (ACL)?",
+        choices: ["Encrypt traffic", "Control traffic based on rules", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Control traffic based on rules",
+        explanation: "A network ACL controls traffic by applying rules to allow or deny packets based on IP or port."
+      },
+      {
+        question: "Which protocol is used for secure VoIP signaling?",
+        choices: ["SIP", "SIPS", "RTP", "H.323"],
+        answer: "SIPS",
+        explanation: "SIPS (Secure SIP) uses TLS to secure VoIP signaling, ensuring encrypted call setup."
+      },
+      {
+        question: "What is the purpose of a security incident response team?",
+        choices: ["Encrypt data", "Respond to security breaches", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Respond to security breaches",
+        explanation: "A security incident response team investigates and mitigates security breaches to minimize damage."
+      },
+      {
+        question: "Which type of firewall operates at the application layer?",
+        choices: ["Packet-filtering", "Stateful inspection", "Proxy-based", "Circuit-level"],
+        answer: "Proxy-based",
+        explanation: "Proxy-based firewalls operate at the application layer, analyzing content and filtering traffic."
+      },
+      {
+        question: "What is the benefit of using a security token generator?",
+        choices: ["Increased bandwidth", "Enhanced authentication", "Simplified configuration", "Reduced latency"],
+        answer: "Enhanced authentication",
+        explanation: "A security token generator enhances authentication by providing one-time codes for MFA."
+      },
+      {
+        question: "Which type of attack involves stealing cookies to access a session?",
+        choices: ["DDoS", "Session hijacking", "Phishing", "SQL injection"],
+        answer: "Session hijacking",
+        explanation: "Session hijacking can involve stealing cookies to impersonate a user and access their session."
+      },
+      {
+        question: "What is the purpose of a security patch management program?",
+        choices: ["Encrypt data", "Apply software updates", "Monitor traffic", "Assign IP addresses"],
+        answer: "Apply software updates",
+        explanation: "A security patch management program applies software updates to fix vulnerabilities and improve security."
+      },
+      {
+        question: "Which protocol is used for secure directory services in a Windows environment?",
+        choices: ["LDAP", "LDAPS", "SNMP", "FTP"],
+        answer: "LDAPS",
+        explanation: "LDAPS (LDAP Secure) uses port 636 for secure directory services in Windows environments."
+      },
+      {
+        question: "What is the purpose of a security risk register?",
+        choices: ["Encrypt traffic", "Track identified risks", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Track identified risks",
+        explanation: "A security risk register tracks identified risks, their impact, and mitigation strategies."
+      },
+      {
+        question: "Which type of attack uses multiple compromised devices to flood a network?",
+        choices: ["Phishing", "DDoS", "SQL injection", "Man-in-the-middle"],
+        answer: "DDoS",
+        explanation: "A DDoS attack uses multiple compromised devices (botnet) to flood a network, disrupting availability."
+      },
+      {
+        question: "What is the purpose of a security compliance audit?",
+        choices: ["Encrypt data", "Ensure regulatory adherence", "Monitor traffic", "Assign IP addresses"],
+        answer: "Ensure regulatory adherence",
+        explanation: "A security compliance audit ensures adherence to regulatory and organizational security standards."
+      },
+      {
+        question: "Which protocol is used for secure remote access to network devices?",
+        choices: ["Telnet", "SSH", "HTTP", "SNMP"],
+        answer: "SSH",
+        explanation: "SSH provides secure remote access to network devices, encrypting communications over port 22."
+      },
+      {
+        question: "What is the benefit of using a SIEM system?",
+        choices: ["Increased bandwidth", "Centralized threat detection", "Simplified configuration", "Reduced latency"],
+        answer: "Centralized threat detection",
+        explanation: "A SIEM system provides centralized threat detection by analyzing logs and events across the network."
+      },
+      {
+        question: "Which type of attack exploits input validation flaws?",
+        choices: ["Phishing", "SQL injection", "DDoS", "Man-in-the-middle"],
+        answer: "SQL injection",
+        explanation: "SQL injection exploits input validation flaws to inject malicious code into database queries."
+      },
+      {
+        question: "What is the purpose of a security awareness campaign?",
+        choices: ["Encrypt traffic", "Educate users on threats", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Educate users on threats",
+        explanation: "A security awareness campaign educates users on threats like phishing to reduce security risks."
+      },
+      {
+        question: "Which protocol is used for secure file sharing in a Windows network?",
+        choices: ["FTP", "SMB with encryption", "NFS", "HTTP"],
+        answer: "SMB with encryption",
+        explanation: "SMB with encryption secures file sharing in Windows networks, typically over port 445."
+      },
+      {
+        question: "What is the purpose of a security baseline audit?",
+        choices: ["Encrypt data", "Verify standard compliance", "Monitor traffic", "Assign IP addresses"],
+        answer: "Verify standard compliance",
+        explanation: "A security baseline audit verifies that systems comply with established security standards."
+      },
+      {
+        question: "Which type of encryption is used for secure email attachments?",
+        choices: ["Symmetric", "Asymmetric", "Hashing", "Quantum"],
+        answer: "Asymmetric",
+        explanation: "Asymmetric encryption, like PGP, is used for secure email attachments, ensuring confidentiality."
+      },
+      {
+        question: "What is the purpose of a security incident log?",
+        choices: ["Encrypt data", "Record security events", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Record security events",
+        explanation: "A security incident log records events like breaches or alerts for analysis and auditing."
+      },
+      {
+        question: "Which type of attack uses fake login pages to steal credentials?",
+        choices: ["DDoS", "Phishing", "SQL injection", "Man-in-the-middle"],
+        answer: "Phishing",
+        explanation: "Phishing attacks use fake login pages to trick users into entering credentials, which are then stolen."
+      },
+      {
+        question: "What is the purpose of a security control framework?",
+        choices: ["Encrypt traffic", "Guide security practices", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Guide security practices",
+        explanation: "A security control framework, like NIST, guides organizations in implementing security practices."
+      },
+      {
+        question: "Which protocol is used for secure remote access to a GUI?",
+        choices: ["SSH", "RDP", "FTP", "HTTP"],
+        answer: "RDP",
+        explanation: "RDP (Remote Desktop Protocol) provides secure remote access to a graphical user interface, typically on port 3389."
+      },
+      {
+        question: "What is the benefit of using a security token for authentication?",
+        choices: ["Increased bandwidth", "Enhanced security", "Simplified configuration", "Reduced latency"],
+        answer: "Enhanced security",
+        explanation: "A security token enhances authentication security by providing one-time codes for MFA."
+      },
+      {
+        question: "Which type of attack exploits outdated browser plugins?",
+        choices: ["Phishing", "Drive-by download", "DDoS", "SQL injection"],
+        answer: "Drive-by download",
+        explanation: "Drive-by download attacks exploit outdated browser plugins to install malware without user interaction."
+      },
+      {
+        question: "What is the purpose of a security risk assessment?",
+        choices: ["Encrypt data", "Identify and prioritize risks", "Monitor traffic", "Assign IP addresses"],
+        answer: "Identify and prioritize risks",
+        explanation: "A security risk assessment identifies and prioritizes risks to guide mitigation efforts."
+      },
+      {
+        question: "Which protocol is used for secure authentication in a wireless network?",
+        choices: ["SNMP", "EAP", "FTP", "HTTP"],
+        answer: "EAP",
+        explanation: "EAP (Extensible Authentication Protocol) is used for secure authentication in wireless networks, often with 802.1X."
+      },
+      {
+        question: "What is the purpose of a security incident response policy?",
+        choices: ["Encrypt traffic", "Define breach response procedures", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Define breach response procedures",
+        explanation: "A security incident response policy defines procedures for detecting and responding to breaches."
+      },
+      {
+        question: "Which type of firewall filters traffic based on application data?",
+        choices: ["Packet-filtering", "Stateful inspection", "Next-generation", "Circuit-level"],
+        answer: "Next-generation",
+        explanation: "Next-generation firewalls filter traffic based on application data, using deep packet inspection."
+      },
+      {
+        question: "What is the purpose of a security awareness poster?",
+        choices: ["Encrypt data", "Promote security best practices", "Monitor traffic", "Assign IP addresses"],
+        answer: "Promote security best practices",
+        explanation: "A security awareness poster promotes best practices, like avoiding phishing, to educate users."
+      },
+      {
+        question: "Which type of attack uses stolen credentials to access systems?",
+        choices: ["DDoS", "Credential stuffing", "Phishing", "SQL injection"],
+        answer: "Credential stuffing",
+        explanation: "Credential stuffing uses stolen credentials from one breach to access other systems."
+      },
+      {
+        question: "What is the purpose of a security configuration guide?",
+        choices: ["Encrypt traffic", "Provide secure system settings", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Provide secure system settings",
+        explanation: "A security configuration guide provides recommended settings to secure systems and reduce vulnerabilities."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+    const restartButton = document.querySelector(".restart-button");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+          restartButton.style.display = "block";
+        }
+      }, 5000);
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      missedQuestions = [];
+      shuffle(questions);
+      showQuestion();
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

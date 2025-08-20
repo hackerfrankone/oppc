@@ -28,7 +28,7 @@
     .button-container {
       position: fixed;
       top: 0.5rem;
-      left: 0.5rem;
+      left: 0.3rem;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -42,18 +42,7 @@
       gap: 0.5rem;
     }
 
-    .bottom-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
     .back-button,
-    .pbq-button,
-    .acronyms-button,
-    .topology-button,
-    .osi-button,
-    .cables-button,
     .tier1-button,
     .tier2-button,
     .tier3-button,
@@ -78,11 +67,6 @@
     }
 
     .back-button:hover,
-    .pbq-button:hover,
-    .acronyms-button:hover,
-    .topology-button:hover,
-    .osi-button:hover,
-    .cables-button:hover,
     .tier1-button:hover,
     .tier2-button:hover,
     .tier3-button:hover,
@@ -234,11 +218,6 @@
       }
 
       .back-button,
-      .pbq-button,
-      .acronyms-button,
-      .topology-button,
-      .osi-button,
-      .cables-button,
       .tier1-button,
       .tier2-button,
       .tier3-button,
@@ -256,15 +235,8 @@
       <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
       <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
       <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
-      <a href="pbq.html" class="pbq-button">PBQ</a>
     </div>
-    <div class="bottom-buttons">
-      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
-      <a href="topology.html" class="cables-button">Network Topologies</a>
-      <a href="cables.html" class="topology-button">Cables</a>
-      <a href="osi.html" class="osi-button">OSI</a>
-      <button class="restart-button" onclick="restartQuiz()">Start Over</button>
-    </div>
+    <button class="restart-button" onclick="restartQuiz()">Start Over</button>
   </div>
 
   <div class="quiz-content">
@@ -748,18 +720,11 @@
       if (selectedButton) {
         selectedButton.classList.add('selected');
       }
-      localStorage.setItem('selectedTier', buttonClass);
     }
 
-    // Load saved tier selection on page load
+    // Highlight Tier 2 button by default on page load
     document.addEventListener('DOMContentLoaded', () => {
-      const savedTier = localStorage.getItem('selectedTier');
-      if (savedTier) {
-        highlightTierButton(savedTier);
-      } else {
-        // Default to highlighting Tier 2 on this page
-        highlightTierButton('tier2-button');
-      }
+      highlightTierButton('tier2-button');
     });
 
     // Add click event listeners to tier buttons

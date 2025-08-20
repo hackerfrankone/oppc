@@ -537,16 +537,70 @@
         explanation: "A firewall filters network traffic based on predefined rules to allow or block packets, enhancing security."
       },
       {
-        question: "Which protocol is used for secure file transfers in Linux environments?",
-        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
-        answer: "SFTP",
-        explanation: "SFTP (Secure File Transfer Protocol) uses SSH for secure file transfers, commonly used in Linux environments."
+        question: "What is the purpose of the BGP protocol in networking?",
+        choices: ["Resolve IP addresses", "Exchange routing information", "Assign IP addresses", "Encrypt data packets"],
+        answer: "Exchange routing information",
+        explanation: "BGP (Border Gateway Protocol) is used to exchange routing information between autonomous systems, such as ISPs, to determine the best paths for internet traffic."
       },
       {
-        question: "What is the benefit of using a VLAN trunk?",
-        choices: ["Encrypts traffic", "Carries multiple VLANs", "Increases speed", "Assigns IP addresses"],
-        answer: "Carries multiple VLANs",
-        explanation: "A VLAN trunk carries traffic for multiple VLANs over a single link, typically using protocols like 802.1Q."
+        question: "Which feature of a managed switch allows monitoring of network traffic?",
+        choices: ["Port mirroring", "VLAN tagging", "Link aggregation", "PoE"],
+        answer: "Port mirroring",
+        explanation: "Port mirroring copies traffic from one or more switch ports to a designated port for monitoring, useful for network analysis and troubleshooting."
+      },
+      {
+        question: "What is the primary advantage of using OSPF over RIP in large networks?",
+        choices: ["Simpler configuration", "Faster convergence", "Lower bandwidth usage", "Static routing"],
+        answer: "Faster convergence",
+        explanation: "OSPF (Open Shortest Path First) offers faster convergence than RIP by using link-state routing, making it more efficient for large, dynamic networks."
+      },
+      {
+        question: "Which type of network address is used for loopback testing?",
+        choices: ["127.0.0.1", "192.168.0.1", "10.0.0.1", "172.16.0.1"],
+        answer: "127.0.0.1",
+        explanation: "The IP address 127.0.0.1 is the loopback address used for testing network software on a local device without sending traffic over the network."
+      },
+      {
+        question: "What is the function of a network content filter?",
+        choices: ["Route packets", "Block unauthorized websites", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Block unauthorized websites",
+        explanation: "A network content filter blocks access to unauthorized or inappropriate websites, enhancing security and enforcing organizational policies."
+      },
+      {
+        question: "Which protocol is used to authenticate users in a network?",
+        choices: ["RADIUS", "SNMP", "ICMP", "FTP"],
+        answer: "RADIUS",
+        explanation: "RADIUS (Remote Authentication Dial-In User Service) authenticates and authorizes users for network access, commonly used in VPNs and wireless networks."
+      },
+      {
+        question: "What is the purpose of a network syslog server?",
+        choices: ["Assign IP addresses", "Store and analyze log data", "Route traffic", "Encrypt communications"],
+        answer: "Store and analyze log data",
+        explanation: "A syslog server collects, stores, and analyzes log data from network devices, aiding in monitoring and troubleshooting."
+      },
+      {
+        question: "Which type of network segmentation improves security by isolating guest devices?",
+        choices: ["VLAN", "Subnetting", "DMZ", "NAT"],
+        answer: "VLAN",
+        explanation: "VLANs improve security by isolating guest devices from the main network, preventing unauthorized access to sensitive resources."
+      },
+      {
+        question: "What is the benefit of using a dual-band wireless access point?",
+        choices: ["Increased security", "Support for 2.4 GHz and 5 GHz bands", "Automatic IP assignment", "Reduced latency"],
+        answer: "Support for 2.4 GHz and 5 GHz bands",
+        explanation: "A dual-band wireless access point supports both 2.4 GHz and 5 GHz bands, offering flexibility for devices and reducing interference."
+      },
+      {
+        question: "Which command displays the routing table on a Windows system?",
+        choices: ["ipconfig", "netstat -r", "tracert", "ping"],
+        answer: "netstat -r",
+        explanation: "The 'netstat -r' command displays the routing table on a Windows system, showing how packets are routed to different destinations."
+      },
+      {
+        question: "What is the purpose of a network performance baseline?",
+        choices: ["Encrypt traffic", "Establish normal operating conditions", "Assign IP addresses", "Filter web content"],
+        answer: "Establish normal operating conditions",
+        explanation: "A network performance baseline establishes normal operating conditions, allowing administrators to detect anomalies during troubleshooting."
       },
       {
         question: "Which tool is used to capture and analyze network packets?",
@@ -555,46 +609,10 @@
         explanation: "Wireshark is a packet analyzer used to capture and inspect network packets for troubleshooting and monitoring."
       },
       {
-        question: "What is the purpose of a network DMZ?",
-        choices: ["Encrypt traffic", "Isolate public-facing servers", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Isolate public-facing servers",
-        explanation: "A DMZ (Demilitarized Zone) isolates public-facing servers from the internal network to enhance security."
-      },
-      {
-        question: "Which protocol is used for network time synchronization?",
-        choices: ["NTP", "SNMP", "DHCP", "DNS"],
-        answer: "NTP",
-        explanation: "NTP (Network Time Protocol) synchronizes clocks across networked devices, using port 123."
-      },
-      {
-        question: "What is the maximum speed of a Gigabit Ethernet connection?",
-        choices: ["100 Mbps", "1 Gbps", "10 Gbps", "40 Gbps"],
-        answer: "1 Gbps",
-        explanation: "Gigabit Ethernet provides a maximum speed of 1 Gbps, commonly used in modern LANs."
-      },
-      {
-        question: "Which type of network topology offers the highest fault tolerance?",
-        choices: ["Star", "Bus", "Ring", "Mesh"],
-        answer: "Mesh",
-        explanation: "A mesh topology offers high fault tolerance due to multiple connections between devices, ensuring alternate paths."
-      },
-      {
-        question: "What is the purpose of a network proxy?",
-        choices: ["Route traffic", "Cache content and filter traffic", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Cache content and filter traffic",
-        explanation: "A proxy caches content to improve performance and filters traffic for security or access control."
-      },
-      {
-        question: "Which port is used by IMAPS for secure email retrieval?",
-        choices: ["143", "993", "995", "110"],
-        answer: "993",
-        explanation: "IMAPS (IMAP over SSL/TLS) uses port 993 for secure email retrieval, encrypting communication."
-      },
-      {
-        question: "What is the purpose of a network aggregator?",
-        choices: ["Combine multiple links", "Encrypt traffic", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Combine multiple links",
-        explanation: "A network aggregator combines multiple network links to increase bandwidth and provide redundancy."
+        question: "What is the benefit of using a VLAN trunk?",
+        choices: ["Encrypts traffic", "Carries multiple VLANs", "Increases speed", "Assigns IP addresses"],
+        answer: "Carries multiple VLANs",
+        explanation: "A VLAN trunk carries traffic for multiple VLANs over a single link, typically using protocols like 802.1Q."
       },
       {
         question: "Which protocol is used for dynamic routing in large networks?",
@@ -613,24 +631,6 @@
         choices: ["Fiber optic", "Coaxial", "Cat 5e", "USB"],
         answer: "Cat 5e",
         explanation: "Cat 5e and higher twisted pair cables support PoE (Power over Ethernet), powering devices like IP phones."
-      },
-      {
-        question: "What is the purpose of a network baseline?",
-        choices: ["Encrypt traffic", "Measure normal performance", "Assign IP addresses", "Filter traffic"],
-        answer: "Measure normal performance",
-        explanation: "A network baseline measures normal performance metrics to identify deviations during troubleshooting."
-      },
-      {
-        question: "Which protocol is used for secure management of network devices?",
-        choices: ["Telnet", "SNMPv3", "HTTP", "FTP"],
-        answer: "SNMPv3",
-        explanation: "SNMPv3 provides secure network management with authentication and encryption, unlike earlier SNMP versions."
-      },
-      {
-        question: "What is the purpose of a network honeypot?",
-        choices: ["Encrypt traffic", "Detect and study attacks", "Assign IP addresses", "Route packets"],
-        answer: "Detect and study attacks",
-        explanation: "A honeypot is a decoy system designed to attract and analyze attacks, improving network security."
       }
     ];
 

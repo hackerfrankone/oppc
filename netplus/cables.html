@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Network Cables</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+<style>
+  body {
+    background-color: #0d0d0d;
+    color: #00ff00;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    padding: 10px;
+    background-color: #1a1a1a;
+    display: flex;
+    align-items: center;
+  }
+  header button {
+    background-color: #00ff00;
+    color: #0d0d0d;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  h1 {
+    text-align: center;
+    margin: 20px 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
+  .item {
+    background-color: #1a1a1a;
+    border: 1px solid #00ff00;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  .item img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #00ff00;
+    border-radius: 3px;
+    background-color: #000;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .item h2 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+  }
+  .item p {
+    font-size: 14px;
+    color: #99ff99;
+  }
+  .details {
+    display: none;
+    font-size: 12px;
+    color: #ccffcc;
+    text-align: left;
+    margin-top: 10px;
+    padding: 5px;
+    border-top: 1px solid #00ff00;
+  }
+</style>
+<script>
+  function toggleDetails(img) {
+    var details = img.nextElementSibling.nextElementSibling.nextElementSibling; // img -> h2 -> p -> details
+    if (details.style.display === "none" || details.style.display === "") {
+      details.style.display = "block";
+    } else {
+      details.style.display = "none";
+    }
+  }
+</script>
+</head>
+<body>
+<header>
+  <button onclick="window.location.href='netplus.html'">← Back</button>
+</header>
+<h1>Network Cables</h1>
+<div class="grid">
+
+  <div class="item">
+    <img src="../images/802-11.png" alt="802.11 Standards" onclick="toggleDetails(this)">
+    <h2>802.11 Standards</h2>
+    <p>Wireless LAN standards (Wi-Fi). Includes 802.11a/b/g/n/ac/ax/be. Speeds range from 11 Mbps (802.11b) to 9.6 Gbps (802.11ax/Wi-Fi 6). Operates in 2.4, 5, and 6 GHz bands.</p>
+    <div class="details">The 802.11 family defines WLAN protocols. 802.11a: 5 GHz, 54 Mbps; 802.11b: 2.4 GHz, 11 Mbps; 802.11g: 2.4 GHz, 54 Mbps; 802.11n: 2.4/5 GHz, 600 Mbps with MIMO; 802.11ac (Wi-Fi 5): 5 GHz, up to 3.5 Gbps with MU-MIMO; 802.11ax (Wi-Fi 6): 2.4/5/6 GHz, up to 9.6 Gbps, OFDMA, better efficiency; 802.11be (Wi-Fi 7): up to 46 Gbps, 320 MHz channels. Security evolves from WEP to WPA3. Channel widths: 20/40/80/160 MHz. Beamforming and mesh support in later standards.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/cellular.png" alt="Cellular" onclick="toggleDetails(this)">
+    <h2>Cellular</h2>
+    <p>Wireless mobile networks using 4G LTE or 5G. Speeds up to 7 Gbps (5G). Used for mobile devices, IoT, and backup connectivity. Requires SIM cards and cellular modems.</p>
+    <div class="details">Cellular technologies include 2G (GSM/CDMA, voice/SMS), 3G (UMTS/EV-DO, up to 42 Mbps), 4G LTE (up to 1 Gbps, VoLTE), 5G NR (sub-6 GHz/mmWave, up to 20 Gbps theoretical, low latency <1ms, massive MIMO). 6G in development for 2030s. Bands: low (600-900 MHz for coverage), mid (2-6 GHz for balance), high (24-100 GHz for speed). Use cases: mobile broadband, fixed wireless access, private networks. Authentication via SIM/eSIM. Roaming, handover between cells.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/satellite.png" alt="Satellite" onclick="toggleDetails(this)">
+    <h2>Satellite</h2>
+    <p>Wireless connectivity via satellites. Speeds up to 100 Mbps (e.g., Starlink). High latency (600+ ms). Used in remote areas with no wired or cellular options.</p>
+    <div class="details">Types: Geostationary (GEO, 35,786 km, high latency 600ms+, fixed position); Low Earth Orbit (LEO, 500-2000 km, lower latency 20-50ms, constellations like Starlink); Medium Earth Orbit (MEO). Providers: Starlink (up to 220 Mbps down), HughesNet, Viasat. Uses: rural internet, maritime, aviation. Challenges: weather interference (rain fade), line-of-sight required, data caps. Technologies: VSAT terminals, phased array antennas for LEO. Emerging: hybrid satellite-terrestrial networks.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/802-3.png" alt="802.3 Standards" onclick="toggleDetails(this)">
+    <h2>802.3 Standards</h2>
+    <p>Ethernet standards for wired LANs. Includes Fast Ethernet (100 Mbps), Gigabit Ethernet (1 Gbps), and 10/40/100 Gbps variants. Uses twisted pair or fiber cables.</p>
+    <div class="details">IEEE 802.3 defines Ethernet. Key amendments: 802.3u (Fast Ethernet, 100 Mbps over Cat5); 802.3ab (Gigabit Ethernet, 1000BASE-T over Cat5e); 802.3an (10GBASE-T over Cat6a); 802.3ae (10G over fiber); 802.3ba (40/100G); 802.3bs (200/400G). PoE: 802.3af (15W), 802.3at (30W), 802.3bt (90W). Topologies: star, with switches. CSMA/CD legacy, now full-duplex. Auto-negotiation for speed/duplex. VLANs via 802.1Q.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/single-mode-fiber.png" alt="Single-mode Fiber" onclick="toggleDetails(this)">
+    <h2>Single-mode Fiber</h2>
+    <p>Fiber optic cable with a single light path. Supports long distances (up to 100 km) and high speeds (10 Gbps+). Used in WANs and backbone networks.</p>
+    <div class="details">Core diameter: 8-10 μm. Wavelengths: 1310nm (O-band), 1550nm (C-band) for minimal attenuation. Types: OS1 (indoor, up to 10km), OS2 (outdoor, up to 200km). Low dispersion, laser light sources (FP/DFB lasers). Connectors: SC/LC with UPC/APC polish (APC for angled, reduces reflections). Attenuation: 0.4 dB/km at 1310nm, 0.2 dB/km at 1550nm. Used in telecom, metro networks, DWDM for multiplexing.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/multimode-fiber.png" alt="Multimode Fiber" onclick="toggleDetails(this)">
+    <h2>Multimode Fiber</h2>
+    <p>Fiber optic cable with multiple light paths. Supports shorter distances (up to 2 km) and high speeds (10 Gbps+). Used in LANs and data centers.</p>
+    <div class="details">Core diameter: 50μm (OM2/3/4/5) or 62.5μm (OM1). Wavelengths: 850nm (VCSEL lasers), 1300nm. Grades: OM1 (100 Mbps, 2km), OM2 (1 Gbps, 550m), OM3 (10 Gbps, 300m), OM4 (10 Gbps, 400m; 40/100G, 150m), OM5 (wideband, SWDM support). Modal dispersion limits distance. Cheaper transceivers than single-mode. Bend-insensitive variants available.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/dac.png" alt="Direct Attach Copper (DAC)" onclick="toggleDetails(this)">
+    <h2>Direct Attach Copper (DAC)</h2>
+    <p>High-speed copper cable with fixed transceivers. Used for short-distance (up to 7m) data center connections at 10/40/100 Gbps. Cost-effective alternative to fiber.</p>
+    <div class="details">Passive DAC: no active components, low power (<0.5W), lengths up to 5-7m for 10G, shorter for higher speeds. Active DAC: amplifiers for longer reach (up to 15m), higher power (1-1.5W). Form factors: SFP+, QSFP+, QSFP28. Twinax cable inside. Low latency (~0.1μs). No optics, so cheaper than AOC (Active Optical Cable). Used in ToR switches, server interconnects. Breakout cables for 40G to 4x10G.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/twinaxial.png" alt="Twinaxial Cable" onclick="toggleDetails(this)">
+    <h2>Twinaxial Cable</h2>
+    <p>Two inner conductors for high-speed data (10/40 Gbps). Used in DAC cables for data centers. Offers low latency and high bandwidth for short distances.</p>
+    <div class="details">Balanced pair conductors with foil/braid shielding. Impedance: 100 ohm. Used in SFP+/QSFP DACs. Advantages: lower cost, power than fiber; better than twisted pair for high freq. Lengths: up to 10m for 10G, 5m for 25G+. Applications: HPC, storage, networking racks. Variants: 26-30 AWG for flexibility. Crosstalk minimized by design.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/coaxial.png" alt="Coaxial Cable" onclick="toggleDetails(this)">
+    <h2>Coaxial Cable</h2>
+    <p>Single copper conductor with shielding. Used for cable internet/TV (e.g., RG-6). Supports high-frequency signals with low loss, up to 1 Gbps over short distances.</p>
+    <div class="details">Structure: center conductor, dielectric, shield, jacket. Types: RG-6 (75 ohm, broadband), RG-59 (thinner, shorter runs), RG-11 (longer distances). Impedance: 75 ohm for video. Attenuation: increases with frequency/length. Connectors: F-type, BNC. Uses: DOCSIS for cable modems (up to 10 Gbps shared), MoCA for home networking. Shielding protects against EMI. Plenum-rated versions available.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/cable-speeds.png" alt="Cable Speeds" onclick="toggleDetails(this)">
+    <h2>Cable Speeds</h2>
+    <p>Cat5e: 1 Gbps (100m); Cat6: 10 Gbps (55m); Cat6a/Cat7: 10 Gbps (100m); Fiber: 10 Gbps+ (km); Coaxial: up to 1 Gbps; DAC/Twinax: 10/40/100 Gbps (short distances).</p>
+    <div class="details">Twisted Pair: Cat5 (100 Mbps, 100m), Cat5e (1 Gbps, 100m, 350 MHz), Cat6 (10 Gbps, 55m, 500 MHz), Cat6a (10 Gbps, 100m, 500 MHz, better shielding), Cat7 (10 Gbps, 100m, 600 MHz, STP), Cat8 (40 Gbps, 30m, 2000 MHz). Fiber: 10G (OM3:300m, OS2:10km), 40G (OM4:150m, OS2:10km), 100G (OM5:150m, OS2:2km SR). Coax: DOCSIS 3.1 (10 Gbps down/1 Gbps up shared). Factors: crosstalk, attenuation, environment.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/plenum-cable.png" alt="Plenum Cable" onclick="toggleDetails(this)">
+    <h2>Plenum Cable</h2>
+    <p>Cables with fire-resistant jackets for use in plenum spaces (e.g., air ducts). Meets safety standards. More expensive than non-plenum cables.</p>
+    <div class="details">Jacket material: low-smoke zero-halogen (LSZH) or fluorinated ethylene propylene (FEP). Complies with NFPA 90A, UL 910 (Steiner Tunnel Test). Low flame spread, minimal toxic smoke. Used in HVAC plenums, raised floors. Examples: CMP-rated twisted pair/fiber. Cost: 20-50% more than PVC. Alternatives: riser (CMR) for vertical shafts.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/non-plenum-cable.png" alt="Non-plenum Cable" onclick="toggleDetails(this)">
+    <h2>Non-plenum Cable</h2>
+    <p>Standard cables for non-plenum areas. Less expensive but not fire-resistant. Used in walls or conduits. Common for Cat5e/Cat6 installations.</p>
+    <div class="details">Jacket: PVC (polyvinyl chloride) or PE for outdoor. Ratings: CM (general), CMR (riser). Higher smoke/toxins in fire. Cheaper, flexible. Not for air-handling spaces per code. Use in patch panels, walls, conduits. UV-resistant for outdoor. Shielded (F/UTP) variants for EMI.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/ethernet-transceiver.png" alt="Ethernet Transceiver" onclick="toggleDetails(this)">
+    <h2>Ethernet Transceiver</h2>
+    <p>Converts electrical signals to optical or vice versa for Ethernet networks. Supports 1/10/40/100 Gbps. Used with SFP/QSFP modules for flexible connectivity.</p>
+    <div class="details">Types: GBIC (older, 1G), SFP (1G), SFP+ (10G), QSFP (40G), QSFP28 (100G), QSFP-DD (400G). Media: copper (RJ45), fiber (LC/SC). Reach: SR (short, multimode), LR (long, single-mode), ER (extended). Power: <1W for SFP. Hot-swappable, MSA compliant. Diagnostics: DOM for monitoring temp, power, etc. Used in switches, NICs.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/fibre-channel.png" alt="Fibre Channel Transceiver" onclick="toggleDetails(this)">
+    <h2>Fibre Channel Transceiver</h2>
+    <p>Used in storage area networks (SANs). Supports 8/16/32 Gbps. Connects servers to storage devices using fiber or copper with SFP/QSFP modules.</p>
+    <div class="details">Speeds: 1/2/4/8/16/32/64/128 GFC. Topologies: point-to-point, arbitrated loop (FC-AL), switched fabric (FC-SW). Protocols: SCSI over FC (FCP). Reach: SW (short wave, multimode, 500m), LW (long wave, single-mode, 10km). Zoning for security. Low latency (<1μs). Used in enterprise storage, backups. Converged with Ethernet (FCoE).</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/sfp.png" alt="SFP Transceiver" onclick="toggleDetails(this)">
+    <h2>SFP (Small Form-factor Pluggable)</h2>
+    <p>Compact transceiver for 1-10 Gbps Ethernet or Fibre Channel. Hot-swappable, supports fiber or copper cables. Used in switches and routers.</p>
+    <div class="details">Dimensions: 8.5x13.4x56.5mm. Variants: SFP (1G), SFP+ (10G), SFP28 (25G), SFP56 (50G). Interfaces: SX (850nm MMF, 550m), LX (1310nm SMF, 10km), ZX (1550nm, 80km), T (copper RJ45, 100m). Power: 1W max. EEPROM for identification. BiDi (bidirectional) for single fiber. CWDM/DWDM for wavelength multiplexing.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/qsfp.png" alt="QSFP Transceiver" onclick="toggleDetails(this)">
+    <h2>QSFP (Quad SFP)</h2>
+    <p>High-density transceiver for 40/100 Gbps Ethernet or Fibre Channel. Supports fiber or DAC cables. Used in data centers for high-speed links.</p>
+    <div class="details">4 lanes for higher bandwidth. Variants: QSFP+ (40G), QSFP28 (100G), QSFP56 (200G), QSFP-DD (400G, 8 lanes), OSFP (400G alternative). Interfaces: SR4 (MMF, 100m), LR4 (SMF, 10km), PSM4 (parallel SMF). Power: up to 3.5W (QSFP28). Breakout to 4x SFP. PAM4 modulation for higher speeds. Used in spine-leaf architectures.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/sc-connector.png" alt="SC Connector" onclick="toggleDetails(this)">
+    <h2>SC (Subscriber Connector)</h2>
+    <p>Fiber optic connector with push-pull coupling. Used in telecom and data networks. Supports single-mode and multimode fiber.</p>
+    <div class="details">2.5mm ferrule. Duplex common (clipped pair). Polish: PC (physical contact), UPC (ultra), APC (angled, 8° for low reflection -60dB). Insertion loss: 0.2dB. Durable, up to 1000 matings. Standardized by TIA-604-3. Used in PON, CATV. Larger than LC, but reliable.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/lc-connector.png" alt="LC Connector" onclick="toggleDetails(this)">
+    <h2>LC (Local Connector)</h2>
+    <p>Small fiber optic connector with latch mechanism. Common in high-density applications like data centers. Supports single-mode and multimode fiber.</p>
+    <div class="details">1.25mm ferrule, half size of SC. Duplex with clip. Polish: UPC/APC. Loss: 0.1-0.2dB. High density (twice SC). RJ-style latch. Standardized by TIA-604-10. Used in SFP transceivers, patch panels. Pull-proof design.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/st-connector.png" alt="ST Connector" onclick="toggleDetails(this)">
+    <h2>ST (Straight Tip)</h2>
+    <p>Fiber optic connector with bayonet mount. Used in legacy networks. Supports multimode fiber, less common in modern installations.</p>
+    <div class="details">2.5mm ferrule, twist-lock bayonet. Simplex only. Polish: PC/UPC. Loss: 0.3dB. Durable for industrial. Originated from AT&T. Less used now due to non-push-pull. Max 500 matings. Common in older multimode LANs.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/mpo-connector.png" alt="MPO Connector" onclick="toggleDetails(this)">
+    <h2>MPO (Multi-fiber Push On)</h2>
+    <p>Fiber optic connector for multiple fibers (12-24). Used in high-speed data centers for 40/100 Gbps links. Supports multimode and single-mode fiber.</p>
+    <div class="details">MT ferrule, push-pull. Fibers: 8/12/16/24/32. Polarity: Type A (straight), B (reversed), C (pair flipped) for proper Tx/Rx alignment. Polish: APC for SMF. Loss: 0.35dB max. Used in QSFP for parallel optics (SR4/PSM4). High density, quick install. Cleaning critical due to multiple fibers.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/rj11.png" alt="RJ11 Connector" onclick="toggleDetails(this)">
+    <h2>RJ11</h2>
+    <p>Phone line connector for DSL or landline. 6P2C/6P4C configuration. Used in telecommunications, not for Ethernet.</p>
+    <div class="details">6 positions, 2-4 contacts. Wiring: pins 3/4 for single line, 2/5 for second. Used in modems, fax. DSL: filters split voice/data. Smaller than RJ45. Crimp tool required. Legacy, but still in POTS (plain old telephone service).</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/rj45.png" alt="RJ45 Connector" onclick="toggleDetails(this)">
+    <h2>RJ45</h2>
+    <p>Ethernet connector for twisted pair cables (Cat5e/Cat6/Cat7). 8P8C configuration. Supports 1-10 Gbps in LANs and PoE.</p>
+    <div class="details">8 positions, 8 contacts. Wiring standards: T568A (green/orange pairs swapped vs B), T568B (common). Straight-through for device-switch, crossover for device-device (auto-MDIX now common). Shielded for STP. Tools: crimper, tester for continuity. Supports PoE. Cat ratings determine performance.</div>
+  </div>
+
+  <div class="item">
+    <img src="../images/f-type.png" alt="F-type Connector" onclick="toggleDetails(this)">
+    <h2>F-type</h2>
+    <p>Coaxial connector for cable TV, satellite, and cable modems. Supports high-frequency signals up to 1 Gbps. Common in RG-6 cables.</p>
+    <div class="details">Threaded, 3/8-32 coupling. Compression or crimp attachment. Weatherproof variants. Frequency: up to 3 GHz. Used in MoCA (Ethernet over coax). Quad-shield for better EMI. Torque: 25-30 in-lbs. Common in home installations for broadband.</div>
+  </div>
+
+</div>
+</body>
+</html>

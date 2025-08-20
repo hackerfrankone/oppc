@@ -162,7 +162,7 @@
 
   <div class="quiz-content">
     <div class="welcome-message">
-      Welcome to the CompTIA Network+ Study Hub! Select a topic or question tier to begin.
+      Welcome to the CompTIA Network+ Study Hub! Select a topic, or question tier to begin.
     </div>
   </div>
 
@@ -178,17 +178,7 @@
       if (selectedButton) {
         selectedButton.classList.add('selected');
       }
-      // Save the selected button class to localStorage
-      localStorage.setItem('selectedTier', buttonClass);
     }
-
-    // Load the saved tier selection from localStorage on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedTier = localStorage.getItem('selectedTier');
-      if (savedTier) {
-        highlightTierButton(savedTier);
-      }
-    });
 
     // Add click event listeners to tier buttons
     document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {

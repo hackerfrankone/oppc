@@ -42,18 +42,7 @@
       gap: 0.5rem;
     }
 
-    .bottom-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
     .back-button,
-    .pbq-button,
-    .acronyms-button,
-    .topology-button,
-    .osi-button,
-    .cables-button,
     .tier1-button,
     .tier2-button,
     .tier3-button,
@@ -78,11 +67,6 @@
     }
 
     .back-button:hover,
-    .pbq-button:hover,
-    .acronyms-button:hover,
-    .topology-button:hover,
-    .osi-button:hover,
-    .cables-button:hover,
     .tier1-button:hover,
     .tier2-button:hover,
     .tier3-button:hover,
@@ -234,11 +218,6 @@
       }
 
       .back-button,
-      .pbq-button,
-      .acronyms-button,
-      .topology-button,
-      .osi-button,
-      .cables-button,
       .tier1-button,
       .tier2-button,
       .tier3-button,
@@ -256,15 +235,8 @@
       <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
       <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
       <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
-      <a href="pbq.html" class="pbq-button">PBQ</a>
     </div>
-    <div class="bottom-buttons">
-      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
-      <a href="topology.html" class="topology-button">Network Topologies</a>
-      <a href="cables.html" class="cables-button">Cables</a>
-      <a href="osi.html" class="osi-button">OSI</a>
-      <button class="restart-button" onclick="restartQuiz()">Start Over</button>
-    </div>
+    <button class="restart-button" onclick="restartQuiz()">Start Over</button>
   </div>
 
   <div class="quiz-content">
@@ -278,292 +250,208 @@
   <script>
     const questions = [
       {
-        question: "A network administrator notices high latency on a WAN link. After running a traceroute, one hop shows significantly higher latency. What is the most likely cause?",
-        choices: ["Congested link", "Misconfigured VLAN", "Duplicate IP address", "Faulty cable"],
-        answer: "Congested link",
-        explanation: "High latency on a specific hop in a traceroute typically indicates a congested link, where traffic volume exceeds the link’s capacity, causing delays."
+        question: "A network administrator notices high latency on a cloud-based application. A traceroute shows one hop with significant delay. What is the most likely cause?",
+        choices: ["Network congestion", "Misconfigured security group", "Incorrect DNS settings", "Faulty NIC"],
+        answer: "Network congestion",
+        explanation: "High latency on a specific hop in a traceroute often indicates network congestion, where traffic exceeds the link’s capacity, causing delays. This is common in cloud environments with shared resources."
       },
       {
-        question: "Which feature of OSPF allows it to scale effectively in large networks?",
-        choices: ["Static routes", "Areas", "VLAN tagging", "Port mirroring"],
-        answer: "Areas",
-        explanation: "OSPF uses areas to segment large networks, reducing routing table size and improving scalability by limiting the scope of link-state updates."
+        question: "A company is deploying a hybrid cloud network. Which protocol ensures secure communication between on-premises and cloud resources?",
+        choices: ["SNMP", "IPsec", "FTP", "HTTP"],
+        answer: "IPsec",
+        explanation: "IPsec secures communication in hybrid cloud networks by providing encryption and authentication for data exchanged between on-premises and cloud resources."
       },
       {
-        question: "What is the purpose of configuring a GRE tunnel in a network?",
-        choices: ["Encrypt all traffic", "Create a virtual point-to-point link", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Create a virtual point-to-point link",
-        explanation: "A GRE (Generic Routing Encapsulation) tunnel creates a virtual point-to-point link to transport various protocols over an IP network, often used in VPNs."
+        question: "A user reports that a VoIP application has choppy audio during calls. What network metric should be checked first?",
+        choices: ["Bandwidth", "Jitter", "MTU size", "DNS latency"],
+        answer: "Jitter",
+        explanation: "Jitter, or variable packet delay, directly affects VoIP call quality, causing choppy audio. Checking jitter helps identify inconsistent packet delivery."
       },
       {
-        question: "A user reports they cannot access a website, but ping to the IP address works. What is the most likely issue?",
-        choices: ["DNS resolution failure", "Firewall blocking port 80", "Incorrect subnet mask", "Faulty NIC"],
-        answer: "Firewall blocking port 80",
-        explanation: "If ping works but the website is inaccessible, a firewall blocking port 80 (HTTP) is likely, as ICMP is allowed but HTTP traffic is blocked."
+        question: "A network admin configures a VLAN, but devices on different switches cannot communicate. What is the likely issue?",
+        choices: ["Missing trunk link", "Incorrect subnet mask", "Duplicate MAC addresses", "Faulty switch port"],
+        answer: "Missing trunk link",
+        explanation: "A trunk link is required to carry VLAN traffic between switches. Without it, devices in the same VLAN on different switches cannot communicate."
       },
       {
-        question: "Which protocol is used to secure BGP sessions between routers?",
-        choices: ["SNMPv3", "MD5 authentication", "SSH", "TLS"],
-        answer: "MD5 authentication",
-        explanation: "BGP sessions are secured using MD5 authentication, which verifies the integrity and authenticity of routing updates between routers."
+        question: "A company uses SD-WAN to optimize branch office connectivity. What is a key benefit of SD-WAN in this scenario?",
+        choices: ["Automatic IP assignment", "Dynamic path selection", "Enhanced encryption", "Reduced jitter"],
+        answer: "Dynamic path selection",
+        explanation: "SD-WAN optimizes connectivity by dynamically selecting the best path for traffic based on performance, improving reliability and efficiency."
       },
       {
-        question: "What is the purpose of implementing 802.1X in a wireless network?",
-        choices: ["Increase bandwidth", "Authenticate users and devices", "Prioritize VoIP traffic", "Reduce interference"],
+        question: "A wireless network experiences frequent disconnects in a crowded office. What is the most likely cause?",
+        choices: ["Channel overlap", "Low bandwidth", "Incorrect DNS settings", "Faulty AP"],
+        answer: "Channel overlap",
+        explanation: "Channel overlap in wireless networks causes interference, leading to frequent disconnects. Selecting non-overlapping channels (e.g., 1, 6, 11 for 2.4 GHz) resolves this."
+      },
+      {
+        question: "A network admin needs to monitor traffic in a virtualized environment. Which protocol is best suited for this task?",
+        choices: ["SNMP", "NetFlow", "ICMP", "BGP"],
+        answer: "NetFlow",
+        explanation: "NetFlow provides detailed traffic flow data in virtualized environments, enabling performance and security monitoring."
+      },
+      {
+        question: "A user cannot access a secure website, but ping to the IP address succeeds. What should be checked on the firewall?",
+        choices: ["Port 80", "Port 443", "Port 22", "Port 3389"],
+        answer: "Port 443",
+        explanation: "Secure websites use HTTPS over port 443. If ping works but the website is inaccessible, the firewall may be blocking port 443."
+      },
+      {
+        question: "A network admin configures a GRE tunnel but traffic is not flowing. What is a likely configuration issue?",
+        choices: ["Missing tunnel destination", "Incorrect VLAN tagging", "Duplicate IP addresses", "Faulty cable"],
+        answer: "Missing tunnel destination",
+        explanation: "A GRE tunnel requires a valid tunnel destination IP address. Without it, the tunnel cannot establish connectivity."
+      },
+      {
+        question: "A company implements 802.1X for wireless security. What is the primary purpose of this standard?",
+        choices: ["Encrypt traffic", "Authenticate users and devices", "Prioritize VoIP", "Reduce interference"],
         answer: "Authenticate users and devices",
-        explanation: "802.1X provides port-based authentication for wireless networks, ensuring only authorized users and devices can connect."
+        explanation: "802.1X provides port-based authentication, ensuring only authorized users and devices can access the wireless network."
       },
       {
-        question: "A network switch shows high CPU usage and slow performance. What is a likely cause?",
-        choices: ["Broadcast storm", "Incorrect MTU size", "Faulty power supply", "Duplicate MAC addresses"],
+        question: "A switch shows high CPU usage and slow performance. What is a likely cause?",
+        choices: ["Broadcast storm", "Incorrect MTU size", "Faulty power supply", "Duplicate IP addresses"],
         answer: "Broadcast storm",
-        explanation: "A broadcast storm, caused by network loops, can overwhelm a switch’s CPU, leading to high usage and degraded performance."
+        explanation: "A broadcast storm, often caused by network loops, overwhelms a switch’s CPU, leading to high usage and performance degradation."
       },
       {
         question: "Which command on a Cisco router displays active NAT translations?",
         choices: ["show ip route", "show ip nat translations", "show arp", "show running-config"],
         answer: "show ip nat translations",
-        explanation: "The 'show ip nat translations' command displays active NAT translations, showing mappings between private and public IP addresses."
+        explanation: "The 'show ip nat translations' command lists active NAT mappings, showing private-to-public IP address translations."
       },
       {
-        question: "What is the primary benefit of using MPLS in a WAN?",
+        question: "A network admin needs to secure BGP sessions. Which method is commonly used?",
+        choices: ["SNMPv3", "MD5 authentication", "SSH", "TLS"],
+        answer: "MD5 authentication",
+        explanation: "MD5 authentication secures BGP sessions by verifying the integrity and authenticity of routing updates between routers."
+      },
+      {
+        question: "A company uses MPLS for its WAN. What is the primary benefit of MPLS in this context?",
         choices: ["Lower latency", "Traffic engineering", "Automatic IP assignment", "Enhanced encryption"],
         answer: "Traffic engineering",
-        explanation: "MPLS (Multiprotocol Label Switching) enables traffic engineering, allowing efficient routing and prioritization of data across WANs."
+        explanation: "MPLS enables traffic engineering, allowing efficient routing and prioritization of data across WANs for optimal performance."
       },
       {
-        question: "A network is experiencing intermittent packet loss. Which tool should be used to analyze the issue?",
+        question: "A network experiences intermittent packet loss. Which tool is best for detailed analysis?",
         choices: ["Ping", "Wireshark", "Netstat", "Ipconfig"],
         answer: "Wireshark",
-        explanation: "Wireshark captures and analyzes packets, allowing detailed inspection of intermittent packet loss to identify patterns or causes."
+        explanation: "Wireshark captures and analyzes packets, providing detailed insights into intermittent packet loss causes."
       },
       {
-        question: "Which security feature prevents unauthorized devices from joining a network?",
-        choices: ["MAC filtering", "VLAN tagging", "Port mirroring", "QoS policies"],
-        answer: "MAC filtering",
-        explanation: "MAC filtering restricts network access to devices with approved MAC addresses, preventing unauthorized devices from connecting."
+        question: "A network admin implements MAC filtering. What is the primary purpose of this feature?",
+        choices: ["Encrypt traffic", "Prevent unauthorized access", "Prioritize traffic", "Monitor bandwidth"],
+        answer: "Prevent unauthorized access",
+        explanation: "MAC filtering restricts network access to devices with approved MAC addresses, preventing unauthorized connections."
       },
       {
-        question: "What is the purpose of route summarization in OSPF?",
+        question: "A VoIP phone experiences dropped calls. What QoS setting should be prioritized?",
+        choices: ["Bandwidth allocation", "Low jitter", "MTU adjustment", "DNS caching"],
+        answer: "Low jitter",
+        explanation: "Low jitter is critical for VoIP to ensure consistent packet delivery, preventing dropped calls."
+      },
+      {
+        question: "A network admin configures route summarization in OSPF. What is the primary benefit?",
         choices: ["Reduce routing table size", "Increase bandwidth", "Encrypt routing updates", "Assign IP addresses"],
         answer: "Reduce routing table size",
         explanation: "Route summarization in OSPF combines multiple routes into a single advertisement, reducing routing table size and improving efficiency."
       },
       {
-        question: "A VoIP phone shows poor call quality. What is the most likely network issue?",
-        choices: ["High jitter", "Low bandwidth", "Incorrect DNS settings", "Faulty cable"],
-        answer: "High jitter",
-        explanation: "High jitter, or variable packet delay, disrupts VoIP call quality by causing inconsistent audio delivery, fixable with QoS policies."
+        question: "Which protocol is used to manage network policies in an SDN environment?",
+        choices: ["SNMP", "OpenFlow", "NetFlow", "BGP"],
+        answer: "OpenFlow",
+        explanation: "OpenFlow enables communication between the SDN controller and data plane, managing network policies and forwarding rules."
       },
       {
-        question: "Which protocol is used to monitor virtualized network environments?",
-        choices: ["SNMP", "NetFlow", "ICMP", "BGP"],
-        answer: "NetFlow",
-        explanation: "NetFlow monitors traffic in virtualized network environments, providing detailed flow data for performance and security analysis."
-      },
-      {
-        question: "What is the purpose of a split horizon in routing protocols?",
-        choices: ["Prevent routing loops", "Increase bandwidth", "Encrypt routes", "Assign IP addresses"],
-        answer: "Prevent routing loops",
-        explanation: "Split horizon prevents routing loops by prohibiting a router from advertising a route back to the neighbor it learned it from."
-      },
-      {
-        question: "A network administrator configures a VLAN but devices cannot communicate. What is the likely issue?",
-        choices: ["Missing trunk link", "Incorrect IP addressing", "Duplicate MAC addresses", "Faulty switch port"],
-        answer: "Missing trunk link",
-        explanation: "If devices in a VLAN cannot communicate across switches, a missing trunk link (to carry VLAN traffic) is likely the issue."
-      },
-      {
-        question: "Which type of VPN uses SSL/TLS for secure remote access?",
-        choices: ["IPsec", "L2TP", "SSL VPN", "PPTP"],
-        answer: "SSL VPN",
-        explanation: "SSL VPNs use SSL/TLS for secure remote access, typically through a web browser, offering flexibility and strong encryption."
-      },
-      {
-        question: "What is the purpose of a network performance monitor?",
-        choices: ["Assign IP addresses", "Track bandwidth and latency", "Encrypt traffic", "Filter web content"],
-        answer: "Track bandwidth and latency",
-        explanation: "A network performance monitor tracks metrics like bandwidth and latency to identify bottlenecks and ensure optimal network operation."
-      },
-      {
-        question: "Which command verifies the status of a VPN tunnel on a Cisco device?",
-        choices: ["show ip route", "show crypto isakmp sa", "show arp", "show vlan"],
-        answer: "show crypto isakmp sa",
-        explanation: "The 'show crypto isakmp sa' command verifies the status of a VPN tunnel, showing active IKE security associations."
-      },
-      {
-        question: "What is the benefit of using VRRP in a network?",
-        choices: ["Load balancing", "High availability", "Traffic encryption", "IP address assignment"],
-        answer: "High availability",
-        explanation: "VRRP (Virtual Router Redundancy Protocol) provides high availability by allowing multiple routers to share a virtual IP, ensuring failover."
-      },
-      {
-        question: "A wireless network shows frequent disconnects. What is a likely cause?",
-        choices: ["Channel overlap", "Incorrect DNS settings", "Low MTU size", "Faulty NIC"],
-        answer: "Channel overlap",
-        explanation: "Channel overlap in wireless networks causes interference, leading to frequent disconnects, resolvable by selecting non-overlapping channels."
-      },
-      {
-        question: "Which protocol is used to secure SNMP communications?",
-        choices: ["SNMPv2", "SNMPv3", "SNMPv1", "NetFlow"],
-        answer: "SNMPv3",
-        explanation: "SNMPv3 provides secure communication for network management through authentication and encryption, unlike SNMPv1 or SNMPv2."
-      },
-      {
-        question: "What is the purpose of a network flow collector?",
-        choices: ["Encrypt traffic", "Analyze traffic patterns", "Assign IP addresses", "Filter web content"],
-        answer: "Analyze traffic patterns",
-        explanation: "A network flow collector gathers flow data (e.g., NetFlow) to analyze traffic patterns, aiding in performance and security monitoring."
-      },
-      {
-        question: "A network device fails to forward packets after a power outage. What is the first troubleshooting step?",
-        choices: ["Check physical connections", "Reboot the device", "Update firmware", "Verify IP configuration"],
+        question: "A network device fails to forward packets after a reboot. What is the first troubleshooting step?",
+        choices: ["Check physical connections", "Reboot again", "Update firmware", "Verify IP configuration"],
         answer: "Check physical connections",
-        explanation: "Checking physical connections ensures cables and ports are properly connected, a common issue after a power outage."
+        explanation: "Checking physical connections ensures cables and ports are secure, a common issue after a reboot."
       },
       {
-        question: "Which type of authentication is used by WPA3-Enterprise?",
+        question: "A company deploys WPA3-Enterprise for wireless security. Which authentication protocol is used?",
         choices: ["PSK", "EAP", "WEP", "Open"],
         answer: "EAP",
-        explanation: "WPA3-Enterprise uses EAP (Extensible Authentication Protocol) for secure, user-based authentication in enterprise wireless networks."
-      },
-      {
-        question: "What is the purpose of a BGP confederation?",
-        choices: ["Reduce routing loops", "Simplify large-scale BGP deployments", "Encrypt routing updates", "Assign IP addresses"],
-        answer: "Simplify large-scale BGP deployments",
-        explanation: "A BGP confederation divides an autonomous system into smaller sub-ASes, simplifying management in large-scale BGP deployments."
+        explanation: "WPA3-Enterprise uses EAP for secure, user-based authentication in enterprise wireless networks."
       },
       {
         question: "A network shows duplicate IP address errors. What is the likely cause?",
         choices: ["Static IP conflict", "VLAN misconfiguration", "Broadcast storm", "Faulty switch"],
         answer: "Static IP conflict",
-        explanation: "Duplicate IP address errors often result from static IP conflicts, where a manually assigned IP overlaps with a DHCP-assigned IP."
+        explanation: "Duplicate IP errors often occur when a static IP overlaps with a DHCP-assigned IP, causing conflicts."
       },
       {
-        question: "Which tool is used to measure network throughput?",
+        question: "A network admin needs to measure network throughput. Which tool is best suited?",
         choices: ["Wireshark", "iPerf", "Ping", "Traceroute"],
         answer: "iPerf",
-        explanation: "iPerf measures network throughput by generating and analyzing traffic, providing detailed performance metrics."
+        explanation: "iPerf generates and measures traffic to assess network throughput, providing detailed performance metrics."
       },
       {
-        question: "What is the purpose of a network sandbox?",
+        question: "A company uses a network sandbox to analyze threats. What is its primary purpose?",
         choices: ["Route traffic", "Analyze suspicious files", "Assign IP addresses", "Monitor bandwidth"],
         answer: "Analyze suspicious files",
-        explanation: "A network sandbox isolates and analyzes suspicious files to detect malware, preventing harm to the production network."
+        explanation: "A network sandbox isolates and analyzes suspicious files to detect malware, protecting the production network."
       },
       {
-        question: "Which configuration is required for inter-VLAN routing?",
+        question: "A network admin configures inter-VLAN routing. What is required for this setup?",
         choices: ["Trunk link", "Access port", "Static IP", "Port mirroring"],
         answer: "Trunk link",
         explanation: "Inter-VLAN routing requires a trunk link to carry multiple VLANs between a switch and a router or Layer 3 switch."
       },
       {
-        question: "What is the benefit of using EIGRP over OSPF?",
-        choices: ["Faster convergence", "Simpler configuration", "Open standard", "Lower bandwidth usage"],
-        answer: "Faster convergence",
-        explanation: "EIGRP (Enhanced Interior Gateway Routing Protocol) offers faster convergence than OSPF due to its DUAL algorithm, though it’s Cisco-proprietary."
-      },
-      {
         question: "A network experiences high packet loss during peak hours. What is the likely cause?",
         choices: ["Faulty cable", "Network congestion", "Incorrect MTU", "Duplicate MAC addresses"],
         answer: "Network congestion",
-        explanation: "High packet loss during peak hours is typically caused by network congestion, where traffic exceeds available bandwidth."
+        explanation: "High packet loss during peak hours is typically due to network congestion, where traffic exceeds available bandwidth."
       },
       {
-        question: "Which protocol is used for software-defined networking control?",
-        choices: ["OpenFlow", "SNMP", "NetFlow", "BGP"],
-        answer: "OpenFlow",
-        explanation: "OpenFlow is used in software-defined networking (SDN) to enable communication between the control plane and data plane."
+        question: "A company implements a DMVPN for branch offices. What is a key benefit?",
+        choices: ["Simplified VPN management", "Increased bandwidth", "Automatic IP assignment", "Reduced latency"],
+        answer: "Simplified VPN management",
+        explanation: "DMVPN simplifies VPN management by enabling dynamic spoke-to-spoke tunnels in large networks."
       },
       {
-        question: "What is the purpose of a network tap aggregator?",
-        choices: ["Encrypt traffic", "Combine multiple tap feeds", "Assign IP addresses", "Route packets"],
-        answer: "Combine multiple tap feeds",
-        explanation: "A network tap aggregator combines multiple tap feeds into a single output for monitoring, simplifying analysis in complex networks."
+        question: "A switch port shows high collision rates. What is the likely cause?",
+        choices: ["Duplex mismatch", "Faulty cable", "VLAN misconfiguration", "Broadcast storm"],
+        answer: "Duplex mismatch",
+        explanation: "A duplex mismatch, where one device is set to full-duplex and another to half-duplex, causes high collision rates."
       },
       {
-        question: "A user cannot connect to a secure website. Which port should be checked on the firewall?",
-        choices: ["80", "443", "22", "3389"],
-        answer: "443",
-        explanation: "Secure websites use HTTPS over port 443, so the firewall should be checked to ensure this port is open."
+        question: "A network admin needs centralized authentication for wireless users. Which protocol is used?",
+        choices: ["SNMP", "RADIUS", "ICMP", "FTP"],
+        answer: "RADIUS",
+        explanation: "RADIUS provides centralized authentication for wireless networks, often used with 802.1X."
       },
       {
-        question: "Which metric does OSPF use to determine the best route?",
-        choices: ["Hop count", "Cost", "Bandwidth", "Delay"],
-        answer: "Cost",
-        explanation: "OSPF uses cost, based on interface bandwidth, to determine the best route, with lower cost indicating a preferred path."
-      },
-      {
-        question: "What is the purpose of a network packet broker?",
-        choices: ["Route traffic", "Filter and distribute packets", "Encrypt data", "Assign IP addresses"],
-        answer: "Filter and distribute packets",
-        explanation: "A network packet broker filters and distributes packets to monitoring tools, optimizing traffic analysis in large networks."
-      },
-      {
-        question: "A switch port is stuck in the 'blocking' state. What protocol is likely involved?",
-        choices: ["BGP", "STP", "OSPF", "SNMP"],
-        answer: "STP",
-        explanation: "STP (Spanning Tree Protocol) places ports in a blocking state to prevent loops, and a stuck port may indicate a misconfiguration."
-      },
-      {
-        question: "Which type of attack exploits weak session IDs in web applications?",
-        choices: ["DDoS", "Session hijacking", "SQL injection", "Phishing"],
-        answer: "Session hijacking",
-        explanation: "Session hijacking exploits weak session IDs to take over a user’s session, gaining unauthorized access to a web application."
-      },
-      {
-        question: "What is the purpose of a network load balancer’s health check?",
-        choices: ["Encrypt traffic", "Verify server availability", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Verify server availability",
-        explanation: "A load balancer’s health check verifies server availability, ensuring traffic is only sent to healthy servers."
-      },
-      {
-        question: "Which command clears the ARP cache on a Windows system?",
-        choices: ["arp -d", "ipconfig /flushdns", "netstat -r", "tracert"],
-        answer: "arp -d",
-        explanation: "The 'arp -d' command clears the ARP cache on a Windows system, removing stored IP-to-MAC address mappings."
-      },
-      {
-        question: "What is the benefit of using a virtual switch in a hypervisor?",
-        choices: ["Encrypt VM traffic", "Connect VMs to networks", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Connect VMs to networks",
-        explanation: "A virtual switch in a hypervisor connects virtual machines to physical or virtual networks, enabling communication."
-      },
-      {
-        question: "A network shows slow DNS resolution. What is the first troubleshooting step?",
+        question: "A user reports slow DNS resolution in a cloud network. What is the first troubleshooting step?",
         choices: ["Check DNS server reachability", "Reboot the router", "Update firmware", "Change MTU size"],
         answer: "Check DNS server reachability",
-        explanation: "Slow DNS resolution is often caused by an unreachable or overloaded DNS server, verifiable with ping or nslookup."
+        explanation: "Slow DNS resolution is often due to an unreachable or overloaded DNS server, verifiable with ping or nslookup."
       },
       {
-        question: "Which protocol is used for secure file transfers in a cloud environment?",
-        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
-        answer: "SFTP",
-        explanation: "SFTP (Secure File Transfer Protocol) uses SSH for secure file transfers in cloud environments, ensuring encryption and integrity."
-      },
-      {
-        question: "What is the purpose of a network controller in SDN?",
-        choices: ["Assign IP addresses", "Manage network policies", "Encrypt traffic", "Monitor bandwidth"],
-        answer: "Manage network policies",
-        explanation: "In SDN, the network controller manages policies and configurations, directing the data plane via protocols like OpenFlow."
+        question: "A company uses SFTP for secure file transfers in the cloud. Which protocol underpins SFTP?",
+        choices: ["FTP", "SSH", "TFTP", "HTTP"],
+        answer: "SSH",
+        explanation: "SFTP uses SSH for secure file transfers, ensuring encryption and integrity in cloud environments."
       },
       {
         question: "A network experiences asymmetric routing. What is a likely impact?",
         choices: ["Packet loss", "Increased bandwidth", "Duplicate IPs", "Faulty cables"],
         answer: "Packet loss",
-        explanation: "Asymmetric routing, where packets take different paths, can cause packet loss if firewalls or devices expect symmetric traffic."
+        explanation: "Asymmetric routing can cause packet loss if firewalls or devices expect symmetric traffic paths."
       },
       {
-        question: "Which type of wireless attack exploits open guest networks?",
+        question: "A wireless guest network is compromised. Which attack is most likely?",
         choices: ["Evil twin", "DDoS", "Phishing", "Brute force"],
         answer: "Evil twin",
-        explanation: "An evil twin attack mimics a legitimate guest network to trick users into connecting, allowing attackers to steal data."
+        explanation: "An evil twin attack mimics a legitimate guest network to steal data from connected users."
       },
       {
-        question: "What is the purpose of a network ACL in a cloud environment?",
+        question: "A cloud network uses a network ACL. What is its primary function?",
         choices: ["Encrypt traffic", "Control subnet traffic", "Assign IP addresses", "Monitor bandwidth"],
         answer: "Control subnet traffic",
-        explanation: "A network ACL in a cloud environment controls inbound and outbound traffic at the subnet level, acting as a stateless firewall."
+        explanation: "A network ACL controls inbound and outbound traffic at the subnet level in a cloud environment, acting as a stateless firewall."
       },
       {
         question: "Which command displays interface statistics on a Linux system?",
@@ -572,76 +460,154 @@
         explanation: "The 'ifconfig' command displays interface statistics, such as packet counts and errors, on a Linux system."
       },
       {
-        question: "What is the benefit of using a DMVPN in a large network?",
-        choices: ["Simplified VPN management", "Increased bandwidth", "Automatic IP assignment", "Reduced latency"],
-        answer: "Simplified VPN management",
-        explanation: "DMVPN (Dynamic Multipoint VPN) simplifies VPN management by enabling dynamic spoke-to-spoke tunnels in large networks."
+        question: "A network admin configures a VPN, but file transfers are slow. What should be checked first?",
+        choices: ["MTU settings", "Reboot the router", "Update firmware", "DNS settings"],
+        answer: "MTU settings",
+        explanation: "Incorrect MTU settings can cause packet fragmentation, slowing down VPN file transfers."
       },
       {
-        question: "A network shows high collision rates on a switch port. What is the likely cause?",
-        choices: ["Duplex mismatch", "Faulty cable", "VLAN misconfiguration", "Broadcast storm"],
-        answer: "Duplex mismatch",
-        explanation: "A duplex mismatch, where one device is set to full-duplex and another to half-duplex, causes high collision rates on a switch port."
-      },
-      {
-        question: "Which protocol is used for centralized authentication in a wireless network?",
-        choices: ["SNMP", "RADIUS", "ICMP", "FTP"],
-        answer: "RADIUS",
-        explanation: "RADIUS (Remote Authentication Dial-In User Service) provides centralized authentication for wireless networks, often with 802.1X."
-      },
-      {
-        question: "What is the purpose of a network flow table in a switch?",
-        choices: ["Store MAC addresses", "Manage SDN forwarding rules", "Encrypt traffic", "Assign IP addresses"],
-        answer: "Manage SDN forwarding rules",
-        explanation: "A flow table in a switch manages SDN forwarding rules, directing traffic based on instructions from the SDN controller."
-      },
-      {
-        question: "A user reports slow file transfers over a VPN. What is the first troubleshooting step?",
-        choices: ["Check MTU settings", "Reboot the router", "Update firmware", "Verify DNS settings"],
-        answer: "Check MTU settings",
-        explanation: "Slow VPN file transfers are often caused by incorrect MTU settings, leading to packet fragmentation."
-      },
-      {
-        question: "Which type of firewall operates at the session layer?",
+        question: "Which firewall type operates at the session layer?",
         choices: ["Packet-filtering", "Stateful inspection", "Circuit-level", "Application-layer"],
         answer: "Circuit-level",
         explanation: "Circuit-level firewalls operate at the session layer (Layer 5), monitoring TCP handshakes without inspecting packet contents."
       },
       {
-        question: "What is the purpose of a network baseline comparison?",
+        question: "A network admin performs a baseline comparison. What is the purpose?",
         choices: ["Encrypt traffic", "Identify performance anomalies", "Assign IP addresses", "Filter web content"],
         answer: "Identify performance anomalies",
-        explanation: "A network baseline comparison identifies performance anomalies by comparing current metrics to established normal conditions."
+        explanation: "A baseline comparison identifies performance anomalies by comparing current metrics to normal conditions."
       },
       {
-        question: "Which protocol is used for secure VoIP signaling?",
+        question: "Which protocol secures VoIP signaling in a network?",
         choices: ["SIP", "SIPS", "RTP", "H.323"],
         answer: "SIPS",
-        explanation: "SIPS (Secure SIP) uses TLS to secure VoIP signaling, ensuring encrypted call setup and management."
+        explanation: "SIPS uses TLS to secure VoIP signaling, ensuring encrypted call setup and management."
       },
       {
-        question: "A network shows high latency on a trunk link. What is a likely cause?",
+        question: "A trunk link shows high latency. What is a likely cause?",
         choices: ["VLAN misconfiguration", "Overloaded trunk link", "Faulty cable", "Duplicate IP addresses"],
         answer: "Overloaded trunk link",
-        explanation: "An overloaded trunk link, carrying multiple VLANs, can cause high latency due to excessive traffic, resolvable with link aggregation or QoS."
+        explanation: "An overloaded trunk link, carrying multiple VLANs, can cause high latency due to excessive traffic."
       },
       {
-        question: "Which feature of a next-generation firewall provides deep packet inspection?",
+        question: "A next-generation firewall is configured. Which feature provides deep packet inspection?",
         choices: ["NAT", "DPI", "VLAN tagging", "Port mirroring"],
         answer: "DPI",
-        explanation: "Deep Packet Inspection (DPI) in a next-generation firewall analyzes packet contents for advanced security and application awareness."
+        explanation: "Deep Packet Inspection (DPI) analyzes packet contents for advanced security and application awareness."
       },
       {
-        question: "What is the purpose of a network audit?",
+        question: "A network audit is conducted. What is its primary purpose?",
         choices: ["Assign IP addresses", "Assess security and compliance", "Encrypt traffic", "Monitor bandwidth"],
         answer: "Assess security and compliance",
-        explanation: "A network audit assesses security, compliance, and performance to identify vulnerabilities and ensure adherence to policies."
+        explanation: "A network audit assesses security, compliance, and performance to identify vulnerabilities and ensure policy adherence."
       },
       {
         question: "Which command verifies BGP neighbor status on a Cisco router?",
         choices: ["show ip route", "show ip bgp neighbors", "show arp", "show vlan"],
         answer: "show ip bgp neighbors",
-        explanation: "The 'show ip bgp neighbors' command verifies the status of BGP neighbor relationships, showing connection states and updates."
+        explanation: "The 'show ip bgp neighbors' command shows the status of BGP neighbor relationships and updates."
+      },
+      {
+        question: "A company uses a virtual switch in a hypervisor. What is its primary function?",
+        choices: ["Encrypt VM traffic", "Connect VMs to networks", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Connect VMs to networks",
+        explanation: "A virtual switch connects virtual machines to physical or virtual networks, enabling communication."
+      },
+      {
+        question: "A network admin notices slow application performance in a cloud environment. What should be checked first?",
+        choices: ["Security group rules", "Network latency", "DNS configuration", "MTU settings"],
+        answer: "Network latency",
+        explanation: "Network latency in cloud environments can degrade application performance and should be checked first using tools like ping or traceroute."
+      },
+      {
+        question: "A company implements zero trust architecture. Which principle is key?",
+        choices: ["Assume trust", "Verify every access", "Use static IPs", "Disable firewalls"],
+        answer: "Verify every access",
+        explanation: "Zero trust requires verifying every access attempt, regardless of user or device location, to enhance security."
+      },
+      {
+        question: "A network admin configures a load balancer. What is the purpose of a health check?",
+        choices: ["Encrypt traffic", "Verify server availability", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Verify server availability",
+        explanation: "Health checks ensure traffic is sent only to available servers, improving reliability in load balancing."
+      },
+      {
+        question: "A network admin notices high jitter in a video conferencing application. What should be implemented?",
+        choices: ["VLAN segmentation", "QoS policies", "Static routing", "Port mirroring"],
+        answer: "QoS policies",
+        explanation: "QoS policies prioritize video traffic to reduce jitter, ensuring smooth conferencing performance."
+      },
+      {
+        question: "A company uses a network packet broker. What is its primary function?",
+        choices: ["Route traffic", "Filter and distribute packets", "Encrypt data", "Assign IP addresses"],
+        answer: "Filter and distribute packets",
+        explanation: "A network packet broker filters and distributes packets to monitoring tools, optimizing traffic analysis."
+      },
+      {
+        question: "A switch port is stuck in the 'blocking' state. Which protocol is likely involved?",
+        choices: ["BGP", "STP", "OSPF", "SNMP"],
+        answer: "STP",
+        explanation: "Spanning Tree Protocol (STP) places ports in a blocking state to prevent loops, and a stuck port may indicate a misconfiguration."
+      },
+      {
+        question: "A network admin detects a session hijacking attack. What vulnerability was exploited?",
+        choices: ["Weak session IDs", "Open ports", "Unencrypted traffic", "Duplicate IPs"],
+        answer: "Weak session IDs",
+        explanation: "Session hijacking exploits weak session IDs to take over a user’s session, gaining unauthorized access."
+      },
+      {
+        question: "A network admin configures a firewall to allow secure remote access. Which port should be opened?",
+        choices: ["22", "80", "443", "3389"],
+        answer: "22",
+        explanation: "Port 22 is used for SSH, enabling secure remote access to network devices."
+      },
+      {
+        question: "A company uses OSPF for routing. Which metric determines the best route?",
+        choices: ["Hop count", "Cost", "Bandwidth", "Delay"],
+        answer: "Cost",
+        explanation: "OSPF uses cost, based on interface bandwidth, to determine the best route, with lower cost preferred."
+      },
+      {
+        question: "A network admin configures a VPN tunnel. Which command verifies its status on a Cisco device?",
+        choices: ["show ip route", "show crypto isakmp sa", "show arp", "show vlan"],
+        answer: "show crypto isakmp sa",
+        explanation: "The 'show crypto isakmp sa' command shows active IKE security associations, verifying VPN tunnel status."
+      },
+      {
+        question: "A network admin implements VLAN pruning. What is the benefit?",
+        choices: ["Reduce broadcast traffic", "Increase bandwidth", "Encrypt data", "Assign IP addresses"],
+        answer: "Reduce broadcast traffic",
+        explanation: "VLAN pruning limits VLAN traffic on trunk links, reducing unnecessary broadcast traffic and improving efficiency."
+      },
+      {
+        question: "A network admin notices high CPU usage on a router. What is a likely cause?",
+        choices: ["Routing loop", "Faulty cable", "VLAN misconfiguration", "Low bandwidth"],
+        answer: "Routing loop",
+        explanation: "A routing loop can cause excessive packet processing, leading to high CPU usage on a router."
+      },
+      {
+        question: "A company uses a network tap aggregator. What is its primary purpose?",
+        choices: ["Encrypt traffic", "Combine multiple tap feeds", "Assign IP addresses", "Route packets"],
+        answer: "Combine multiple tap feeds",
+        explanation: "A network tap aggregator combines multiple tap feeds into a single output for monitoring, simplifying analysis."
+      },
+      {
+        question: "A network admin configures a cloud-based firewall. Which feature ensures application-level security?",
+        choices: ["NAT", "DPI", "VLAN tagging", "Port mirroring"],
+        answer: "DPI",
+        explanation: "Deep Packet Inspection (DPI) provides application-level security by analyzing packet contents in cloud-based firewalls."
+      },
+      {
+        question: "A network admin implements link aggregation. What is the primary benefit?",
+        choices: ["Increased bandwidth", "Reduced latency", "Encrypted traffic", "Automatic IP assignment"],
+        answer: "Increased bandwidth",
+        explanation: "Link aggregation combines multiple links to increase bandwidth and provide redundancy."
+      },
+      {
+        question: "A network admin detects a DDoS attack. Which mitigation technique is most effective?",
+        choices: ["Rate limiting", "VLAN segmentation", "Static routing", "Port mirroring"],
+        answer: "Rate limiting",
+        explanation: "Rate limiting restricts traffic volume during a DDoS attack, mitigating its impact on network resources."
       }
     ];
 

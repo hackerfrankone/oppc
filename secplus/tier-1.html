@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA Security+ Tier 1</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .top-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .bottom-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .back-button,
+    .pbq-button,
+    .acronyms-button,
+    .topology-button,
+    .osi-button,
+    .cables-button,
+    .tier1-button,
+    .tier2-button,
+    .tier3-button,
+    .restart-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .restart-button {
+      display: none;
+    }
+
+    .back-button:hover,
+    .pbq-button:hover,
+    .acronyms-button:hover,
+    .topology-button:hover,
+    .osi-button:hover,
+    .cables-button:hover,
+    .tier1-button:hover,
+    .tier2-button:hover,
+    .tier3-button:hover,
+    .restart-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .quiz-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+      width: 100%;
+      text-align: center;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+      width: 100%;
+    }
+
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .quiz-content {
+        max-width: 95%;
+        padding: 0.5rem;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .button-container {
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+
+      .back-button,
+      .pbq-button,
+      .acronyms-button,
+      .topology-button,
+      .osi-button,
+      .cables-button,
+      .tier1-button,
+      .tier2-button,
+      .tier3-button,
+      .restart-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <div class="top-buttons">
+      <a href="index.html" class="back-button">← Back</a>
+      <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+    </div>
+    <div class="bottom-buttons">
+      <a href="pbq.html" class="pbq-button">PBQ</a>
+      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
+      <a href="cables.html" class="cables-button">Cables</a>
+      <a href="topology.html" class="topology-button">Network Topologies</a>
+      <a href="osi.html" class="osi-button">OSI</a>
+      <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+    </div>
+  </div>
+
+  <div class="quiz-content">
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score"></div>
+    <div class="missed-questions" id="missed-questions"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the primary purpose of a firewall in a network?",
+        choices: ["Monitor traffic", "Filter traffic", "Assign IP addresses", "Encrypt data"],
+        answer: "Filter traffic",
+        explanation: "A firewall filters network traffic based on predefined rules to allow or block packets, enhancing security."
+      },
+      {
+        question: "Which type of attack involves sending fraudulent emails to steal sensitive information?",
+        choices: ["DDoS", "Phishing", "SQL injection", "Man-in-the-middle"],
+        answer: "Phishing",
+        explanation: "Phishing attacks use fraudulent emails to trick users into revealing sensitive information like passwords or credit card details."
+      },
+      {
+        question: "What does CIA stand for in information security?",
+        choices: ["Control, Integrity, Availability", "Confidentiality, Integrity, Availability", "Confidentiality, Isolation, Authentication", "Control, Isolation, Access"],
+        answer: "Confidentiality, Integrity, Availability",
+        explanation: "The CIA triad (Confidentiality, Integrity, Availability) is a model for guiding information security policies."
+      },
+      {
+        question: "Which protocol is used for secure web browsing?",
+        choices: ["HTTP", "HTTPS", "FTP", "SMTP"],
+        answer: "HTTPS",
+        explanation: "HTTPS uses SSL/TLS over port 443 to secure web communications, protecting data between clients and servers."
+      },
+      {
+        question: "What is the purpose of encryption in data security?",
+        choices: ["Speed up data transfer", "Hide data from unauthorized access", "Assign user permissions", "Monitor network traffic"],
+        answer: "Hide data from unauthorized access",
+        explanation: "Encryption converts data into an unreadable format to prevent unauthorized access, ensuring confidentiality."
+      },
+      {
+        question: "Which type of malware locks a system until a payment is made?",
+        choices: ["Virus", "Worm", "Ransomware", "Spyware"],
+        answer: "Ransomware",
+        explanation: "Ransomware encrypts files or locks systems, demanding payment (usually cryptocurrency) to restore access."
+      },
+      {
+        question: "What is the purpose of a VPN in a network?",
+        choices: ["Monitor traffic", "Secure remote access", "Assign IP addresses", "Filter web content"],
+        answer: "Secure remote access",
+        explanation: "A VPN (Virtual Private Network) creates a secure, encrypted tunnel for remote access to a network."
+      },
+      {
+        question: "Which port is used by SSH for secure remote access?",
+        choices: ["22", "80", "443", "3389"],
+        answer: "22",
+        explanation: "SSH (Secure Shell) uses port 22 for secure remote access to systems, providing encrypted communication."
+      },
+      {
+        question: "What is the purpose of a security policy?",
+        choices: ["Assign IP addresses", "Define security rules and procedures", "Encrypt network traffic", "Monitor bandwidth"],
+        answer: "Define security rules and procedures",
+        explanation: "A security policy outlines rules and procedures to protect an organization’s assets and data."
+      },
+      {
+        question: "Which type of authentication requires something you know?",
+        choices: ["Biometrics", "Password", "Smart card", "Token"],
+        answer: "Password",
+        explanation: "A password is an example of 'something you know' in authentication, typically used with usernames."
+      },
+      {
+        question: "What does IDS stand for in network security?",
+        choices: ["Intrusion Detection System", "Internet Data Service", "Intrusion Defense System", "Internal Device Security"],
+        answer: "Intrusion Detection System",
+        explanation: "An IDS monitors network traffic to detect suspicious activity or potential intrusions."
+      },
+      {
+        question: "Which protocol is used for secure email retrieval?",
+        choices: ["POP3", "IMAPS", "SMTP", "HTTP"],
+        answer: "IMAPS",
+        explanation: "IMAPS (IMAP Secure) uses port 993 to securely retrieve emails, encrypting the communication."
+      },
+      {
+        question: "What is the purpose of a DMZ in network security?",
+        choices: ["Encrypt traffic", "Isolate public-facing servers", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Isolate public-facing servers",
+        explanation: "A DMZ (Demilitarized Zone) isolates public-facing servers, like web servers, from the internal network for security."
+      },
+      {
+        question: "Which type of attack overwhelms a server with traffic?",
+        choices: ["Phishing", "DDoS", "SQL injection", "Man-in-the-middle"],
+        answer: "DDoS",
+        explanation: "A DDoS (Distributed Denial of Service) attack floods a server with traffic to disrupt availability."
+      },
+      {
+        question: "What is the purpose of a digital certificate?",
+        choices: ["Assign IP addresses", "Verify identity", "Monitor traffic", "Filter web content"],
+        answer: "Verify identity",
+        explanation: "A digital certificate verifies the identity of a user, device, or server, often used in SSL/TLS."
+      },
+      {
+        question: "Which type of malware spreads without user interaction?",
+        choices: ["Virus", "Worm", "Trojan", "Spyware"],
+        answer: "Worm",
+        explanation: "A worm self-replicates and spreads across networks without user interaction, unlike viruses or trojans."
+      },
+      {
+        question: "What is the purpose of two-factor authentication?",
+        choices: ["Increase bandwidth", "Enhance security", "Monitor traffic", "Assign permissions"],
+        answer: "Enhance security",
+        explanation: "Two-factor authentication (2FA) enhances security by requiring two forms of verification, like a password and a token."
+      },
+      {
+        question: "Which port is used by HTTPS?",
+        choices: ["80", "443", "22", "25"],
+        answer: "443",
+        explanation: "HTTPS uses port 443 for secure web communications, leveraging SSL/TLS encryption."
+      },
+      {
+        question: "What is a honeypot in network security?",
+        choices: ["Encrypts traffic", "Detects and studies attacks", "Assigns IP addresses", "Filters web content"],
+        answer: "Detects and studies attacks",
+        explanation: "A honeypot is a decoy system designed to attract and analyze attacks, helping to study attacker behavior."
+      },
+      {
+        question: "Which protocol is used for secure file transfers?",
+        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
+        answer: "SFTP",
+        explanation: "SFTP (Secure File Transfer Protocol) uses SSH over port 22 for secure file transfers."
+      },
+      {
+        question: "What is the purpose of a security baseline?",
+        choices: ["Monitor bandwidth", "Establish minimum security standards", "Assign IP addresses", "Encrypt data"],
+        answer: "Establish minimum security standards",
+        explanation: "A security baseline defines minimum security standards for systems to ensure consistent protection."
+      },
+      {
+        question: "Which type of encryption uses a single key for both encryption and decryption?",
+        choices: ["Symmetric", "Asymmetric", "Hashing", "Quantum"],
+        answer: "Symmetric",
+        explanation: "Symmetric encryption uses a single key for both encryption and decryption, like AES."
+      },
+      {
+        question: "What is the purpose of a penetration test?",
+        choices: ["Encrypt data", "Identify vulnerabilities", "Monitor traffic", "Assign permissions"],
+        answer: "Identify vulnerabilities",
+        explanation: "A penetration test simulates attacks to identify vulnerabilities in a system or network."
+      },
+      {
+        question: "Which protocol is used for network authentication?",
+        choices: ["SNMP", "RADIUS", "ICMP", "FTP"],
+        answer: "RADIUS",
+        explanation: "RADIUS (Remote Authentication Dial-In User Service) is used for centralized network authentication."
+      },
+      {
+        question: "What is a zero-day exploit?",
+        choices: ["Known vulnerability", "Unknown vulnerability", "Phishing attack", "DDoS attack"],
+        answer: "Unknown vulnerability",
+        explanation: "A zero-day exploit targets an unknown vulnerability, often before a patch is available."
+      },
+      {
+        question: "Which type of attack intercepts communications between two parties?",
+        choices: ["DDoS", "Phishing", "Man-in-the-middle", "SQL injection"],
+        answer: "Man-in-the-middle",
+        explanation: "A man-in-the-middle attack intercepts communications to steal data or manipulate messages."
+      },
+      {
+        question: "What is the purpose of a syslog server in security?",
+        choices: ["Encrypt data", "Store and analyze logs", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Store and analyze logs",
+        explanation: "A syslog server collects and analyzes logs for security monitoring and incident response."
+      },
+      {
+        question: "Which port is used by RDP for remote desktop access?",
+        choices: ["3389", "22", "80", "443"],
+        answer: "3389",
+        explanation: "RDP (Remote Desktop Protocol) uses port 3389 for remote access to Windows systems."
+      },
+      {
+        question: "What is the purpose of a vulnerability scan?",
+        choices: ["Encrypt traffic", "Identify weaknesses", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Identify weaknesses",
+        explanation: "A vulnerability scan identifies weaknesses in systems or networks that could be exploited."
+      },
+      {
+        question: "Which type of access control is based on job roles?",
+        choices: ["DAC", "MAC", "RBAC", "ABAC"],
+        answer: "RBAC",
+        explanation: "RBAC (Role-Based Access Control) assigns permissions based on job roles within an organization."
+      },
+      {
+        question: "What is the purpose of a security information and event management (SIEM) system?",
+        choices: ["Encrypt data", "Monitor and analyze security events", "Assign IP addresses", "Filter web content"],
+        answer: "Monitor and analyze security events",
+        explanation: "A SIEM system collects and analyzes security events to detect and respond to threats."
+      },
+      {
+        question: "Which type of attack involves injecting malicious code into a database?",
+        choices: ["Phishing", "SQL injection", "DDoS", "Man-in-the-middle"],
+        answer: "SQL injection",
+        explanation: "SQL injection involves injecting malicious code into a database query to manipulate or steal data."
+      },
+      {
+        question: "What is the purpose of a digital signature?",
+        choices: ["Encrypt data", "Verify authenticity and integrity", "Assign IP addresses", "Monitor traffic"],
+        answer: "Verify authenticity and integrity",
+        explanation: "A digital signature verifies the authenticity and integrity of a message or document using asymmetric encryption."
+      },
+      {
+        question: "Which protocol is used for secure email transmission?",
+        choices: ["POP3", "IMAP", "SMTP with TLS", "HTTP"],
+        answer: "SMTP with TLS",
+        explanation: "SMTP with TLS (port 587) secures email transmission by encrypting communication between servers."
+      },
+      {
+        question: "What is the purpose of a security token?",
+        choices: ["Monitor traffic", "Provide authentication", "Encrypt data", "Assign IP addresses"],
+        answer: "Provide authentication",
+        explanation: "A security token provides authentication, often as part of two-factor authentication, like a physical device or app."
+      },
+      {
+        question: "Which type of malware disguises itself as legitimate software?",
+        choices: ["Virus", "Worm", "Trojan", "Spyware"],
+        answer: "Trojan",
+        explanation: "A Trojan disguises itself as legitimate software to trick users into installing it, often delivering malicious payloads."
+      },
+      {
+        question: "What is the purpose of a network access control (NAC) system?",
+        choices: ["Encrypt traffic", "Restrict unauthorized devices", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Restrict unauthorized devices",
+        explanation: "NAC systems restrict unauthorized devices from accessing a network, ensuring compliance and security."
+      },
+      {
+        question: "Which port is used by LDAP for directory services?",
+        choices: ["389", "443", "80", "22"],
+        answer: "389",
+        explanation: "LDAP (Lightweight Directory Access Protocol) uses port 389 for directory services, like user authentication."
+      },
+      {
+        question: "What is the purpose of a risk assessment?",
+        choices: ["Encrypt data", "Identify and prioritize risks", "Monitor traffic", "Assign permissions"],
+        answer: "Identify and prioritize risks",
+        explanation: "A risk assessment identifies, evaluates, and prioritizes risks to mitigate potential threats."
+      },
+      {
+        question: "Which type of encryption uses public and private keys?",
+        choices: ["Symmetric", "Asymmetric", "Hashing", "Quantum"],
+        answer: "Asymmetric",
+        explanation: "Asymmetric encryption uses a public key to encrypt and a private key to decrypt, like RSA."
+      },
+      {
+        question: "What is the purpose of a security audit?",
+        choices: ["Encrypt traffic", "Assess compliance and security", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Assess compliance and security",
+        explanation: "A security audit evaluates an organization’s compliance and security posture to identify gaps."
+      },
+      {
+        question: "Which type of attack uses multiple compromised systems to attack a target?",
+        choices: ["Phishing", "DDoS", "SQL injection", "Man-in-the-middle"],
+        answer: "DDoS",
+        explanation: "A DDoS attack uses multiple compromised systems (botnet) to overwhelm a target with traffic."
+      },
+      {
+        question: "What is the purpose of a certificate authority (CA)?",
+        choices: ["Monitor traffic", "Issue digital certificates", "Assign IP addresses", "Filter web content"],
+        answer: "Issue digital certificates",
+        explanation: "A CA issues digital certificates to verify the identity of entities, enabling secure communications."
+      },
+      {
+        question: "Which protocol is used for secure remote desktop access?",
+        choices: ["SSH", "RDP", "FTP", "HTTP"],
+        answer: "RDP",
+        explanation: "RDP (Remote Desktop Protocol) is used for secure remote desktop access, typically on port 3389."
+      },
+      {
+        question: "What is the purpose of a security patch?",
+        choices: ["Encrypt data", "Fix vulnerabilities", "Monitor traffic", "Assign permissions"],
+        answer: "Fix vulnerabilities",
+        explanation: "A security patch fixes vulnerabilities in software to prevent exploitation by attackers."
+      },
+      {
+        question: "Which type of access control uses attributes like location or time?",
+        choices: ["DAC", "MAC", "RBAC", "ABAC"],
+        answer: "ABAC",
+        explanation: "ABAC (Attribute-Based Access Control) uses attributes like location or time to grant access."
+      },
+      {
+        question: "What is the purpose of a honeynet?",
+        choices: ["Encrypt traffic", "Simulate a network for attack analysis", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Simulate a network for attack analysis",
+        explanation: "A honeynet simulates a network to attract and analyze attacks, aiding in threat research."
+      },
+      {
+        question: "Which port is used by FTPS for secure file transfers?",
+        choices: ["21", "22", "990", "443"],
+        answer: "990",
+        explanation: "FTPS (FTP Secure) uses port 990 for secure file transfers, leveraging SSL/TLS encryption."
+      },
+      {
+        question: "What is the purpose of a security awareness program?",
+        choices: ["Encrypt data", "Educate employees on security", "Monitor traffic", "Assign IP addresses"],
+        answer: "Educate employees on security",
+        explanation: "A security awareness program educates employees on security practices to reduce human-related risks."
+      },
+      {
+        question: "Which type of attack exploits weak passwords?",
+        choices: ["DDoS", "Brute force", "Phishing", "SQL injection"],
+        answer: "Brute force",
+        explanation: "A brute force attack tries multiple password combinations to exploit weak passwords."
+      },
+      {
+        question: "What is the purpose of a public key infrastructure (PKI)?",
+        choices: ["Monitor traffic", "Manage digital certificates", "Assign IP addresses", "Filter web content"],
+        answer: "Manage digital certificates",
+        explanation: "PKI manages digital certificates and keys to secure communications and verify identities."
+      },
+      {
+        question: "Which protocol is used for secure VPN connections?",
+        choices: ["PPTP", "L2TP/IPsec", "FTP", "HTTP"],
+        answer: "L2TP/IPsec",
+        explanation: "L2TP/IPsec combines L2TP and IPsec to provide secure VPN connections with encryption."
+      },
+      {
+        question: "What is the purpose of a data loss prevention (DLP) system?",
+        choices: ["Encrypt traffic", "Prevent unauthorized data exfiltration", "Assign IP addresses", "Monitor bandwidth"],
+        answer: "Prevent unauthorized data exfiltration",
+        explanation: "A DLP system prevents unauthorized data exfiltration by monitoring and controlling data transfers."
+      },
+      {
+        question: "Which type of malware collects user data without consent?",
+        choices: ["Virus", "Worm", "Spyware", "Trojan"],
+        answer: "Spyware",
+        explanation: "Spyware collects user data, like browsing habits or credentials, without consent."
+      },
+      {
+        question: "What is the purpose of a security control?",
+        choices: ["Encrypt data", "Mitigate risks", "Assign IP addresses", "Monitor traffic"],
+        answer: "Mitigate risks",
+        explanation: "Security controls, like firewalls or encryption, mitigate risks to protect systems and data."
+      },
+      {
+        question: "Which port is used by LDAPS for secure directory services?",
+        choices: ["389", "636", "443", "22"],
+        answer: "636",
+        explanation: "LDAPS (LDAP Secure) uses port 636 for secure directory services with SSL/TLS encryption."
+      },
+      {
+        question: "What is the purpose of a security incident response plan?",
+        choices: ["Encrypt data", "Guide response to security breaches", "Monitor traffic", "Assign permissions"],
+        answer: "Guide response to security breaches",
+        explanation: "A security incident response plan outlines steps to detect, respond to, and recover from security breaches."
+      },
+      {
+        question: "Which type of attack uses social engineering to gain trust?",
+        choices: ["DDoS", "Phishing", "SQL injection", "Brute force"],
+        answer: "Phishing",
+        explanation: "Phishing uses social engineering to gain trust, tricking users into revealing sensitive information."
+      },
+      {
+        question: "What is the purpose of a security token in authentication?",
+        choices: ["Monitor traffic", "Provide two-factor authentication", "Encrypt data", "Assign IP addresses"],
+        answer: "Provide two-factor authentication",
+        explanation: "A security token provides two-factor authentication by generating codes for verification."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+    const restartButton = document.querySelector(".restart-button");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+      restartButton.style.display = "none";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+          restartButton.style.display = "block";
+        }
+      }, 5000);
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      correctAnswers = 0;
+      incorrectAnswers = 0;
+      missedQuestions = [];
+      shuffle(questions);
+      showQuestion();
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

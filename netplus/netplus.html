@@ -193,8 +193,13 @@
     // Add click event listeners to tier buttons
     document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {
       button.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent immediate navigation
         const buttonClass = e.target.classList[0]; // Get the first class (e.g., tier1-button)
-        highlightTierButton(buttonClass);
+        highlightTierButton(buttonClass); // Update highlight immediately
+        // Navigate to the href after a slight delay to ensure highlight is applied
+        setTimeout(() => {
+          window.location.href = e.target.href;
+        }, 100);
       });
     });
   </script>

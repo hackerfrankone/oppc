@@ -32,8 +32,20 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 0;
+      gap: 0.5rem;
       z-index: 9999;
+    }
+
+    .top-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .bottom-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .back-button,
@@ -42,6 +54,9 @@
     .topology-button,
     .osi-button,
     .cables-button,
+    .tier1-button,
+    .tier2-button,
+    .tier3-button,
     .restart-button {
       background: transparent;
       color: #00FF00;
@@ -68,6 +83,9 @@
     .topology-button:hover,
     .osi-button:hover,
     .cables-button:hover,
+    .tier1-button:hover,
+    .tier2-button:hover,
+    .tier3-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
       color: black;
@@ -216,6 +234,9 @@
       .topology-button,
       .osi-button,
       .cables-button,
+      .tier1-button,
+      .tier2-button,
+      .tier3-button,
       .restart-button {
         font-size: clamp(0.8rem, 2vw, 0.9rem);
         padding: 0.4rem 0.8rem;
@@ -225,13 +246,20 @@
 </head>
 <body>
   <div class="button-container">
-    <a href="../index.html" class="back-button">← Back</a>
-    <a href="pbq.html" class="pbq-button">PBQ</a>
-    <a href="acronyms.html" class="acronyms-button">Acronyms</a>
-    <a href="cables.html" class="cables-button">Cables</a>
-    <a href="topology.html" class="topology-button">Network Topologies</a>
-    <a href="osi.html" class="osi-button">OSI</a>
-    <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+    <div class="top-buttons">
+      <a href="../index.html" class="back-button">← Back</a>
+      <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+    </div>
+    <div class="bottom-buttons">
+      <a href="pbq.html" class="pbq-button">PBQ</a>
+      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
+      <a href="cables.html" class="cables-button">Cables</a>
+      <a href="topology.html" class="topology-button">Network Topologies</a>
+      <a href="osi.html" class="osi-button">OSI</a>
+      <button class="restart-button" onclick="restartQuiz()">Start Over</button>
+    </div>
   </div>
 
   <div class="quiz-content">

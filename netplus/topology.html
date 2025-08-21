@@ -72,13 +72,14 @@
       border: 1px solid #00FF00;
       border-radius: 3px;
     }
-    .topology {
+    .topology-name {
       color: #00FF00;
       text-decoration: underline;
       cursor: pointer;
       display: inline-block;
+      margin-bottom: 0.5rem;
     }
-    .topology:hover {
+    .topology-name:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -172,23 +173,23 @@
   <div class="topology-content">
     <p class="topology-instruction">Select a Network Topology for more information</p>
     <div class="topology-diagram" onclick="showModal('Star')">
-      Star Topology
+      <div class="topology-name">Star Topology</div>
       <img src="../../images/star.png" alt="Star Topology Placeholder">
     </div>
     <div class="topology-diagram" onclick="showModal('Bus')">
-      Bus Topology
+      <div class="topology-name">Bus Topology</div>
       <img src="../../images/bus.png" alt="Bus Topology Placeholder">
     </div>
     <div class="topology-diagram" onclick="showModal('Ring')">
-      Ring Topology
+      <div class="topology-name">Ring Topology</div>
       <img src="../../images/ring.png" alt="Ring Topology Placeholder">
     </div>
     <div class="topology-diagram" onclick="showModal('Mesh')">
-      Mesh Topology
+      <div class="topology-name">Mesh Topology</div>
       <img src="../../images/mesh.png" alt="Mesh Topology Placeholder">
     </div>
     <div class="topology-diagram" onclick="showModal('Hybrid')">
-      Hybrid Topology
+      <div class="topology-name">Hybrid Topology</div>
       <img src="../../images/hybrid.png" alt="Hybrid Topology Placeholder">
     </div>
   </div>

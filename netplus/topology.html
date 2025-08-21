@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="../images/oppcus.png" />
   <style>
     * {
-      box-sizing: border-box; 
+      box-sizing: border-box;
     }
     body {
       margin: 0;
@@ -38,7 +38,7 @@
       cursor: pointer;
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
-      z-index: 9999;
+      z-index: 1001;
       -webkit-tap-highlight-color: transparent;
     }
     .back-button:hover {
@@ -52,20 +52,23 @@
       font-size: clamp(0.9rem, 3vw, 1rem);
       margin-top: 4rem;
     }
+    .topology-instruction {
+      margin-bottom: 1rem;
+    }
     .topology-diagram {
       background: #111;
       border: 2px solid #00FF00;
       padding: 1rem;
       border-radius: 5px;
-      white-space: pre;
-      text-align: left;
+      text-align: center;
       font-size: clamp(0.9rem, 2.8vw, 1rem);
       margin-bottom: 1rem;
+      cursor: pointer;
     }
     .topology-diagram img {
       max-width: 100%;
       height: auto;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       border: 1px solid #00FF00;
       border-radius: 3px;
     }
@@ -73,6 +76,7 @@
       color: #00FF00;
       text-decoration: underline;
       cursor: pointer;
+      display: inline-block;
     }
     .topology:hover {
       background-color: #00FF00;
@@ -81,10 +85,10 @@
     .modal {
       display: none;
       position: fixed;
-      top: 0;
+      top: 3rem;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: calc(100% - 3rem);
       background-color: rgba(0, 0, 0, 0.8);
       z-index: 1000;
       justify-content: center;
@@ -93,22 +97,23 @@
     .modal-content {
       position: relative;
       max-width: 90%;
-      max-height: 90vh;
+      max-height: 85vh;
       background: black;
       color: #00FF00;
       font-family: 'Courier New', monospace;
-      padding: 20px;
+      padding: 10px;
       border: 2px solid #00FF00;
       overflow-y: auto;
       white-space: pre-wrap;
       text-align: left;
       font-size: clamp(0.9rem, 2.5vw, 0.9rem);
       border-radius: 5px;
+      line-height: 1.1;
     }
     .close-button {
       position: absolute;
-      top: 10px;
-      right: 15px;
+      top: 5px;
+      right: 10px;
       color: #00FF00;
       font-size: 1.5rem;
       cursor: pointer;
@@ -117,21 +122,25 @@
       color: #ffffff;
     }
     .modal-content h2, .modal-content h3 {
-      margin: 0.5rem 0;
+      margin: 0.1rem 0;
     }
-    .modal-content ul, .modal-content ol {
-      margin: 0.5rem 0;
-      padding-left: 20px;
+    .modal-content p {
+      margin: 0.1rem 0;
+    }
+    .modal-content ul {
+      margin: 0.1rem 0;
+      padding-left: 12px;
     }
     .modal-content li {
-      margin-bottom: 0.3rem;
+      margin-bottom: 0;
     }
     .modal-content pre {
       background: #111;
-      padding: 10px;
+      padding: 5px;
       border: 1px solid #00FF00;
       border-radius: 3px;
       overflow-x: auto;
+      margin: 0.1rem 0;
     }
     @media (max-width: 600px) {
       body {
@@ -150,6 +159,10 @@
       .modal-content {
         font-size: clamp(0.8rem, 2.5vw, 0.8rem);
       }
+      .modal {
+        top: 2.5rem;
+        height: calc(100% - 2.5rem);
+      }
     }
   </style>
 </head>
@@ -157,52 +170,27 @@
   <a href="netplus.html" class="back-button">← Back</a>
 
   <div class="topology-content">
-    <div class="topology-diagram">
-      <span class="topology" onclick="showModal('Star')">Star</span>:
-           [Internet]
-               |
-           [Router/Switch]
-          /   |    |   \
-       [PC1][PC2][PC3][Server]
-      <img src="../../../images/star.png" alt="Star Topology Placeholder">
-
-      <span class="topology" onclick="showModal('Bus')">Bus</span>:
-       [Internet]----[PC1]----[PC2]----[Server]
+    <p class="topology-instruction">Select a Network Topology for more information</p>
+    <div class="topology-diagram" onclick="showModal('Star')">
+      Star Topology
+      <img src="placeholder.jpg" alt="Star Topology Placeholder">
+    </div>
+    <div class="topology-diagram" onclick="showModal('Bus')">
+      Bus Topology
       <img src="placeholder.jpg" alt="Bus Topology Placeholder">
-
-      <span class="topology" onclick="showModal('Ring')">Ring</span>:
-       [PC1]----[PC2]
-        |          |
-      [Router]--[Server]
+    </div>
+    <div class="topology-diagram" onclick="showModal('Ring')">
+      Ring Topology
       <img src="placeholder.jpg" alt="Ring Topology Placeholder">
-
-      <span class="topology" onclick="showModal('Mesh')">Mesh</span>:
-       [PC1]-----[PC2]
-        | \     / |
-        |  [Server]
-        | /     \ |
-      [Router]---[Switch]
+    </div>
+    <div class="topology-diagram" onclick="showModal('Mesh')">
+      Mesh Topology
       <img src="placeholder.jpg" alt="Mesh Topology Placeholder">
-
-      <span class="topology" onclick="showModal('Tree')">Tree</span>:
-           [Router]
-              |
-         [Main Switch]
-         /     |     \
-      [SW1]  [SW2]  [SW3]
-       / \      |     |
-    [PC1][PC2][Server]
-      <img src="placeholder.jpg" alt="Tree Topology Placeholder">
-
-      <span class="topology" onclick="showModal('Hybrid')">Hybrid</span>:
-           [Router]
-           /      \
-       [Switch]  [PC1]---[PC2]
-         /  \           /
-       [PC3][Server]--/
+    </div>
+    <div class="topology-diagram" onclick="showModal('Hybrid')">
+      Hybrid Topology
       <img src="placeholder.jpg" alt="Hybrid Topology Placeholder">
     </div>
-    <p>Click a topology name to learn how it works, its setup, and more.</p>
   </div>
 
   <div id="infoModal" class="modal">
@@ -215,124 +203,49 @@
 
     const topologyInfo = {
       Star: `
-<h2>Star Topology</h2>
-<p>In a star topology, all devices connect to a central hub (e.g., switch or router), forming a hub-and-spoke structure.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Connect a switch or router to the internet via a modem.</li>
-  <li>Attach each device (PCs, servers) to the hub using Ethernet cables.</li>
-  <li>Configure the hub with a static IP (e.g., <code>192.168.1.1</code>).</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>Moderate. Device or cable failure affects only that device; hub failure disrupts the entire network.</p>
-<h3>Cost</h3>
-<p>Moderate. Requires a central hub and cables for each device, but simpler than mesh.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Small to medium offices, homes, or schools needing simple management.</li>
-  <li>Networks requiring easy scalability (add devices via hub ports).</li>
-</ul>
+<span class="topology">Star Topology</span>
+<p>Devices connect to a central hub (switch/router) in a hub-and-spoke layout.</p>
+<h3>Setup</h3><ul><li>Link hub to modem; connect devices via Ethernet.</li><li>Set hub IP (e.g., <code>192.168.1.1</code>).</li></ul>
+<h3>Fault Tolerance</h3><p>Moderate: Device/cable failure affects only that device; hub failure downs network.</p>
+<h3>Cost</h3><p>Moderate: Needs hub and cables per device.</p>
+<h3>Use Cases</h3><ul><li>Offices, homes, schools for simple, scalable networks.</li></ul>
       `,
       Bus: `
-<h2>Bus Topology</h2>
-<p>In a bus topology, all devices connect to a single backbone cable, sharing the same communication medium.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Use a coaxial or Ethernet cable as the backbone.</li>
-  <li>Connect devices using T-connectors or taps.</li>
-  <li>Install terminators at both ends to prevent signal reflection.</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>Low. A break in the backbone cable halts all network communication.</p>
-<h3>Cost</h3>
-<p>Low. Minimal cabling and no central hub reduce costs.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Legacy networks or small, budget-constrained setups.</li>
-  <li>Temporary or low-traffic networks.</li>
-</ul>
+<span class="topology">Bus Topology</span>
+<p>Devices share a single backbone cable.</p>
+<h3>Setup</h3><ul><li>Use coaxial/Ethernet backbone with T-connectors.</li><li>Add terminators at ends.</li></ul>
+<h3>Fault Tolerance</h3><p>Low: Backbone failure stops all communication.</p>
+<h3>Cost</h3><p>Low: Minimal cabling, no hub.</p>
+<h3>Use Cases</h3><ul><li>Legacy or small, low-cost networks.</li></ul>
       `,
       Ring: `
-<h2>Ring Topology</h2>
-<p>In a ring topology, devices form a closed loop, with data circulating in one or both directions.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Connect each device to its neighbors using Ethernet or fiber cables.</li>
-  <li>Ensure a complete loop, often with token-passing protocols.</li>
-  <li>Optionally use dual-ring for redundancy (e.g., FDDI).</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>Low to moderate. Single cable or device failure breaks a single-ring; dual-ring improves resilience.</p>
-<h3>Cost</h3>
-<p>Moderate. Requires cabling for each connection; dual-ring or specialized hardware increases costs.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Legacy WANs or token-ring networks.</li>
-  <li>Small networks needing predictable data transmission.</li>
-</ul>
+<span class="topology">Ring Topology</span>
+<p>Devices form a closed loop; data circulates in one/both directions.</p>
+<h3>Setup</h3><ul><li>Connect devices with Ethernet/fiber in a loop.</li><li>Optional dual-ring for redundancy.</li></ul>
+<h3>Fault Tolerance</h3><p>Low-Moderate: Single failure breaks loop; dual-ring improves resilience.</p>
+<h3>Cost</h3><p>Moderate: Cabling per device; dual-ring adds cost.</p>
+<h3>Use Cases</h3><ul><li>Legacy WANs, token-ring networks.</li></ul>
       `,
       Mesh: `
-<h2>Mesh Topology</h2>
-<p>In a mesh topology, devices are interconnected, with full mesh linking every device to all others or partial mesh linking some.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Connect devices with dedicated cables (full mesh) or selectively (partial mesh).</li>
-  <li>Configure dynamic routing protocols (e.g., OSPF with <code>router ospf 1</code>).</li>
-  <li>Use high-capacity switches/routers for large networks.</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>High. Multiple paths allow data rerouting if a link fails.</p>
-<h3>Cost</h3>
-<p>High. Extensive cabling and advanced hardware increase costs.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Data centers or mission-critical systems requiring high uptime.</li>
-  <li>High-traffic networks like military or emergency systems.</li>
-</ul>
-      `,
-      Tree: `
-<h2>Tree Topology</h2>
-<p>Tree topology combines star and bus, with a central backbone and branching star networks, resembling a hierarchical tree.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Connect a main router to a primary switch (backbone).</li>
-  <li>Link secondary switches to the primary, each forming a star with devices.</li>
-  <li>Configure VLANs for traffic segmentation (e.g., <code>vlan 10</code>).</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>Moderate. Device failures affect only their branch; backbone failure impacts all branches.</p>
-<h3>Cost</h3>
-<p>Moderate. Requires multiple switches and cables, more than star but less than mesh.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Enterprises with departmental networks.</li>
-  <li>Campus or multi-building networks.</li>
-</ul>
+<span class="topology">Mesh Topology</span>
+<p>Devices interconnect (full/partial) for multiple data paths.</p>
+<h3>Setup</h3><ul><li>Link devices with cables; configure routing (e.g., OSPF).</li><li>Use high-capacity switches/routers.</li></ul>
+<h3>Fault Tolerance</h3><p>High: Multiple paths allow rerouting.</p>
+<h3>Cost</h3><p>High: Extensive cabling, advanced hardware.</p>
+<h3>Use Cases</h3><ul><li>Data centers, critical systems needing high uptime.</li></ul>
       `,
       Hybrid: `
-<h2>Hybrid Topology</h2>
-<p>Hybrid topology integrates multiple topologies (e.g., star and mesh) to meet specific network requirements.</p>
-<h3>How It's Set Up</h3>
-<ul>
-  <li>Combine elements like star hubs with mesh or ring segments.</li>
-  <li>Use switches and routers to connect devices in a mixed layout.</li>
-  <li>Configure routing protocols and VLANs for efficient traffic flow.</li>
-</ul>
-<h3>Fault Tolerance</h3>
-<p>Varies. Depends on the combined topologies (e.g., mesh segments are highly tolerant, star segments less so).</p>
-<h3>Cost</h3>
-<p>Moderate to high. Costs vary based on the complexity of combined topologies.</p>
-<h3>Use Cases</h3>
-<ul>
-  <li>Complex networks like hospitals or universities with diverse needs.</li>
-  <li>Custom networks balancing cost, scalability, and reliability.</li>
-</ul>
+<span class="topology">Hybrid Topology</span>
+<p>Combines multiple topologies (e.g., star, mesh) for flexibility.</p>
+<h3>Setup</h3><ul><li>Mix layouts (e.g., star hub, mesh segment).</li><li>Configure routing/VLANs.</li></ul>
+<h3>Fault Tolerance</h3><p>Varies: Depends on combined topologies.</p>
+<h3>Cost</h3><p>Moderate-High: Varies by complexity.</p>
+<h3>Use Cases</h3><ul><li>Complex networks (hospitals, universities).</li></ul>
       `
     };
 
     const topologyComparison = `
 <h2>Topology Comparison</h2>
-<p>Here's how the topologies stack up:</p>
 <pre>
 Topology | Scalability | Fault Tolerance | Cost         | Use Case
 ---------+-------------+----------------+--------------+---------------
@@ -340,7 +253,6 @@ Star     | High        | Moderate       | Moderate     | Offices, homes
 Bus      | Low         | Low            | Low          | Legacy/small setups
 Ring     | Moderate    | Low-Moderate   | Moderate     | WANs, token-ring
 Mesh     | High        | High           | High         | Data centers
-Tree     | High        | Moderate       | Moderate     | Enterprises
 Hybrid   | High        | Varies         | Moderate-High| Complex networks
 </pre>
     `;

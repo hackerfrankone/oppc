@@ -720,18 +720,11 @@
       if (selectedButton) {
         selectedButton.classList.add('selected');
       }
-      localStorage.setItem('selectedTier', buttonClass);
     }
 
-    // Load saved tier selection on page load
+    // Highlight Tier 3 button by default on page load
     document.addEventListener('DOMContentLoaded', () => {
-      const savedTier = localStorage.getItem('selectedTier');
-      if (savedTier) {
-        highlightTierButton(savedTier);
-      } else {
-        // Default to highlighting Tier 3 on this page
-        highlightTierButton('tier3-button');
-      }
+      highlightTierButton('tier3-button');
     });
 
     // Add click event listeners to tier buttons

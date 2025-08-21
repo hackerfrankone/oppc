@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Certification Quiz - Tier 1</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .top-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .back-button,
+    .tier1-button,
+    .tier2-button,
+    .tier3-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover,
+    .tier1-button:hover,
+    .tier2-button:hover,
+    .tier3-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .selected {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .page-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .content-section {
+      width: 100%;
+      max-width: 600px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .content-section::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content-section::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content-section::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .page-content {
+        max-width: 95%;
+      }
+
+      .content-section {
+        max-height: 60vh;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .button-container {
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+
+      .back-button,
+      .tier1-button,
+      .tier2-button,
+      .tier3-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <div class="top-buttons">
+      <a href="aplus.html" class="back-button">← Back</a>
+      <a href="tier-1.html" class="tier1-button selected">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="content-section">
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="score" id="score"></div>
+      <div class="missed-questions" id="missed-questions"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Which device is used to connect multiple network segments?",
+        choices: ["Router", "Switch", "Modem", "Firewall"],
+        answer: "Switch",
+        explanation: "A switch connects multiple devices within a network, allowing them to communicate by forwarding data packets to their intended destinations based on MAC addresses. Unlike a router, which connects different networks, a switch operates within a single network segment."
+      },
+      {
+        question: "What component stores the BIOS?",
+        choices: ["RAM", "CPU", "ROM", "SSD"],
+        answer: "ROM",
+        explanation: "The BIOS (Basic Input/Output System) is stored in ROM (Read-Only Memory), typically on a chip on the motherboard. ROM is non-volatile, ensuring the BIOS remains intact even when the system is powered off."
+      },
+      {
+        question: "Which tool is used to test a network cable?",
+        choices: ["Voltmeter", "Cable Tester", "Crimper", "Multimeter"],
+        answer: "Cable Tester",
+        explanation: "A cable tester is used to verify the integrity and connectivity of network cables, such as Ethernet cables, by checking for proper wiring and continuity. It ensures cables are correctly terminated and free of faults."
+      },
+      {
+        question: "Which type of RAM is typically used in laptops?",
+        choices: ["DIMM", "SO-DIMM", "SDRAM", "ECC"],
+        answer: "SO-DIMM",
+        explanation: "SO-DIMM (Small Outline Dual In-line Memory Module) is a compact type of RAM designed for laptops and other small devices. It is physically smaller than DIMM, which is used in desktop PCs."
+      },
+      {
+        question: "What does POST stand for?",
+        choices: ["Power-On Self-Test", "Primary Output Signal Test", "Peripheral Output System Test", "Processor Overclocking System Test"],
+        answer: "Power-On Self-Test",
+        explanation: "POST (Power-On Self-Test) is a diagnostic process performed by the BIOS during system startup to check the functionality of critical hardware components like CPU, RAM, and storage devices."
+      },
+      {
+        question: "What connector is used for Ethernet cables?",
+        choices: ["RJ11", "RJ45", "USB", "HDMI"],
+        answer: "RJ45",
+        explanation: "RJ45 connectors are used for Ethernet cables, such as those following the TIA/EIA-568-B standard (example, CAT5 or CAT6). They enable network connectivity by connecting devices to switches, routers, or modems."
+      },
+      {
+        question: "Which expansion slot has the highest throughput?",
+        choices: ["PCI", "PCIe", "AGP", "ISA"],
+        answer: "PCIe",
+        explanation: "PCIe (Peripheral Component Interconnect Express) offers the highest throughput among expansion slots, providing high-speed data transfer for devices like GPUs and SSDs. It has largely replaced older standards like PCI and AGP."
+      },
+      {
+        question: "What does SSD stand for?",
+        choices: ["Solid State Drive", "Secure Storage Disk", "Software Storage Device", "Standard Storage Drive"],
+        answer: "Solid State Drive",
+        explanation: "An SSD (Solid State Drive) is a storage device that uses flash memory to store data, offering faster read/write speeds and greater reliability compared to traditional HDDs, which use spinning disks."
+      },
+      {
+        question: "Which wireless standard offers the fastest speed?",
+        choices: ["802.11b", "802.11g", "802.11n", "802.11ac"],
+        answer: "802.11ac",
+        explanation: "802.11ac is a Wi-Fi standard that offers faster speeds (up to several Gbps) and better performance than older standards like 802.11b, 802.11g, and 802.11n, operating primarily in the 5 GHz band."
+      },
+      {
+        question: "Which file system is used by default in Windows 10?",
+        choices: ["FAT32", "exFAT", "NTFS", "HFS+"],
+        answer: "NTFS",
+        explanation: "NTFS (New Technology File System) is the default file system for Windows 10, offering features like file compression, encryption, and support for large files, unlike FAT32 or exFAT."
+      },
+      {
+        question: "Which Windows utility can be used to partition and format drives?",
+        choices: ["Task Manager", "Disk Management", "Device Manager", "Control Panel"],
+        answer: "Disk Management",
+        explanation: "Disk Management is a Windows utility for partitioning, formatting, and managing drives. It allows users to create, delete, or resize partitions and assign drive letters."
+      },
+      {
+        question: "What type of connector is used for internal hard drives?",
+        choices: ["VGA", "SATA", "USB", "HDMI"],
+        answer: "SATA",
+        explanation: "SATA (Serial Advanced Technology Attachment) connectors are used for internal hard drives and SSDs, providing high-speed data transfer between the storage device and the motherboard."
+      },
+      {
+        question: "What is the primary purpose of thermal paste?",
+        choices: ["Prevent electrical shorts", "Lubricate fan bearings", "Improve heat transfer", "Protect CPU from static"],
+        answer: "Improve heat transfer",
+        explanation: "Thermal paste enhances heat transfer between the CPU (or GPU) and its heatsink by filling microscopic gaps, ensuring efficient cooling and preventing overheating."
+      },
+      {
+        question: "Which device assigns IP addresses automatically?",
+        choices: ["Router", "Switch", "Firewall", "Repeater"],
+        answer: "Router",
+        explanation: "A router typically includes a DHCP server that automatically assigns IP addresses to devices on a network, facilitating dynamic network configuration and connectivity."
+      },
+      {
+        question: "Which Windows feature allows you to revert to a previous configuration?",
+        choices: ["Device Manager", "System Restore", "Disk Cleanup", "Event Viewer"],
+        answer: "System Restore",
+        explanation: "System Restore allows users to revert a Windows system to a previous state (restore point) without affecting personal files, useful for recovering from system errors or corruption."
+      },
+      {
+        question: "Which RAID level offers redundancy and performance?",
+        choices: ["RAID 0", "RAID 1", "RAID 5", "RAID 6"],
+        answer: "RAID 5",
+        explanation: "RAID 5 combines striping and parity to provide both performance and redundancy. It requires at least three drives and can withstand one drive failure while maintaining data integrity."
+      },
+      {
+        question: "Which port number is used for HTTPS?",
+        choices: ["80", "21", "443", "110"],
+        answer: "443",
+        explanation: "HTTPS (Hypertext Transfer Protocol Secure) uses port 443 to secure web traffic with SSL/TLS encryption, protecting data during transmission between browsers and servers."
+      },
+      {
+        question: "Which of the following is a biometric authentication method?",
+        choices: ["PIN", "Password", "Fingerprint", "Token"],
+        answer: "Fingerprint",
+        explanation: "Fingerprint scanning is a biometric authentication method that uses unique physical characteristics for identity verification, offering higher security than PINs or passwords."
+      },
+      {
+        question: "Which Windows command shows IP configuration?",
+        choices: ["netstat", "tracert", "ping", "ipconfig"],
+        answer: "ipconfig",
+        explanation: "The 'ipconfig' command in Windows displays the IP configuration of network adapters, including IP addresses, subnet masks, and gateway settings."
+      },
+      {
+        question: "Which tool is used to install an RJ-45 connector?",
+        choices: ["Crimper", "Punch-down tool", "Multimeter", "Tone generator"],
+        answer: "Crimper",
+        explanation: "A crimper is used to attach an RJ45 connector to an Ethernet cable by pressing metal contacts into the cable's wires, ensuring a secure connection for network connectivity."
+      },
+      {
+        question: "What type of display uses organic materials that emit light?",
+        choices: ["LCD", "LED", "OLED", "Plasma"],
+        answer: "OLED",
+        explanation: "OLED (Organic Light Emitting Diode) displays use organic materials that emit light when an electric current is applied, offering better contrast and energy efficiency compared to LCD or LED."
+      },
+      {
+        question: "What is the function of a power supply unit?",
+        choices: ["Stores power", "Regulates CPU clock", "Converts AC to DC", "Boosts signal"],
+        answer: "Converts AC to DC",
+        explanation: "A power supply unit (PSU) converts alternating current (AC) from a wall outlet to direct current (DC) to power computer components, ensuring stable voltage delivery."
+      },
+      {
+        question: "What does DHCP stand for?",
+        choices: ["Dynamic Host Configuration Protocol", "Domain Host Control Protocol", "Data Handling Control Process", "Digital Hardware Communication Protocol"],
+        answer: "Dynamic Host Configuration Protocol",
+        explanation: "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses and network configuration details to devices, simplifying network management."
+      },
+      {
+        question: "Which command-line tool is used to check disk integrity?",
+        choices: ["sfc", "diskpart", "chkdsk", "format"],
+        answer: "chkdsk",
+        explanation: "The 'chkdsk' (Check Disk) command scans and repairs disk errors, such as bad sectors or file system issues, ensuring data integrity on storage devices."
+      },
+      {
+        question: "What type of IP address is 169.254.x.x?",
+        choices: ["Public", "Private", "Loopback", "APIPA"],
+        answer: "APIPA",
+        explanation: "APIPA (Automatic Private IP Addressing) assigns IP addresses in the 169.254.x.x range when a DHCP server is unavailable, allowing devices to communicate locally."
+      },
+      {
+        question: "Which connector is used to supply power to a SATA drive?",
+        choices: ["Molex", "Berg", "20-pin", "15-pin SATA power"],
+        answer: "15-pin SATA power",
+        explanation: "The 15-pin SATA power connector supplies power to SATA hard drives and SSDs, providing multiple voltage lines (3.3V, 5V, 12V) for efficient operation."
+      },
+      {
+        question: "Which printer type uses toner?",
+        choices: ["Inkjet", "Laser", "Dot Matrix", "Thermal"],
+        answer: "Laser",
+        explanation: "Laser printers use toner, a powdered ink, which is fused onto paper using heat, offering high-quality, fast printing suitable for office environments."
+      },
+      {
+        question: "What kind of attack is phishing?",
+        choices: ["Physical", "Social engineering", "Man-in-the-middle", "DDoS"],
+        answer: "Social engineering",
+        explanation: "Phishing is a social engineering attack where attackers trick users into revealing sensitive information, typically through fraudulent emails or websites, exploiting human trust."
+      },
+      {
+        question: "Which device allows multiple computers to share one monitor, mouse, and keyboard?",
+        choices: ["Switch", "Router", "KVM", "Repeater"],
+        answer: "KVM",
+        explanation: "A KVM (Keyboard, Video, Mouse) switch allows multiple computers to share a single monitor, keyboard, and mouse, simplifying management of multiple systems."
+      },
+      {
+        question: "What is the purpose of BIOS?",
+        choices: ["Manage power supply", "Configure OS", "Initialize hardware", "Update drivers"],
+        answer: "Initialize hardware",
+        explanation: "The BIOS (Basic Input/Output System) initializes and tests hardware components during system startup, enabling the operating system to load and interact with hardware."
+      },
+      {
+        question: "Which command clears the DNS cache?",
+        choices: ["ipconfig /flushdns", "netstat -r", "nslookup", "tracert google.com"],
+        answer: "ipconfig /flushdns",
+        explanation: "The 'ipconfig /flushdns' command clears the DNS resolver cache in Windows, resolving issues with outdated or corrupted DNS entries."
+      },
+      {
+        question: "What is the max length of a CAT6 Ethernet cable?",
+        choices: ["50 meters", "75 meters", "100 meters", "150 meters"],
+        answer: "100 meters",
+        explanation: "The maximum length for a CAT6 Ethernet cable is 100 meters (328 feet), including patch cables, to maintain signal integrity and performance."
+      },
+      {
+        question: "Which Windows utility displays hardware status, accuracy, and drivers?",
+        choices: ["Disk Manager", "Device Manager", "Task WEEKLY", "System Restore"],
+        answer: "Device Manager",
+        explanation: "Device Manager in Windows displays the status of hardware devices and their drivers, allowing users to troubleshoot issues and update or install drivers."
+      },
+      {
+        question: "What device prevents electrical spikes?",
+        choices: ["UPS", "Modem", "Surge protector", "Inverter"],
+        answer: "Surge protector",
+        explanation: "A surge protector safeguards electronic devices by diverting excess voltage caused by power spikes or surges, preventing damage to hardware."
+      },
+      {
+        question: "Which port is used for POP3 email service?",
+        choices: ["110", "25", "443", "143"],
+        answer: "110",
+        explanation: "POP3 (Post Office Protocol version 3) uses port 110 to retrieve emails from a server, typically downloading them to a local device."
+      },
+      {
+        question: "Which cable type is immune to EMI?",
+        choices: ["UTP", "STP", "Coaxial", "Fiber Optic"],
+        answer: "Fiber Optic",
+        explanation: "Fiber optic cables are immune to EMI (Electromagnetic Interference) because they transmit data using light rather than electrical signals, unlike copper-based cables like UTP or STP."
+      },
+      {
+        question: "Which Windows command shows all active network connections?",
+        choices: ["ping", "netstat", "tracert", "ipconfig"],
+        answer: "netstat",
+        explanation: "The 'netstat' command displays active network connections, including ports, protocols, and remote addresses, helping diagnose network issues."
+      },
+      {
+        question: "Which feature helps protect a laptop from theft?",
+        choices: ["TPM", "Kensington lock", "Fingerprint sensor", "BitLocker"],
+        answer: "Kensington lock",
+        explanation: "A Kensington lock is a physical security feature that anchors a laptop to a fixed object, deterring theft in public or shared environments."
+      },
+      {
+        question: "Which protocol is used to remotely log into another machine?",
+        choices: ["FTP", "SSH", "SMTP", "HTTP"],
+        answer: "SSH",
+        explanation: "SSH (Secure Shell) is a protocol for secure remote logins, using encryption to protect command-line access and file transfers to another machine."
+      },
+      {
+        question: "Which cable is most commonly used for TV connections?",
+        choices: ["CAT5", "Coaxial", "Fiber", "HDMI"],
+        answer: "Coaxial",
+        explanation: "Coaxial cables are commonly used for TV connections, such as cable or satellite TV, due to their ability to carry high-frequency signals with minimal interference."
+      },
+      {
+        question: "Which command would you use to format a USB drive in Windows?",
+        choices: ["diskpart", "sfc /scannow", "format", "bootrec"],
+        answer: "format",
+        explanation: "The 'format' command in Windows prepares a USB drive for use by creating a new file system, erasing existing data, and setting up the drive for storage."
+      },
+      {
+        question: "Which command repairs corrupted system files?",
+        choices: ["chkdsk", "format", "sfc /scannow", "diskpart"],
+        answer: "sfc /scannow",
+        explanation: "The 'sfc /scannow' (System File Checker) command scans and repairs corrupted Windows system files by replacing them with cached copies."
+      },
+      {
+        question: "Which RAID level provides the best performance without redundancy?",
+        choices: ["RAID 0", "RAID 1", "RAID 5", "RAID 10"],
+        answer: "RAID 0",
+        explanation: "RAID 0 uses striping to distribute data across multiple drives, maximizing performance but offering no redundancy, as a single drive failure results in data loss."
+      },
+      {
+        question: "What is the resolution of Full HD?",
+        choices: ["1280x720", "1920x1080", "2560x1440", "3840x2160"],
+        answer: "1920x1080",
+        explanation: "Full HD refers to a resolution of 1920x1080 pixels, commonly used in monitors, TVs, and other displays for high-definition content."
+      },
+      {
+        question: "Which file format is most used for Windows system images?",
+        choices: [".iso", ".img", ".vhd", ".exe"],
+        answer: ".iso",
+        explanation: "The .iso file format is widely used for Windows system images, representing an exact copy of a disk for installation or backup purposes."
+      },
+      {
+        question: "Which type of malware demands payment?",
+        choices: ["Worm", "Trojan", "Spyware", "Ransomware"],
+        answer: "Ransomware",
+        explanation: "Ransomware encrypts a victim's files and demands payment (usually in cryptocurrency) for decryption, often spreading through phishing or malicious downloads."
+      },
+      {
+        question: "Which Windows tool can be used to schedule tasks?",
+        choices: ["Event Viewer", "Task Manager", "Task Scheduler", "Services"],
+        answer: "Task Scheduler",
+        explanation: "Task Scheduler in Windows allows users to automate and schedule tasks, such as running scripts or programs at specific times or events."
+      },
+      {
+        question: "Which cable connector is used with coaxial cable?",
+        choices: ["RJ11", "RJ45", "BNC", "SC"],
+        answer: "BNC",
+        explanation: "BNC (Bayonet Neill-Concelman) connectors are used with coaxial cables for applications like TV connections, networking, and video equipment."
+      },
+      {
+        question: "Which utility provides a graphical display of system performance?",
+        choices: ["msconfig", "perfmon", "cmd", "services.msc"],
+        answer: "perfmon",
+        explanation: "The 'perfmon' (Performance Monitor) utility in Windows provides a graphical interface to monitor system performance metrics like CPU, memory, and disk usage."
+      },
+      {
+        question: "Which address is unique to each NIC?",
+        choices: ["IP", "DNS", "MAC", "DHCP"],
+        answer: "MAC",
+        explanation: "The MAC (Media Access Control) address is a unique identifier assigned to a network interface card (NIC) for communication at the data link layer."
+      },
+      {
+        question: "A PC fails to boot and emits three beeps during POST. What is the likely issue?",
+        choices: ["CPU failure", "Memory failure", "Graphics card failure", "Power supply failure"],
+        answer: "Memory failure",
+        explanation: "Three beeps during POST typically indicate a memory failure, such as faulty RAM or improper installation, requiring reseating or replacing the RAM modules."
+      },
+      {
+        question: "Which command in Windows Recovery Environment repairs boot issues?",
+        choices: ["bootrec /fixboot", "chkdsk /r", "sfc /scannow", "diskpart clean"],
+        answer: "bootrec /fixboot",
+        explanation: "The 'bootrec /fixboot' command in Windows Recovery Environment repairs boot sector issues, restoring the ability to boot into the operating system."
+      },
+      {
+        question: "What is the maximum memory supported by a 64-bit Windows 10 Pro?",
+        choices: ["128 GB", "192 GB", "512 GB", "2 TB"],
+        answer: "2 TB",
+        explanation: "64-bit Windows 10 Pro supports up to 2 terabytes of RAM, allowing for extensive memory usage in high-performance systems."
+      },
+      {
+        question: "Which wireless security protocol is most secure for a corporate network?",
+        choices: ["WEP", "WPA", "WPA2", "WPA3"],
+        answer: "WPA3",
+        explanation: "WPA3 (Wi-Fi Protected Access 3) is the most secure wireless protocol, offering stronger encryption and protection against brute force attacks compared to WEP, WPA, and WPA2."
+      },
+      {
+        question: "A user reports intermittent network drops. Which tool should you use first to diagnose?",
+        choices: ["Loopback plug", "Cable tester", "Ping", "Multimeter"],
+        answer: "Ping",
+        explanation: "The 'ping' command is used first to diagnose network connectivity issues by testing communication between devices, identifying drops or latency problems."
+      },
+      {
+        question: "Which motherboard form factor is commonly used in small PCs?",
+        choices: ["ATX", "Micro-ATX", "Mini-ITX", "Extended ATX"],
+        answer: "Mini-ITX",
+        explanation: "Mini-ITX is a compact motherboard form factor commonly used in small PCs due to its size and efficiency, ideal for space-constrained builds."
+      },
+      {
+        question: "What does a blue screen with 'IRQL_NOT_LESS_OR_EQUAL' indicate?",
+        choices: ["Overheating CPU", "Driver issue", "Malware infection", "Faulty power supply"],
+        answer: "Driver issue",
+        explanation: "The 'IRQL_NOT_LESS_OR_EQUAL' blue screen error in Windows typically indicates a driver issue, often caused by incompatible or corrupted drivers accessing incorrect memory addresses."
+      },
+      {
+        question: "Which Windows command enables remote desktop connections?",
+        choices: ["mstsc", "rdp", "netsh advfirewall", "telnet"],
+        answer: "mstsc",
+        explanation: "The 'mstsc' (Microsoft Terminal Services Client) command launches the Remote Desktop Connection application in Windows, enabling remote desktop connections."
+      },
+      {
+        question: "What is the purpose of the TPM chip?",
+        choices: ["Overclocking CPU", "Encrypting data", "Managing RAM", "Cooling system"],
+        answer: "Encrypting data",
+        explanation: "The TPM (Trusted Platform Module) chip provides hardware-based security for encrypting data, storing cryptographic keys, and supporting features like BitLocker."
+      },
+      {
+        question: "A laptop screen flickers when moved. What is the likely cause?",
+        choices: ["Loose video cable", "Faulty GPU", "Overheating CPU", "Bad battery"],
+        answer: "Loose video cable",
+        explanation: "A flickering laptop screen when moved often indicates a loose video cable connecting the display to the motherboard, requiring reseating or replacement."
+      },
+      {
+        question: "Which subnet mask allows for 254 hosts in a single network?",
+        choices: ["255.255.255.0", "255.255.255.128", "255.255.255.192", "255.255.255.252"],
+        answer: "255.255.255.0",
+        explanation: "The subnet mask 255.255.255.0 (/24) allows for 254 usable host addresses in a single network, commonly used in small to medium-sized networks."
+      },
+      {
+        question: "Which hypervisor type runs directly on hardware without an OS?",
+        choices: ["Type 1", "Type 2", "Hybrid", "Container-based"],
+        answer: "Type 1",
+        explanation: "Type 1 hypervisors (bare-metal) run directly on hardware without a host OS, offering better performance for virtual machines, as seen in solutions like VMware ESXi."
+      },
+      {
+        question: "A printer shows 'Out of Memory' errors. What should you do first?",
+        choices: ["Add more RAM", "Reduce print resolution", "Replace toner", "Update firmware"],
+        answer: "Reduce print resolution",
+        explanation: "Reducing print resolution decreases the memory required for print jobs, often resolving 'Out of Memory' errors in printers without needing hardware upgrades."
+      },
+      {
+        question: "Which command displays detailed system hardware information in Windows?",
+        choices: ["msinfo32", "dxdiag", "sysinfo", "devmgmt.msc"],
+        answer: "msinfo32",
+        explanation: "The 'msinfo32' (System Information) command provides detailed information about hardware, system resources, and software environment in Windows."
+      },
+      {
+        question: "What is the primary cause of a 'Non-system disk or disk error' message?",
+        choices: ["Corrupted OS", "Unbootable device in boot order", "Faulty RAM", "Overheating CPU"],
+        answer: "Unbootable device in boot order",
+        explanation: "A 'Non-system disk or disk error' message occurs when the system attempts to boot from a non-bootable device, such as a USB drive, due to incorrect boot order settings."
+      },
+      {
+        question: "Which protocol is used for secure file transfer?",
+        choices: ["FTP", "SFTP", "TFTP", "HTTP"],
+        answer: "SFTP",
+        explanation: "SFTP (Secure File Transfer Protocol) uses SSH to provide encrypted file transfers, ensuring data security during transmission, unlike the unencrypted FTP."
+      },
+      {
+        question: "A PC shuts down randomly under heavy load. What is the likely issue?",
+        choices: ["Insufficient RAM", "Overheating", "Faulty GPU", "Corrupted OS"],
+        answer: "Overheating",
+        explanation: "Random shutdowns under heavy load are often caused by overheating, typically due to inadequate cooling or dust buildup, requiring cleaning or improved cooling solutions."
+      },
+      {
+        question: "Which Windows feature encrypts an entire drive?",
+        choices: ["EFS", "BitLocker", "TPM", "Secure Boot"],
+        answer: "BitLocker",
+        explanation: "BitLocker is a Windows feature that encrypts entire drives, protecting data from unauthorized access, often using a TPM chip for key storage."
+      },
+      {
+        question: "What is the purpose of a VLAN in a network?",
+        choices: ["Increase bandwidth", "Segment network traffic", "Encrypt data", "Assign IP addresses"],
+        answer: "Segment network traffic",
+        explanation: "A VLAN (Virtual Local Area Network) segments network traffic by grouping devices logically, improving security and efficiency by isolating traffic without physical separation."
+      },
+      {
+        question: "Which command removes a directory and its contents in Linux?",
+        choices: ["rm -r", "del /s", "rd /s", "rmdir"],
+        answer: "rm -r",
+        explanation: "The 'rm -r' command in Linux recursively removes a directory and its contents, requiring caution as it deletes files without moving them to a recycle bin."
+      },
+      {
+        question: "Which protocol is used for sending email?",
+        choices: ["POP3", "IMAP", "SMTP", "SNMP"],
+        answer: "SMTP",
+        explanation: "SMTP (Simple Mail Transfer Protocol) is used for sending emails between servers, typically on port 25 or 587 for secure transmission."
+      },
+      {
+        question: "What is the default port for FTP?",
+        choices: ["21", "22", "23", "25"],
+        answer: "21",
+        explanation: "FTP (File Transfer Protocol) uses port 21 for control commands, with port 20 used for data transfer, facilitating file transfers between systems."
+      },
+      {
+        question: "Which type of backup only saves files that have changed since the last full backup?",
+        choices: ["Full", "Incremental", "Differential", "Mirror"],
+        answer: "Differential",
+        explanation: "A differential backup saves files that have changed since the last full backup, reducing backup time compared to a full backup but requiring more storage than incremental backups."
+      },
+      {
+        question: "Which component is responsible for rendering graphics in a PC?",
+        choices: ["CPU", "GPU", "RAM", "PSU"],
+        answer: "GPU",
+        explanation: "The GPU (Graphics Processing Unit) is responsible for rendering graphics, handling tasks like video playback, gaming, and image processing, offloading work from the CPU."
+      },
+      {
+        question: "What does APIPA stand for?",
+        choices: ["Automatic Private IP Addressing", "Advanced Protocol IP Assignment", "Automated Public IP Allocation", "Adaptive Private IP Access"],
+        answer: "Automatic Private IP Addressing",
+        explanation: "APIPA (Automatic Private IP Addressing) assigns IP addresses in the 169.254.x.x range when a DHCP server is unavailable, enabling local network communication."
+      },
+      {
+        question: "Which command tests network connectivity between two hosts?",
+        choices: ["ipconfig", "ping", "tracert", "netstat"],
+        answer: "ping",
+        explanation: "The 'ping' command tests network connectivity by sending ICMP packets to a host and measuring response time, helping diagnose network issues."
+      },
+      {
+        question: "Which cooling method uses liquid to dissipate heat?",
+        choices: ["Air cooling", "Liquid cooling", "Passive cooling", "Fanless cooling"],
+        answer: "Liquid cooling",
+        explanation: "Liquid cooling uses a liquid coolant to transfer heat away from components like the CPU or GPU, offering superior cooling performance for high-end systems."
+      },
+      {
+        question: "Which Windows utility monitors real-time system resource usage?",
+        choices: ["Task Manager", "Device Manager", "Disk Management", "Event Viewer"],
+        answer: "Task Manager",
+        explanation: "Task Manager monitors real-time system resource usage, including CPU, memory, disk, and network activity, helping diagnose performance issues."
+      },
+      {
+        question: "Which type of USB connector is reversible?",
+        choices: ["USB-A", "USB-B", "USB-C", "Mini-USB"],
+        answer: "USB-C",
+        explanation: "USB-C is a reversible connector, allowing it to be plugged in either way, and supports faster data transfer and power delivery compared to USB-A or USB-B."
+      },
+      {
+        question: "What is the purpose of an uninterruptible power supply (UPS)?",
+        choices: ["Convert AC to DC", "Provide temporary power", "Prevent electrical spikes", "Regulate voltage"],
+        answer: "Provide temporary power",
+        explanation: "A UPS (Uninterruptible Power Supply) provides temporary power during outages, allowing safe shutdown or continued operation of devices, protecting against data loss."
+      },
+      {
+        question: "Which Linux command displays the contents of a file?",
+        choices: ["ls", "cat", "rm", "mv"],
+        answer: "cat",
+        explanation: "The 'cat' command in Linux displays the contents of a file to the terminal, useful for viewing text files or concatenating multiple files."
+      },
+      {
+        question: "Which type of memory is non-volatile?",
+        choices: ["RAM", "Cache", "ROM", "Virtual memory"],
+        answer: "ROM",
+        explanation: "ROM (Read-Only Memory) is non-volatile, retaining data without power, unlike RAM or cache, which are volatile and lose data when powered off."
+      },
+      {
+        question: "Which protocol is used for network time synchronization?",
+        choices: ["NTP", "SNMP", "FTP", "DHCP"],
+        answer: "NTP",
+        explanation: "NTP (Network Time Protocol) synchronizes clocks across networked devices, ensuring accurate timekeeping for logs and time-sensitive operations, using port 123."
+      },
+      {
+        question: "What is the maximum data transfer rate of USB 3.0?",
+        choices: ["480 Mbps", "5 Gbps", "10 Gbps", "20 Gbps"],
+        answer: "5 Gbps",
+        explanation: "USB 3.0 (SuperSpeed USB) has a maximum data transfer rate of 5 Gbps, significantly faster than USB 2.0's 480 Mbps."
+      },
+      {
+        question: "Which Windows command restarts a service?",
+        choices: ["net stop", "net start", "sc config", "net restart"],
+        answer: "net start",
+        explanation: "The 'net start' command restarts a Windows service after stopping it with 'net stop', allowing management of system services from the command line."
+      },
+      {
+        question: "Which type of attack involves flooding a network with traffic?",
+        choices: ["Phishing", "DDoS", "Man-in-the-middle", "SQL injection"],
+        answer: "DDoS",
+        explanation: "A DDoS (Distributed Denial of Service) attack floods a network with excessive traffic, overwhelming resources and disrupting service availability."
+      },
+      {
+        question: "Which Linux command changes file permissions?",
+        choices: ["chmod", "chown", "ls", "grep"],
+        answer: "chmod",
+        explanation: "The 'chmod' (change mode) command in Linux modifies file permissions, controlling access for users, groups, and others, using numeric or symbolic notation."
+      },
+      {
+        question: "What is the purpose of a loopback address?",
+        choices: ["Test network connectivity", "Assign IP to devices", "Route traffic", "Secure connections"],
+        answer: "Test network connectivity",
+        explanation: "The loopback address (127.0.0.1) is used to test network connectivity on a local device, allowing software to communicate with itself for diagnostic purposes."
+      },
+      {
+        question: "Which Windows feature allows virtual desktops?",
+        choices: ["Task View", "File Explorer", "Control Panel", "Settings"],
+        answer: "Task View",
+        explanation: "Task View in Windows allows users to create and manage virtual desktops, organizing applications and tasks across multiple workspaces for improved productivity."
+      },
+      {
+        question: "Which type of printer uses heat to transfer ink to paper?",
+        choices: ["Inkjet", "Laser", "Thermal", "Dot Matrix"],
+        answer: "Thermal",
+        explanation: "Thermal printers use heat to transfer ink or create images on special paper, commonly used in receipt printers due to their speed and reliability."
+      },
+      {
+        question: "What is the default port for SSH?",
+        choices: ["21", "22", "23", "80"],
+        answer: "22",
+        explanation: "SSH (Secure Shell) uses port 22 for secure remote logins and file transfers, providing encrypted communication to protect against interception."
+      },
+      {
+        question: "Which component connects the CPU to the motherboard?",
+        choices: ["Socket", "Chipset", "BIOS", "Heatsink"],
+        answer: "Socket",
+        explanation: "The CPU socket on the motherboard physically connects and secures the CPU, ensuring proper communication and compatibility with the motherboard."
+      },
+      {
+        question: "Which Windows command displays the routing table?",
+        choices: ["ipconfig", "netstat -r", "tracert", "ping"],
+        answer: "netstat -r",
+        explanation: "The 'netstat -r' command displays the routing table in Windows, showing how network traffic is directed between networks or devices."
+      },
+      {
+        question: "What does CMOS stand for?",
+        choices: ["Complementary Metal-Oxide Semiconductor", "Central Memory Operating System", "Computerized Modular Operating System", "Circuit Management Operating System"],
+        answer: "Complementary Metal-Oxide Semiconductor",
+        explanation: "CMOS (Complementary Metal-Oxide Semiconductor) is a technology used in the chip that stores BIOS settings, powered by a battery to retain data when the system is off."
+      },
+      {
+        question: "Which type of storage device uses flash memory?",
+        choices: ["HDD", "SSD", "Tape", "Optical"],
+        answer: "SSD",
+        explanation: "SSDs (Solid State Drives) use flash memory for storage, offering faster access times and greater durability compared to HDDs, which use spinning disks."
+      },
+      {
+        question: "Which protocol is used for resolving domain names to IP addresses?",
+        choices: ["DHCP", "DNS", "NTP", "SNMP"],
+        answer: "DNS",
+        explanation: "DNS (Domain Name System) resolves domain names (example, google.com) to IP addresses, enabling users to access websites using human-readable names."
+      },
+      {
+        question: "Which Windows utility is used to configure startup programs?",
+        choices: ["msconfig", "services.msc", "perfmon", "regedit"],
+        answer: "msconfig",
+        explanation: "The 'msconfig' (System Configuration) utility in Windows allows users to manage startup programs, services, and boot settings to optimize system performance."
+      },
+      {
+        question: "What is the purpose of a surge protector?",
+        choices: ["Provide backup power", "Protect against voltage spikes", "Convert AC to DC", "Cool components"],
+        answer: "Protect against voltage spikes",
+        explanation: "A surge protector protects devices from voltage spikes by diverting excess electricity, preventing damage from power surges or lightning strikes."
+      },
+      {
+        question: "Which Linux command displays current running processes?",
+        choices: ["ls", "top", "pwd", "rm"],
+        answer: "top",
+        explanation: "The 'top' command in Linux displays real-time information about running processes, including CPU and memory usage, useful for system monitoring."
+      },
+      {
+        question: "Which type of cable is used for Thunderbolt 3 connections?",
+        choices: ["USB-A", "USB-C", "HDMI", "DisplayPort"],
+        answer: "USB-C",
+        explanation: "Thunderbolt 3 uses USB-C cables, offering high-speed data transfer (up to 40 Gbps) and power delivery, compatible with USB-C and DisplayPort devices."
+      },
+      {
+        question: "What is the maximum resolution supported by HDMI 2.0?",
+        choices: ["1080p", "1440p", "4K", "8K"],
+        answer: "4K",
+        explanation: "HDMI 2.0 supports a maximum resolution of 4K (3840x2160) at 60 Hz, suitable for high-definition displays and modern multimedia applications."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+        }
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

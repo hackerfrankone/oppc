@@ -22,7 +22,6 @@
       padding: 1rem;
       position: relative;
     }
-
     .back-button {
       position: fixed;
       top: 1rem;
@@ -40,26 +39,28 @@
       z-index: 9999;
       -webkit-tap-highlight-color: transparent;
     }
-
     .back-button:hover {
       background-color: #00FF00;
       color: black;
     }
-
     .container {
       width: 100%;
       max-width: 1200px;
       padding: 2rem;
-      margin-top: 3rem; /* Added to shift content down */
+      margin-top: 3rem;
     }
-
+    .instruction {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 16px;
+      color: #99ff99;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
       width: 100%;
     }
-
     .card {
       background: transparent;
       border: 2px solid #00FF00;
@@ -67,12 +68,11 @@
       padding: 1rem;
       text-align: center;
       transition: transform 0.3s;
+      cursor: pointer;
     }
-
     .card:hover {
       transform: scale(1.05);
     }
-
     .card img {
       width: 100%;
       height: 150px;
@@ -80,29 +80,72 @@
       border-radius: 5px;
       margin-bottom: 0.5rem;
     }
-
     .card h3 {
       margin: 0.5rem 0;
       font-size: clamp(1rem, 3vw, 1.2rem);
     }
-
     .card p {
       font-size: clamp(0.9rem, 2.5vw, 1rem);
       margin: 0;
       line-height: 1.4;
     }
-
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #1a1a1a;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      border: 2px solid #00ff00;
+      border-radius: 8px;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    .modal-content p, .modal-content ul {
+      font-size: 14px;
+      color: #99ff99;
+    }
+    .modal-content ul {
+      padding-left: 20px;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #00ff00;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      color: #ffffff;
+    }
     @media (max-width: 600px) {
       body { padding: 0.5rem; }
       .container { 
         padding: 1rem;
-        margin-top: 2.5rem; /* Adjusted for mobile to avoid overlap */
+        margin-top: 2.5rem;
       }
       .grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
       .card img { height: 120px; }
       .card h3 { font-size: clamp(0.9rem, 2.5vw, 1rem); }
       .card p { font-size: clamp(0.8rem, 2.2vw, 0.9rem); }
       .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .modal-content { font-size: clamp(0.8rem, 2.2vw, 0.9rem); }
     }
   </style>
 </head>
@@ -110,83 +153,278 @@
   <a href="aplus.html" class="back-button">← Back</a>
 
   <div class="container">
+    <div class="instruction">Select a hardware component for more information</div>
     <div class="grid">
-      <div class="card">
+      <div class="card" onclick="showModal('Tower Chassis')">
         <img src="../images/chassis-tower.png" alt="Tower Chassis Placeholder" />
         <h3>Tower Chassis</h3>
         <p>Full-size desktop chassis, supports ATX motherboards, multiple drives, and expansion cards.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('Mini-ITX Chassis')">
         <img src="../images/chassis-mini-itx.png" alt="Mini-ITX Chassis Placeholder" />
         <h3>Mini-ITX Chassis</h3>
         <p>Compact chassis for Mini-ITX motherboards, ideal for small form factor PCs.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('SSD')">
         <img src="../images/ssd.png" alt="SSD Placeholder" />
         <h3>SSD (Solid State Drive)</h3>
         <p>Flash-based storage, faster than HDD, used for OS and applications.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('HDD')">
         <img src="../images/hdd.png" alt="HDD Placeholder" />
         <h3>HDD (Hard Disk Drive)</h3>
         <p>Magnetic storage, higher capacity, slower than SSD, used for mass storage.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('LCD Monitor')">
         <img src="../images/monitor-lcd.png" alt="LCD Monitor Placeholder" />
         <h3>LCD Monitor</h3>
         <p>Liquid Crystal Display, common, energy-efficient, slim design.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('OLED Monitor')">
         <img src="../images/monitor-oled.png" alt="OLED Monitor Placeholder" />
         <h3>OLED Monitor</h3>
         <p>Organic LED, superior color and contrast, used in high-end displays.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('LED Monitor')">
         <img src="../images/monitor-led.png" alt="LED Monitor Placeholder" />
         <h3>LED Monitor</h3>
         <p>Backlit LCD using LEDs, brighter, more energy-efficient than traditional LCD.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('CPU')">
         <img src="../images/cpu.png" alt="CPU Placeholder" />
         <h3>CPU (Central Processing Unit)</h3>
         <p>Processes instructions, brain of the computer, fits specific motherboard sockets.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('GPU')">
         <img src="../images/gpu.png" alt="GPU Placeholder" />
         <h3>GPU (Graphics Processing Unit)</h3>
         <p>Handles graphics rendering, essential for gaming and video editing.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('DIMM RAM')">
         <img src="../images/ram-dimm.png" alt="DIMM RAM Placeholder" />
         <h3>DIMM RAM</h3>
         <p>Desktop memory, physically larger, used in PCs for temporary data storage.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('SO-DIMM RAM')">
         <img src="../images/ram-sodimm.png" alt="SO-DIMM RAM Placeholder" />
         <h3>SO-DIMM RAM</h3>
         <p>Smaller RAM for laptops, used for temporary data storage.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('Motherboards')">
         <img src="../images/motherboards.png" alt="Motherboards Placeholder" />
         <h3>Motherboards</h3>
         <p>Multiple motherboard sizes from biggest to smallest.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('PSU')">
         <img src="../images/psu.png" alt="Power Supply Unit Placeholder" />
         <h3>Power Supply Unit (PSU)</h3>
         <p>Converts AC to DC, powers all PC components.</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="showModal('Cooling Fan')">
         <img src="../images/cooling-fan.png" alt="Cooling Fan Placeholder" />
         <h3>Cooling Fan</h3>
         <p>Air-based cooling for CPUs, GPUs, or chassis to prevent overheating.</p>
       </div>
-      <div class="card">
-        <img src="../images/heat-sink.png" alt="Cooling Fan" />
-        <h3>Cooling Fan</h3>
+      <div class="card" onclick="showModal('Heat Sink')">
+        <img src="../images/heat-sink.png" alt="Heat Sink Placeholder" />
+        <h3>Heat Sink</h3>
         <p>Designed to absorb and dissipate excess heat from the CPU.</p>
       </div>
     </div>
   </div>
+
+  <div id="infoModal" class="modal">
+    <div class="modal-content" id="modalContent">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+    </div>
+  </div>
+
+  <script>
+    const infoModal = document.getElementById('infoModal');
+    const modalContent = document.getElementById('modalContent');
+
+    const hardwareInfo = {
+      'Tower Chassis': `
+        <h2>Tower Chassis</h2>
+        <p>Full-size desktop chassis, supports ATX motherboards, multiple drives, and expansion cards.</p>
+        <ul>
+          <li>Form Factor: ATX, Micro-ATX, or Extended ATX.</li>
+          <li>Connectors: Supports multiple drive bays (3.5" HDD, 2.5" SSD), PCIe slots, and front panel I/O (USB, audio).</li>
+          <li>Use Case: Gaming PCs, workstations, and servers requiring expandability.</li>
+          <li>Notable Feature: Excellent airflow and space for high-end components, but bulky.</li>
+          <li>CompTIA A+ Relevance: Understand chassis compatibility with motherboard form factors and cooling solutions.</li>
+        </ul>
+      `,
+      'Mini-ITX Chassis': `
+        <h2>Mini-ITX Chassis</h2>
+        <p>Compact chassis for Mini-ITX motherboards, ideal for small form factor PCs.</p>
+        <ul>
+          <li>Form Factor: Mini-ITX (6.7 x 6.7 inches).</li>
+          <li>Connectors: Limited drive bays (1-2), fewer PCIe slots, compact PSU support.</li>
+          <li>Use Case: Home theater PCs, small office desktops, or portable builds.</li>
+          <li>Notable Feature: Space-efficient but limited expansion options.</li>
+          <li>CompTIA A+ Relevance: Knowledge of small form factor builds and thermal management in confined spaces.</li>
+        </ul>
+      `,
+      'SSD': `
+        <h2>SSD (Solid State Drive)</h2>
+        <p>Flash-based storage, faster than HDD, used for OS and applications.</p>
+        <ul>
+          <li>Connectors: SATA (2.5" or M.2), NVMe (M.2 or PCIe).</li>
+          <li>Speed: Up to 7,000 MB/s (NVMe PCIe 4.0) or 550 MB/s (SATA).</li>
+          <li>Use Case: OS boot drives, gaming, and high-speed data access.</li>
+          <li>Notable Feature: No moving parts, shock-resistant, low power consumption.</li>
+          <li>CompTIA A+ Relevance: Understand SATA vs. NVMe, installation, and performance benefits.</li>
+        </ul>
+      `,
+      'HDD': `
+        <h2>HDD (Hard Disk Drive)</h2>
+        <p>Magnetic storage, higher capacity, slower than SSD, used for mass storage.</p>
+        <ul>
+          <li>Connectors: SATA (3.5" or 2.5") for data and power.</li>
+          <li>Speed: 5400-7200 RPM, up to 250 MB/s transfer rate.</li>
+          <li>Use Case: Bulk storage for media, backups, and budget systems.</li>
+          <li>Notable Feature: Higher capacity at lower cost, but slower and less durable than SSD.</li>
+          <li>CompTIA A+ Relevance: Knowledge of HDD installation, RAID configurations, and maintenance.</li>
+        </ul>
+      `,
+      'LCD Monitor': `
+        <h2>LCD Monitor</h2>
+        <p>Liquid Crystal Display, common, energy-efficient, slim design.</p>
+        <ul>
+          <li>Connectors: VGA, HDMI, DVI, or DisplayPort.</li>
+          <li>Resolution: Up to 4K (3840x2160).</li>
+          <li>Use Case: General computing, office work, and budget displays.</li>
+          <li>Notable Feature: Thin profile, lower power consumption than CRT.</li>
+          <li>CompTIA A+ Relevance: Understand display connectors, resolutions, and troubleshooting display issues.</li>
+        </ul>
+      `,
+      'OLED Monitor': `
+        <h2>OLED Monitor</h2>
+        <p>Organic LED, superior color and contrast, used in high-end displays.</p>
+        <ul>
+          <li>Connectors: HDMI, DisplayPort, USB-C.</li>
+          <li>Resolution: Up to 8K (7680x4320).</li>
+          <li>Use Case: Professional video editing, gaming, and premium displays.</li>
+          <li>Notable Feature: True blacks and vibrant colors, but risk of burn-in.</li>
+          <li>CompTIA A+ Relevance: Knowledge of advanced display technologies and their applications.</li>
+        </ul>
+      `,
+      'LED Monitor': `
+        <h2>LED Monitor</h2>
+        <p>Backlit LCD using LEDs, brighter, more energy-efficient than traditional LCD.</p>
+        <ul>
+          <li>Connectors: VGA, HDMI, DVI, DisplayPort.</li>
+          <li>Resolution: Up to 4K or higher.</li>
+          <li>Use Case: General-purpose displays, gaming, and multimedia.</li>
+          <li>Notable Feature: Brighter and more energy-efficient than CCFL-backlit LCDs.</li>
+          <li>CompTIA A+ Relevance: Differentiate between LCD types and troubleshoot display connectivity.</li>
+        </ul>
+      `,
+      'CPU': `
+        <h2>CPU (Central Processing Unit)</h2>
+        <p>Processes instructions, brain of the computer, fits specific motherboard sockets.</p>
+        <ul>
+          <li>Connectors: Socket-based (e.g., LGA 1700, AM5).</li>
+          <li>Performance: Measured in GHz, cores, and threads (e.g., 8 cores, 16 threads).</li>
+          <li>Use Case: General computing, gaming, and server workloads.</li>
+          <li>Notable Feature: Requires compatible socket and adequate cooling.</li>
+          <li>CompTIA A+ Relevance: Understand CPU sockets, installation, and thermal management.</li>
+        </ul>
+      `,
+      'GPU': `
+        <h2>GPU (Graphics Processing Unit)</h2>
+        <p>Handles graphics rendering, essential for gaming and video editing.</p>
+        <ul>
+          <li>Connectors: PCIe x16 slot, HDMI, DisplayPort, DVI.</li>
+          <li>Performance: Measured by CUDA cores/RT cores, VRAM (e.g., 8GB GDDR6).</li>
+          <li>Use Case: Gaming, video editing, 3D rendering, and cryptocurrency mining.</li>
+          <li>Notable Feature: Requires sufficient PSU wattage and cooling.</li>
+          <li>CompTIA A+ Relevance: Knowledge of GPU installation, drivers, and troubleshooting graphical issues.</li>
+        </ul>
+      `,
+      'DIMM RAM': `
+        <h2>DIMM RAM</h2>
+        <p>Desktop memory, physically larger, used in PCs for temporary data storage.</p>
+        <ul>
+          <li>Connectors: DIMM slots (DDR4, DDR5).</li>
+          <li>Speed: DDR4 (2133-3200 MHz), DDR5 (4800-8400 MHz).</li>
+          <li>Use Case: Desktop PCs for multitasking and high-performance applications.</li>
+          <li>Notable Feature: Higher bandwidth than SO-DIMM, not compatible with laptops.</li>
+          <li>CompTIA A+ Relevance: Understand RAM types, speeds, and proper installation.</li>
+        </ul>
+      `,
+      'SO-DIMM RAM': `
+        <h2>SO-DIMM RAM</h2>
+        <p>Smaller RAM for laptops, used for temporary data storage.</p>
+        <ul>
+          <li>Connectors: SO-DIMM slots (DDR4, DDR5).</li>
+          <li>Speed: Similar to DIMM but optimized for laptops.</li>
+          <li>Use Case: Laptops and small form factor devices.</li>
+          <li>Notable Feature: Smaller physical size, compatible only with laptop motherboards.</li>
+          <li>CompTIA A+ Relevance: Differentiate between DIMM and SO-DIMM, handle laptop RAM upgrades.</li>
+        </ul>
+      `,
+      'Motherboards': `
+        <h2>Motherboards</h2>
+        <p>Multiple motherboard sizes from biggest to smallest.</p>
+        <ul>
+          <li>Form Factors: ATX, Micro-ATX, Mini-ITX, E-ATX.</li>
+          <li>Connectors: CPU socket, RAM slots, PCIe slots, SATA, M.2, USB headers.</li>
+          <li>Use Case: Foundation for PCs, determines component compatibility.</li>
+          <li>Notable Feature: Chipset determines CPU and feature support (e.g., Intel Z790, AMD B650).</li>
+          <li>CompTIA A+ Relevance: Understand form factors, chipsets, and component installation.</li>
+        </ul>
+      `,
+      'PSU': `
+        <h2>Power Supply Unit (PSU)</h2>
+        <p>Converts AC to DC, powers all PC components.</p>
+        <ul>
+          <li>Connectors: ATX 24-pin, EPS12V (8-pin CPU), PCIe (6+2-pin), SATA, Molex.</li>
+          <li>Wattage: 300W-1200W depending on system requirements.</li>
+          <li>Use Case: Powers all PC components, critical for system stability.</li>
+          <li>Notable Feature: 80 PLUS certification for efficiency (Bronze, Gold, etc.).</li>
+          <li>CompTIA A+ Relevance: Calculate power requirements, ensure connector compatibility.</li>
+        </ul>
+      `,
+      'Cooling Fan': `
+        <h2>Cooling Fan</h2>
+        <p>Air-based cooling for CPUs, GPUs, or chassis to prevent overheating.</p>
+        <ul>
+          <li>Connectors: 3-pin or 4-pin (PWM) to motherboard or PSU.</li>
+          <li>Size: 80mm, 120mm, 140mm, etc., for case or component cooling.</li>
+          <li>Use Case: Maintains optimal temperatures for system stability.</li>
+          <li>Notable Feature: PWM fans adjust speed dynamically for noise reduction.</li>
+          <li>CompTIA A+ Relevance: Understand fan types, installation, and airflow optimization.</li>
+        </ul>
+      `,
+      'Heat Sink': `
+        <h2>Heat Sink</h2>
+        <p>Designed to absorb and dissipate excess heat from the CPU.</p>
+        <ul>
+          <li>Connectors: Mounts directly to CPU with thermal paste, often paired with a fan.</li>
+          <li>Material: Aluminum or copper for heat dissipation.</li>
+          <li>Use Case: Essential for CPU and GPU thermal management.</li>
+          <li>Notable Feature: Passive cooling (no fan) or active cooling (with fan).</li>
+          <li>CompTIA A+ Relevance: Knowledge of thermal management, installation, and maintenance.</li>
+        </ul>
+      `
+    };
+
+    function showModal(hardware) {
+      modalContent.innerHTML = hardwareInfo[hardware];
+      infoModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      infoModal.style.display = 'none';
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === infoModal) {
+        closeModal();
+      }
+    });
+  </script>
 </body>
 </html>

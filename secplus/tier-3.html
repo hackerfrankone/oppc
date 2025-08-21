@@ -42,15 +42,7 @@
       gap: 0.5rem;
     }
 
-    .bottom-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
     .back-button,
-    .pbq-button,
-    .acronyms-button,
     .tier1-button,
     .tier2-button,
     .tier3-button,
@@ -70,18 +62,26 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    .tier3-button.active {
+      background-color: #00FF00;
+      color: black;
+    }
+
     .restart-button {
       display: none;
     }
 
     .back-button:hover,
-    .pbq-button:hover,
-    .acronyms-button:hover,
     .tier1-button:hover,
     .tier2-button:hover,
     .tier3-button:hover,
     .restart-button:hover {
       background-color: #00FF00;
+      color: black;
+    }
+
+    .tier3-button.active:hover {
+      background-color: #00cc00;
       color: black;
     }
 
@@ -223,8 +223,6 @@
       }
 
       .back-button,
-      .pbq-button,
-      .acronyms-button,
       .tier1-button,
       .tier2-button,
       .tier3-button,
@@ -241,11 +239,9 @@
       <a href="../../index.html" class="back-button">← Back</a>
       <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
       <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
-      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+      <a href="tier-3.html" class="tier3-button active">Tier 3 Qs</a>
     </div>
     <div class="bottom-buttons">
-      <a href="pbq.html" class="pbq-button">PBQ</a>
-      <a href="acronyms.html" class="acronyms-button">Acronyms</a>
       <button class="restart-button" onclick="restartQuiz()">Start Over</button>
     </div>
   </div>
@@ -259,366 +255,344 @@
   </div>
 
   <script>
+    console.log("Script loaded - Starting Tier 3 quiz initialization");
+
     const questions = [
       {
-        question: "A SIEM system alerts on unusual login attempts from a foreign IP. What is the first step in response?",
-        choices: ["Block the IP address", "Investigate the logs", "Reboot the server", "Update antivirus signatures"],
-        answer: "Investigate the logs",
-        explanation: "Investigating SIEM logs first helps determine the context of the login attempts, such as whether they are legitimate or malicious, before taking action."
+        question: "During a penetration test, a tester discovers a web server running outdated Apache software with a known RCE vulnerability. What is the best immediate action?",
+        choices: ["Exploit the vulnerability to gain access", "Notify the system owner and recommend patching", "Disable the web server", "Run a full network scan"],
+        answer: "Notify the system owner and recommend patching",
+        explanation: "Notifying the system owner and recommending immediate patching mitigates the risk of exploitation while maintaining system availability."
       },
       {
-        question: "Which security control is most effective for detecting advanced persistent threats (APTs)?",
-        choices: ["Next-generation firewall", "Endpoint detection and response (EDR)", "Intrusion detection system (IDS)", "Antivirus software"],
-        answer: "Endpoint detection and response (EDR)",
-        explanation: "EDR systems monitor endpoint behavior, detect anomalies, and provide forensic data, making them ideal for identifying sophisticated APTs."
+        question: "A SIEM alert indicates multiple failed login attempts to a domain controller from an unknown IP, followed by a successful login. What should you do first?",
+        choices: ["Block the IP address", "Investigate the account and logs", "Reset all domain passwords", "Reboot the domain controller"],
+        answer: "Investigate the account and logs",
+        explanation: "Investigating the account and SIEM logs helps confirm if the successful login was malicious or legitimate, guiding further response."
       },
       {
-        question: "A user reports encrypted files with a ransom note demanding cryptocurrency. What is the likely attack type?",
-        choices: ["Trojan", "Ransomware", "Rootkit", "Keylogger"],
-        answer: "Ransomware",
-        explanation: "Ransomware encrypts files and demands payment (often in cryptocurrency) for decryption, typically spreading via phishing or exploits."
+        question: "An organization’s cloud storage bucket is found publicly accessible, exposing sensitive data. What is the best mitigation?",
+        choices: ["Delete the bucket", "Enable encryption at rest", "Restrict bucket permissions", "Change the bucket’s region"],
+        answer: "Restrict bucket permissions",
+        explanation: "Restricting bucket permissions to authorized users prevents unauthorized access while preserving data usability."
       },
       {
-        question: "Which command verifies the integrity of a downloaded file on a Linux system?",
-        choices: ["sha256sum", "ls -l", "cat", "chmod"],
-        answer: "sha256sum",
-        explanation: "The 'sha256sum' command calculates the SHA-256 hash of a file, allowing verification against a published hash to ensure integrity."
+        question: "A network admin detects a VLAN hopping attack on a switch. What configuration change prevents this?",
+        choices: ["Enable port security", "Disable unused ports and set native VLAN to unused", "Implement MAC filtering", "Change the switch IP address"],
+        answer: "Disable unused ports and set native VLAN to unused",
+        explanation: "Disabling unused ports and setting the native VLAN to an unused VLAN ID prevents VLAN hopping by limiting unauthorized access."
       },
       {
-        question: "A web server is under a DDoS attack. Which mitigation technique is most effective?",
-        choices: ["Increase server bandwidth", "Implement rate limiting", "Update antivirus", "Change the server IP"],
-        answer: "Implement rate limiting",
-        explanation: "Rate limiting controls incoming traffic to prevent server overload during a DDoS attack, maintaining availability."
+        question: "A server is compromised via a zero-day exploit in its web application. What is the best immediate action?",
+        choices: ["Apply the latest patches", "Isolate the server from the network", "Update the firewall rules", "Run an antivirus scan"],
+        answer: "Isolate the server from the network",
+        explanation: "Isolating the server prevents further exploitation or lateral movement until the zero-day can be mitigated."
       },
       {
-        question: "What is the primary purpose of a sandbox in malware analysis?",
-        choices: ["Encrypt data", "Isolate and analyze malware", "Monitor network traffic", "Authenticate users"],
-        answer: "Isolate and analyze malware",
-        explanation: "A sandbox provides a safe, isolated environment to execute and analyze malware behavior without risking production systems."
-      },
-      {
-        question: "A company’s VPN is slow. Which configuration might improve performance?",
-        choices: ["Enable split tunneling", "Increase encryption strength", "Disable logging", "Use a different protocol"],
-        answer: "Enable split tunneling",
-        explanation: "Split tunneling routes only necessary traffic through the VPN, reducing bandwidth usage and improving performance."
-      },
-      {
-        question: "Which type of attack exploits misconfigured cloud storage buckets?",
-        choices: ["SQL injection", "Data breach", "Cross-site scripting", "Privilege escalation"],
-        answer: "Data breach",
-        explanation: "Misconfigured cloud storage buckets can lead to data breaches, exposing sensitive data due to improper access controls."
-      },
-      {
-        question: "What is the purpose of a threat hunting program?",
-        choices: ["Encrypt communications", "Proactively identify threats", "Assign user permissions", "Monitor bandwidth usage"],
-        answer: "Proactively identify threats",
-        explanation: "Threat hunting proactively searches for threats within a network, using tools like SIEM and EDR to detect hidden attacks."
-      },
-      {
-        question: "Which protocol should be disabled to prevent plaintext authentication?",
-        choices: ["Telnet", "SSH", "HTTPS", "SFTP"],
-        answer: "Telnet",
-        explanation: "Telnet transmits credentials in plaintext, making it insecure; it should be disabled in favor of SSH."
-      },
-      {
-        question: "A server shows signs of a rootkit. What is the best response?",
-        choices: ["Update antivirus", "Reimage the server", "Change passwords", "Run a vulnerability scan"],
-        answer: "Reimage the server",
-        explanation: "Rootkits are difficult to remove reliably; reimaging the server ensures the system is clean and secure."
-      },
-      {
-        question: "Which security framework aligns with GDPR compliance?",
-        choices: ["NIST 800-53", "ISO 27001", "COBIT", "CIS Controls"],
-        answer: "ISO 27001",
-        explanation: "ISO 27001 provides a framework for information security management, aligning with GDPR’s data protection requirements."
-      },
-      {
-        question: "A user reports a phishing email with a malicious attachment. What should be done first?",
-        choices: ["Open the attachment in a sandbox", "Delete the email", "Report to the security team", "Forward to IT"],
-        answer: "Report to the security team",
-        explanation: "Reporting to the security team allows for proper investigation and containment, preventing further compromise."
-      },
-      {
-        question: "Which type of encryption is most efficient for securing large data transfers?",
-        choices: ["RSA", "AES", "ECC", "SHA-256"],
-        answer: "AES",
-        explanation: "AES, a symmetric encryption algorithm, is efficient for large data transfers due to its speed and security."
-      },
-      {
-        question: "What is the purpose of a security orchestration, automation, and response (SOAR) platform?",
-        choices: ["Encrypt data", "Automate incident response", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Automate incident response",
-        explanation: "SOAR platforms automate incident response processes, integrating tools to streamline security operations."
-      },
-      {
-        question: "Which type of attack exploits a race condition in software?",
-        choices: ["Buffer overflow", "Time-of-check to time-of-use", "SQL injection", "Cross-site scripting"],
-        answer: "Time-of-check to time-of-use",
-        explanation: "A race condition attack exploits timing issues between checking and using a resource, like file permissions."
-      },
-      {
-        question: "A network shows signs of ARP poisoning. What is the best mitigation?",
-        choices: ["Enable dynamic ARP inspection", "Change the subnet mask", "Update antivirus", "Reboot the router"],
-        answer: "Enable dynamic ARP inspection",
-        explanation: "Dynamic ARP inspection validates ARP packets to prevent ARP poisoning attacks on a network."
-      },
-      {
-        question: "What is the purpose of a data classification policy?",
-        choices: ["Encrypt network traffic", "Categorize data by sensitivity", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Categorize data by sensitivity",
-        explanation: "A data classification policy categorizes data by sensitivity (e.g., public, confidential) to guide protection measures."
-      },
-      {
-        question: "Which command checks for open ports on a Linux system?",
-        choices: ["netstat -tuln", "ifconfig", "ping", "traceroute"],
-        answer: "netstat -tuln",
-        explanation: "The 'netstat -tuln' command lists open TCP and UDP ports on a Linux system, showing listening services."
-      },
-      {
-        question: "Which type of attack exploits weak TLS configurations?",
-        choices: ["DDoS", "Man-in-the-middle", "SQL injection", "Phishing"],
-        answer: "Man-in-the-middle",
-        explanation: "Weak TLS configurations can allow man-in-the-middle attacks, intercepting encrypted communications."
-      },
-      {
-        question: "What is the purpose of a security incident and event management (SIEM) correlation rule?",
-        choices: ["Encrypt data", "Detect patterns of malicious activity", "Assign user permissions", "Monitor bandwidth"],
-        answer: "Detect patterns of malicious activity",
-        explanation: "SIEM correlation rules analyze log data to detect patterns of malicious activity, like multiple failed logins."
-      },
-      {
-        question: "A server is compromised via a zero-day exploit. What is the best immediate action?",
-        choices: ["Apply a patch", "Isolate the server", "Update antivirus", "Change passwords"],
-        answer: "Isolate the server",
-        explanation: "Isolating the server prevents further damage from a zero-day exploit until mitigation is possible."
-      },
-      {
-        question: "Which security control prevents unauthorized access to a database?",
-        choices: ["Firewall", "Role-based access control (RBAC)", "Antivirus", "VPN"],
-        answer: "Role-based access control (RBAC)",
-        explanation: "RBAC restricts database access based on user roles, ensuring only authorized users can access data."
-      },
-      {
-        question: "What is the purpose of a certificate revocation list (CRL)?",
-        choices: ["Encrypt data", "List revoked digital certificates", "Assign IP addresses", "Monitor traffic"],
-        answer: "List revoked digital certificates",
-        explanation: "A CRL lists digital certificates that have been revoked, preventing their use in secure communications."
-      },
-      {
-        question: "Which type of attack uses a compromised website to deliver malware?",
-        choices: ["Phishing", "Drive-by download", "DDoS", "SQL injection"],
-        answer: "Drive-by download",
-        explanation: "Drive-by download attacks deliver malware through compromised websites, exploiting browser vulnerabilities."
-      },
-      {
-        question: "A network admin notices unusual outbound traffic. What tool should be used to investigate?",
-        choices: ["Wireshark", "Nmap", "Ping", "Traceroute"],
+        question: "A SOC analyst notices a spike in outbound traffic to a known C2 server. What tool should be used to investigate?",
+        choices: ["Nmap", "Wireshark", "Nessus", "Metasploit"],
         answer: "Wireshark",
-        explanation: "Wireshark captures and analyzes network traffic, helping identify the source and nature of unusual outbound traffic."
+        explanation: "Wireshark captures and analyzes network traffic, allowing the analyst to inspect the outbound C2 communication for details."
       },
       {
-        question: "What is the purpose of a security information sharing and analysis center (ISAC)?",
-        choices: ["Encrypt traffic", "Share industry-specific threat intelligence", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Share industry-specific threat intelligence",
-        explanation: "ISACs facilitate sharing of industry-specific threat intelligence to enhance collective security."
+        question: "A company’s email server is under a brute force attack targeting admin accounts. What is the most effective mitigation?",
+        choices: ["Implement MFA and account lockout policies", "Change the server’s IP address", "Disable SMTP", "Update the email server software"],
+        answer: "Implement MFA and account lockout policies",
+        explanation: "MFA and account lockout policies prevent unauthorized access by requiring additional authentication and limiting login attempts."
       },
       {
-        question: "Which protocol is vulnerable to session hijacking if not encrypted?",
-        choices: ["HTTPS", "SSH", "HTTP", "SFTP"],
-        answer: "HTTP",
-        explanation: "HTTP transmits data in plaintext, making it vulnerable to session hijacking, unlike HTTPS."
+        question: "A web application is vulnerable to SQL injection. Which mitigation best addresses this?",
+        choices: ["Enable HTTPS", "Use prepared statements", "Implement a WAF", "Update the server OS"],
+        answer: "Use prepared statements",
+        explanation: "Prepared statements parameterize SQL queries, preventing malicious input from executing as code."
       },
       {
-        question: "A company’s email server is under a brute force attack. What is the best mitigation?",
-        choices: ["Enable account lockout policies", "Change the server IP", "Update antivirus", "Reboot the server"],
-        answer: "Enable account lockout policies",
-        explanation: "Account lockout policies limit login attempts, mitigating brute force attacks on email servers."
+        question: "An organization’s VPN is slow due to high encryption overhead. What configuration optimizes performance without compromising security?",
+        choices: ["Switch to PPTP", "Enable split tunneling", "Disable encryption", "Use UDP-based VPN"],
+        answer: "Enable split tunneling",
+        explanation: "Split tunneling routes only sensitive traffic through the VPN, reducing encryption overhead while maintaining security."
       },
       {
-        question: "What is the purpose of a security operations center (SOC) playbook?",
-        choices: ["Encrypt data", "Standardize incident response procedures", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Standardize incident response procedures",
-        explanation: "A SOC playbook standardizes procedures for responding to security incidents, ensuring consistency."
+        question: "A penetration tester finds a server with an open Telnet port. What should be done to secure it?",
+        choices: ["Disable Telnet and use SSH", "Change the Telnet port", "Restrict Telnet to localhost", "Enable Telnet encryption"],
+        answer: "Disable Telnet and use SSH",
+        explanation: "Telnet transmits data in plaintext; disabling it and using SSH ensures encrypted remote access."
       },
       {
-        question: "Which type of attack exploits a vulnerability in a web application’s input validation?",
-        choices: ["DDoS", "Cross-site scripting (XSS)", "Phishing", "Man-in-the-middle"],
-        answer: "Cross-site scripting (XSS)",
-        explanation: "XSS exploits input validation flaws to inject malicious scripts into web applications."
-      },
-      {
-        question: "What is the purpose of a security configuration management tool?",
-        choices: ["Encrypt traffic", "Maintain secure system configurations", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Maintain secure system configurations",
-        explanation: "Security configuration management tools ensure systems maintain secure configurations to reduce vulnerabilities."
-      },
-      {
-        question: "Which protocol is used for secure authentication in a Windows domain?",
-        choices: ["NTLM", "Kerberos", "RADIUS", "SAML"],
-        answer: "Kerberos",
-        explanation: "Kerberos is the primary protocol for secure authentication in Windows domains, using tickets to verify identity."
-      },
-      {
-        question: "A network shows signs of a DNS spoofing attack. What is the best mitigation?",
-        choices: ["Enable DNSSEC", "Change the subnet mask", "Update antivirus", "Reboot the DNS server"],
-        answer: "Enable DNSSEC",
-        explanation: "DNSSEC (Domain Name System Security Extensions) validates DNS responses to prevent spoofing attacks."
-      },
-      {
-        question: "What is the purpose of a security incident response tabletop exercise?",
-        choices: ["Encrypt data", "Simulate and test response plans", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Simulate and test response plans",
-        explanation: "Tabletop exercises simulate security incidents to test and improve incident response plans."
-      },
-      {
-        question: "Which type of attack exploits a vulnerability in a web server’s SSL configuration?",
-        choices: ["DDoS", "POODLE", "SQL injection", "Phishing"],
-        answer: "POODLE",
-        explanation: "The POODLE attack exploits vulnerabilities in outdated SSLv3 configurations, allowing data interception."
-      },
-      {
-        question: "What is the purpose of a security compliance management platform?",
-        choices: ["Encrypt traffic", "Track regulatory compliance", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Track regulatory compliance",
-        explanation: "A security compliance management platform tracks adherence to regulatory standards like GDPR or HIPAA."
-      },
-      {
-        question: "Which command identifies the source of a network attack on a Linux system?",
-        choices: ["tcpdump", "ifconfig", "ping", "traceroute"],
-        answer: "tcpdump",
-        explanation: "The 'tcpdump' command captures network packets, helping identify the source of a network attack."
-      },
-      {
-        question: "What is the purpose of a security awareness metrics program?",
-        choices: ["Encrypt data", "Measure training effectiveness", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Measure training effectiveness",
-        explanation: "A security awareness metrics program measures the effectiveness of training by tracking user behavior and incidents."
-      },
-      {
-        question: "Which type of attack uses a compromised trusted certificate?",
-        choices: ["Phishing", "Man-in-the-middle", "DDoS", "SQL injection"],
-        answer: "Man-in-the-middle",
-        explanation: "A man-in-the-middle attack can use a compromised trusted certificate to intercept encrypted communications."
-      },
-      {
-        question: "What is the purpose of a security incident response timeline?",
-        choices: ["Encrypt traffic", "Document incident response steps", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Document incident response steps",
-        explanation: "A security incident response timeline documents the sequence of steps taken during an incident for analysis."
-      },
-      {
-        question: "Which protocol is vulnerable to packet sniffing if not encrypted?",
-        choices: ["HTTPS", "SSH", "FTP", "SFTP"],
-        answer: "FTP",
-        explanation: "FTP transmits data in plaintext, making it vulnerable to packet sniffing, unlike SFTP."
-      },
-      {
-        question: "A server is infected with a botnet. What is the best immediate action?",
-        choices: ["Update antivirus", "Isolate the server", "Change passwords", "Run a vulnerability scan"],
-        answer: "Isolate the server",
-        explanation: "Isolating the server prevents the botnet from communicating with its command-and-control server."
-      },
-      {
-        question: "What is the purpose of a security threat intelligence feed?",
-        choices: ["Encrypt data", "Provide real-time threat data", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Provide real-time threat data",
-        explanation: "A threat intelligence feed provides real-time data on emerging threats to enhance security defenses."
-      },
-      {
-        question: "Which type of attack exploits a vulnerability in a web application’s session management?",
-        choices: ["DDoS", "Session fixation", "SQL injection", "Phishing"],
-        answer: "Session fixation",
-        explanation: "Session fixation exploits weak session management by forcing a user to use a predefined session ID."
-      },
-      {
-        question: "What is the purpose of a security posture assessment?",
-        choices: ["Encrypt traffic", "Evaluate overall security readiness", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Evaluate overall security readiness",
-        explanation: "A security posture assessment evaluates an organization’s overall security readiness and vulnerabilities."
-      },
-      {
-        question: "Which protocol is used for secure single sign-on (SSO)?",
-        choices: ["NTLM", "SAML", "RADIUS", "LDAP"],
-        answer: "SAML",
-        explanation: "SAML (Security Assertion Markup Language) enables secure single sign-on across different systems."
-      },
-      {
-        question: "A network shows signs of a MAC flooding attack. What is the best mitigation?",
-        choices: ["Enable port security", "Change the subnet mask", "Update antivirus", "Reboot the switch"],
-        answer: "Enable port security",
-        explanation: "Port security limits MAC addresses on switch ports, preventing MAC flooding attacks."
-      },
-      {
-        question: "What is the purpose of a security incident post-mortem?",
-        choices: ["Encrypt data", "Analyze incident causes and responses", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Analyze incident causes and responses",
-        explanation: "A post-mortem analyzes the causes and responses to a security incident to improve future preparedness."
-      },
-      {
-        question: "Which type of attack exploits a vulnerability in a web server’s CGI scripts?",
-        choices: ["DDoS", "Command injection", "SQL injection", "Phishing"],
-        answer: "Command injection",
-        explanation: "Command injection exploits vulnerabilities in CGI scripts to execute unauthorized commands on a web server."
-      },
-      {
-        question: "What is the purpose of a security configuration baseline audit?",
-        choices: ["Encrypt traffic", "Verify secure system settings", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Verify secure system settings",
-        explanation: "A baseline audit verifies that systems adhere to secure configuration standards, reducing vulnerabilities."
-      },
-      {
-        question: "Which protocol is used for secure cloud-based authentication?",
-        choices: ["NTLM", "OAuth", "RADIUS", "LDAP"],
-        answer: "OAuth",
-        explanation: "OAuth is used for secure cloud-based authentication, enabling delegated access to resources."
-      },
-      {
-        question: "A network shows signs of a VLAN hopping attack. What is the best mitigation?",
-        choices: ["Disable unused switch ports", "Change the subnet mask", "Update antivirus", "Reboot the switch"],
-        answer: "Disable unused switch ports",
-        explanation: "Disabling unused switch ports prevents VLAN hopping by limiting unauthorized access to VLANs."
-      },
-      {
-        question: "What is the purpose of a security incident response metrics program?",
-        choices: ["Encrypt data", "Measure response effectiveness", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Measure response effectiveness",
-        explanation: "A metrics program measures the effectiveness of incident response processes to identify improvements."
-      },
-      {
-        question: "Which type of attack exploits a vulnerability in a web application’s file upload function?",
-        choices: ["DDoS", "File inclusion", "SQL injection", "Phishing"],
-        answer: "File inclusion",
-        explanation: "File inclusion attacks exploit weak file upload functions to execute malicious files on a web server."
-      },
-      {
-        question: "What is the purpose of a security threat modeling exercise?",
-        choices: ["Encrypt traffic", "Identify and prioritize threats", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Identify and prioritize threats",
-        explanation: "Threat modeling identifies and prioritizes potential threats to systems, guiding security measures."
-      },
-      {
-        question: "Which protocol is vulnerable to replay attacks if not properly secured?",
-        choices: ["HTTPS", "SSH", "NTP", "SFTP"],
-        answer: "NTP",
-        explanation: "NTP (Network Time Protocol) is vulnerable to replay attacks if not secured with authentication mechanisms."
-      },
-      {
-        question: "A server shows signs of a privilege escalation attack. What is the best immediate action?",
-        choices: ["Update antivirus", "Isolate the server", "Change passwords", "Run a vulnerability scan"],
-        answer: "Isolate the server",
-        explanation: "Isolating the server prevents further unauthorized access from a privilege escalation attack."
-      },
-      {
-        question: "What is the purpose of a security control validation process?",
-        choices: ["Encrypt data", "Verify control effectiveness", "Assign IP addresses", "Monitor bandwidth"],
-        answer: "Verify control effectiveness",
-        explanation: "A security control validation process verifies that controls are working as intended to protect systems."
-      },
-      {
-        question: "Which type of attack exploits a vulnerability in a web application’s authentication mechanism?",
-        choices: ["DDoS", "Credential stuffing", "SQL injection", "Phishing"],
+        question: "A SIEM correlation rule triggers on multiple failed logins followed by a successful one from a new device. What is the likely attack?",
+        choices: ["Phishing", "Credential stuffing", "DDoS", "SQL injection"],
         answer: "Credential stuffing",
-        explanation: "Credential stuffing exploits weak authentication mechanisms by using stolen credentials to gain access."
+        explanation: "Credential stuffing involves using stolen credentials to attempt logins, often resulting in multiple failures before a success."
+      },
+      {
+        question: "A server shows signs of a rootkit infection after a phishing email was opened. What is the best response?",
+        choices: ["Run an antivirus scan", "Reimage the server", "Update the server OS", "Change user passwords"],
+        answer: "Reimage the server",
+        explanation: "Rootkits are stealthy and difficult to remove; reimaging ensures the server is clean and secure."
+      },
+      {
+        question: "A network admin detects ARP poisoning on a LAN. What switch configuration mitigates this?",
+        choices: ["Enable dynamic ARP inspection", "Disable Spanning Tree Protocol", "Change the VLAN ID", "Enable MAC address filtering"],
+        answer: "Enable dynamic ARP inspection",
+        explanation: "Dynamic ARP inspection validates ARP packets, preventing poisoning by ensuring only legitimate ARP responses are accepted."
+      },
+      {
+        question: "A company’s web server is under a DDoS attack, causing downtime. What is the most effective mitigation?",
+        choices: ["Increase server bandwidth", "Implement rate limiting and CDN", "Update the server OS", "Change the server IP"],
+        answer: "Implement rate limiting and CDN",
+        explanation: "Rate limiting and a CDN distribute and filter traffic, reducing the impact of DDoS attacks on the server."
+      },
+      {
+        question: "A security analyst finds a misconfigured firewall allowing inbound traffic on port 445. What risk does this pose?",
+        choices: ["SQL injection", "SMB-based attacks", "DNS spoofing", "XSS"],
+        answer: "SMB-based attacks",
+        explanation: "Port 445 is used for SMB; an open port risks attacks like ransomware or lateral movement via SMB exploits."
+      },
+      {
+        question: "A SOC analyst receives an alert about a potential APT on an endpoint. What tool provides the best insight?",
+        choices: ["Firewall logs", "EDR platform", "IDS alerts", "Antivirus reports"],
+        answer: "EDR platform",
+        explanation: "EDR platforms provide detailed endpoint telemetry and behavioral analysis, ideal for detecting and investigating APTs."
+      },
+      {
+        question: "An organization’s cloud-based application is vulnerable to session fixation. What is the best fix?",
+        choices: ["Implement session regeneration", "Enable HTTPS", "Use a WAF", "Restrict IP access"],
+        answer: "Implement session regeneration",
+        explanation: "Session regeneration creates a new session ID after authentication, preventing fixation attacks."
+      },
+      {
+        question: "A Linux server shows unusual cron jobs running malicious scripts. What is the first step to mitigate?",
+        choices: ["Delete the cron jobs", "Reboot the server", "Update the OS", "Run an antivirus scan"],
+        answer: "Delete the cron jobs",
+        explanation: "Deleting malicious cron jobs stops the execution of harmful scripts, preventing further damage."
+      },
+      {
+        question: "A company’s DNS server is under a reflection attack. What configuration mitigates this?",
+        choices: ["Enable DNSSEC", "Restrict recursive queries", "Change the DNS server IP", "Disable DNS caching"],
+        answer: "Restrict recursive queries",
+        explanation: "Restricting recursive queries prevents the DNS server from being used in reflection attacks by limiting responses to authorized clients."
+      },
+      {
+        question: "A security audit reveals weak TLS configurations on a web server. Which attack is this vulnerable to?",
+        choices: ["POODLE", "SQL injection", "DDoS", "Phishing"],
+        answer: "POODLE",
+        explanation: "Weak TLS configurations, like SSLv3, are vulnerable to POODLE, allowing attackers to decrypt traffic."
+      },
+      {
+        question: "A network admin notices unauthorized devices on a wireless network. What should be implemented?",
+        choices: ["Enable MAC filtering", "Use WPA3 with 802.1X", "Disable SSID broadcast", "Change the Wi-Fi password"],
+        answer: "Use WPA3 with 802.1X",
+        explanation: "WPA3 with 802.1X enforces strong authentication, preventing unauthorized devices from joining the network."
+      },
+      {
+        question: "A database server is compromised via a privilege escalation exploit. What is the best immediate action?",
+        choices: ["Run a vulnerability scan", "Isolate the server", "Update the database software", "Change all passwords"],
+        answer: "Isolate the server",
+        explanation: "Isolating the server prevents further unauthorized access or data exfiltration until the exploit is addressed."
+      },
+      {
+        question: "A company’s VoIP system is experiencing call interception. Which protocol should be enabled?",
+        choices: ["SIP", "SIPS", "RTP", "SRTP"],
+        answer: "SIPS",
+        explanation: "SIPS (Secure SIP) uses TLS to encrypt VoIP signaling, preventing call interception."
+      },
+      {
+        question: "A security analyst detects a file inclusion vulnerability in a web application. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Restrict file upload types", "Implement input validation", "Use a WAF"],
+        answer: "Implement input validation",
+        explanation: "Input validation prevents malicious file paths from being included, mitigating file inclusion vulnerabilities."
+      },
+      {
+        question: "A server is infected with a botnet communicating with a C2 server. What is the best immediate action?",
+        choices: ["Update antivirus definitions", "Isolate the server", "Change the server IP", "Run a full system scan"],
+        answer: "Isolate the server",
+        explanation: "Isolating the server disrupts C2 communication, preventing further botnet activity."
+      },
+      {
+        question: "An organization’s email server is vulnerable to an SMTP relay attack. What should be done?",
+        choices: ["Disable SMTP", "Enable authentication for SMTP relay", "Change the server IP", "Update the email software"],
+        answer: "Enable authentication for SMTP relay",
+        explanation: "Enabling SMTP relay authentication restricts relaying to authorized users, preventing abuse."
+      },
+      {
+        question: "A security analyst finds a compromised trusted certificate used in a MitM attack. What should be done?",
+        choices: ["Revoke the certificate", "Update the server OS", "Change the certificate’s key size", "Disable HTTPS"],
+        answer: "Revoke the certificate",
+        explanation: "Revoking the compromised certificate prevents its use in further MitM attacks."
+      },
+      {
+        question: "A network shows signs of MAC flooding. What switch configuration mitigates this?",
+        choices: ["Enable port security", "Disable Spanning Tree Protocol", "Change the VLAN ID", "Enable QoS"],
+        answer: "Enable port security",
+        explanation: "Port security limits MAC addresses per port, preventing MAC flooding attacks that overload the switch’s CAM table."
+      },
+      {
+        question: "A web application is vulnerable to XSS due to improper output encoding. What is the best fix?",
+        choices: ["Enable HTTPS", "Implement output encoding", "Use a WAF", "Restrict IP access"],
+        answer: "Implement output encoding",
+        explanation: "Output encoding sanitizes user output, preventing malicious scripts from executing in XSS attacks."
+      },
+      {
+        question: "A company’s SIEM system is overwhelmed by false positives. What should be done to improve it?",
+        choices: ["Increase log storage", "Tune correlation rules", "Disable logging", "Update the SIEM software"],
+        answer: "Tune correlation rules",
+        explanation: "Tuning correlation rules reduces false positives by refining the criteria for triggering alerts."
+      },
+      {
+        question: "A Linux server shows signs of a kernel exploit. What is the best response?",
+        choices: ["Update the kernel", "Reimage the server", "Run an antivirus scan", "Change user passwords"],
+        answer: "Reimage the server",
+        explanation: "Kernel exploits compromise the system deeply; reimaging ensures a clean and secure environment."
+      },
+      {
+        question: "A network admin detects a DNS spoofing attack. What configuration mitigates this?",
+        choices: ["Enable DNSSEC", "Change the DNS server IP", "Disable DNS caching", "Restrict DNS queries to localhost"],
+        answer: "Enable DNSSEC",
+        explanation: "DNSSEC validates DNS responses, preventing spoofing by ensuring authenticity and integrity."
+      },
+      {
+        question: "A security analyst finds a web server vulnerable to command injection. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Implement input sanitization", "Use a WAF", "Update the server OS"],
+        answer: "Implement input sanitization",
+        explanation: "Input sanitization prevents malicious commands from being executed by validating user input."
+      },
+      {
+        question: "An organization’s wireless network is vulnerable to an evil twin attack. What should be implemented?",
+        choices: ["Enable MAC filtering", "Use WPA3 with client certificates", "Disable SSID broadcast", "Change the Wi-Fi password"],
+        answer: "Use WPA3 with client certificates",
+        explanation: "WPA3 with client certificates ensures strong authentication, preventing connections to fake access points."
+      },
+      {
+        question: "A server’s logs show repeated privilege escalation attempts. What is the best immediate action?",
+        choices: ["Update the server OS", "Isolate the server", "Run a vulnerability scan", "Change all passwords"],
+        answer: "Isolate the server",
+        explanation: "Isolating the server prevents further escalation while the root cause is investigated."
+      },
+      {
+        question: "A company’s application uses OAuth for authentication but is vulnerable to token theft. What should be done?",
+        choices: ["Use short-lived tokens", "Disable OAuth", "Enable HTTPS", "Restrict IP access"],
+        answer: "Use short-lived tokens",
+        explanation: "Short-lived tokens reduce the window of opportunity for attackers to use stolen tokens."
+      },
+      {
+        question: "A network admin notices unusual NTP traffic. What attack is likely occurring?",
+        choices: ["DDoS amplification", "SQL injection", "Phishing", "Session hijacking"],
+        answer: "DDoS amplification",
+        explanation: "Unusual NTP traffic often indicates a DDoS amplification attack, exploiting NTP servers to flood targets."
+      },
+      {
+        question: "A security analyst detects a compromised endpoint sending encrypted traffic to an unknown IP. What tool investigates this?",
+        choices: ["Nmap", "EDR platform", "Nessus", "Metasploit"],
+        answer: "EDR platform",
+        explanation: "EDR platforms provide endpoint telemetry, allowing analysis of encrypted traffic and process behavior."
+      },
+      {
+        question: "A web server is vulnerable to a directory traversal attack. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Implement path sanitization", "Use a WAF", "Restrict IP access"],
+        answer: "Implement path sanitization",
+        explanation: "Path sanitization prevents directory traversal by validating and restricting file path inputs."
+      },
+      {
+        question: "A company’s LDAP server is vulnerable to unauthenticated queries. What should be done?",
+        choices: ["Enable LDAPS", "Disable LDAP", "Change the LDAP port", "Update the server OS"],
+        answer: "Enable LDAPS",
+        explanation: "LDAPS encrypts LDAP traffic, preventing unauthenticated queries and securing directory services."
+      },
+      {
+        question: "A SOC analyst receives an alert about a potential data exfiltration. What should be checked first?",
+        choices: ["Firewall logs", "Antivirus reports", "DNS logs", "System patches"],
+        answer: "Firewall logs",
+        explanation: "Firewall logs reveal outbound traffic patterns, helping identify data exfiltration attempts."
+      },
+      {
+        question: "A web application is vulnerable to CSRF. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Implement CSRF tokens", "Use a WAF", "Restrict IP access"],
+        answer: "Implement CSRF tokens",
+        explanation: "CSRF tokens validate the authenticity of requests, preventing unauthorized actions."
+      },
+      {
+        question: "A server shows signs of a memory-based exploit. What is the best response?",
+        choices: ["Update the server OS", "Reimage the server", "Run an antivirus scan", "Change all passwords"],
+        answer: "Reimage the server",
+        explanation: "Memory-based exploits are difficult to detect; reimaging ensures the system is clean."
+      },
+      {
+        question: "A network admin detects a rogue DHCP server. What is the best mitigation?",
+        choices: ["Enable DHCP snooping", "Change the subnet mask", "Disable DHCP", "Update the router firmware"],
+        answer: "Enable DHCP snooping",
+        explanation: "DHCP snooping validates DHCP messages, preventing rogue servers from distributing malicious IPs."
+      },
+      {
+        question: "A security analyst finds a web server using weak ciphers in TLS. What attack is this vulnerable to?",
+        choices: ["DROWN", "SQL injection", "DDoS", "Phishing"],
+        answer: "DROWN",
+        explanation: "The DROWN attack exploits weak TLS ciphers, allowing attackers to decrypt traffic."
+      },
+      {
+        question: "A company’s application is vulnerable to session hijacking due to predictable session IDs. What should be done?",
+        choices: ["Enable HTTPS", "Use random session IDs", "Implement a WAF", "Restrict IP access"],
+        answer: "Use random session IDs",
+        explanation: "Random session IDs make it harder for attackers to guess or steal session tokens."
+      },
+      {
+        question: "A network shows signs of a BGP hijacking attack. What is the best mitigation?",
+        choices: ["Enable RPKI validation", "Change the router IP", "Disable BGP", "Update the router firmware"],
+        answer: "Enable RPKI validation",
+        explanation: "RPKI validation ensures BGP routes are legitimate, preventing hijacking attacks."
+      },
+      {
+        question: "A security analyst detects a compromised endpoint with unusual process behavior. What tool provides forensic data?",
+        choices: ["Nmap", "EDR platform", "Nessus", "Wireshark"],
+        answer: "EDR platform",
+        explanation: "EDR platforms provide detailed forensic data on endpoint processes, aiding in compromise analysis."
+      },
+      {
+        question: "A web application is vulnerable to XML external entity (XXE) attacks. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Disable XML external entities", "Use a WAF", "Restrict IP access"],
+        answer: "Disable XML external entities",
+        explanation: "Disabling XML external entities prevents XXE attacks by blocking external resource parsing."
+      },
+      {
+        question: "A company’s file server is vulnerable to an SMB exploit. What should be done?",
+        choices: ["Enable SMB signing", "Disable SMB", "Change the server IP", "Update the server OS"],
+        answer: "Enable SMB signing",
+        explanation: "SMB signing ensures the integrity and authenticity of SMB traffic, mitigating exploits."
+      },
+      {
+        question: "A security analyst detects a phishing campaign targeting executives. What is the best immediate action?",
+        choices: ["Block the sender’s domain", "Conduct user awareness training", "Update the email server", "Run an antivirus scan"],
+        answer: "Block the sender’s domain",
+        explanation: "Blocking the sender’s domain prevents further phishing emails from reaching users."
+      },
+      {
+        question: "A network admin notices unusual traffic on port 123. What attack is likely occurring?",
+        choices: ["NTP amplification", "SQL injection", "Phishing", "Session hijacking"],
+        answer: "NTP amplification",
+        explanation: "Port 123 is used by NTP; unusual traffic likely indicates an NTP amplification DDoS attack."
+      },
+      {
+        question: "A web server is vulnerable to a race condition in its authentication logic. What is the best fix?",
+        choices: ["Enable HTTPS", "Implement thread synchronization", "Use a WAF", "Restrict IP access"],
+        answer: "Implement thread synchronization",
+        explanation: "Thread synchronization prevents race conditions by ensuring proper execution order in authentication logic."
+      },
+      {
+        question: "A company’s SIEM system detects a potential data breach. What is the first step in the incident response process?",
+        choices: ["Contain the breach", "Notify law enforcement", "Update all systems", "Run a vulnerability scan"],
+        answer: "Contain the breach",
+        explanation: "Containment, such as isolating affected systems, prevents further damage during a data breach."
+      },
+      {
+        question: "A security analyst finds a server with an open RDP port exposed to the internet. What should be done?",
+        choices: ["Disable RDP", "Restrict RDP to VPN access", "Change the RDP port", "Update the server OS"],
+        answer: "Restrict RDP to VPN access",
+        explanation: "Restricting RDP to VPN access ensures only authorized users can connect, reducing exposure."
+      },
+      {
+        question: "A web application is vulnerable to clickjacking. What is the best mitigation?",
+        choices: ["Enable HTTPS", "Implement X-Frame-Options header", "Use a WAF", "Restrict IP access"],
+        answer: "Implement X-Frame-Options header",
+        explanation: "The X-Frame-Options header prevents clickjacking by blocking the application from being embedded in iframes."
       }
     ];
 
@@ -641,6 +615,7 @@
     const restartButton = document.querySelector(".restart-button");
 
     function showQuestion() {
+      console.log(`Displaying question ${currentQuestion + 1}`);
       const q = questions[currentQuestion];
       questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
@@ -662,6 +637,7 @@
     }
 
     function handleAnswer(selected) {
+      console.log(`Selected answer: ${selected}`);
       const correct = questions[currentQuestion].answer;
       if (selected === correct) {
         correctAnswers++;
@@ -714,6 +690,7 @@
     }
 
     function restartQuiz() {
+      console.log("Restarting quiz");
       currentQuestion = 0;
       correctAnswers = 0;
       incorrectAnswers = 0;

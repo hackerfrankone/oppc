@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Network Cables</title>
-  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+<link rel="icon" type="image/png" href="../images/oppcus.png" />
 <style>
   body {
     background-color: #0d0d0d;
@@ -28,7 +28,13 @@
   }
   h1 {
     text-align: center;
-    margin: 20px 0;
+    margin: 20px 0 10px; /* Reduced bottom margin for tighter spacing */
+  }
+  p.instruction {
+    text-align: center;
+    margin: 0 0 20px; /* No top margin, space below */
+    font-size: 14px;
+    color: #99ff99;
   }
   .grid {
     display: grid;
@@ -42,10 +48,12 @@
     padding: 10px;
     text-align: center;
     border-radius: 5px;
+    min-height: 250px;
   }
   .item img {
     max-width: 100%;
     height: auto;
+    max-height: 100px;
     border: 1px solid #00ff00;
     border-radius: 3px;
     background-color: #000;
@@ -59,26 +67,95 @@
   .item p {
     font-size: 14px;
     color: #99ff99;
+    margin: 5px 0;
   }
   .details {
+    display: none; /* Hidden in grid, shown in modal */
+  }
+  .modal {
     display: none;
-    font-size: 12px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    background-color: #1a1a1a;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
     color: #ccffcc;
+    font-size: 12px;
     text-align: left;
-    margin-top: 10px;
-    padding: 5px;
-    border-top: 1px solid #00ff00;
+    position: relative;
+  }
+  .modal-content h2 {
+    margin-top: 0;
+    color: #00ff00;
+    font-size: 18px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #00ff00;
+    color: #0d0d0d;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+  }
+  @media (max-width: 600px) {
+    .item {
+      min-height: 300px;
+    }
+    .item img {
+      max-height: 80px;
+    }
+    .modal-content {
+      max-width: 90%;
+      font-size: 11px;
+      padding: 15px;
+    }
+    p.instruction {
+      font-size: 12px;
+    }
   }
 </style>
 <script>
   function toggleDetails(img) {
-    var details = img.nextElementSibling.nextElementSibling.nextElementSibling; // img -> h2 -> p -> details
-    if (details.style.display === "none" || details.style.display === "") {
-      details.style.display = "block";
-    } else {
-      details.style.display = "none";
-    }
+    const modal = document.getElementById('modal');
+    const modalContent = document.querySelector('.modal-content');
+    const details = img.nextElementSibling.nextElementSibling.nextElementSibling; // img -> h2 -> p -> details
+    const title = img.nextElementSibling.textContent; // Get h2 text for modal title
+    
+    // Update modal content
+    modalContent.innerHTML = `<h2>${title}</h2><div>${details.innerHTML}</div><button class="close-btn" onclick="closeModal()">Close</button>`;
+    
+    // Show modal
+    modal.style.display = 'flex';
   }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+  }
+
+  // Close modal when clicking outside
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+      closeModal();
+    }
+  });
 </script>
 </head>
 <body>
@@ -86,7 +163,7 @@
   <button onclick="window.location.href='netplus.html'">← Back</button>
 </header>
 <h1>Network Cables</h1>
-<p>Select a cable for more information.</p>
+<p class="instruction">Select a cable for more information.</p>
 <div class="grid">
 
   <div class="item">
@@ -250,6 +327,9 @@
     <div class="details">Threaded, 3/8-32 coupling. Compression or crimp attachment. Weatherproof variants. Frequency: up to 3 GHz. Used in MoCA (Ethernet over coax). Quad-shield for better EMI. Torque: 25-30 in-lbs. Common in home installations for broadband.</div>
   </div>
 
+</div>
+<div id="modal" class="modal">
+  <div class="modal-content"></div>
 </div>
 </body>
 </html>

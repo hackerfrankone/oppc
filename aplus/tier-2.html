@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Certification Quiz - Tier 2</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .top-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .back-button,
+    .tier1-button,
+    .tier2-button,
+    .tier3-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover,
+    .tier1-button:hover,
+    .tier2-button:hover,
+    .tier3-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .selected {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .page-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .content-section {
+      width: 100%;
+      max-width: 600px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .content-section::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content-section::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content-section::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .question::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .question::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .question::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+
+    .choice:hover:not(.disabled) {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .choice.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      min-height: 2rem;
+      text-align: center;
+    }
+
+    .score {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      text-align: center;
+    }
+
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .page-content {
+        max-width: 95%;
+      }
+
+      .content-section {
+        max-height: 60vh;
+      }
+
+      .question {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+        max-height: 25vh;
+      }
+
+      .choice {
+        font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+        padding: 0.5rem;
+      }
+
+      .button-container {
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+
+      .back-button,
+      .tier1-button,
+      .tier2-button,
+      .tier3-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <div class="top-buttons">
+      <a href="aplus.html" class="back-button">← Back</a>
+      <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier2-button selected">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="content-section">
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="score" id="score"></div>
+      <div class="missed-questions" id="missed-questions"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "A user reports slow boot times after installing new software. Which tool should you use to identify startup bottlenecks?",
+        choices: ["Task Manager", "Performance Monitor", "Event Viewer", "msconfig"],
+        answer: "Performance Monitor",
+        explanation: "Performance Monitor (perfmon) provides detailed metrics on system performance, including boot time analysis, to identify bottlenecks caused by software or services. While msconfig shows startup programs, it lacks detailed performance data."
+      },
+      {
+        question: "Which advanced BIOS setting controls CPU virtualization support?",
+        choices: ["VT-x/AMD-V", "Secure Boot", "C-State Control", "Hyper-Threading"],
+        answer: "VT-x/AMD-V",
+        explanation: "VT-x (Intel) or AMD-V enables hardware-assisted virtualization in the CPU, required for running virtual machines efficiently. Other options like Secure Boot or Hyper-Threading serve different purposes."
+      },
+      {
+        question: "A PC fails to connect to a network despite a valid IP. Which command should you run first to troubleshoot?",
+        choices: ["ipconfig /release", "tracert google.com", "ping 8.8.8.8", "netstat -an"],
+        answer: "ping 8.8.8.8",
+        explanation: "Pinging a reliable external IP (e.g., 8.8.8.8, Google's DNS) tests network connectivity beyond the local machine. If it fails, it indicates issues with the gateway or external routing, guiding further troubleshooting."
+      },
+      {
+        question: "Which Windows feature should be enabled to use Hyper-V for virtualization?",
+        choices: ["BitLocker", "Windows Defender", "Hyper-V Platform", "Remote Desktop"],
+        answer: "Hyper-V Platform",
+        explanation: "Hyper-V Platform must be enabled in Windows Features to use Microsoft’s Hyper-V for creating and managing virtual machines. It requires compatible hardware and a 64-bit OS."
+      },
+      {
+        question: "What is the primary cause of a 'BOOTMGR is missing' error?",
+        choices: ["Corrupted BIOS", "Missing boot loader", "Faulty RAM", "Overheating CPU"],
+        answer: "Missing boot loader",
+        explanation: "The 'BOOTMGR is missing' error occurs when the Windows Boot Manager (BOOTMGR) is corrupted or missing, often fixed using 'bootrec /rebuildbcd' in the Windows Recovery Environment."
+      },
+      {
+        question: "Which protocol ensures reliable delivery of packets over a network?",
+        choices: ["UDP", "TCP", "ICMP", "SNMP"],
+        answer: "TCP",
+        explanation: "TCP (Transmission Control Protocol) ensures reliable packet delivery through error checking, retransmission, and ordered delivery, unlike UDP, which is connectionless and less reliable."
+      },
+      {
+        question: "A laptop battery drains quickly despite low usage. What should you check first?",
+        choices: ["Display brightness", "Battery health", "CPU overclocking", "BIOS settings"],
+        answer: "Battery health",
+        explanation: "Checking battery health (via tools like powercfg /batteryreport) identifies if the battery’s capacity is degraded, a common cause of rapid draining, before adjusting settings like brightness."
+      },
+      {
+        question: "Which command in Linux displays detailed network interface information?",
+        choices: ["ifconfig", "netstat", "ip addr", "route"],
+        answer: "ip addr",
+        explanation: "The 'ip addr' command in Linux provides detailed network interface information, including IP addresses and statuses. It’s more modern than 'ifconfig,' which is deprecated in many distributions."
+      },
+      {
+        question: "Which RAID configuration requires at least four drives and can survive two drive failures?",
+        choices: ["RAID 1", "RAID 5", "RAID 6", "RAID 10"],
+        answer: "RAID 6",
+        explanation: "RAID 6 uses double parity across at least four drives, allowing it to survive two drive failures while maintaining data integrity, unlike RAID 5 (one failure) or RAID 10 (depends on configuration)."
+      },
+      {
+        question: "A user cannot access a shared network folder. Which Windows tool should you use to verify share permissions?",
+        choices: ["Disk Management", "Computer Management", "Task Scheduler", "Device Manager"],
+        answer: "Computer Management",
+        explanation: "Computer Management’s Shared Folders section allows you to view and modify share permissions for network folders, helping diagnose access issues."
+      },
+      {
+        question: "Which type of printer maintenance is required for laser printers to maintain print quality?",
+        choices: ["Refill ink", "Clean printhead", "Replace fuser", "Calibrate colors"],
+        answer: "Replace fuser",
+        explanation: "Laser printers require periodic fuser replacement (part of a maintenance kit) to maintain print quality, as the fuser bonds toner to paper and wears out over time."
+      },
+      {
+        question: "Which Windows command repairs missing or corrupted system files in a running system?",
+        choices: ["bootrec /fixmbr", "sfc /scannow", "chkdsk /f", "diskpart repair"],
+        answer: "sfc /scannow",
+        explanation: "The 'sfc /scannow' command scans and repairs corrupted system files in a running Windows system by replacing them with cached copies, unlike bootrec, which is for boot issues."
+      },
+      {
+        question: "What is the purpose of the Windows Registry?",
+        choices: ["Manage hardware drivers", "Store system and application settings", "Encrypt user data", "Schedule tasks"],
+        answer: "Store system and application settings",
+        explanation: "The Windows Registry stores configuration settings for the OS, applications, and hardware, acting as a centralized database for system operations."
+      },
+      {
+        question: "Which network topology provides the highest fault tolerance?",
+        choices: ["Bus", "Star", "Ring", "Mesh"],
+        answer: "Mesh",
+        explanation: "A full mesh topology provides the highest fault tolerance, as each device is connected to every other device, allowing multiple paths for data if one fails."
+      },
+      {
+        question: "A PC displays a 'CPU Fan Error' during POST. What is the most likely cause?",
+        choices: ["Overheating CPU", "Faulty fan connection", "Corrupted BIOS", "Incompatible RAM"],
+        answer: "Faulty fan connection",
+        explanation: "A 'CPU Fan Error' during POST typically indicates a disconnected or malfunctioning CPU fan, requiring you to check the fan’s power connection or replace it."
+      },
+      {
+        question: "Which Windows PowerShell cmdlet retrieves system event logs?",
+        choices: ["Get-Service", "Get-EventLog", "Get-Process", "Get-NetAdapter"],
+        answer: "Get-EventLog",
+        explanation: "The 'Get-EventLog' cmdlet in PowerShell retrieves system, application, or security event logs, useful for troubleshooting system issues."
+      },
+      {
+        question: "Which advanced troubleshooting step resolves a corrupted Windows user profile?",
+        choices: ["Run chkdsk", "Create a new user profile", "Reinstall drivers", "Reset BIOS"],
+        answer: "Create a new user profile",
+        explanation: "A corrupted Windows user profile can be resolved by creating a new user profile and transferring data, as the corruption often lies in registry settings specific to the profile."
+      },
+      {
+        question: "Which protocol is used for remote desktop connections in Windows?",
+        choices: ["SSH", "RDP", "FTP", "SNMP"],
+        answer: "RDP",
+        explanation: "RDP (Remote Desktop Protocol) is used for remote desktop connections in Windows, allowing users to access a graphical desktop remotely, typically on port 3389."
+      },
+      {
+        question: "A system experiences random BSODs with varying error codes. What should you test first?",
+        choices: ["Hard drive", "RAM", "Power supply", "CPU"],
+        answer: "RAM",
+        explanation: "Random BSODs with varying error codes often indicate faulty RAM. Use a tool like MemTest86 to test memory modules before checking other components."
+      },
+      {
+        question: "Which Linux command modifies the ownership of a file?",
+        choices: ["chmod", "chown", "ls -l", "grep"],
+        answer: "chown",
+        explanation: "The 'chown' command in Linux changes file ownership, allowing you to assign a new user or group to a file or directory, unlike 'chmod,' which modifies permissions."
+      },
+      {
+        question: "A user reports a 'No Bootable Device' error. What should you check first in the BIOS?",
+        choices: ["Boot order", "CPU frequency", "Fan speed", "SATA mode"],
+        answer: "Boot order",
+        explanation: "A 'No Bootable Device' error typically indicates an incorrect boot order in the BIOS, where the system is not set to boot from the correct drive containing the OS."
+      },
+      {
+        question: "Which Windows tool allows you to configure firewall rules for specific applications?",
+        choices: ["Windows Defender", "Control Panel", "Windows Firewall with Advanced Security", "Event Viewer"],
+        answer: "Windows Firewall with Advanced Security",
+        explanation: "Windows Firewall with Advanced Security allows configuration of detailed firewall rules, including application-specific settings, for controlling network traffic."
+      },
+      {
+        question: "A system fails to detect a new SSD. What should you verify first in the BIOS?",
+        choices: ["Boot priority", "SATA port configuration", "CPU voltage", "RAM timings"],
+        answer: "SATA port configuration",
+        explanation: "If an SSD isn’t detected, first check the BIOS SATA port configuration to ensure the port is enabled and set to the correct mode (e.g., AHCI) for the SSD."
+      },
+      {
+        question: "Which command in Windows displays the current network routing table?",
+        choices: ["ipconfig /all", "netstat -r", "tracert", "arp -a"],
+        answer: "netstat -r",
+        explanation: "The 'netstat -r' command displays the network routing table, showing how packets are routed between networks, useful for diagnosing connectivity issues."
+      },
+      {
+        question: "A user reports applications crashing randomly. Which tool should you use to check for hardware-related errors?",
+        choices: ["Task Manager", "Event Viewer", "Disk Management", "msconfig"],
+        answer: "Event Viewer",
+        explanation: "Event Viewer logs system and application errors, including hardware-related issues, allowing you to identify patterns or specific error codes causing crashes."
+      },
+      {
+        question: "Which Linux command displays real-time disk usage for processes?",
+        choices: ["df", "du", "iotop", "top"],
+        answer: "iotop",
+        explanation: "The 'iotop' command in Linux shows real-time disk I/O usage by processes, helping identify which processes are heavily accessing storage."
+      },
+      {
+        question: "What is the purpose of the 'DISM /Online /Cleanup-Image /RestoreHealth' command in Windows?",
+        choices: ["Repairs boot issues", "Restores system files", "Cleans temporary files", "Repairs Windows image"],
+        answer: "Repairs Windows image",
+        explanation: "The 'DISM /Online /Cleanup-Image /RestoreHealth' command repairs the Windows component store, fixing corrupted system images used by sfc /scannow."
+      },
+      {
+        question: "A network printer is offline despite being powered on. What should you check first?",
+        choices: ["Printer drivers", "Network cable", "Toner levels", "Paper tray"],
+        answer: "Network cable",
+        explanation: "An offline network printer may indicate a connectivity issue, so checking the network cable (or wireless connection) is the first step to ensure it’s reachable on the network."
+      },
+      {
+        question: "Which Windows feature allows you to roll back driver updates?",
+        choices: ["System Restore", "Device Manager", "Disk Cleanup", "Task Scheduler"],
+        answer: "Device Manager",
+        explanation: "Device Manager allows you to roll back driver updates to a previous version if the new driver causes issues, accessible via the driver properties."
+      },
+      {
+        question: "Which Linux command kills a process by its process ID?",
+        choices: ["stop", "kill", "end", "halt"],
+        answer: "kill",
+        explanation: "The 'kill' command in Linux terminates a process by its PID, allowing precise control over stopping unresponsive or problematic processes."
+      },
+      {
+        question: "A system shows a 'Kernel Panic' error on a Linux machine. What is the likely cause?",
+        choices: ["Faulty RAM", "Corrupted kernel", "Overheating CPU", "Loose SATA cable"],
+        answer: "Corrupted kernel",
+        explanation: "A 'Kernel Panic' error in Linux typically indicates a critical issue with the kernel, such as corruption or incompatible drivers, halting the system."
+      },
+      {
+        question: "Which Windows setting should be adjusted to allow a program through the firewall?",
+        choices: ["Network and Sharing Center", "Windows Defender Firewall", "System Properties", "Control Panel"],
+        answer: "Windows Defender Firewall",
+        explanation: "Windows Defender Firewall settings allow you to configure exceptions, enabling specific programs to communicate through the firewall."
+      },
+      {
+        question: "A user reports slow file transfers over a network. Which tool should you use to measure network performance?",
+        choices: ["ping", "iperf", "tracert", "netstat"],
+        answer: "iperf",
+        explanation: "The 'iperf' tool measures network bandwidth and performance, helping diagnose slow file transfers by analyzing throughput and latency."
+      },
+      {
+        question: "Which BIOS setting should be enabled for secure boot to function?",
+        choices: ["TPM", "UEFI", "AHCI", "Legacy Boot"],
+        answer: "UEFI",
+        explanation: "Secure Boot requires UEFI (Unified Extensible Firmware Interface) mode enabled in the BIOS, as it relies on UEFI firmware to verify trusted boot components."
+      },
+      {
+        question: "A system experiences frequent application freezes. What should you check first?",
+        choices: ["CPU temperature", "Disk space", "RAM usage", "Network speed"],
+        answer: "RAM usage",
+        explanation: "Frequent application freezes are often caused by high RAM usage or insufficient memory, which can be checked using Task Manager or Resource Monitor."
+      },
+      {
+        question: "Which Windows command resets TCP/IP settings to default?",
+        choices: ["netsh winsock reset", "ipconfig /flushdns", "netstat -r", "arp -d"],
+        answer: "netsh winsock reset",
+        explanation: "The 'netsh winsock reset' command resets the Windows Sockets (Winsock) catalog to default, fixing network issues caused by corrupted TCP/IP settings."
+      },
+      {
+        question: "A laptop screen displays artifacts during gaming. What is the likely cause?",
+        choices: ["Overheating GPU", "Loose video cable", "Faulty RAM", "Corrupted OS"],
+        answer: "Overheating GPU",
+        explanation: "Artifacts during gaming are commonly caused by an overheating GPU, which can be mitigated by improving cooling or reducing graphical load."
+      },
+      {
+        question: "Which Linux command displays the kernel version?",
+        choices: ["uname -r", "lsb_release -a", "cat /etc/os-release", "whoami"],
+        answer: "uname -r",
+        explanation: "The 'uname -r' command displays the Linux kernel version, providing critical information for troubleshooting or driver compatibility."
+      },
+      {
+        question: "A user reports a 'Page Fault in Nonpaged Area' BSOD. What should you check first?",
+        choices: ["Hard drive", "RAM", "Power supply", "Graphics driver"],
+        answer: "RAM",
+        explanation: "A 'Page Fault in Nonpaged Area' BSOD often indicates faulty RAM or memory-related issues, which can be tested using tools like MemTest86."
+      },
+      {
+        question: "Which Windows tool schedules automatic disk defragmentation?",
+        choices: ["Task Scheduler", "Disk Management", "Device Manager", "Performance Monitor"],
+        answer: "Task Scheduler",
+        explanation: "Task Scheduler can be used to automate disk defragmentation by scheduling the 'defrag' command, optimizing drive performance."
+      },
+      {
+        question: "Which protocol is used for secure web browsing with SSL/TLS?",
+        choices: ["HTTP", "HTTPS", "FTP", "SFTP"],
+        answer: "HTTPS",
+        explanation: "HTTPS (Hypertext Transfer Protocol Secure) uses SSL/TLS to encrypt web traffic, ensuring secure browsing, typically on port 443."
+      },
+      {
+        question: "A system fails to boot after a BIOS update. What should you do first?",
+        choices: ["Replace the CPU", "Reset the CMOS", "Reinstall the OS", "Check the power supply"],
+        answer: "Reset the CMOS",
+        explanation: "A failed BIOS update can corrupt settings, and resetting the CMOS (by removing the battery or using a jumper) often restores default BIOS functionality."
+      },
+      {
+        question: "Which Linux command monitors system logs in real-time?",
+        choices: ["cat /var/log/syslog", "tail -f /var/log/syslog", "less /var/log/syslog", "grep /var/log/syslog"],
+        answer: "tail -f /var/log/syslog",
+        explanation: "The 'tail -f /var/log/syslog' command monitors system logs in real-time, displaying new entries as they are written, useful for troubleshooting."
+      },
+      {
+        question: "A user cannot print to a shared printer. Which setting should you verify first?",
+        choices: ["Printer driver version", "Network share permissions", "Toner levels", "USB connection"],
+        answer: "Network share permissions",
+        explanation: "For a shared printer, first verify network share permissions in Computer Management to ensure the user has access to the printer over the network."
+      },
+      {
+        question: "Which Windows command displays all shared folders on a system?",
+        choices: ["net share", "net use", "net view", "netstat -s"],
+        answer: "net share",
+        explanation: "The 'net share' command lists all shared folders and resources on a Windows system, helping diagnose sharing issues."
+      },
+      {
+        question: "A system shows high CPU usage with no apparent cause. Which tool should you use to identify the process?",
+        choices: ["Device Manager", "Task Manager", "Disk Management", "Event Viewer"],
+        answer: "Task Manager",
+        explanation: "Task Manager’s Processes tab shows real-time CPU usage by process, allowing you to identify and terminate resource-intensive applications."
+      },
+      {
+        question: "Which Linux command checks for available disk space?",
+        choices: ["df -h", "du -sh", "lsblk", "fdisk -l"],
+        answer: "df -h",
+        explanation: "The 'df -h' command displays available disk space in a human-readable format, showing free space across mounted filesystems."
+      },
+      {
+        question: "A system fails to join a domain. What should you check first?",
+        choices: ["DNS settings", "Firewall rules", "Local user permissions", "BIOS time"],
+        answer: "DNS settings",
+        explanation: "Failing to join a domain is often due to incorrect DNS settings, as the system must resolve the domain controller’s address to authenticate."
+      },
+      {
+        question: "Which Windows feature enables file and folder encryption without full disk encryption?",
+        choices: ["BitLocker", "EFS", "TPM", "Secure Boot"],
+        answer: "EFS",
+        explanation: "EFS (Encrypting File System) allows encryption of individual files and folders in Windows, unlike BitLocker, which encrypts entire drives."
+      },
+      {
+        question: "A user reports distorted audio from speakers. What should you check first?",
+        choices: ["Audio driver", "Speaker cable", "BIOS audio settings", "Power supply"],
+        answer: "Speaker cable",
+        explanation: "Distorted audio is often caused by a loose or faulty speaker cable, which should be checked before investigating drivers or other settings."
+      },
+      {
+        question: "Which command in Linux lists all running services?",
+        choices: ["service --status-all", "systemctl list-units", "ps aux", "top"],
+        answer: "systemctl list-units",
+        explanation: "The 'systemctl list-units' command lists all active services in a systemd-based Linux system, providing status and details for service management."
+      },
+      {
+        question: "A system shows a 'Driver Power State Failure' BSOD. What is the likely cause?",
+        choices: ["Faulty RAM", "Outdated driver", "Overheating CPU", "Corrupted OS"],
+        answer: "Outdated driver",
+        explanation: "A 'Driver Power State Failure' BSOD typically indicates an outdated or incompatible driver causing issues with power state transitions, fixable by updating drivers."
+      },
+      {
+        question: "Which Windows tool allows you to view and manage running services?",
+        choices: ["Task Manager", "Services", "Device Manager", "Disk Management"],
+        answer: "Services",
+        explanation: "The Services tool (services.msc) allows you to view, start, stop, and configure Windows services, managing background processes."
+      },
+      {
+        question: "A network switch shows all ports as active despite no devices connected. What is the likely issue?",
+        choices: ["Faulty switch", "Loopback issue", "Incorrect VLAN", "IP conflict"],
+        answer: "Loopback issue",
+        explanation: "All ports showing as active with no devices suggests a loopback issue, where a cable creates a loop, causing network flooding; check for misconfigured cables."
+      },
+      {
+        question: "Which Linux command updates the package repository cache?",
+        choices: ["apt-get update", "apt-get upgrade", "yum install", "dnf update"],
+        answer: "apt-get update",
+        explanation: "The 'apt-get update' command refreshes the package repository cache on Debian-based systems, ensuring the latest package information is available."
+      },
+      {
+        question: "A system boots slowly after adding a new hard drive. What should you check first?",
+        choices: ["Boot order in BIOS", "Drive cables", "Power supply wattage", "OS updates"],
+        answer: "Boot order in BIOS",
+        explanation: "A new hard drive may cause slow booting if the BIOS boot order prioritizes it incorrectly; check and set the correct boot device first."
+      },
+      {
+        question: "Which Windows command maps a network drive?",
+        choices: ["net use", "net share", "net view", "netstat -a"],
+        answer: "net use",
+        explanation: "The 'net use' command maps a network drive to a local drive letter, allowing access to shared network resources."
+      },
+      {
+        question: "A user reports a 'Memory Management' BSOD. What should you test first?",
+        choices: ["Hard drive", "RAM", "GPU", "Power supply"],
+        answer: "RAM",
+        explanation: "A 'Memory Management' BSOD typically indicates faulty RAM or memory issues, which should be tested first using a tool like MemTest86."
+      },
+      {
+        question: "Which Linux command displays the current user’s group memberships?",
+        choices: ["whoami", "groups", "id", "passwd"],
+        answer: "id",
+        explanation: "The 'id' command displays the current user’s group memberships, including user ID and group IDs, useful for permission troubleshooting."
+      },
+      {
+        question: "A system fails to detect a USB device. What should you check first?",
+        choices: ["USB port power", "Device drivers", "BIOS USB settings", "USB cable"],
+        answer: "USB cable",
+        explanation: "A faulty or loose USB cable is often the cause of undetected USB devices, so it should be checked first before investigating drivers or settings."
+      },
+      {
+        question: "Which Windows feature allows you to create a system repair disc?",
+        choices: ["Backup and Restore", "System Restore", "Disk Management", "Recovery Drive"],
+        answer: "Backup and Restore",
+        explanation: "Backup and Restore in Windows allows you to create a system repair disc, which can be used to boot and repair a system that fails to start."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+        }
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

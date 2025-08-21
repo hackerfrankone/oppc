@@ -97,6 +97,13 @@
       padding: 1rem;
     }
 
+    .welcome-message {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      text-align: center;
+      max-width: 500px;
+    }
+
     .question {
       font-size: clamp(1.2rem, 4vw, 1.5rem);
       line-height: 1.5;
@@ -189,6 +196,10 @@
         padding: 0.5rem;
       }
 
+      .welcome-message {
+        font-size: clamp(0.9rem, 3vw, 1rem);
+      }
+
       .question {
         font-size: clamp(1rem, 3.5vw, 1.2rem);
         padding: 0.5rem;
@@ -233,7 +244,7 @@
   </div>
 
   <div class="quiz-content">
-    <div class="question" id="question">Welcome to the CompTIA SY0 701 Security+</div>
+    <div class="welcome-message">Welcome to the CompTIA Security+ SY0 701</div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
@@ -266,7 +277,7 @@
     function showQuestion() {
       console.log("Attempting to display question");
       if (questions.length === 0) {
-        questionElement.innerHTML = "Welcome to the CompTIA Security+ Study Hub!<br>Select a topic or question tier to begin.";
+        // No questions to display; welcome message is handled in HTML
         feedbackElement.textContent = "";
         scoreElement.textContent = "";
         missedQuestionsElement.innerHTML = "";
@@ -276,7 +287,13 @@
       }
 
       const q = questions[currentQuestion];
-      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      // Use a different element or logic if questions are loaded
+      const questionDisplay = document.querySelector(".question") || document.createElement("div");
+      if (!questionDisplay.classList.contains("question")) {
+        questionDisplay.classList.add("question");
+        document.querySelector(".quiz-content").prepend(questionDisplay);
+      }
+      questionDisplay.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
       feedbackElement.textContent = "";
       scoreElement.textContent = "";
       missedQuestionsElement.innerHTML = "";
@@ -325,7 +342,8 @@
         if (currentQuestion < questions.length) {
           showQuestion();
         } else {
-          questionElement.textContent = "";
+          const questionDisplay = document.querySelector(".question");
+          if (questionDisplay) questionDisplay.textContent = "";
           choicesElement.innerHTML = "";
           feedbackElement.textContent = "";
           scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;

@@ -30,6 +30,12 @@
     text-align: center;
     margin: 20px 0;
   }
+  .instruction {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 16px;
+    color: #99ff99;
+  }
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -42,6 +48,7 @@
     padding: 10px;
     text-align: center;
     border-radius: 5px;
+    cursor: pointer;
   }
   .connector img {
     max-width: 100%;
@@ -59,6 +66,51 @@
     font-size: 14px;
     color: #99ff99;
   }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    background-color: #1a1a1a;
+    color: #00ff00;
+    font-family: monospace;
+    padding: 20px;
+    border: 1px solid #00ff00;
+    border-radius: 5px;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-content h2 {
+    margin-top: 0;
+  }
+  .modal-content p, .modal-content ul {
+    font-size: 14px;
+    color: #99ff99;
+  }
+  .modal-content ul {
+    padding-left: 20px;
+  }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #00ff00;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .close-button:hover {
+    color: #ffffff;
+  }
 </style>
 </head>
 <body>
@@ -66,152 +118,422 @@
   <button onclick="window.location.href='aplus.html'">← Back</button>
 </header>
 <h1>Connector Types</h1>
+<div class="instruction">Select a cable for more information</div>
 <div class="grid">
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('USB Type-A')">
     <img src="../images/USB-A.png" alt="USB Type-A">
     <h2>USB Type-A</h2>
     <p>Standard rectangular USB connector found on most computers and devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('USB Type-B')">
     <img src="../images/USB-B.png" alt="USB Type-B">
     <h2>USB Type-B</h2>
     <p>Square USB connector commonly used for printers and scanners.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('USB Type-C')">
     <img src="../images/USB-C.png" alt="USB Type-C">
     <h2>USB Type-C</h2>
     <p>Reversible USB connector supporting high-speed data and power delivery.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('Micro USB')">
     <img src="../images/micro-USB.png" alt="Micro USB">
     <h2>Micro USB</h2>
     <p>Small USB connector used in many older smartphones and accessories.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('Mini USB')">
     <img src="../images/mini-USB.png" alt="Mini USB">
     <h2>Mini USB</h2>
     <p>Older, slightly larger USB connector used for cameras and peripherals.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('HDMI')">
     <img src="../images/hdmi.png" alt="HDMI">
     <h2>HDMI</h2>
     <p>High-Definition Multimedia Interface for transmitting video and audio.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('DisplayPort')">
     <img src="../images/displayport.png" alt="DisplayPort">
     <h2>DisplayPort</h2>
     <p>Digital display interface for monitors and high-resolution video output.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('VGA')">
     <img src="../images/VGA.png" alt="VGA">
     <h2>VGA</h2>
     <p>Analog video connector used for older monitors and projectors.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('DVI')">
     <img src="../images/DVI.png" alt="DVI">
     <h2>DVI</h2>
     <p>Digital Visual Interface for video display connections.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('RJ-45')">
     <img src="../images/RJ-45.png" alt="RJ-45">
     <h2>RJ-45</h2>
     <p>Ethernet network cable connector for wired internet connections.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('RJ-11')">
     <img src="../images/RJ-11.png" alt="RJ-11">
     <h2>RJ-11</h2>
     <p>Phone line connector used for DSL and landline telephones.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('3.5mm Audio')">
     <img src="../images/3-5mm-audio.png" alt="3.5mm Audio">
     <h2>3.5mm Audio</h2>
     <p>Standard headphone and microphone audio jack.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('TOSLINK Optical')">
     <img src="../images/toslink.png" alt="TOSLINK Optical">
     <h2>TOSLINK Optical</h2>
     <p>Fiber optic audio connector for high-quality sound systems.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('eSATA')">
     <img src="../images/esata.png" alt="eSATA">
     <h2>eSATA</h2>
     <p>External Serial ATA connector for high-speed external storage devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('Thunderbolt')">
     <img src="../images/thunderbolt.png" alt="Thunderbolt">
     <h2>Thunderbolt</h2>
     <p>High-speed data and display connector developed by Intel and Apple.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('FireWire')">
     <img src="../images/firewire.png" alt="FireWire">
     <h2>FireWire</h2>
     <p>IEEE 1394 high-speed interface used for video cameras and drives.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('SD Card')">
     <img src="../images/sd-card.png" alt="SD Card">
     <h2>SD Card</h2>
     <p>Secure Digital memory card for cameras and portable devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('microSD Card')">
     <img src="../images/micro-sd-card.png" alt="microSD Card">
     <h2>microSD Card</h2>
     <p>Smaller version of SD card used in smartphones and compact devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('Molex')">
     <img src="../images/molex.png" alt="Molex">
     <h2>Molex</h2>
     <p>4-pin power connector used in older PCs for drives and peripherals.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('SATA Power')">
     <img src="../images/sata-power.png" alt="SATA Power">
     <h2>SATA Power</h2>
     <p>Power connector for modern internal hard drives and SSDs.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('SATA Data')">
     <img src="../images/sata-data.png" alt="SATA Data">
     <h2>SATA Data</h2>
     <p>Data connector for internal storage devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('PS/2')">
     <img src="../images/ps2.png" alt="PS/2">
     <h2>PS/2</h2>
     <p>Legacy connector for keyboards and mice.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('DB9 Serial')">
     <img src="../images/db9-serial.png" alt="DB9 Serial">
     <h2>DB9 Serial</h2>
     <p>9-pin connector for serial communication devices.</p>
   </div>
 
-  <div class="connector">
+  <div class="connector" onclick="showModal('Parallel Port')">
     <img src="../images/parallel.png" alt="Parallel Port">
     <h2>Parallel Port</h2>
     <p>Legacy printer connector with 25 pins.</p>
   </div>
 
 </div>
+
+<div id="infoModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="close-button" onclick="closeModal()">&times;</span>
+  </div>
+</div>
+
+<script>
+  const infoModal = document.getElementById('infoModal');
+  const modalContent = document.getElementById('modalContent');
+
+  const connectorInfo = {
+    'USB Type-A': `
+      <h2>USB Type-A</h2>
+      <p>Standard rectangular USB connector found on most computers and devices.</p>
+      <ul>
+        <li>Connects to: USB flash drives, keyboards, mice, external hard drives, and other peripherals.</li>
+        <li>Speed: Supports USB 2.0 (480 Mbps), USB 3.0 (5 Gbps), or USB 3.1 (10 Gbps).</li>
+        <li>Use Case: Widely used for connecting devices to PCs and laptops.</li>
+        <li>Notable Feature: Non-reversible, requires correct orientation for connection.</li>
+      </ul>
+    `,
+    'USB Type-B': `
+      <h2>USB Type-B</h2>
+      <p>Square USB connector commonly used for printers and scanners.</p>
+      <ul>
+        <li>Connects to: Printers, scanners, and some external storage devices.</li>
+        <li>Speed: Typically supports USB 2.0 (480 Mbps) or USB 3.0 (5 Gbps).</li>
+        <li>Use Case: Common in office equipment and some industrial devices.</li>
+        <li>Notable Feature: Larger than modern USB connectors, less common in new devices.</li>
+      </ul>
+    `,
+    'USB Type-C': `
+      <h2>USB Type-C</h2>
+      <p>Reversible USB connector supporting high-speed data and power delivery.</p>
+      <ul>
+        <li>Connects to: Smartphones, laptops, tablets, monitors, and docking stations.</li>
+        <li>Speed: Supports USB 3.1 (10 Gbps), USB 3.2 (20 Gbps), or USB 4 (40 Gbps).</li>
+        <li>Use Case: Modern devices for data transfer, charging, and video output.</li>
+        <li>Notable Feature: Reversible design and supports Power Delivery (up to 100W).</li>
+      </ul>
+    `,
+    'Micro USB': `
+      <h2>Micro USB</h2>
+      <p>Small USB connector used in many older smartphones and accessories.</p>
+      <ul>
+        <li>Connects to: Older smartphones, tablets, cameras, and portable devices.</li>
+        <li>Speed: Typically USB 2.0 (480 Mbps).</li>
+        <li>Use Case: Charging and data transfer for older mobile devices.</li>
+        <li>Notable Feature: Smaller than Mini USB, but being replaced by USB Type-C.</li>
+      </ul>
+    `,
+    'Mini USB': `
+      <h2>Mini USB</h2>
+      <p>Older, slightly larger USB connector used for cameras and peripherals.</p>
+      <ul>
+        <li>Connects to: Older digital cameras, MP3 players, and external drives.</li>
+        <li>Speed: USB 2.0 (480 Mbps).</li>
+        <li>Use Case: Legacy devices, largely replaced by Micro USB and USB Type-C.</li>
+        <li>Notable Feature: Bulkier than Micro USB, less durable.</li>
+      </ul>
+    `,
+    'HDMI': `
+      <h2>HDMI</h2>
+      <p>High-Definition Multimedia Interface for transmitting video and audio.</p>
+      <ul>
+        <li>Connects to: TVs, monitors, projectors, and gaming consoles.</li>
+        <li>Speed: Supports resolutions up to 4K (HDMI 2.0) or 8K (HDMI 2.1).</li>
+        <li>Use Case: Home theater systems, gaming, and computer displays.</li>
+        <li>Notable Feature: Carries both high-definition video and audio in one cable.</li>
+      </ul>
+    `,
+    'DisplayPort': `
+      <h2>DisplayPort</h2>
+      <p>Digital display interface for monitors and high-resolution video output.</p>
+      <ul>
+        <li>Connects to: Monitors, PCs, and laptops.</li>
+        <li>Speed: Supports resolutions up to 8K (DisplayPort 2.0).</li>
+        <li>Use Case: Professional displays, gaming monitors, and multi-monitor setups.</li>
+        <li>Notable Feature: Supports daisy-chaining multiple monitors.</li>
+      </ul>
+    `,
+    'VGA': `
+      <h2>VGA</h2>
+      <p>Analog video connector used for older monitors and projectors.</p>
+      <ul>
+        <li>Connects to: Older monitors, projectors, and some PCs.</li>
+        <li>Speed: Limited to analog signals, typically up to 1080p.</li>
+        <li>Use Case: Legacy systems and budget displays.</li>
+        <li>Notable Feature: Does not carry audio, only video.</li>
+      </ul>
+    `,
+    'DVI': `
+      <h2>DVI</h2>
+      <p>Digital Visual Interface for video display connections.</p>
+      <ul>
+        <li>Connects to: Monitors, projectors, and older PCs.</li>
+        <li>Speed: Supports up to 2560x1600 (DVI-D Dual Link).</li>
+        <li>Use Case: Older high-resolution displays.</li>
+        <li>Notable Feature: Variants include DVI-D (digital), DVI-A (analog), and DVI-I (both).</li>
+      </ul>
+    `,
+    'RJ-45': `
+      <h2>RJ-45</h2>
+      <p>Ethernet network cable connector for wired internet connections.</p>
+      <ul>
+        <li>Connects to: Routers, switches, PCs, and network-enabled devices.</li>
+        <li>Speed: Supports up to 10 Gbps (Cat6a/Cat7 cables).</li>
+        <li>Use Case: Wired LANs, home, and enterprise networks.</li>
+        <li>Notable Feature: Standard for Ethernet networking, uses twisted pair wiring.</li>
+      </ul>
+    `,
+    'RJ-11': `
+      <h2>RJ-11</h2>
+      <p>Phone line connector used for DSL and landline telephones.</p>
+      <ul>
+        <li>Connects to: Telephones, DSL modems, and fax machines.</li>
+        <li>Speed: Limited to voice and low-speed DSL data.</li>
+        <li>Use Case: Home phone lines and DSL internet connections.</li>
+        <li>Notable Feature: Smaller than RJ-45, typically uses 2-4 wires.</li>
+      </ul>
+    `,
+    '3.5mm Audio': `
+      <h2>3.5mm Audio</h2>
+      <p>Standard headphone and microphone audio jack.</p>
+      <ul>
+        <li>Connects to: Headphones, microphones, speakers, and mobile devices.</li>
+        <li>Speed: Analog audio, no data speed.</li>
+        <li>Use Case: Audio input/output for PCs, smartphones, and audio equipment.</li>
+        <li>Notable Feature: Supports stereo audio and microphone with TRRS configuration.</li>
+      </ul>
+    `,
+    'TOSLINK Optical': `
+      <h2>TOSLINK Optical</h2>
+      <p>Fiber optic audio connector for high-quality sound systems.</p>
+      <ul>
+        <li>Connects to: Home theater systems, soundbars, and audio receivers.</li>
+        <li>Speed: Supports high-quality digital audio (e.g., Dolby Digital).</li>
+        <li>Use Case: High-fidelity audio setups.</li>
+        <li>Notable Feature: Immune to electrical interference due to fiber optic design.</li>
+      </ul>
+    `,
+    'eSATA': `
+      <h2>eSATA</h2>
+      <p>External Serial ATA connector for high-speed external storage devices.</p>
+      <ul>
+        <li>Connects to: External hard drives and SSDs.</li>
+        <li>Speed: Up to 6 Gbps (SATA III).</li>
+        <li>Use Case: High-speed external storage for PCs.</li>
+        <li>Notable Feature: Faster than USB 2.0, but requires separate power source.</li>
+      </ul>
+    `,
+    'Thunderbolt': `
+      <h2>Thunderbolt</h2>
+      <p>High-speed data and display connector developed by Intel and Apple.</p>
+      <ul>
+        <li>Connects to: External drives, monitors, docking stations, and peripherals.</li>
+        <li>Speed: Up to 40 Gbps (Thunderbolt 3/4).</li>
+        <li>Use Case: High-performance peripherals and multi-device connectivity.</li>
+        <li>Notable Feature: Backward compatible with USB-C, supports power delivery.</li>
+      </ul>
+    `,
+    'FireWire': `
+      <h2>FireWire</h2>
+      <p>IEEE 1394 high-speed interface used for video cameras and drives.</p>
+      <ul>
+        <li>Connects to: Video cameras, external drives, and audio interfaces.</li>
+        <li>Speed: Up to 800 Mbps (FireWire 800).</li>
+        <li>Use Case: Legacy professional video and audio equipment.</li>
+        <li>Notable Feature: Supports daisy-chaining multiple devices.</li>
+      </ul>
+    `,
+    'SD Card': `
+      <h2>SD Card</h2>
+      <p>Secure Digital memory card for cameras and portable devices.</p>
+      <ul>
+        <li>Connects to: Cameras, laptops, and card readers.</li>
+        <li>Speed: Up to 985 MB/s (SD Express).</li>
+        <li>Use Case: Storage for photos, videos, and portable devices.</li>
+        <li>Notable Feature: Available in multiple capacities (e.g., SDHC, SDXC).</li>
+      </ul>
+    `,
+    'microSD Card': `
+      <h2>microSD Card</h2>
+      <p>Smaller version of SD card used in smartphones and compact devices.</p>
+      <ul>
+        <li>Connects to: Smartphones, cameras, and card readers.</li>
+        <li>Speed: Up to 985 MB/s (SD Express).</li>
+        <li>Use Case: Expandable storage for mobile devices and drones.</li>
+        <li>Notable Feature: Compact size, often used with adapters for SD slots.</li>
+      </ul>
+    `,
+    'Molex': `
+      <h2>Molex</h2>
+      <p>4-pin power connector used in older PCs for drives and peripherals.</p>
+      <ul>
+        <li>Connects to: Older hard drives, optical drives, and case fans.</li>
+        <li>Speed: Power only, no data transfer.</li>
+        <li>Use Case: Powering legacy PC components.</li>
+        <li>Notable Feature: Bulky, being replaced by SATA power connectors.</li>
+      </ul>
+    `,
+    'SATA Power': `
+      <h2>SATA Power</h2>
+      <p>Power connector for modern internal hard drives and SSDs.</p>
+      <ul>
+        <li>Connects to: Internal HDDs, SSDs, and optical drives.</li>
+        <li>Speed: Power only, no data transfer.</li>
+        <li>Use Case: Powering modern storage devices in PCs.</li>
+        <li>Notable Feature: Slimmer and more efficient than Molex.</li>
+      </ul>
+    `,
+    'SATA Data': `
+      <h2>SATA Data</h2>
+      <p>Data connector for internal storage devices.</p>
+      <ul>
+        <li>Connects to: Internal HDDs, SSDs, and optical drives.</li>
+        <li>Speed: Up to 6 Gbps (SATA III).</li>
+        <li>Use Case: Data transfer for modern PC storage devices.</li>
+        <li>Notable Feature: Hot-swappable, supports high-speed data transfer.</li>
+      </ul>
+    `,
+    'PS/2': `
+      <h2>PS/2</h2>
+      <p>Legacy connector for keyboards and mice.</p>
+      <ul>
+        <li>Connects to: Older keyboards and mice.</li>
+        <li>Speed: Low-speed data for input devices.</li>
+        <li>Use Case: Legacy PCs and servers.</li>
+        <li>Notable Feature: Color-coded (purple for keyboards, green for mice).</li>
+      </ul>
+    `,
+    'DB9 Serial': `
+      <h2>DB9 Serial</h2>
+      <p>9-pin connector for serial communication devices.</p>
+      <ul>
+        <li>Connects to: Modems, industrial equipment, and legacy peripherals.</li>
+        <li>Speed: Up to 115.2 kbps (RS-232 standard).</li>
+        <li>Use Case: Legacy serial communication and industrial applications.</li>
+        <li>Notable Feature: Replaced by USB in most modern applications.</li>
+      </ul>
+    `,
+    'Parallel Port': `
+      <h2>Parallel Port</h2>
+      <p>Legacy printer connector with 25 pins.</p>
+      <ul>
+        <li>Connects to: Older printers and scanners.</li>
+        <li>Speed: Up to 2 MB/s (Enhanced Parallel Port).</li>
+        <li>Use Case: Legacy printing and data transfer.</li>
+        <li>Notable Feature: Replaced by USB for modern printers.</li>
+      </ul>
+    `
+  };
+
+  function showModal(connector) {
+    modalContent.innerHTML = connectorInfo[connector] + '<span class="close-button" onclick="closeModal()">&times;</span>';
+    infoModal.style.display = 'flex';
+  }
+
+  function closeModal() {
+    infoModal.style.display = 'none';
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target === infoModal) {
+      closeModal();
+    }
+  });
+</script>
 </body>
 </html>

@@ -98,30 +98,12 @@
     }
 
     .question {
-      margin-bottom: 1rem;
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
-      line-height: 1.4;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      line-height: 1.5;
       word-wrap: break-word;
-      max-height: 20vh;
-      overflow-y: auto;
-      padding-right: 0.5rem;
-      scrollbar-width: thin;
-      scrollbar-color: #00FF00 transparent;
       width: 100%;
       text-align: center;
-    }
-
-    .question::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .question::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .question::-webkit-scrollbar-thumb {
-      background: #00FF00;
-      border-radius: 3px;
+      padding: 1rem;
     }
 
     .choices {
@@ -208,8 +190,8 @@
       }
 
       .question {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-        max-height: 25vh;
+        font-size: clamp(1rem, 3.5vw, 1.2rem);
+        padding: 0.5rem;
       }
 
       .choice {
@@ -251,7 +233,7 @@
   </div>
 
   <div class="quiz-content">
-    <div class="question" id="question">Welcome to the CompTIA Security+ Study Hub! Select a topic or question tier to begin.</div>
+    <div class="question" id="question">Welcome to the CompTIA Security+ Study Hub!<br>Select a topic or question tier to begin.</div>
     <div class="choices" id="choices"></div>
     <div class="feedback" id="feedback"></div>
     <div class="score" id="score"></div>
@@ -284,7 +266,7 @@
     function showQuestion() {
       console.log("Attempting to display question");
       if (questions.length === 0) {
-        questionElement.textContent = "Select a quiz tier to begin";
+        questionElement.innerHTML = "Welcome to the CompTIA Security+ Study Hub!<br>Select a topic or question tier to begin.";
         feedbackElement.textContent = "";
         scoreElement.textContent = "";
         missedQuestionsElement.innerHTML = "";

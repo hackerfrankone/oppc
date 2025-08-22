@@ -41,7 +41,7 @@
       flex-direction: column;
       gap: 0.5rem;
     }
-    .back-button, .tier-button, .pbq-button, .acronyms-button, .restart-button {
+    .back-button, .tier-button, .pbq-button, .acronyms-button, .restart-button, .ports-button, .cia-button, .incidentresponse-button {
       background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
@@ -55,7 +55,7 @@
       width: fit-content;
       -webkit-tap-highlight-color: transparent;
     }
-    .back-button:hover, .tier-button:hover, .pbq-button:hover, .acronyms-button:hover, .restart-button:hover {
+    .back-button:hover, .tier-button:hover, .pbq-button:hover, .acronyms-button:hover, .restart-button:hover, .ports-button:hover, .cia-button:hover, .incidentresponse-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -70,8 +70,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       padding: 1rem;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -30%);
     }
     h1 {
       font-size: clamp(1.5rem, 4vw, 2rem);
@@ -151,15 +154,15 @@
     @media (max-width: 600px) {
       body { padding: 0.5rem; }
       .page-content { max-width: 95%; }
-      .back-button, .tier-button, .pbq-button, .acronyms-button, .restart-button {
+      .back-button, .tier-button, .pbq-button, .acronyms-button, .restart-button, .ports-button, .cia-button, .incidentresponse-button {
         font-size: clamp(0.8rem, 2vw, 0.9rem);
         padding: 0.4rem 0.8rem;
       }
       .top-buttons {
-        flex-direction: row; /* Keep back, tier, and PBQ buttons horizontal */
+        flex-direction: row;
       }
       .misc-buttons {
-        flex-direction: column; /* Keep misc buttons vertical */
+        flex-direction: column;
       }
       .question {
         font-size: clamp(1rem, 3.5vw, 1.2rem);
@@ -183,6 +186,9 @@
     </div>
     <div class="misc-buttons">
       <a href="acronyms.html" class="acronyms-button">Acronyms</a>
+      <a href="CIA.html" class="cia-button">CIA</a>
+      <a href="ports.html" class="ports-button">Ports</a>
+      <a href="incidentresponse.html" class="incidentresponse-button">Incident Response</a>
       <button class="restart-button" onclick="restartQuiz()">Start Over</button>
     </div>
   </div>
@@ -221,7 +227,6 @@
     function showQuestion() {
       console.log("Attempting to display question");
       if (questions.length === 0) {
-        // No questions to display; welcome message is handled in HTML
         feedbackElement.textContent = "";
         scoreElement.textContent = "";
         missedQuestionsElement.innerHTML = "";
@@ -231,7 +236,6 @@
       }
 
       const q = questions[currentQuestion];
-      // Use a different element or logic if questions are loaded
       const questionDisplay = document.querySelector(".question") || document.createElement("div");
       if (!questionDisplay.classList.contains("question")) {
         questionDisplay.classList.add("question");

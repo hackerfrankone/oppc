@@ -49,6 +49,10 @@
       background-color: #00FF00;
       color: black;
     }
+    .tier-button.active {
+      background-color: #00FF00;
+      color: black;
+    }
     .page-content {
       width: 100%;
       max-width: 600px;
@@ -150,9 +154,9 @@
 <body>
   <div class="button-container">
     <a href="aplus2.html" class="back-button">← Back</a>
-    <a href="#" class="tier-button">Tier 1</a>
-    <a href="#" class="tier-button">Tier 2</a>
-    <a href="#" class="tier-button">Tier 3</a>
+    <a href="#" class="tier-button active" onclick="highlightTier(this)">Tier 1</a>
+    <a href="2tier-2.html" class="tier-button">Tier 2</a>
+    <a href="2tier-3.html" class="tier-button">Tier 3</a>
   </div>
 
   <div class="page-content">
@@ -606,6 +610,11 @@
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
+    }
+
+    function highlightTier(button) {
+      document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
     }
 
     let currentQuestion = 0;

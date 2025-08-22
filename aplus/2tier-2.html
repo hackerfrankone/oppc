@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Core 2 Quiz - Tier 2</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+    .back-button, .tier-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-button:hover, .tier-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .tier-button.active {
+      background-color: #00FF00;
+      color: black;
+    }
+    .page-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .content-section {
+      width: 100%;
+      max-width: 600px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+    .content-section::-webkit-scrollbar { width: 6px; }
+    .content-section::-webkit-scrollbar-track { background: transparent; }
+    .content-section::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 3px; }
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+    .question::-webkit-scrollbar { width: 6px; }
+    .question::-webkit-scrollbar-track { background: transparent; }
+    .question::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 3px; }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+    .choice:hover:not(.disabled) { background-color: #00FF00; color: black; }
+    .choice.disabled { pointer-events: none; opacity: 0.5; }
+    .feedback { margin-top: 1rem; font-size: clamp(0.9rem, 3vw, 1rem); min-height: 2rem; text-align: center; }
+    .score { margin-top: 1rem; font-size: clamp(1rem, 3.5vw, 1.2rem); text-align: center; }
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .page-content { max-width: 95%; }
+      .content-section { max-height: 60vh; }
+      .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
+      .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
+      .button-container {
+        flex-direction: row; /* Keep buttons horizontal */
+      }
+      .back-button, .tier-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <a href="aplus2.html" class="back-button">← Back</a>
+    <a href="2tier-1.html" class="tier-button">Tier 1</a>
+    <a href="2tier-2.html" class="tier-button active" onclick="highlightTier(this)">Tier 2</a>
+    <a href="2tier-3.html" class="tier-button">Tier 3</a>
+  </div>
+
+  <div class="page-content">
+    <div class="content-section">
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="score" id="score"></div>
+      <div class="missed-questions" id="missed-questions"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Which PowerShell cmdlet retrieves detailed information about installed drivers on a Windows system?",
+        choices: ["Get-WmiObject", "Get-Driver", "Get-WindowsDriver", "DriverQuery"],
+        answer: "Get-WindowsDriver",
+        explanation: "The Get-WindowsDriver cmdlet in PowerShell retrieves detailed information about installed drivers, including version and provider, useful for troubleshooting driver issues."
+      },
+      {
+        question: "What is the purpose of the Windows registry key HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services?",
+        choices: ["Store user profiles", "Manage system services configuration", "Track application installations", "Control network adapter settings"],
+        answer: "Manage system services configuration",
+        explanation: "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services stores configuration data for system services, including startup type and dependencies, critical for system operations."
+      },
+      {
+        question: "Which command-line tool would you use to repair a corrupted Windows boot configuration data (BCD) store?",
+        choices: ["bcdedit", "bootrec", "fixboot", "diskpart"],
+        answer: "bootrec",
+        explanation: "The bootrec command, used in the Windows Recovery Environment, repairs issues with the BCD store, such as corrupted boot entries, to restore system boot functionality."
+      },
+      {
+        question: "What is the primary difference between a differential and an incremental backup in Windows Backup and Restore?",
+        choices: ["Differential backs up all data; incremental backs up only new data", "Differential backs up changed files since last full backup; incremental backs up changed files since last backup", "Differential uses compression; incremental does not", "Differential is faster; incremental is more secure"],
+        answer: "Differential backs up changed files since last full backup; incremental backs up changed files since last backup",
+        explanation: "Differential backups save all changes since the last full backup, while incremental backups save changes since the last backup (full or incremental), affecting restore time and storage needs."
+      },
+      {
+        question: "Which Windows Event Viewer log is most likely to contain details about a failed driver installation?",
+        choices: ["Application", "Security", "System", "Setup"],
+        answer: "System",
+        explanation: "The System log in Event Viewer records events related to driver installations, including failures, as it tracks system-level activities and errors."
+      },
+      {
+        question: "What is the purpose of the 'netsh advfirewall' command in Windows?",
+        choices: ["Configure network adapters", "Manage Windows Firewall settings", "Clear network cache", "Monitor network traffic"],
+        answer: "Manage Windows Firewall settings",
+        explanation: "The 'netsh advfirewall' command allows configuration of Windows Firewall settings, such as rules for inbound and outbound traffic, enhancing network security."
+      },
+      {
+        question: "Which type of malware is specifically designed to propagate without user interaction across a network?",
+        choices: ["Trojan", "Worm", "Spyware", "Adware"],
+        answer: "Worm",
+        explanation: "A worm is a type of malware that self-replicates and spreads across networks without user interaction, often exploiting vulnerabilities to infect systems."
+      },
+      {
+        question: "What is the function of the Windows 'DISM /Online /Cleanup-Image /RestoreHealth' command?",
+        choices: ["Repairs disk errors", "Restores system files from an online source", "Clears temporary files", "Resets network settings"],
+        answer: "Restores system files from an online source",
+        explanation: "DISM /Online /Cleanup-Image /RestoreHealth repairs the Windows component store by downloading healthy files from Microsoft servers, fixing corruption issues."
+      },
+      {
+        question: "Which Windows setting should be configured to prevent applications from running with elevated privileges without user consent?",
+        choices: ["User Account Control (UAC)", "Windows Defender", "Secure Boot", "BitLocker"],
+        answer: "User Account Control (UAC)",
+        explanation: "UAC prompts for user consent or credentials when applications attempt to run with elevated privileges, preventing unauthorized system changes."
+      },
+      {
+        question: "What does the Windows command 'cipher /w' do?",
+        choices: ["Encrypts a file", "Wipes free disk space", "Decrypts a folder", "Checks disk encryption status"],
+        answer: "Wipes free disk space",
+        explanation: "The 'cipher /w' command securely wipes free disk space by overwriting it with random data, preventing recovery of deleted files."
+      },
+      {
+        question: "Which protocol is used by Windows to manage domain-based group policies across a network?",
+        choices: ["LDAP", "SMB", "Kerberos", "GPMC"],
+        answer: "LDAP",
+        explanation: "LDAP (Lightweight Directory Access Protocol) is used by Windows Active Directory to manage and distribute group policies across a domain network."
+      },
+      {
+        question: "What is a common mitigation for a social engineering attack targeting employee credentials?",
+        choices: ["Install antivirus software", "Implement multi-factor authentication (MFA)", "Increase firewall rules", "Update BIOS firmware"],
+        answer: "Implement multi-factor authentication (MFA)",
+        explanation: "MFA requires additional verification beyond passwords, significantly reducing the risk of credential theft in social engineering attacks."
+      },
+      {
+        question: "Which Windows tool allows you to analyze memory dump files after a BSOD?",
+        choices: ["Event Viewer", "WinDbg", "Task Manager", "Resource Monitor"],
+        answer: "WinDbg",
+        explanation: "WinDbg is a Windows debugging tool used to analyze memory dump files after a BSOD, helping identify the cause of critical system errors."
+      },
+      {
+        question: "What is the purpose of the Windows 'fsutil fsinfo' command?",
+        choices: ["Formats a drive", "Displays file system information", "Repairs file system errors", "Manages disk quotas"],
+        answer: "Displays file system information",
+        explanation: "The 'fsutil fsinfo' command provides detailed information about the file system, such as type and volume details, useful for diagnostics."
+      },
+      {
+        question: "Which type of attack exploits vulnerabilities in outdated software to gain unauthorized access?",
+        choices: ["Phishing", "Exploit", "DDoS", "Brute Force"],
+        answer: "Exploit",
+        explanation: "An exploit attack targets vulnerabilities in outdated software to gain unauthorized access or execute malicious code, emphasizing the need for timely patches."
+      },
+      {
+        question: "What is the default port for Remote Desktop Protocol (RDP) in Windows?",
+        choices: ["3389", "445", "1433", "8080"],
+        answer: "3389",
+        explanation: "RDP uses port 3389 by default for secure remote desktop connections, allowing remote control of Windows systems over a network."
+      },
+      {
+        question: "Which Windows command can be used to map a network drive from the command line?",
+        choices: ["net use", "net share", "net view", "net config"],
+        answer: "net use",
+        explanation: "The 'net use' command maps a network drive to a drive letter, enabling access to shared network resources from the command line."
+      },
+      {
+        question: "What is the purpose of the Windows 'wevtutil' command?",
+        choices: ["Manage network settings", "Query and manage event logs", "Update system drivers", "Configure firewall rules"],
+        answer: "Query and manage event logs",
+        explanation: "The 'wevtutil' command allows users to query, export, or manage Windows event logs, useful for advanced troubleshooting and auditing."
+      },
+      {
+        question: "Which Windows feature allows you to roll back a driver to a previous version?",
+        choices: ["Device Manager", "System Restore", "Task Scheduler", "Disk Management"],
+        answer: "Device Manager",
+        explanation: "Device Manager allows users to roll back a driver to a previous version via the driver properties, useful for resolving issues caused by driver updates."
+      },
+      {
+        question: "What is a common indicator of a rootkit infection in a Windows system?",
+        choices: ["Increased disk space", "Unexpected system reboots", "Hidden processes in Task Manager", "Improved network performance"],
+        answer: "Hidden processes in Task Manager",
+        explanation: "Rootkits often hide processes in Task Manager to evade detection, requiring specialized tools like rootkit scanners to identify and remove them."
+      },
+      {
+        question: "Which Windows command repairs file system errors on a volume without scanning for bad sectors?",
+        choices: ["chkdsk /f", "chkdsk /r", "sfc /scannow", "fsutil repair"],
+        answer: "chkdsk /f",
+        explanation: "The 'chkdsk /f' command fixes file system errors on a volume without scanning for bad sectors, unlike 'chkdsk /r' which includes sector checks."
+      },
+      {
+        question: "What is the purpose of the Windows 'gpresult' command?",
+        choices: ["Update group policies", "Display applied group policy settings", "Reset group policies", "Manage user accounts"],
+        answer: "Display applied group policy settings",
+        explanation: "The 'gpresult' command displays the group policy settings applied to a user or computer, aiding in troubleshooting policy application issues."
+      },
+      {
+        question: "Which type of malware encrypts files and demands payment for decryption?",
+        choices: ["Spyware", "Ransomware", "Adware", "Worm"],
+        answer: "Ransomware",
+        explanation: "Ransomware encrypts files and demands a ransom for decryption, often spreading through phishing or exploits, requiring robust backups for recovery."
+      },
+      {
+        question: "What is the function of the Windows 'sc query' command?",
+        choices: ["Start a service", "Display service status", "Stop a service", "Configure service settings"],
+        answer: "Display service status",
+        explanation: "The 'sc query' command displays the status and configuration of services, providing details like running state and service type for troubleshooting."
+      },
+      {
+        question: "Which Windows feature requires a TPM for full functionality?",
+        choices: ["Windows Defender", "BitLocker", "Secure Boot", "EFS"],
+        answer: "BitLocker",
+        explanation: "BitLocker requires a TPM (Trusted Platform Module) for full functionality, such as automatic key management, to secure drive encryption."
+      },
+      {
+        question: "What is the purpose of the Windows 'net user' command?",
+        choices: ["Map a network drive", "Manage user accounts", "Display network statistics", "Configure firewall settings"],
+        answer: "Manage user accounts",
+        explanation: "The 'net user' command manages user accounts, allowing actions like creating, modifying, or disabling accounts from the command line."
+      },
+      {
+        question: "Which protocol is used for secure email retrieval, keeping messages on the server?",
+        choices: ["POP3", "IMAP", "SMTP", "SNMP"],
+        answer: "IMAP",
+        explanation: "IMAP (Internet Message Access Protocol) allows secure email retrieval while keeping messages on the server, ideal for multi-device access, typically on port 143 or 993 (SSL)."
+      },
+      {
+        question: "What is a common mitigation for a zero-day exploit in Windows?",
+        choices: ["Disable all network connections", "Apply security patches immediately", "Run a full antivirus scan", "Enable Windows Defender real-time protection"],
+        answer: "Enable Windows Defender real-time protection",
+        explanation: "Windows Defender real-time protection can mitigate zero-day exploits by detecting and blocking suspicious behavior until a specific patch is available."
+      },
+      {
+        question: "Which Windows tool allows you to create a system image for full system recovery?",
+        choices: ["Backup and Restore", "File History", "System Restore", "Disk Cleanup"],
+        answer: "Backup and Restore",
+        explanation: "Backup and Restore creates a system image, capturing the entire system state for full recovery in case of system failure or corruption."
+      },
+      {
+        question: "What does the Windows 'schtasks' command do?",
+        choices: ["Manage scheduled tasks", "Display system processes", "Configure network tasks", "Repair system files"],
+        answer: "Manage scheduled tasks",
+        explanation: "The 'schtasks' command manages scheduled tasks, allowing creation, deletion, or modification of tasks for automation in Windows."
+      },
+      {
+        question: "Which type of attack involves injecting malicious code into a website’s database?",
+        choices: ["SQL Injection", "DDoS", "Phishing", "Man-in-the-Middle"],
+        answer: "SQL Injection",
+        explanation: "SQL Injection involves injecting malicious code into a website’s database queries, exploiting vulnerabilities to access or manipulate data."
+      },
+      {
+        question: "What is the purpose of the Windows 'msinfo32' command?",
+        choices: ["Manage startup programs", "Display system information", "Repair system files", "Configure network settings"],
+        answer: "Display system information",
+        explanation: "The 'msinfo32' command opens the System Information tool, providing detailed hardware, software, and system configuration details for diagnostics."
+      },
+      {
+        question: "Which Windows registry hive contains user-specific settings for the currently logged-in user?",
+        choices: ["HKEY_LOCAL_MACHINE", "HKEY_CURRENT_USER", "HKEY_USERS", "HKEY_CLASSES_ROOT"],
+        answer: "HKEY_CURRENT_USER",
+        explanation: "HKEY_CURRENT_USER contains configuration settings specific to the currently logged-in user, such as desktop preferences and application settings."
+      },
+      {
+        question: "What is the purpose of the Windows 'icacls' command?",
+        choices: ["Manage file permissions", "Display network connections", "Repair disk errors", "Configure system services"],
+        answer: "Manage file permissions",
+        explanation: "The 'icacls' command manages file and folder permissions, allowing administrators to set or modify access control lists (ACLs) in Windows."
+      },
+      {
+        question: "Which Windows feature allows you to configure a proxy server for network connections?",
+        choices: ["Network and Sharing Center", "Internet Options", "Windows Defender Firewall", "System Properties"],
+        answer: "Internet Options",
+        explanation: "Internet Options in the Control Panel allows configuration of proxy server settings for network connections, affecting web browsing and network access."
+      },
+      {
+        question: "What is a common symptom of a failing power supply in a Windows PC?",
+        choices: ["Slow application performance", "Random system reboots", "Network disconnections", "Increased disk space"],
+        answer: "Random system reboots",
+        explanation: "A failing power supply can cause random system reboots due to unstable voltage delivery, requiring replacement to prevent further issues."
+      },
+      {
+        question: "Which command displays the routing table in Windows?",
+        choices: ["netstat -r", "ipconfig /all", "tracert", "route print"],
+        answer: "route print",
+        explanation: "The 'route print' command displays the Windows routing table, showing network routes and gateways, useful for network troubleshooting."
+      },
+      {
+        question: "What is the purpose of the Windows 'bcdedit /set safeboot' command?",
+        choices: ["Enable Safe Mode for the next boot", "Repair the boot configuration", "Disable Secure Boot", "Set a new boot partition"],
+        answer: "Enable Safe Mode for the next boot",
+        explanation: "The 'bcdedit /set safeboot' command configures the system to boot into Safe Mode on the next restart, aiding in troubleshooting."
+      },
+      {
+        question: "Which type of malware modifies the operating system to maintain persistence?",
+        choices: ["Ransomware", "Rootkit", "Adware", "Spyware"],
+        answer: "Rootkit",
+        explanation: "A rootkit modifies the operating system to maintain persistence, hiding itself to evade detection and maintain unauthorized access."
+      },
+      {
+        question: "What is the purpose of the Windows 'regsvr32' command?",
+        choices: ["Register a service", "Register or unregister DLL files", "Repair registry errors", "Display registry keys"],
+        answer: "Register or unregister DLL files",
+        explanation: "The 'regsvr32' command registers or unregisters DLL files in the Windows registry, enabling their use by applications."
+      },
+      {
+        question: "Which Windows tool allows you to monitor real-time CPU and memory usage?",
+        choices: ["Task Manager", "Resource Monitor", "Performance Monitor", "System Configuration"],
+        answer: "Resource Monitor",
+        explanation: "Resource Monitor provides detailed real-time data on CPU, memory, disk, and network usage, ideal for diagnosing performance issues."
+      },
+      {
+        question: "What is the difference between a clean boot and Safe Mode in Windows?",
+        choices: ["Clean boot loads all drivers; Safe Mode loads minimal drivers", "Clean boot disables non-Microsoft services; Safe Mode disables most services", "Clean boot repairs system files; Safe Mode does not", "Clean boot is for recovery; Safe Mode is for updates"],
+        answer: "Clean boot disables non-Microsoft services; Safe Mode disables most services",
+        explanation: "A clean boot (via msconfig) disables non-Microsoft services and startup items for troubleshooting, while Safe Mode loads minimal drivers and services."
+      },
+      {
+        question: "Which protocol is used by Windows for file and printer sharing in a network?",
+        choices: ["FTP", "SMB", "SNMP", "RDP"],
+        answer: "SMB",
+        explanation: "SMB (Server Message Block) is used for file and printer sharing in Windows networks, enabling access to shared resources across devices."
+      },
+      {
+        question: "What is the purpose of the Windows 'robocopy' command?",
+        choices: ["Copy files with advanced options", "Repair file system errors", "Manage network shares", "Display disk usage"],
+        answer: "Copy files with advanced options",
+        explanation: "The 'robocopy' command provides robust file copying with options like mirroring, retrying failed copies, and preserving file attributes, ideal for backups."
+      },
+      {
+        question: "Which Windows registry key stores information about installed software?",
+        choices: ["HKEY_LOCAL_MACHINE\\Software", "HKEY_CURRENT_USER\\Apps", "HKEY_USERS\\Programs", "HKEY_CLASSES_ROOT\\Install"],
+        answer: "HKEY_LOCAL_MACHINE\\Software",
+        explanation: "HKEY_LOCAL_MACHINE\\Software stores information about installed software, including settings and uninstallation data, for all users on the system."
+      },
+      {
+        question: "What is a common mitigation for a DDoS attack on a Windows server?",
+        choices: ["Install antivirus software", "Enable rate limiting or traffic filtering", "Update BIOS firmware", "Disable user accounts"],
+        answer: "Enable rate limiting or traffic filtering",
+        explanation: "Rate limiting or traffic filtering at the network level mitigates DDoS attacks by reducing the impact of excessive requests on a Windows server."
+      },
+      {
+        question: "Which Windows command tests network connectivity to a specific host?",
+        choices: ["ping", "tracert", "netstat", "ipconfig"],
+        answer: "ping",
+        explanation: "The 'ping' command tests network connectivity by sending ICMP packets to a host, measuring response time and packet loss."
+      },
+      {
+        question: "What is the purpose of the Windows 'wmic' command?",
+        choices: ["Manage Windows services", "Execute management tasks via WMI", "Configure network settings", "Repair system files"],
+        answer: "Execute management tasks via WMI",
+        explanation: "The 'wmic' command uses Windows Management Instrumentation (WMI) to perform management tasks, such as querying system information or managing processes."
+      },
+      {
+        question: "Which Windows feature allows you to configure automatic updates for applications?",
+        choices: ["Windows Update", "Microsoft Store", "Task Scheduler", "System Properties"],
+        answer: "Microsoft Store",
+        explanation: "The Microsoft Store manages automatic updates for applications installed through it, ensuring they receive the latest patches and features."
+      },
+      {
+        question: "What is a common symptom of a failing motherboard in a Windows PC?",
+        choices: ["Slow network speed", "Frequent BSODs or hardware errors", "Low disk space", "Application crashes"],
+        answer: "Frequent BSODs or hardware errors",
+        explanation: "A failing motherboard can cause frequent BSODs or hardware errors due to issues like faulty capacitors or unstable connections, requiring diagnostics."
+      },
+      {
+        question: "Which Windows command exports the current system configuration to a file?",
+        choices: ["systeminfo", "msinfo32 /report", "reg export", "bcdedit /export"],
+        answer: "reg export",
+        explanation: "The 'reg export' command exports a specified registry key to a file, allowing backup of system configuration settings for recovery or analysis."
+      },
+      {
+        question: "What is the purpose of the Windows 'auditpol' command?",
+        choices: ["Manage network policies", "Configure audit policies", "Repair system files", "Display user permissions"],
+        answer: "Configure audit policies",
+        explanation: "The 'auditpol' command configures audit policies, enabling tracking of security events like logon attempts or file access for compliance and monitoring."
+      },
+      {
+        question: "Which type of attack uses stolen credentials to gain unauthorized access to a system?",
+        choices: ["Phishing", "Credential Stuffing", "SQL Injection", "DDoS"],
+        answer: "Credential Stuffing",
+        explanation: "Credential stuffing uses stolen credentials from one service to attempt unauthorized access to other systems, exploiting reused passwords."
+      },
+      {
+        question: "What is the purpose of the Windows 'netsh wlan' command?",
+        choices: ["Configure wireless network settings", "Display wired network status", "Manage firewall rules", "Reset TCP/IP stack"],
+        answer: "Configure wireless network settings",
+        explanation: "The 'netsh wlan' command manages wireless network settings, such as connecting to Wi-Fi or exporting profiles, for network configuration."
+      },
+      {
+        question: "Which Windows tool allows you to view and manage disk partitions?",
+        choices: ["Disk Management", "Device Manager", "Task Scheduler", "Performance Monitor"],
+        answer: "Disk Management",
+        explanation: "Disk Management allows users to view, create, and manage disk partitions, including resizing or formatting volumes, for storage configuration."
+      },
+      {
+        question: "What is the difference between EFS and BitLocker in Windows?",
+        choices: ["EFS encrypts entire drives; BitLocker encrypts individual files", "EFS encrypts individual files; BitLocker encrypts entire drives", "EFS uses TPM; BitLocker does not", "EFS is for network shares; BitLocker is for local drives"],
+        answer: "EFS encrypts individual files; BitLocker encrypts entire drives",
+        explanation: "EFS (Encrypting File System) encrypts individual files or folders, while BitLocker encrypts entire drives, providing different levels of data protection."
+      },
+      {
+        question: "Which Windows command displays the current user’s group memberships?",
+        choices: ["whoami /groups", "net user", "gpresult", "net group"],
+        answer: "whoami /groups",
+        explanation: "The 'whoami /groups' command displays the group memberships of the current user, useful for verifying permissions and roles."
+      },
+      {
+        question: "What is the purpose of the Windows 'sigverif' command?",
+        choices: ["Verify digital signatures of system files", "Check disk integrity", "Manage user signatures", "Repair network connections"],
+        answer: "Verify digital signatures of system files",
+        explanation: "The 'sigverif' command checks the digital signatures of system files, ensuring they are unmodified and from trusted sources, aiding in security verification."
+      },
+      {
+        question: "Which Windows feature protects against phishing by filtering suspicious websites?",
+        choices: ["Windows Defender", "SmartScreen", "UAC", "BitLocker"],
+        answer: "SmartScreen",
+        explanation: "SmartScreen filters suspicious websites and downloads in Windows, protecting against phishing and malicious content by checking against a reputation database."
+      },
+      {
+        question: "What is a common cause of a ‘BOOTMGR is missing’ error in Windows?",
+        choices: ["Corrupted boot manager or missing boot files", "Overheating CPU", "Low disk space", "Network misconfiguration"],
+        answer: "Corrupted boot manager or missing boot files",
+        explanation: "A ‘BOOTMGR is missing’ error occurs due to a corrupted or missing boot manager, often fixable using the Windows Recovery Environment’s bootrec commands."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function highlightTier(button) {
+      document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+        }
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

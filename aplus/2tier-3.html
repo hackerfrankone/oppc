@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>CompTIA A+ Core 2 Quiz - Tier 3</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+    }
+    .button-container {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+    .back-button, .tier-button {
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      width: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .back-button:hover, .tier-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+    .tier-button.active {
+      background-color: #00FF00;
+      color: black;
+    }
+    .page-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .content-section {
+      width: 100%;
+      max-width: 600px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      max-height: 60vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+    .content-section::-webkit-scrollbar { width: 6px; }
+    .content-section::-webkit-scrollbar-track { background: transparent; }
+    .content-section::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 3px; }
+    .question {
+      margin-bottom: 1rem;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-height: 20vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+    .question::-webkit-scrollbar { width: 6px; }
+    .question::-webkit-scrollbar-track { background: transparent; }
+    .question::-webkit-scrollbar-thumb { background: #00FF00; border-radius: 3px; }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      min-height: 200px;
+    }
+    .choice {
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      padding: 0.6rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      text-align: left;
+      word-wrap: break-word;
+      line-height: 1.3;
+      min-height: 3rem;
+      display: flex;
+      align-items: center;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
+    }
+    .choice:hover:not(.disabled) { background-color: #00FF00; color: black; }
+    .choice.disabled { pointer-events: none; opacity: 0.5; }
+    .feedback { margin-top: 1rem; font-size: clamp(0.9rem, 3vw, 1rem); min-height: 2rem; text-align: center; }
+    .score { margin-top: 1rem; font-size: clamp(1rem, 3.5vw, 1.2rem); text-align: center; }
+    .missed-questions {
+      margin-top: 2rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+    .missed-question {
+      margin-bottom: 1.5rem;
+    }
+    .missed-question h3 {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin-bottom: 0.5rem;
+    }
+    .missed-question p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .page-content { max-width: 95%; }
+      .content-section { max-height: 60vh; }
+      .question { font-size: clamp(0.9rem, 3vw, 1rem); max-height: 25vh; }
+      .choice { font-size: clamp(0.8rem, 2.8vw, 0.9rem); padding: 0.5rem; }
+      .button-container {
+        flex-direction: row; /* Keep buttons horizontal */
+      }
+      .back-button, .tier-button {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <a href="aplus2.html" class="back-button">← Back</a>
+    <a href="2tier-1.html" class="tier-button">Tier 1</a>
+    <a href="2tier-2.html" class="tier-button">Tier 2</a>
+    <a href="2tier-3.html" class="tier-button active" onclick="highlightTier(this)">Tier 3</a>
+  </div>
+
+  <div class="page-content">
+    <div class="content-section">
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="score" id="score"></div>
+      <div class="missed-questions" id="missed-questions"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "A user reports that their Windows 11 system fails to boot with a 'CRITICAL_PROCESS_DIED' BSOD. Event Viewer shows repeated errors from the 'svchost.exe' process. What is the most likely first step to troubleshoot this issue?",
+        choices: ["Run 'sfc /scannow' to repair system files", "Boot into Safe Mode and disable non-essential services", "Reinstall Windows 11", "Update the BIOS firmware"],
+        answer: "Boot into Safe Mode and disable non-essential services",
+        explanation: "A 'CRITICAL_PROCESS_DIED' BSOD related to 'svchost.exe' suggests a critical system service failure. Booting into Safe Mode loads minimal services, allowing you to disable non-essential services via 'msconfig' to isolate the problematic one."
+      },
+      {
+        question: "A company’s Active Directory domain controller is experiencing slow logon times for users. You notice high CPU usage on the server. Using Performance Monitor, you identify the lsass.exe process as the culprit. What should you do next?",
+        choices: ["Restart the server", "Run 'net stop lsass'", "Check for malware targeting lsass.exe", "Increase virtual memory allocation"],
+        answer: "Check for malware targeting lsass.exe",
+        explanation: "High CPU usage by lsass.exe, the Local Security Authority process, can indicate malware (e.g., credential theft). Scanning with Windows Defender or a third-party tool is the next step, as restarting or stopping lsass.exe could disrupt authentication."
+      },
+      {
+        question: "A Windows 10 PC in a corporate network fails to connect to a shared printer. The error message indicates 'Access Denied.' The user is part of the correct security group. What should you check first?",
+        choices: ["Printer driver version", "SMB protocol settings", "User’s NTFS permissions on the print server", "Firewall rules on the client PC"],
+        answer: "Firewall rules on the client PC",
+        explanation: "An 'Access Denied' error for a network printer often results from blocked SMB or print spooler traffic. Checking firewall rules on the client PC to ensure ports like 445 (SMB) are open is the first step before investigating permissions or drivers."
+      },
+      {
+        question: "A user’s laptop running Windows 11 shows a 'No Bootable Device' error after a recent update. The BIOS detects the SSD, but the system cannot find the boot partition. What command in the Windows Recovery Environment should you use first?",
+        choices: ["bootrec /fixmbr", "bootrec /rebuildbcd", "diskpart clean", "chkdsk /r"],
+        answer: "bootrec /rebuildbcd",
+        explanation: "The 'No Bootable Device' error with a detected SSD suggests a corrupted Boot Configuration Data (BCD). Using 'bootrec /rebuildbcd' in the Windows Recovery Environment rebuilds the BCD to restore boot functionality."
+      },
+      {
+        question: "A Windows Server 2019 machine hosting a critical application experiences random reboots. Event Viewer logs a 'BugCheck' error with code 0x0000007E. What is the most likely cause?",
+        choices: ["Corrupted system files", "Incompatible driver", "Overheating CPU", "Insufficient disk space"],
+        answer: "Incompatible driver",
+        explanation: "A 'BugCheck' 0x0000007E error typically indicates a system thread exception not handled, often due to an incompatible or faulty driver. Analyzing the memory dump with WinDbg can confirm the driver involved."
+      },
+      {
+        question: "You receive a report that a Windows 10 workstation is infected with ransomware, and critical files are encrypted. The user received a suspicious email attachment prior to the issue. What is the first action to mitigate further damage?",
+        choices: ["Pay the ransom", "Disconnect the workstation from the network", "Run a malware scan", "Restore files from a backup"],
+        answer: "Disconnect the workstation from the network",
+        explanation: "Disconnecting the workstation from the network prevents ransomware from spreading to other systems or communicating with command-and-control servers, containing the infection before further actions like scanning or restoration."
+      },
+      {
+        question: "A Windows 11 system fails to apply group policies, and 'gpresult /r' shows no policies applied. The system is domain-joined, and DNS resolves correctly. What should you check next?",
+        choices: ["Firewall settings on the domain controller", "Event Viewer for Group Policy errors", "User’s group membership", "Network adapter settings"],
+        answer: "Event Viewer for Group Policy errors",
+        explanation: "If 'gpresult /r' shows no policies applied, checking Event Viewer for Group Policy-related errors (e.g., in System or Group Policy logs) can reveal issues like connectivity to the domain controller or policy processing failures."
+      },
+      {
+        question: "A user reports that their Windows 10 PC is running slowly, and Task Manager shows 100% disk usage despite low CPU and RAM usage. What is the most likely cause?",
+        choices: ["Failing hard drive", "Windows Search indexing", "Malware infection", "Outdated graphics driver"],
+        answer: "Windows Search indexing",
+        explanation: "High disk usage with low CPU/RAM usage is often caused by Windows Search indexing, especially after updates or on systems with large file sets. Disabling or limiting indexing via 'services.msc' can resolve the issue."
+      },
+      {
+        question: "A Windows Server 2019 file server denies access to a shared folder despite correct NTFS permissions. The share permissions allow 'Everyone' full control. What should you verify next?",
+        choices: ["SMB version compatibility", "User’s group policy settings", "File system encryption", "Network discovery settings"],
+        answer: "SMB version compatibility",
+        explanation: "If NTFS permissions are correct but access is denied, mismatched SMB versions (e.g., client using SMBv1, server requiring SMBv3) can cause issues. Verifying SMB settings via 'Get-SmbServerConfiguration' is the next step."
+      },
+      {
+        question: "A Windows 11 PC fails to boot after a power outage, showing a 'BOOTMGR is missing' error. The disk is detected in BIOS. Which sequence of commands in the Windows Recovery Environment should you use?",
+        choices: ["bootrec /fixmbr, bootrec /fixboot, bootrec /rebuildbcd", "diskpart clean, bootrec /fixmbr", "chkdsk /r, sfc /scannow", "bcdedit /export, bootrec /fixboot"],
+        answer: "bootrec /fixmbr, bootrec /fixboot, bootrec /rebuildbcd",
+        explanation: "A 'BOOTMGR is missing' error indicates a corrupted boot sector or BCD. Running 'bootrec /fixmbr', 'bootrec /fixboot', and 'bootrec /rebuildbcd' in the Windows Recovery Environment repairs the boot configuration."
+      },
+      {
+        question: "A corporate Windows 10 workstation displays frequent pop-up ads, and Task Manager shows an unknown process consuming high CPU. What is the first step to address this issue?",
+        choices: ["Run 'sfc /scannow'", "Boot into Safe Mode and run a malware scan", "Update all drivers", "Disable Windows Update"],
+        answer: "Boot into Safe Mode and run a malware scan",
+        explanation: "Pop-up ads and an unknown high-CPU process suggest a malware infection. Booting into Safe Mode minimizes malicious activity, allowing a malware scan with Windows Defender or a third-party tool to identify and remove the threat."
+      },
+      {
+        question: "A Windows Server 2019 domain controller fails to authenticate users, and Event Viewer logs Kerberos errors with event ID 4768. What should you investigate first?",
+        choices: ["DNS server configuration", "Firewall settings", "User account lockout policies", "System time synchronization"],
+        answer: "System time synchronization",
+        explanation: "Kerberos authentication relies on synchronized system time. A time drift greater than 5 minutes can cause event ID 4768 errors. Checking time sync with 'w32tm /query /status' is the first step."
+      },
+      {
+        question: "A user reports that their Windows 11 laptop cannot connect to a corporate Wi-Fi network, but other networks work fine. The error indicates an invalid certificate. What is the most likely cause?",
+        choices: ["Outdated Wi-Fi driver", "Incorrect SSID configuration", "Expired RADIUS server certificate", "Disabled network discovery"],
+        answer: "Expired RADIUS server certificate",
+        explanation: "An invalid certificate error on a corporate Wi-Fi network often indicates an expired or misconfigured certificate on the RADIUS server used for authentication (e.g., 802.1X). Verifying the certificate on the server is the first step."
+      },
+      {
+        question: "A Windows 10 PC in a small office fails to access a network share, with an error stating 'The network path was not found.' Ping to the server’s IP succeeds. What should you check next?",
+        choices: ["SMB service status on the server", "Local firewall settings", "DNS resolution", "Network cable connection"],
+        answer: "SMB service status on the server",
+        explanation: "If ping succeeds but the network share is inaccessible, the SMB service on the server may be stopped or disabled. Checking the service status with 'sc query lanmanserver' on the server is the next step."
+      },
+      {
+        question: "A Windows 11 workstation experiences intermittent application crashes. Event Viewer shows errors related to 'ntdll.dll.' What is the most likely resolution?",
+        choices: ["Reinstall the application", "Run 'DISM /Online /Cleanup-Image /RestoreHealth'", "Update the graphics driver", "Increase virtual memory"],
+        answer: "Run 'DISM /Online /Cleanup-Image /RestoreHealth'",
+        explanation: "Errors related to 'ntdll.dll' often indicate corrupted system files. Running 'DISM /Online /Cleanup-Image /RestoreHealth' repairs the component store, followed by 'sfc /scannow' to fix system file issues."
+      },
+      {
+        question: "A company’s Windows Server 2019 backup fails with an error indicating insufficient permissions. The backup account is a domain admin. What should you verify first?",
+        choices: ["NTFS permissions on the backup destination", "Backup software version", "Windows Firewall settings", "Group Policy restrictions"],
+        answer: "NTFS permissions on the backup destination",
+        explanation: "Even with domain admin privileges, incorrect NTFS permissions on the backup destination folder can prevent access. Verifying permissions with 'icacls' is the first step."
+      },
+      {
+        question: "A Windows 10 PC fails to boot, displaying a 'SYSTEM_SERVICE_EXCEPTION' BSOD. The error references 'win32k.sys.' What is the most appropriate troubleshooting step?",
+        choices: ["Run 'chkdsk /r'", "Boot into Safe Mode and update graphics drivers", "Reinstall Windows", "Disable Windows Defender"],
+        answer: "Boot into Safe Mode and update graphics drivers",
+        explanation: "A 'SYSTEM_SERVICE_EXCEPTION' BSOD involving 'win32k.sys' often relates to graphics drivers or display issues. Booting into Safe Mode and updating or rolling back the graphics driver can resolve the issue."
+      },
+      {
+        question: "A user reports that their Windows 11 PC cannot access a website, but other devices on the network can. Clearing the browser cache does not help. What should you check next?",
+        choices: ["Hosts file entries", "Browser extensions", "Network adapter settings", "Windows Update status"],
+        answer: "Hosts file entries",
+        explanation: "If only one PC cannot access a website, the Windows hosts file (C:\\Windows\\System32\\drivers\\etc\\hosts) may contain incorrect entries redirecting or blocking the site. Checking and editing the file is the next step."
+      },
+      {
+        question: "A Windows Server 2019 system running a critical database application logs repeated disk I/O errors in Event Viewer. The server remains operational but is slower. What should you do first?",
+        choices: ["Replace the disk immediately", "Run 'chkdsk /f'", "Defragment the disk", "Check SMART data with a disk utility"],
+        answer: "Check SMART data with a disk utility",
+        explanation: "Disk I/O errors suggest potential drive failure. Checking SMART data with a utility like CrystalDiskInfo provides detailed health metrics to confirm if the disk is failing before taking further action."
+      },
+      {
+        question: "A Windows 10 workstation in a domain environment fails to apply a new group policy setting for password complexity. 'gpresult /r' confirms the policy is not applied. What is the next step?",
+        choices: ["Run 'gpupdate /force'", "Check WMI filters in Group Policy", "Restart the workstation", "Rejoin the domain"],
+        answer: "Check WMI filters in Group Policy",
+        explanation: "If a group policy is not applied despite correct targeting, a misconfigured WMI filter may exclude the workstation. Checking the filter conditions in Group Policy Management Console is the next step."
+      },
+      {
+        question: "A user’s Windows 11 laptop fails to connect to a VPN, with an error indicating 'The L2TP connection attempt failed.' Other VPNs work. What should you investigate first?",
+        choices: ["VPN server certificate", "Firewall port settings", "Network adapter driver", "User’s VPN credentials"],
+        answer: "Firewall port settings",
+        explanation: "L2TP VPNs require specific ports (e.g., UDP 1701, 500, 4500). A blocked port on the client or network firewall can cause the error. Verifying firewall settings is the first step."
+      },
+      {
+        question: "A Windows Server 2019 file server experiences slow file access over the network. Task Manager shows normal CPU and disk usage. What should you check first?",
+        choices: ["Network cable quality", "SMB signing settings", "Antivirus scan exclusions", "Disk fragmentation"],
+        answer: "SMB signing settings",
+        explanation: "Slow file access with normal resource usage may result from enabled SMB signing, which adds overhead. Checking and disabling SMB signing via 'Set-SmbServerConfiguration' can improve performance."
+      },
+      {
+        question: "A Windows 10 PC displays a 'PAGE_FAULT_IN_NONPAGED_AREA' BSOD after installing new RAM. What is the most likely cause?",
+        choices: ["Corrupted system files", "Incompatible RAM modules", "Outdated BIOS", "Malware infection"],
+        answer: "Incompatible RAM modules",
+        explanation: "A 'PAGE_FAULT_IN_NONPAGED_AREA' BSOD after RAM installation suggests incompatible or faulty RAM. Verifying RAM compatibility with the motherboard or testing with MemTest86 is the next step."
+      },
+      {
+        question: "A user reports that their Windows 11 PC cannot print to a network printer after a recent Windows update. The printer is online, and other PCs can print. What should you do first?",
+        choices: ["Reinstall the printer driver", "Run the Printer Troubleshooter", "Check for pending Windows updates", "Restart the Print Spooler service"],
+        answer: "Run the Printer Troubleshooter",
+        explanation: "The Windows Printer Troubleshooter (accessed via Settings > Troubleshoot) can diagnose and fix common printing issues caused by updates, such as misconfigured drivers or spooler errors, making it the first step."
+      },
+      {
+        question: "A Windows Server 2019 domain controller logs repeated Event ID 4625 (failed logon attempts). The source IP is external. What is the most likely cause?",
+        choices: ["User entering incorrect credentials", "Brute force attack", "Network misconfiguration", "Expired user account"],
+        answer: "Brute force attack",
+        explanation: "Repeated Event ID 4625 from an external IP suggests a brute force attack attempting to guess credentials. Enabling account lockout policies and reviewing firewall rules can mitigate the issue."
+      },
+      {
+        question: "A Windows 10 workstation in a corporate environment cannot access a secure website, displaying a 'SSL certificate error.' Other websites work fine. What should you check first?",
+        choices: ["Browser cache", "System date and time", "Antivirus settings", "Proxy server configuration"],
+        answer: "System date and time",
+        explanation: "An incorrect system date or time can cause SSL certificate errors, as certificates rely on valid timestamps. Checking and syncing time with 'w32tm /resync' is the first step."
+      },
+      {
+        question: "A Windows 11 PC experiences slow boot times after enabling BitLocker. Disk usage is normal, but Task Manager shows high CPU usage by 'System' during boot. What is the likely cause?",
+        choices: ["Outdated BIOS", "TPM initialization overhead", "Corrupted system files", "Malware infection"],
+        answer: "TPM initialization overhead",
+        explanation: "BitLocker with TPM can increase boot time due to initialization processes, causing high CPU usage by the System process. Verifying TPM settings or disabling BitLocker temporarily can confirm the issue."
+      },
+      {
+        question: "A Windows Server 2019 Hyper-V host fails to start a virtual machine, with an error indicating 'Insufficient system resources.' Physical resources are adequate. What should you check first?",
+        choices: ["Virtual machine memory settings", "Hyper-V integration services", "Host disk space", "Virtual switch configuration"],
+        answer: "Virtual machine memory settings",
+        explanation: "An 'Insufficient system resources' error in Hyper-V often relates to misconfigured VM memory settings, such as dynamic memory conflicts or over-allocation. Checking VM settings is the first step."
+      },
+      {
+        question: "A user reports that their Windows 10 PC cannot connect to a corporate file share after a password change. The error is 'Access Denied.' What should you verify first?",
+        choices: ["Cached credentials in Credential Manager", "NTFS permissions", "Network adapter settings", "SMB version"],
+        answer: "Cached credentials in Credential Manager",
+        explanation: "A password change can cause 'Access Denied' if Windows uses outdated cached credentials. Checking and updating credentials in Credential Manager (Control Panel) is the first step."
+      },
+      {
+        question: "A Windows 11 workstation fails to boot, displaying a 'DRIVER_IRQL_NOT_LESS_OR_EQUAL' BSOD. The error references 'ndis.sys.' What should you do first?",
+        choices: ["Run 'sfc /scannow'", "Update network drivers", "Reinstall Windows", "Run a malware scan"],
+        answer: "Update network drivers",
+        explanation: "A 'DRIVER_IRQL_NOT_LESS_OR_EQUAL' BSOD involving 'ndis.sys' indicates a network driver issue. Booting into Safe Mode and updating or rolling back the network driver is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system running a web application logs frequent '503 Service Unavailable' errors. Resource usage is normal. What should you investigate first?",
+        choices: ["Application pool settings in IIS", "Firewall configuration", "Disk fragmentation", "Network bandwidth"],
+        answer: "Application pool settings in IIS",
+        explanation: "A '503 Service Unavailable' error in IIS often results from stopped or misconfigured application pools. Checking and restarting the application pool in IIS Manager is the first step."
+      },
+      {
+        question: "A Windows 10 PC in a domain environment cannot access a network share, with an error stating 'The trust relationship between this workstation and the primary domain failed.' What is the first step to resolve this?",
+        choices: ["Rejoin the domain", "Run 'gpupdate /force'", "Reset the computer account password", "Check DNS settings"],
+        answer: "Reset the computer account password",
+        explanation: "The error indicates a broken secure channel between the workstation and domain. Resetting the computer account password with 'nltest /sc_reset' or rejoining the domain can resolve it, with resetting being less disruptive."
+      },
+      {
+        question: "A user reports that their Windows 11 laptop cannot send emails via Outlook, but receiving works fine. The error mentions 'SMTP authentication failure.' What should you check first?",
+        choices: ["SMTP server port settings", "Antivirus email scanning", "User’s email password", "Network firewall rules"],
+        answer: "User’s email password",
+        explanation: "An SMTP authentication failure in Outlook often results from an incorrect or changed password. Verifying the email account password in Outlook settings is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system experiences high memory usage, and Task Manager shows 'Memory Compression' using significant RAM. What should you do to reduce this?",
+        choices: ["Disable SuperFetch", "Increase the paging file size", "Disable memory compression", "Add more physical RAM"],
+        answer: "Add more physical RAM",
+        explanation: "High memory usage by Memory Compression indicates insufficient physical RAM, as Windows compresses memory to free space. Adding more RAM addresses the root cause."
+      },
+      {
+        question: "A Windows 10 workstation fails to install a critical security update, with error code 0x80070005. What is the most likely cause?",
+        choices: ["Corrupted update cache", "Insufficient disk space", "Access denied to system files", "Outdated BIOS"],
+        answer: "Access denied to system files",
+        explanation: "Error 0x80070005 indicates an access denied issue, often due to insufficient permissions for the update process. Running Windows Update as an administrator or checking file permissions is the first step."
+      },
+      {
+        question: "A Windows 11 PC in a corporate environment cannot access a secure file share, and the error indicates 'Kerberos ticket expired.' What should you do first?",
+        choices: ["Restart the PC", "Check system time synchronization", "Rejoin the domain", "Update the network driver"],
+        answer: "Check system time synchronization",
+        explanation: "Kerberos ticket expiration errors are often caused by time drift between the client and domain controller. Verifying time sync with 'w32tm /resync' is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system running a database application logs errors indicating 'Disk I/O timeout.' The server remains operational but slow. What should you check first?",
+        choices: ["RAID controller drivers", "Disk fragmentation", "Network latency", "Antivirus exclusions"],
+        answer: "RAID controller drivers",
+        explanation: "Disk I/O timeout errors on a server with a RAID setup often indicate outdated or faulty RAID controller drivers. Updating the drivers or checking RAID health is the first step."
+      },
+      {
+        question: "A Windows 10 PC fails to boot after a driver update, displaying a 'KMODE_EXCEPTION_NOT_HANDLED' BSOD. What is the first troubleshooting step?",
+        choices: ["Run 'chkdsk /r'", "Boot into Safe Mode and roll back the driver", "Reinstall Windows", "Run a memory test"],
+        answer: "Boot into Safe Mode and roll back the driver",
+        explanation: "A 'KMODE_EXCEPTION_NOT_HANDLED' BSOD after a driver update suggests a driver conflict. Booting into Safe Mode and rolling back the driver via Device Manager is the first step."
+      },
+      {
+        question: "A user reports that their Windows 11 PC cannot connect to a corporate VPN, with an error stating 'IKE authentication credentials are unacceptable.' What should you check first?",
+        choices: ["VPN server certificate", "User’s VPN credentials", "Firewall port settings", "Network adapter MTU settings"],
+        answer: "VPN server certificate",
+        explanation: "An 'IKE authentication credentials are unacceptable' error typically indicates an issue with the VPN server’s certificate (e.g., expired or untrusted). Verifying the certificate is the first step."
+      },
+      {
+        question: "A Windows Server 2019 file server experiences intermittent access issues for clients. Event Viewer logs Event ID 2013, indicating low disk space on the system drive. What should you do first?",
+        choices: ["Run Disk Cleanup", "Increase virtual memory", "Check for large log files", "Defragment the disk"],
+        answer: "Check for large log files",
+        explanation: "Event ID 2013 indicates low disk space, which can cause file share issues. Checking for large log files (e.g., in C:\\Windows\\Logs) with 'dir' or a disk analysis tool is the first step to free space."
+      },
+      {
+        question: "A Windows 10 workstation in a domain environment cannot access a network printer, with an error stating 'Operation could not be completed.' Other printers work fine. What should you check first?",
+        choices: ["Printer driver compatibility", "Spooler service status", "Network firewall settings", "User’s print permissions"],
+        answer: "Spooler service status",
+        explanation: "An 'Operation could not be completed' error often relates to a stopped or crashed Print Spooler service. Checking and restarting the service with 'net stop spooler' and 'net start spooler' is the first step."
+      },
+      {
+        question: "A Windows 11 PC experiences random freezes, and Event Viewer logs errors related to 'WHEA-Logger' with a hardware error. What is the most likely cause?",
+        choices: ["Corrupted system files", "Failing hardware component", "Outdated network driver", "Overheating CPU"],
+        answer: "Failing hardware component",
+        explanation: "WHEA-Logger errors indicate hardware issues, such as a failing CPU, RAM, or motherboard. Running diagnostics with tools like Windows Memory Diagnostic or checking hardware health is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system hosting a web application fails to start the application after a reboot. Event Viewer logs an error related to 'HTTP.sys.' What should you check first?",
+        choices: ["IIS application pool settings", "Windows Firewall rules", "HTTP service bindings", "Network adapter settings"],
+        answer: "HTTP service bindings",
+        explanation: "An error related to 'HTTP.sys' often indicates a port conflict or misconfigured HTTP bindings. Checking bindings with 'netsh http show urlacl' is the first step to resolve the issue."
+      },
+      {
+        question: "A Windows 10 PC in a small office cannot join a domain, with an error stating 'The specified domain either does not exist or could not be contacted.' What should you verify first?",
+        choices: ["DNS server settings", "Network cable connection", "Domain controller firewall", "User account permissions"],
+        answer: "DNS server settings",
+        explanation: "The error indicates a failure to locate the domain controller, often due to incorrect DNS settings. Verifying the DNS server IP in 'ipconfig /all' or setting it to the domain controller’s IP is the first step."
+      },
+      {
+        question: "A user reports that their Windows 11 PC cannot open a specific application, with an error stating 'The code execution cannot proceed because VCRUNTIME140.dll was not found.' What should you do first?",
+        choices: ["Reinstall the application", "Run 'sfc /scannow'", "Install Microsoft Visual C++ Redistributable", "Update Windows"],
+        answer: "Install Microsoft Visual C++ Redistributable",
+        explanation: "The 'VCRUNTIME140.dll' error indicates a missing or corrupted Microsoft Visual C++ Redistributable. Installing the latest version from Microsoft’s website is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system experiences slow performance during backups. Task Manager shows high CPU usage by 'Windows Backup.' What should you adjust first?",
+        choices: ["Backup schedule", "CPU affinity for the backup process", "Backup compression settings", "Disk I/O priority"],
+        answer: "Backup compression settings",
+        explanation: "High CPU usage during backups often results from compression. Adjusting or disabling compression settings in the backup software can reduce CPU load and improve performance."
+      },
+      {
+        question: "A Windows 10 workstation fails to boot after a recent driver update, displaying a 'VIDEO_TDR_FAILURE' BSOD. What is the first troubleshooting step?",
+        choices: ["Run 'chkdsk /r'", "Boot into Safe Mode and update graphics drivers", "Reinstall Windows", "Run a memory test"],
+        answer: "Boot into Safe Mode and update graphics drivers",
+        explanation: "A 'VIDEO_TDR_FAILURE' BSOD indicates a graphics driver timeout issue. Booting into Safe Mode and updating or rolling back the graphics driver via Device Manager is the first step."
+      },
+      {
+        question: "A Windows 11 PC in a corporate environment cannot access a secure website, with an error stating 'NET::ERR_CERT_AUTHORITY_INVALID.' What should you check first?",
+        choices: ["Browser cache", "System proxy settings", "Trusted root certificate store", "Firewall rules"],
+        answer: "Trusted root certificate store",
+        explanation: "The 'NET::ERR_CERT_AUTHORITY_INVALID' error indicates an untrusted certificate authority. Checking the trusted root certificate store via 'certmgr.msc' to ensure the site’s CA is included is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system logs repeated Event ID 10016 (DistributedCOM errors). Applications are functioning normally. What should you do first?",
+        choices: ["Ignore the errors", "Modify registry permissions", "Run 'sfc /scannow'", "Update Windows"],
+        answer: "Ignore the errors",
+        explanation: "Event ID 10016 (DistributedCOM) errors are often benign if applications function normally, resulting from permission mismatches. Ignoring them is appropriate unless related issues arise."
+      },
+      {
+        question: "A Windows 10 laptop cannot connect to a corporate Wi-Fi network, with an error stating 'Can’t connect to this network.' Other devices connect fine. What should you check first?",
+        choices: ["Wi-Fi driver version", "Network profile settings", "Wireless adapter power settings", "SSID broadcast status"],
+        answer: "Wi-Fi driver version",
+        explanation: "A 'Can’t connect to this network' error on one device suggests a driver issue. Checking and updating the Wi-Fi driver via Device Manager is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system running a database logs errors indicating 'Transaction log full.' What should you do first to resolve this?",
+        choices: ["Increase disk space", "Truncate the transaction log", "Restart the database service", "Run a full backup"],
+        answer: "Run a full backup",
+        explanation: "A 'Transaction log full' error indicates the log cannot grow due to uncommitted transactions. Running a full backup allows the log to be truncated, freeing space without data loss."
+      },
+      {
+        question: "A Windows 11 PC experiences intermittent network disconnections. Event Viewer logs errors related to 'e1dexpress' (Intel NIC driver). What is the first step?",
+        choices: ["Replace the network cable", "Update the NIC driver", "Reset the TCP/IP stack", "Disable power management for the NIC"],
+        answer: "Update the NIC driver",
+        explanation: "Errors related to 'e1dexpress' indicate an issue with the Intel NIC driver. Updating the driver from the manufacturer’s website or rolling it back in Device Manager is the first step."
+      },
+      {
+        question: "A Windows 10 workstation in a domain environment cannot access a shared folder, with an error stating 'The specified network name is no longer available.' What should you check first?",
+        choices: ["Server’s SMB service status", "Client’s firewall settings", "DNS resolution", "Network adapter settings"],
+        answer: "Server’s SMB service status",
+        explanation: "The error 'The specified network name is no longer available' often indicates the server’s SMB service is stopped or crashed. Checking the service with 'sc query lanmanserver' on the server is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system experiences slow application performance. Performance Monitor shows high disk queue length but normal CPU usage. What should you do first?",
+        choices: ["Add more RAM", "Check disk health with SMART data", "Defragment the disk", "Update disk drivers"],
+        answer: "Check disk health with SMART data",
+        explanation: "High disk queue length indicates disk performance issues, possibly due to a failing drive. Checking SMART data with a tool like CrystalDiskInfo is the first step to diagnose disk health."
+      },
+      {
+        question: "A Windows 11 PC fails to boot after a recent update, displaying a 'BAD_SYSTEM_CONFIG_INFO' BSOD. What is the first troubleshooting step?",
+        choices: ["Run 'sfc /scannow'", "Boot into Safe Mode and check registry backups", "Reinstall Windows", "Run 'chkdsk /r'"],
+        answer: "Boot into Safe Mode and check registry backups",
+        explanation: "A 'BAD_SYSTEM_CONFIG_INFO' BSOD indicates corrupted registry or configuration data. Booting into Safe Mode and restoring a registry backup via 'reg back' in the Recovery Environment is the first step."
+      },
+      {
+        question: "A Windows Server 2019 system running Active Directory logs Event ID 2887, indicating unsecure LDAP binds. What should you do to secure the system?",
+        choices: ["Enable LDAP signing", "Disable the LDAP service", "Update the domain controller", "Change the LDAP port"],
+        answer: "Enable LDAP signing",
+        explanation: "Event ID 2887 indicates unsecure LDAP binds, which can be exploited. Enabling LDAP signing via Group Policy (Domain Controller Security Policy) enforces secure authentication."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function highlightTier(button) {
+      document.querySelectorAll('.tier-button').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    }
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+    let incorrectAnswers = 0;
+    let missedQuestions = [];
+    const questionElement = document.getElementById("question");
+    const choicesElement = document.getElementById("choices");
+    const feedbackElement = document.getElementById("feedback");
+    const scoreElement = document.getElementById("score");
+    const missedQuestionsElement = document.getElementById("missed-questions");
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      questionElement.textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+      feedbackElement.textContent = "";
+      scoreElement.textContent = "";
+      missedQuestionsElement.innerHTML = "";
+      choicesElement.innerHTML = "";
+
+      const shuffledChoices = [...q.choices];
+      shuffle(shuffledChoices);
+
+      shuffledChoices.forEach(choice => {
+        const div = document.createElement("div");
+        div.textContent = choice;
+        div.classList.add("choice");
+        div.onclick = () => handleAnswer(choice);
+        choicesElement.appendChild(div);
+      });
+    }
+
+    function handleAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        correctAnswers++;
+        feedbackElement.textContent = "✅ Correct!";
+      } else {
+        incorrectAnswers++;
+        feedbackElement.textContent = `❌ Incorrect. Correct: ${correct}`;
+        missedQuestions.push({
+          question: questions[currentQuestion].question,
+          selected: selected,
+          correct: correct,
+          explanation: questions[currentQuestion].explanation
+        });
+      }
+
+      const choiceDivs = document.querySelectorAll(".choice");
+      choiceDivs.forEach(div => {
+        div.classList.add("disabled");
+        div.onclick = null;
+        if (div.textContent === correct) div.style.borderColor = "#00FF00";
+        else if (div.textContent === selected) div.style.borderColor = "red";
+      });
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) showQuestion();
+        else {
+          questionElement.textContent = "";
+          choicesElement.innerHTML = "";
+          feedbackElement.textContent = "";
+          scoreElement.textContent = `You got ${correctAnswers} correct and ${incorrectAnswers} wrong out of ${questions.length} possible points`;
+          
+          if (missedQuestions.length > 0) {
+            missedQuestionsElement.innerHTML = "<h2>Missed Questions</h2>";
+            missedQuestions.forEach((missed, index) => {
+              const div = document.createElement("div");
+              div.classList.add("missed-question");
+              div.innerHTML = `
+                <h3>Question ${index + 1}: ${missed.question}</h3>
+                <p><strong>Your Answer:</strong> ${missed.selected}</p>
+                <p><strong>Correct Answer:</strong> ${missed.correct}</p>
+                <p><strong>Explanation:</strong> ${missed.explanation}</p>
+              `;
+              missedQuestionsElement.appendChild(div);
+            });
+          }
+        }
+      }, 5000);
+    }
+
+    shuffle(questions);
+    showQuestion();
+  </script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>File Systems</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 800px;
+      text-align: left;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      margin-top: 4rem;
+    }
+
+    h1, h2 {
+      color: #00FF00;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      border-bottom: 1px solid #00FF00;
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th, td {
+      border: 1px solid #00FF00;
+      padding: 10px;
+      text-align: left;
+      color: #00FF00;
+    }
+
+    th {
+      background-color: #004400;
+    }
+
+    td {
+      background-color: #1a1a1a;
+    }
+
+    .file-system-link {
+      color: #00FF00;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .file-system-link:hover {
+      color: black;
+      background-color: #00FF00;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #1a1a1a;
+      border: 2px solid #00FF00;
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 10000;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .popup h3 {
+      color: #00FF00;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.2rem 0.5rem;
+      font-family: 'Courier New', monospace;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .close-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 0.5rem; }
+      .content { max-width: 95%; margin-top: 3rem; }
+      .back-button { font-size: clamp(0.9rem, 2.5vw, 1rem); padding: 0.4rem 0.8rem; }
+      .popup { width: 95%; font-size: clamp(0.8rem, 2.5vw, 0.9rem); }
+    }
+  </style>
+</head>
+<body>
+  <a href="aplus2.html" class="back-button">← Back</a>
+
+  <div class="content">
+    <h1>File Systems</h1>
+    <p>Critical to know</p>
+
+    <h2>Select a Filing System for more information</h2>
+    <table>
+      <tr>
+        <th>File System</th>
+        <th>Full Name</th>
+        <th>File Size Limit</th>
+        <th>Volume Size Limit</th>
+        <th>Primary Use</th>
+        <th>Compatibility</th>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('fat')">FAT</span></td>
+        <td>File Allocation Table</td>
+        <td>2GB</td>
+        <td>2GB</td>
+        <td>Floppy disks, old systems</td>
+        <td>Windows, Linux, macOS</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('fat32')">FAT32</span></td>
+        <td>File Allocation Table 32</td>
+        <td>4GB</td>
+        <td>2TB</td>
+        <td>USB drives, SD cards</td>
+        <td>Windows, Linux, macOS</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('exfat')">ExFAT</span></td>
+        <td>Extended File Allocation Table</td>
+        <td>128PB</td>
+        <td>128PB</td>
+        <td>Flash drives, cross-platform</td>
+        <td>Windows, macOS, Linux (with support)</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('ntfs')">NTFS</span></td>
+        <td>New Technology File System</td>
+        <td>16EB</td>
+        <td>16EB</td>
+        <td>Windows systems, external drives</td>
+        <td>Windows, Linux (read/write with support), macOS (read-only)</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('nfs')">NFS</span></td>
+        <td>Network File System</td>
+        <td>Depends on server</td>
+        <td>Depends on server</td>
+        <td>Networked file sharing</td>
+        <td>Unix/Linux, some Windows</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('apfs')">APFS</span></td>
+        <td>Apple File System</td>
+        <td>8EB</td>
+        <td>8EB</td>
+        <td>macOS, iOS devices</td>
+        <td>macOS, iOS</td>
+      </tr>
+      <tr>
+        <td><span class="file-system-link" onclick="showPopup('ext4')">ext4</span></td>
+        <td>Fourth Extended File System</td>
+        <td>16TB</td>
+        <td>1EB</td>
+        <td>Linux systems</td>
+        <td>Linux, Windows (with third-party tools)</td>
+      </tr>
+    </table>
+
+    <h2>Critical Exam Tips</h2>
+    <ul>
+      <li>Compare file systems based on file size, volume size, compatibility, and features like encryption or journaling.</li>
+      <li>Know which file systems are best for specific devices (example: FAT32 for USB drives, NTFS for Windows, APFS for macOS).</li>
+      <li>Understand limitations of older systems like FAT/FAT32 and advantages of modern systems like NTFS and APFS.</li>
+      <li>Be familiar with NFS as a network-based solution, not a local storage system.</li>
+    </ul>
+
+    <!-- Pop-up content -->
+    <div id="fat" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>FAT (File Allocation Table)</h3>
+      <ul>
+        <li><strong>Description</strong>: An older file system used primarily for floppy disks and early storage devices.</li>
+        <li><strong>Limitations</strong>: Limited file and volume size (2GB), no support for permissions or encryption.</li>
+        <li><strong>Use Case</strong>: Rarely used today; mostly for legacy systems or small storage devices.</li>
+        <li><strong>Exam Note</strong>: Understand FAT as an obsolete system with poor security and size limitations.</li>
+      </ul>
+    </div>
+
+    <div id="fat32" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>FAT32 (File Allocation Table 32)</h3>
+      <ul>
+        <li><strong>Description</strong>: An evolution of FAT, widely used for USB drives and SD cards due to broad compatibility.</li>
+        <li><strong>File Size Limit</strong>: 4GB per file.</li>
+        <li><strong>Volume Size Limit</strong>: 2TB (though practical limits may be lower depending on the OS).</li>
+        <li><strong>Features</strong>: No built-in encryption or permissions, simple structure.</li>
+        <li><strong>Use Case</strong>: Small devices like USB drives, cameras, and gaming consoles.</li>
+        <li><strong>Compatibility</strong>: Works with Windows, macOS, Linux, and most consumer electronics.</li>
+        <li><strong>Exam Note</strong>: Know FAT32’s limitations for large files and its widespread use in removable media.</li>
+      </ul>
+    </div>
+
+    <div id="exfat" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>ExFAT (Extended File Allocation Table)</h3>
+      <ul>
+        <li><strong>Description</strong>: Designed for flash drives, supporting large files and volumes.</li>
+        <li><strong>File Size Limit</strong>: 128 petabytes.</li>
+        <li><strong>Volume Size Limit</strong>: 128 petabytes.</li>
+        <li><strong>Features</strong>: Lightweight, no journaling, minimal overhead.</li>
+        <li><strong>Use Case</strong>: Cross-platform storage for large media files (example: 4K videos).</li>
+        <li><strong>Compatibility</strong>: Windows, macOS, Linux (with additional drivers).</li>
+        <li><strong>Exam Note</strong>: Understand ExFAT as a solution for large files on removable media.</li>
+      </ul>
+    </div>
+
+    <div id="ntfs" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>NTFS (New Technology File System)</h3>
+      <ul>
+        <li><strong>Description</strong>: Default file system for modern Windows OS, supporting advanced features.</li>
+        <li><strong>File Size Limit</strong>: 16 exabytes.</li>
+        <li><strong>Volume Size Limit</strong>: 16 exabytes.</li>
+        <li><strong>Features</strong>:
+          <ul>
+            <li>Journaling for data recovery.</li>
+            <li>BitLocker encryption support.</li>
+            <li>File-level permissions and access control lists (ACLs).</li>
+            <li>Compression and sparse file support.</li>
+          </ul>
+        </li>
+        <li><strong>Use Case</strong>: Windows internal drives, external hard drives requiring security.</li>
+        <li><strong>Compatibility</strong>: Full support on Windows; macOS has read-only support; Linux requires third-party tools for full read/write.</li>
+        <li><strong>Exam Note</strong>: Know NTFS’s advanced features and its role as Windows’ primary file system.</li>
+      </ul>
+    </div>
+
+    <div id="nfs" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>NFS (Network File System)</h3>
+      <ul>
+        <li><strong>Description</strong>: A protocol for accessing files over a network, primarily used in Unix/Linux environments.</li>
+        <li><strong>Limitations</strong>: File and volume limits depend on the server’s file system.</li>
+        <li><strong>Features</strong>: Allows remote file access as if local, supports distributed systems.</li>
+        <li><strong>Use Case</strong>: Enterprise environments for sharing files across networks.</li>
+        <li><strong>Compatibility</strong>: Primarily Unix/Linux; limited Windows support via specific configurations.</li>
+        <li><strong>Exam Note</strong>: Understand NFS as a network-based file system, not a local storage system.</li>
+      </ul>
+    </div>
+
+    <div id="apfs" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>APFS (Apple File System)</h3>
+      <ul>
+        <li><strong>Description</strong>: Modern file system for macOS, iOS, and other Apple devices, optimized for SSDs.</li>
+        <li><strong>File Size Limit</strong>: 8 exabytes.</li>
+        <li><strong>Volume Size Limit</strong>: 8 exabytes.</li>
+        <li><strong>Features</strong>:
+          <ul>
+            <li>Copy-on-Write mechanism for efficient storage management.</li>
+            <li>Built-in encryption for security.</li>
+            <li>Automatic disk defragmentation to prevent fragmentation.</li>
+            <li>Fast snapshots for backups and versioning.</li>
+            <li>Improved performance on SSDs.</li>
+          </ul>
+        </li>
+        <li><strong>Use Case</strong>: macOS High Sierra and later, iOS devices, Apple Watch.</li>
+        <li><strong>Compatibility</strong>: Exclusive to Apple ecosystems; no native support on Windows or Linux.</li>
+        <li><strong>Exam Note</strong>: Know APFS’s advanced features and its exclusivity to Apple devices.</li>
+      </ul>
+    </div>
+
+    <div id="ext4" class="popup">
+      <button class="close-button" onclick="closePopup()">X</button>
+      <h3>ext4 (Fourth Extended File System)</h3>
+      <ul>
+        <li><strong>Description</strong>: Default file system for most Linux distributions.</li>
+        <li><strong>File Size Limit</strong>: 16TB.</li>
+        <li><strong>Volume Size Limit</strong>: 1 exabyte.</li>
+        <li><strong>Features</strong>:
+          <ul>
+            <li>Journaling for crash recovery.</li>
+            <li>Supports large file systems and files.</li>
+            <li>Extents for efficient storage allocation.</li>
+            <li>Backward compatible with ext2/ext3.</li>
+          </ul>
+        </li>
+        <li><strong>Use Case</strong>: Linux servers, desktops, and embedded systems.</li>
+        <li><strong>Compatibility</strong>: Native on Linux; Windows requires third-party tools for read/write.</li>
+        <li><strong>Exam Note</strong>: Understand ext4 as the standard Linux file system for A+.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function showPopup(id) {
+      closePopup();
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function closePopup() {
+      document.querySelectorAll('.popup').forEach(popup => {
+        popup.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>

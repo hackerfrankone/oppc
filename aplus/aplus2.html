@@ -41,7 +41,7 @@
       flex-direction: column;
       gap: 0.5rem;
     }
-    .back-button, .tier-button, .pbq-button, .acronyms-button {
+    .back-button, .tier-button, .pbq-button, .acronyms-button, .filesystems-button {
       background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
@@ -55,7 +55,7 @@
       width: fit-content;
       -webkit-tap-highlight-color: transparent;
     }
-    .back-button:hover, .tier-button:hover, .pbq-button:hover, .acronyms-button:hover {
+    .back-button:hover, .tier-button:hover, .pbq-button:hover, .acronyms-button:hover, .filesystems-button:hover {
       background-color: #00FF00;
       color: black;
     }
@@ -77,15 +77,15 @@
     @media (max-width: 600px) {
       body { padding: 0.5rem; }
       .page-content { max-width: 95%; }
-      .back-button, .tier-button, .pbq-button, .acronyms-button {
+      .back-button, .tier-button, .pbq-button, .acronyms-button, .filesystems-button {
         font-size: clamp(0.8rem, 2vw, 0.9rem);
         padding: 0.4rem 0.8rem;
       }
       .top-buttons {
-        flex-direction: row; /* Keep back, tier, and PBQ buttons horizontal */
+        flex-direction: row;
       }
       .misc-buttons {
-        flex-direction: column; /* Keep misc buttons vertical */
+        flex-direction: column;
       }
     }
   </style>
@@ -101,6 +101,7 @@
     </div>
     <div class="misc-buttons">
       <a href="acronyms2.html" class="acronyms-button">Acronyms</a>
+      <a href="filingsystem.html" class="filesystems-button">File Systems</a>
     </div>
   </div>
 

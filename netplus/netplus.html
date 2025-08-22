@@ -7,10 +7,7 @@
   <title>CompTIA Network+</title>
   <link rel="icon" type="image/png" href="../images/oppcus.png" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -24,7 +21,6 @@
       align-items: center;
       padding: 0.5rem;
     }
-
     .button-container {
       position: fixed;
       top: 0.5rem;
@@ -35,28 +31,17 @@
       gap: 0.5rem;
       z-index: 9999;
     }
-
     .top-buttons {
       display: flex;
       flex-direction: row;
       gap: 0.5rem;
     }
-
-    .bottom-buttons {
+    .misc-buttons {
       display: flex;
       flex-direction: column;
-      gap: 0;
+      gap: 0.5rem;
     }
-
-    .back-button,
-    .pbq-button,
-    .acronyms-button,
-    .topology-button,
-    .osi-button,
-    .cables-button,
-    .tier1-button,
-    .tier2-button,
-    .tier3-button {
+    .back-button, .tier-button, .pbq-button, .acronyms-button, .topology-button, .osi-button, .cables-button {
       background: transparent;
       color: #00FF00;
       border: 2px solid #00FF00;
@@ -67,33 +52,21 @@
       cursor: pointer;
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
-      margin: 0;
       width: fit-content;
       -webkit-tap-highlight-color: transparent;
     }
-
-    .back-button:hover,
-    .pbq-button:hover,
-    .acronyms-button:hover,
-    .topology-button:hover,
-    .osi-button:hover,
-    .cables-button:hover,
-    .tier1-button:hover,
-    .tier2-button:hover,
-    .tier3-button:hover {
+    .back-button:hover, .tier-button:hover, .pbq-button:hover, .acronyms-button:hover, .topology-button:hover, .osi-button:hover, .cables-button:hover {
       background-color: #00FF00;
       color: black;
     }
-
     .selected {
       background-color: #00FF00;
       color: black;
     }
-
-    .quiz-content {
+    .page-content {
       width: 100%;
       max-width: 600px;
-      text-align: left;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -101,44 +74,22 @@
       min-height: 100vh;
       padding: 1rem;
     }
-
-    .welcome-message {
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
-      line-height: 1.4;
-      text-align: center;
-      max-width: 500px;
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      margin-bottom: 1rem;
     }
-
     @media (max-width: 600px) {
-      body {
-        padding: 0.5rem;
-      }
-
-      .quiz-content {
-        max-width: 95%;
-        padding: 0.5rem;
-      }
-
-      .welcome-message {
-        font-size: clamp(0.9rem, 3vw, 1rem);
-      }
-
-      .button-container {
-        top: 0.3rem;
-        left: 0.3rem;
-      }
-
-      .back-button,
-      .pbq-button,
-      .acronyms-button,
-      .topology-button,
-      .osi-button,
-      .cables-button,
-      .tier1-button,
-      .tier2-button,
-      .tier3-button {
+      body { padding: 0.5rem; }
+      .page-content { max-width: 95%; }
+      .back-button, .tier-button, .pbq-button, .acronyms-button, .topology-button, .osi-button, .cables-button {
         font-size: clamp(0.8rem, 2vw, 0.9rem);
         padding: 0.4rem 0.8rem;
+      }
+      .top-buttons {
+        flex-direction: row; /* Keep back, tier, and PBQ buttons horizontal */
+      }
+      .misc-buttons {
+        flex-direction: column; /* Keep misc buttons vertical */
       }
     }
   </style>
@@ -147,12 +98,12 @@
   <div class="button-container">
     <div class="top-buttons">
       <a href="../index.html" class="back-button">← Back</a>
-      <a href="tier-1.html" class="tier1-button">Tier 1 Qs</a>
-      <a href="tier-2.html" class="tier2-button">Tier 2 Qs</a>
-      <a href="tier-3.html" class="tier3-button">Tier 3 Qs</a>
+      <a href="tier-1.html" class="tier-button">Tier 1 Qs</a>
+      <a href="tier-2.html" class="tier-button">Tier 2 Qs</a>
+      <a href="tier-3.html" class="tier-button">Tier 3 Qs</a>
       <a href="pbq.html" class="pbq-button">PBQ</a>
     </div>
-    <div class="bottom-buttons">
+    <div class="misc-buttons">
       <a href="acronyms.html" class="acronyms-button">Acronyms</a>
       <a href="topology.html" class="cables-button">Network Topologies</a>
       <a href="cables.html" class="topology-button">Cables</a>
@@ -160,17 +111,15 @@
     </div>
   </div>
 
-  <div class="quiz-content">
-    <div class="welcome-message">
-      Welcome to the CompTIA Network+ N10-009 
-    </div>
+  <div class="page-content">
+    <h1>Welcome to the CompTIA Network+ N10-009</h1>
   </div>
 
   <script>
     // Function to apply highlight to the selected tier button
     function highlightTierButton(buttonClass) {
       // Remove 'selected' class from all tier buttons
-      document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {
+      document.querySelectorAll('.tier-button').forEach(button => {
         button.classList.remove('selected');
       });
       // Add 'selected' class to the clicked button
@@ -181,7 +130,7 @@
     }
 
     // Add click event listeners to tier buttons
-    document.querySelectorAll('.tier1-button, .tier2-button, .tier3-button').forEach(button => {
+    document.querySelectorAll('.tier-button').forEach(button => {
       button.addEventListener('click', (e) => {
         const buttonClass = e.target.classList[0]; // Get the first class (e.g., tier1-button)
         highlightTierButton(buttonClass); // Update highlight immediately

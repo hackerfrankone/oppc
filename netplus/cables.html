@@ -127,6 +127,20 @@
     font-weight: bold;
     border-radius: 3px;
   }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+  }
+  th, td {
+    border: 1px solid #00ff00;
+    padding: 5px;
+    text-align: left;
+  }
+  th {
+    background-color: #1a1a1a;
+    font-weight: bold;
+  }
   @media (max-width: 600px) {
     .item {
       min-height: 300px;
@@ -190,14 +204,31 @@
 <div class="grid">
 
   <div class="item">
-    <img src="../images/wireless.png" alt="802.11 Standards" onclick="toggleDetails(this)">
+    <table>
+      <tr><th>Standard</th><th>Speed</th><th>Band</th></tr>
+      <tr><td>a</td><td>54 Mb/s</td><td>5 GHz</td></tr>
+      <tr><td>b</td><td>11 Mb/s</td><td>2.4 GHz</td></tr>
+      <tr><td>g</td><td>54 Mb/s</td><td>2.4 GHz</td></tr>
+      <tr><td>n</td><td>600 Mb/s</td><td>2.4/5 GHz</td></tr>
+      <tr><td>ac (Wi-Fi 5)</td><td>6.93 Gb/s</td><td>5 GHz</td></tr>
+      <tr><td>ax (Wi-Fi 6)</td><td>9.6 Gb/s</td><td>2.4/5/6 GHz</td></tr>
+      <tr><td>be (Wi-Fi 7)</td><td>46 Gb/s</td><td>2.4/5/6 GHz</td></tr>
+    </table>
     <h2>802.11 Standards</h2>
     <p>Wireless LAN standards (Wi-Fi). Includes 802.11a/b/g/n/ac/ax/be. Speeds range from 11 Mbps (802.11b) to 9.6 Gbps (802.11ax/Wi-Fi 6). Operates in 2.4, 5, and 6 GHz bands.</p>
     <div class="details">The 802.11 family defines WLAN protocols. 802.11a: 5 GHz, 54 Mbps; 802.11b: 2.4 GHz, 11 Mbps; 802.11g: 2.4 GHz, 54 Mbps; 802.11n: 2.4/5 GHz, 600 Mbps with MIMO; 802.11ac (Wi-Fi 5): 5 GHz, up to 3.5 Gbps with MU-MIMO; 802.11ax (Wi-Fi 6): 2.4/5/6 GHz, up to 9.6 Gbps, OFDMA, better efficiency; 802.11be (Wi-Fi 7): up to 46 Gbps, 320 MHz channels. Security evolves from WEP to WPA3. Channel widths: 20/40/80/160 MHz. Beamforming and mesh support in later standards.</div>
   </div>
   
   <div class="item">
-    <img src="../images/wireless.png" alt="802.3 Standards" onclick="toggleDetails(this)">
+    <table>
+      <tr><th>Standard</th><th>Speed</th><th>Media</th></tr>
+      <tr><td>u (Fast Ethernet)</td><td>100 Mb/s</td><td>Cat5</td></tr>
+      <tr><td>ab (Gigabit Ethernet)</td><td>1 Gb/s</td><td>Cat5e</td></tr>
+      <tr><td>an (10GBASE-T)</td><td>10 Gb/s</td><td>Cat6a</td></tr>
+      <tr><td>ae (10G over Fiber)</td><td>10 Gb/s</td><td>Fiber</td></tr>
+      <tr><td>ba (40/100G)</td><td>40/100 Gb/s</td><td>Fiber</td></tr>
+      <tr><td>bs (200/400G)</td><td>200/400 Gb/s</td><td>Fiber</td></tr>
+    </table>
     <h2>802.3 Standards</h2>
     <p>Ethernet standards for wired LANs. Includes Fast Ethernet (100 Mbps), Gigabit Ethernet (1 Gbps), and 10/40/100 Gbps variants. Uses twisted pair or fiber cables.</p>
     <div class="details">IEEE 802.3 defines Ethernet. Key amendments: 802.3u (Fast Ethernet, 100 Mbps over Cat5); 802.3ab (Gigabit Ethernet, 1000BASE-T over Cat5e); 802.3an (10GBASE-T over Cat6a); 802.3ae (10G over fiber); 802.3ba (40/100G); 802.3bs (200/400G). PoE: 802.3af (15W), 802.3at (30W), 802.3bt (90W). Topologies: star, with switches. CSMA/CD legacy, now full-duplex. Auto-negotiation for speed/duplex. VLANs via 802.1Q.</div>

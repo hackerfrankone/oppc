@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; frame-ancestors 'none';">
+  <title>Critical to Know - CompTIA A+ Core 1</title>
+  <link rel="icon" type="image/png" href="../images/oppcus.png" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      color: #00FF00;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: transparent;
+      color: #00FF00;
+      border: 2px solid #00FF00;
+      padding: 0.5rem 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-button:hover {
+      background-color: #00FF00;
+      color: black;
+    }
+
+    .ports-content {
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      padding: 1rem;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      background: black;
+      max-height: 80vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #00FF00 transparent;
+    }
+
+    .ports-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .ports-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .ports-content::-webkit-scrollbar-thumb {
+      background: #00FF00;
+      border-radius: 3px;
+    }
+
+    .ports-content h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+      margin-bottom: 1rem;
+    }
+
+    .ports-content p {
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .ports-content ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .ports-content li {
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .ports-content strong {
+      color: #00FF00;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .ports-content {
+        max-width: 95%;
+        font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+      }
+
+      .back-button {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="aplus1.html" class="back-button">← Back</a>
+
+  <div class="ports-content">
+    <h2>Critical to Know</h2>
+    <ul>
+      <li><strong>20/21 (FTP):</strong> File Transfer Protocol. Port 20 for data transfer, 21 for control. Used for transferring files between systems, but unencrypted.</li>
+      <li><strong>22 (SSH):</strong> Secure Shell. Provides secure remote access to systems over an encrypted connection, often used for managing network devices.</li>
+      <li><strong>23 (Telnet):</strong> Unencrypted remote access protocol. Used for terminal access to devices, but largely replaced by SSH due to security concerns.</li>
+      <li><strong>25 (SMTP):</strong> Simple Mail Transfer Protocol. Used for sending emails from a client to a server or between servers.</li>
+      <li><strong>53 (DNS):</strong> Domain Name System. Resolves domain names to IP addresses, essential for internet and network navigation.</li>
+      <li><strong>80 (HTTP):</strong> Hypertext Transfer Protocol. Used for unencrypted web traffic to access websites.</li>
+      <li><strong>110 (POP3):</strong> Post Office Protocol v3. Retrieves emails from a server, commonly used in email clients.</li>
+      <li><strong>143 (IMAP):</strong> Internet Message Access Protocol. Manages and retrieves emails on a server, supporting folder synchronization.</li>
+      <li><strong>443 (HTTPS):</strong> HTTP Secure. Encrypted web traffic using SSL/TLS, standard for secure websites.</li>
+      <li><strong>3389 (RDP):</strong> Remote Desktop Protocol. Enables remote desktop connections to Windows systems for remote management.</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -215,7 +215,7 @@
   <h1>OPPCUS</h1>
 
   <div class="upgrade-message" id="oneTimeMessage">
-   *Lifetime access to all current & future content — just $1.99 | No subscriptions | NO BS
+    *Lifetime access to all current & future content — just $1.99 | No subscriptions | NO BS
   </div>
 
   <!-- PayPal Button -->
@@ -328,12 +328,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('terminalButton').style.opacity = '1';
       document.getElementById('terminalButton').style.pointerEvents = 'auto';
       document.getElementById('paypalContainer').style.display = 'none';
-      document.getElementById('noSignUpMessage').style.display = 'none';
       document.getElementById('oneTimeMessage').style.display = 'none';
-      document.querySelector('.details-message').style.display = 'none';
-      if (!localStorage.getItem('cacheAcknowledged')) {
-        document.getElementById('cachePopup').style.display = 'block';
-      }
     }
   } catch (err) {
     console.error('Unlock error:', err);

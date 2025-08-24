@@ -19,12 +19,12 @@
       color: #00FF00;
       font-family: monospace;
       text-align: center;
-      padding: 30px;
+      padding: 60px 30px; /* Increased top padding to push content down */
       margin: 0;
     }
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 20px;
+      margin-bottom: 30px; /* Slightly increased for spacing */
     }
     .highlight-message,
     .confidence-message,
@@ -34,11 +34,11 @@
       color: #66ff66;
       font-style: italic;
       opacity: 0.8;
-      margin-bottom: 10px;
+      margin-bottom: 15px; /* Increased for more spacing */
       background-color: #000;
     }
     .cert-group {
-      margin-bottom: 20px;
+      margin-bottom: 30px; /* Increased to spread out sections */
       background-color: #000;
     }
     .cert-icon {
@@ -60,18 +60,23 @@
       box-shadow: 0 0 10px #00FF00;
     }
     #other-certs {
-      margin-top: 30px;
+      margin-top: 40px; /* Increased to create larger gap from CompTIA */
       background-color: #000;
     }
+    .lpi-cisco-group {
+      margin-bottom: 20px; /* Increased to separate from CTF */
+      background-color: #000;
+    }
+    .ctf-icon {
+      margin-top: 60px; /* Increased significantly to push CTF down and avoid LPI hover-box overlap */
+    }
     .footer-buttons {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
       gap: 30px;
-      align-items: flex-start;
-      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      margin-top: 80px; /* Increased to push footer down */
+      flex-wrap: wrap;
       background-color: #000;
     }
     .circle-button {
@@ -96,20 +101,19 @@
       box-shadow: 0 0 20px #00FF00;
     }
     .privacy-link {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
+      display: block;
+      margin: 40px auto; /* Increased margin to push down */
       color: #00FF00;
       font-weight: bold;
       font-size: 0.85rem;
       text-decoration: none;
-      z-index: 9999;
       background-color: #000;
       padding: 10px;
       border: 2px solid #00FF00;
       border-radius: 5px;
       box-shadow: 0 0 12px #00FF00;
       transition: transform 0.2s, box-shadow 0.3s;
+      width: fit-content;
     }
     .privacy-link:hover {
       transform: scale(1.05);
@@ -133,15 +137,15 @@
       z-index: 10001;
       white-space: nowrap;
       min-width: 150px;
-      margin-top: 0;
-      pointer-events: auto;
+      margin-top: -5px;
     }
     .hover-box a {
       color: #00FF00;
       text-decoration: none;
+      cursor: default;
     }
     .hover-box a:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
     .cert-icon:hover .hover-box,
     .hover-box:hover {
@@ -167,7 +171,7 @@
       justify-items: center;
       align-content: start;
       gap: 0.5rem;
-      margin-top: 0px;
+      margin-top: 20px; /* Added to space below upgrade-message */
       background-color: #000;
     }
     #paypalContainer img {
@@ -208,6 +212,34 @@
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .cert-icon {
+        margin: 10px;
+      }
+      .circle-button {
+        width: 80px;
+        height: 80px;
+        font-size: 0.75rem;
+      }
+      .cert-group {
+        margin-bottom: 20px; /* Slightly reduced for mobile */
+      }
+      #other-certs {
+        margin-top: 30px; /* Slightly reduced for mobile */
+      }
+      .lpi-cisco-group {
+        margin-bottom: 15px; /* Slightly reduced for mobile */
+      }
+      .ctf-icon {
+        margin-top: 50px; /* Slightly reduced for mobile but still avoids overlap */
+      }
+      .footer-buttons {
+        margin-top: 60px; /* Slightly reduced for mobile */
+      }
+      .privacy-link {
+        margin: 30px auto; /* Slightly reduced for mobile */
+      }
     }
   </style>
 </head>
@@ -268,78 +300,89 @@
   </div>
 
   <div class="cert-group" id="other-certs">
-    <div class="cert-icon" id="lpi">
-      <img src="images/lpi.png" alt="LPI Certification" />
-      <div class="hover-box">
-        <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
-        <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
-        <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
+    <div class="lpi-cisco-group">
+      <div class="cert-icon" id="lpi">
+        <img src="images/lpi.png" alt="LPI Certification" />
+        <div class="hover-box">
+          <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+          <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+          <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
+        </div>
+      </div>
+      <div class="cert-icon" id="cisco">
+        <img src="images/cisco.png" alt="Cisco Certification" />
+        <div class="hover-box">
+          <!-- Placeholder: Add <a href="#" class="locked" data-url="cisco/cisco.html">Study Guide 🔒</a> when ready -->
+          <a class="locked">Study Guide 🔒</a>
+        </div>
       </div>
     </div>
-    <div class="cert-icon" id="cisco">
-      <img src="images/cisco.png" alt="Cisco Certification" />
+    <div class="cert-icon ctf-icon" id="ctf">
+      <img src="images/ctf.png" alt="Capture The Flag" />
       <div class="hover-box">
-        Coming Soon
+        <!-- Placeholder: Add <a href="#" class="locked" data-url="ctf/ctf.html">CTF Games 🔒</a> when ready -->
+        <a class="locked">CTF Games 🔒</a>
       </div>
     </div>
   </div>
-
-  <!-- Privacy Policy Link -->
-  <a href="/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
 
   <!-- Footer -->
   <div class="footer-buttons">
     <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
     <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
     <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="circle-button" target="_blank">Cisco</a>
-    <a id="terminalButton" class="circle-button" href="/terminalsimulator.html" style="opacity: 0.4; pointer-events: none;">Linux Terminal Simulator</a>
     <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
+
+  <!-- Privacy Policy Link -->
+  <a href="/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
  
   <!-- Salt Hash Validation -->
-<script>
-document.addEventListener('DOMContentLoaded', async function() {
-  try {
-    const params = new URLSearchParams(window.location.search);
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        const params = new URLSearchParams(window.location.search);
 
-    if (params.get('unlocked') === 'paid') {
-      localStorage.setItem('unlocked', 'paid');
+        if (params.get('unlocked') === 'paid') {
+          localStorage.setItem('unlocked', 'paid');
+        }
+
+        const storedHash = localStorage.getItem('oppcusTokenHash');
+        const salt = 'oppcus-salt-v1';
+        const fpData = navigator.userAgent + navigator.language + screen.width + screen.height + salt;
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fpData));
+        const deviceHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+        if (storedHash === deviceHash) {
+          localStorage.setItem('unlocked', 'paid');
+        }
+
+        const isUnlocked = localStorage.getItem('unlocked') === 'paid';
+        if (isUnlocked) {
+          document.querySelectorAll('a.locked').forEach(link => {
+            // Special handling for Cisco and CTF
+            if (link.parentElement.parentElement.id === 'cisco' || link.parentElement.parentElement.id === 'ctf') {
+              link.textContent = 'Coming Soon';
+            } else {
+              link.textContent = link.textContent.replace(' 🔒', '');
+              link.href = link.dataset.url;
+              link.classList.remove('locked');
+            }
+          });
+          document.getElementById('discordButton').style.opacity = '1';
+          document.getElementById('discordButton').style.pointerEvents = 'auto';
+          document.getElementById('paypalContainer').style.display = 'none';
+          document.getElementById('oneTimeMessage').style.display = 'none';
+        }
+      } catch (err) {
+        console.error('Unlock error:', err);
+      }
+    });
+
+    function acknowledgePopup() {
+      localStorage.setItem('cacheAcknowledged', 'true');
+      document.getElementById('cachePopup').style.display = 'none';
     }
-
-    const storedHash = localStorage.getItem('oppcusTokenHash');
-    const salt = 'oppcus-salt-v1';
-    const fpData = navigator.userAgent + navigator.language + screen.width + screen.height + salt;
-    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fpData));
-    const deviceHash = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
-
-    if (storedHash === deviceHash) {
-      localStorage.setItem('unlocked', 'paid');
-    }
-
-    const isUnlocked = localStorage.getItem('unlocked') === 'paid';
-    if (isUnlocked) {
-      document.querySelectorAll('a.locked').forEach(link => {
-        link.textContent = link.textContent.replace(' 🔒', '');
-        link.href = link.dataset.url;
-        link.classList.remove('locked');
-      });
-      document.getElementById('discordButton').style.opacity = '1';
-      document.getElementById('discordButton').style.pointerEvents = 'auto';
-      document.getElementById('terminalButton').style.opacity = '1';
-      document.getElementById('terminalButton').style.pointerEvents = 'auto';
-      document.getElementById('paypalContainer').style.display = 'none';
-      document.getElementById('oneTimeMessage').style.display = 'none';
-    }
-  } catch (err) {
-    console.error('Unlock error:', err);
-  }
-});
-
-function acknowledgePopup() {
-  localStorage.setItem('cacheAcknowledged', 'true');
-  document.getElementById('cachePopup').style.display = 'none';
-}
-</script>
-
+  </script>
 </body>
 </html>

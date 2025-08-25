@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://hackerfrankone.github.io; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline'; 
+    img-src 'self' https://www.paypalobjects.com; 
+    frame-src 'self' https://hackerfrankone.github.io;
+    object-src 'self' https://hackerfrankone.github.io;
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+  <title>Oppcus CTF Terminal</title>
+  <link rel="icon" type="image/png" href="images/oppcus.png" />
+  <style>
+    body {
+      background: black;
+      color: #33ff33;
+      font-family: monospace;
+      margin: 0;
+      padding: 0;
+    }
+    #terminal {
+      padding: 10px;
+      white-space: pre-wrap;
+      outline: none;
+    }
+    .input-line {
+      display: inline;
+    }
+    .cursor {
+      display: inline;
+      background: #33ff33;
+      color: black;
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+      50% { background: black; color: #33ff33; }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal" tabindex="0"></div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+
+    let fileSystem = {
+      "/home": ["student"],
+      "/home/student": ["Desktop", "Documents", "Downloads"],
+      "/home/student/Desktop": [".hidden.txt", "notes.txt"],
+      "/home/student/Documents": [],
+      "/home/student/Downloads": []
+    };
+
+    let fileContents = {
+      "/home/student/Desktop/.hidden.txt": "ctf_0001",
+      "/home/student/Desktop/notes.txt":
+        "Some things hide in plain sight...\n" +
+        "Not all treasures shout their name.\n\n" +
+        "Look closely, but remember:\n" +
+        "- A casual glance (`ls`) won’t show you everything.\n" +
+        "- Sometimes you must *ask for all* to see the unseen.\n" +
+        "Once revealed, only then can you read the truth."
+    };
+
+    let cwd = "/home/student";
+    let history = [];
+    let currentInput = "";
+    let cursorPos = 0;
+
+    const commandsList = ["ls", "ls -a", "cd", "cat", "pwd", "clear", "exit", "file"];
+
+    function renderPrompt() {
+      return `student@oppcus:${cwd.replace("/home/student", "~")}$ `;
+    }
+
+    function renderTerminal() {
+      terminal.innerHTML = "";
+      history.forEach(line => terminal.innerHTML += line + "\n");
+      let before = currentInput.slice(0, cursorPos);
+      let atCursor = currentInput[cursorPos] || " ";
+      let after = currentInput.slice(cursorPos + 1);
+      terminal.innerHTML += `<span class="input-line">${renderPrompt()}${before}<span class="cursor">${atCursor}</span>${after}</span>`;
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function runCommand(input) {
+      let args = input.trim().split(" ").filter(Boolean);
+      let cmd = args[0];
+      let output = "";
+
+      if (!cmd) return "";
+
+      switch(cmd) {
+        case "ls":
+          let showHidden = args.includes("-a");
+          let pathArg = args[1] && !args[1].startsWith("-") ? args[1] : null;
+          if (args[1] === "-a" && args[2]) pathArg = args[2];
+
+          let pathToList = cwd;
+          if (pathArg) {
+            pathToList = pathArg.startsWith("/") ? pathArg : (cwd === "/" ? "" : cwd) + "/" + pathArg;
+            if (!fileSystem[pathToList]) {
+              output = `ls: cannot access '${pathArg}': No such file or directory`;
+              break;
+            }
+          }
+          let files = fileSystem[pathToList] || [];
+          if (showHidden) {
+            output = [".", "..", ...files].join("  ");
+          } else {
+            output = files.filter(f => !f.startsWith(".")).join("  ");
+          }
+          break;
+
+        case "cd":
+          let target = args[1] || "/home/student";
+          if (target === "..") {
+            if (cwd !== "/home/student") cwd = cwd.split("/").slice(0, -1).join("/") || "/";
+          } else if (target === "~") cwd = "/home/student";
+          else {
+            let newPath = target.startsWith("/") ? target : (cwd === "/" ? "" : cwd) + "/" + target;
+            if (fileSystem[newPath]) cwd = newPath;
+            else output = `bash: cd: ${target}: No such file or directory`;
+          }
+          break;
+
+        case "cat":
+          let file = args[1];
+          if (!file) output = "bash: cat: missing operand";
+          else {
+            let filePath = (cwd === "/" ? "" : cwd) + "/" + file;
+            if (fileContents[filePath]) output = fileContents[filePath];
+            else output = `bash: cat: ${file}: No such file or directory`;
+          }
+          break;
+
+        case "pwd":
+          output = cwd;
+          break;
+
+        case "clear":
+          history = ["Type 'exit' to return to Home"];
+          currentInput = "";
+          cursorPos = 0;
+          return "";
+
+        case "exit":
+          window.location.href = "select.html";
+          break;
+
+        case "file":
+          let targetFile = args[1];
+          if (!targetFile) {
+            output = "file: missing operand";
+          } else if (targetFile === "." || targetFile === "..") {
+            output = `${targetFile}: directory`;
+          } else {
+            let filePath = targetFile.startsWith("/") ? targetFile : (cwd === "/" ? "" : cwd) + "/" + targetFile;
+            if (fileSystem[filePath]) {
+              output = `${targetFile}: directory`;
+            } else if (fileContents[filePath]) {
+              output = `${targetFile}: ASCII text`;
+            } else {
+              output = `file: cannot access '${targetFile}': No such file or directory`;
+            }
+          }
+          break;
+
+        default:
+          output = `bash: ${cmd}: command not found`;
+      }
+
+      return output;
+    }
+
+    function autocomplete() {
+      let args = currentInput.trim().split(" ");
+      let last = args[args.length - 1];
+      let matches = [];
+
+      if (["ls", "ls -a", "cd", "cat", "file"].includes(args[0])) {
+        let files = fileSystem[cwd] || [];
+        matches = files.filter(f => f.startsWith(last));
+        if ([".", ".."].includes(last)) matches.push(last);
+      } else {
+        matches = commandsList.filter(c => c.startsWith(last));
+      }
+
+      if (matches.length === 1) {
+        currentInput = args.slice(0, -1).join(" ") + " " + matches[0];
+        cursorPos = currentInput.length;
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace") {
+        currentInput = currentInput.slice(0, cursorPos - 1) + currentInput.slice(cursorPos);
+        cursorPos = Math.max(0, cursorPos - 1);
+        e.preventDefault();
+      } else if (e.key === "Enter") {
+        let command = currentInput;
+        history.push(renderPrompt() + command);
+        let result = runCommand(command);
+        if (result) history.push(result);
+        currentInput = "";
+        cursorPos = 0;
+      } else if (e.key === "ArrowLeft") cursorPos = Math.max(0, cursorPos - 1);
+      else if (e.key === "ArrowRight") cursorPos = Math.min(currentInput.length, cursorPos + 1);
+      else if (e.key === "Tab") {
+        autocomplete();
+        e.preventDefault();
+      } else if (e.key.length === 1) {
+        currentInput = currentInput.slice(0, cursorPos) + e.key + currentInput.slice(cursorPos);
+        cursorPos++;
+      }
+      renderTerminal();
+    });
+
+    // startup message
+    history.push("Type 'exit' to return to Home");
+    renderTerminal();
+  </script>
+</body>
+</html>

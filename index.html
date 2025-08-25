@@ -19,12 +19,15 @@
       color: #00FF00;
       font-family: monospace;
       text-align: center;
-      padding: 60px 30px; /* Increased top padding to push content down */
+      padding: 20px 30px; /* Reduced top padding to pull content up */
       margin: 0;
+      min-height: 100vh; /* Ensure full viewport height for positioning */
+      display: flex;
+      flex-direction: column;
     }
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 30px; /* Slightly increased for spacing */
+      margin-bottom: 10px; /* Reduced spacing below header */
     }
     .highlight-message,
     .confidence-message,
@@ -34,16 +37,16 @@
       color: #66ff66;
       font-style: italic;
       opacity: 0.8;
-      margin-bottom: 15px; /* Increased for more spacing */
+      margin-bottom: 5px; /* Reduced spacing below messages */
       background-color: #000;
     }
     .cert-group {
-      margin-bottom: 30px; /* Increased to spread out sections */
+      margin-bottom: 15px; /* Reduced spacing between groups */
       background-color: #000;
     }
     .cert-icon {
       display: inline-block;
-      margin: 20px;
+      margin: 10px; /* Reduced margin around icons */
       cursor: pointer;
       transition: transform 0.2s;
       position: relative;
@@ -59,50 +62,54 @@
       border-radius: 10px;
       box-shadow: 0 0 10px #00FF00;
     }
+    #comptia {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px; /* Reduced gap between icons */
+    }
     #other-certs {
-      margin-top: 40px; /* Increased to create larger gap from CompTIA */
+      margin-top: 15px; /* Reduced gap from CompTIA */
       background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px; /* Increased gap for spacing between icons */
+    }
+    #lpi {
+      order: 2; /* Move LPI to the right */
+      margin-right: 40px; /* Keep LPI shifted right */
+    }
+    #cisco {
+      order: 0; /* Move Cisco to the left */
+      margin-left: -20px; /* Keep Cisco shifted left */
+    }
+    #ctf {
+      order: 1; /* Position CTF in the middle */
     }
     .lpi-cisco-group {
-      margin-bottom: 20px; /* Increased to separate from CTF */
+      margin-bottom: 10px; /* Reduced spacing */
       background-color: #000;
     }
     .ctf-icon {
-      margin-top: 60px; /* Increased significantly to push CTF down and avoid LPI hover-box overlap */
+      margin-top: 60px; /* Original position, untouched */
     }
-    .footer-buttons {
+    .footer-links {
       display: flex;
-      gap: 30px;
       justify-content: center;
       align-items: center;
-      margin-top: 80px; /* Increased to push footer down */
-      flex-wrap: wrap;
+      padding: 10px 0;
       background-color: #000;
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      right: 0;
     }
-    .circle-button {
-      width: 100px;
-      height: 100px;
-      background-color: #000;
-      border: 2px solid #00FF00;
-      border-radius: 50%;
-      color: #00FF00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
-      text-align: center;
-    }
-    .circle-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00FF00;
-    }
-    .privacy-link {
-      display: block;
-      margin: 40px auto; /* Increased margin to push down */
+    .footer-link {
+      display: inline-block;
+      margin: 0 10px; /* Space between links */
       color: #00FF00;
       font-weight: bold;
       font-size: 0.85rem;
@@ -115,7 +122,7 @@
       transition: transform 0.2s, box-shadow 0.3s;
       width: fit-content;
     }
-    .privacy-link:hover {
+    .footer-link:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px #00FF00;
       text-decoration: underline;
@@ -140,6 +147,14 @@
       margin-top: -5px;
     }
     .hover-box a {
+      transition: box-shadow 0.3s ease, color 0.3s ease;
+    }
+    .hover-box a:hover {
+      box-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00, 0 0 45px #00FF00;
+      color: #99ff99;
+      text-decoration: underline;
+    }
+    .hover-box a {
       color: #00FF00;
       text-decoration: none;
       cursor: default;
@@ -150,6 +165,11 @@
     .cert-icon:hover .hover-box,
     .hover-box:hover {
       display: block;
+    }
+    #lpi .hover-box {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
     }
     .pp-5B76FJE8MKP2L {
       text-align: center;
@@ -171,7 +191,7 @@
       justify-items: center;
       align-content: start;
       gap: 0.5rem;
-      margin-top: 20px; /* Added to space below upgrade-message */
+      margin-top: 10px; /* Reduced margin to pull PayPal up */
       background-color: #000;
     }
     #paypalContainer img {
@@ -208,37 +228,46 @@
       color: #000;
       border: none;
       padding: 10px 20px;
-      margin-top: 15px;
+      margin-top: 10px; /* Reduced margin in popup */
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
     }
     @media (max-width: 600px) {
-      .cert-icon {
-        margin: 10px;
+      #lpi {
+        order: 2; /* Keep LPI to the right on small screens */
+        margin-top: 5px; /* Further reduced margin on small screens */
+        margin-right: 20px; /* Adjust right margin for small screens */
       }
-      .circle-button {
-        width: 80px;
-        height: 80px;
-        font-size: 0.75rem;
+      #cisco {
+        order: 0; /* Keep Cisco to the left on small screens */
+        margin-left: -10px; /* Reduced left shift for small screens */
+      }
+      #ctf {
+        order: 1; /* Keep CTF in the middle on small screens */
+      }
+      .cert-icon {
+        margin: 5px; /* Reduced margin on small screens */
       }
       .cert-group {
-        margin-bottom: 20px; /* Slightly reduced for mobile */
+        margin-bottom: 10px; /* Further reduced for mobile */
       }
       #other-certs {
-        margin-top: 30px; /* Slightly reduced for mobile */
+        margin-top: 10px; /* Further reduced for mobile */
+        flex-direction: column; /* Stack vertically on small screens */
       }
       .lpi-cisco-group {
-        margin-bottom: 15px; /* Slightly reduced for mobile */
+        margin-bottom: 5px; /* Further reduced for mobile */
       }
       .ctf-icon {
-        margin-top: 50px; /* Slightly reduced for mobile but still avoids overlap */
+        margin-top: 60px; /* Original position, untouched */
       }
-      .footer-buttons {
-        margin-top: 60px; /* Slightly reduced for mobile */
+      .footer-links {
+        flex-direction: column; /* Stack vertically on small screens */
+        padding: 5px 0;
       }
-      .privacy-link {
-        margin: 30px auto; /* Slightly reduced for mobile */
+      .footer-link {
+        margin: 5px 0; /* Adjust spacing for vertical stack */
       }
     }
   </style>
@@ -300,43 +329,37 @@
   </div>
 
   <div class="cert-group" id="other-certs">
-    <div class="lpi-cisco-group">
-      <div class="cert-icon" id="lpi">
-        <img src="images/lpi.png" alt="LPI Certification" />
-        <div class="hover-box">
-          <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
-          <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
-          <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
-        </div>
-      </div>
-      <div class="cert-icon" id="cisco">
-        <img src="images/cisco.png" alt="Cisco Certification" />
-        <div class="hover-box">
-          <!-- Placeholder: Add <a href="#" class="locked" data-url="cisco/cisco.html">Study Guide 🔒</a> when ready -->
-          <a class="locked">Study Guide 🔒</a>
-        </div>
+    <div class="cert-icon" id="cisco">
+      <img src="images/cisco.png" alt="Cisco Certification" />
+      <div class="hover-box">
+        <a class="locked">Study Guide 🔒</a>
       </div>
     </div>
     <div class="cert-icon ctf-icon" id="ctf">
       <img src="../images/ctf.png" alt="Capture The Flag" />
       <div class="hover-box">
-        <!-- Placeholder: Add <a href="#" class="locked" data-url="ctf/ctf.html">CTF Games 🔒</a> when ready -->
         <a class="locked">CTF Games 🔒</a>
+      </div>
+    </div>
+    <div class="cert-icon" id="lpi">
+      <img src="images/lpi.png" alt="LPI Certification" />
+      <div class="hover-box">
+        <a href="#" class="locked" data-url="lpi/lpi.html">Core 1 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi2.html">Core 2 🔒</a><br>
+        <a href="#" class="locked" data-url="lpi/lpi3.html">Core 3 🔒</a>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer-buttons">
-    <a href="https://www.comptia.org/en-us/" class="circle-button" target="_blank">CompTIA</a>
-    <a href="https://www.lpi.org/" class="circle-button" target="_blank">Linux</a>
-    <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="circle-button" target="_blank">Cisco</a>
-    <a id="discordButton" class="circle-button" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
+  <!-- Footer Links -->
+  <div class="footer-links">
+    <a href="/PrivacyPolicy/PrivacyPolicy.pdf" class="footer-link" target="_blank">Privacy Policy</a>
+    <a href="https://www.comptia.org/en-us/" class="footer-link" target="_blank">CompTIA</a>
+    <a href="https://www.lpi.org/" class="footer-link" target="_blank">Linux</a>
+    <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="footer-link" target="_blank">Cisco</a>
+    <a id="discordButton" class="footer-link" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
-  <!-- Privacy Policy Link -->
-  <a href="/PrivacyPolicy/PrivacyPolicy.pdf" class="privacy-link" target="_blank">Privacy Policy</a>
- 
   <!-- Salt Hash Validation -->
   <script>
     document.addEventListener('DOMContentLoaded', async function() {

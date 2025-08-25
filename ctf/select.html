@@ -11,7 +11,7 @@
     object-src 'self' https://hackerfrankone.github.io;
     connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
-  <title>Hacker Hidden Files</title>
+  <title>Capture the Flag Challenges</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
   <style>
     body {
@@ -24,128 +24,16 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
-    .level-group {
-      margin-bottom: 15px;
-      background-color: #000;
-    }
-    .level-icon {
-      display: inline-block;
-      margin: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-      position: relative;
-      background-color: #000;
-    }
-    .level-icon:hover {
-      transform: scale(1.1);
-    }
-    .level-icon img {
-      width: 120px;
-      height: auto;
-      border: 2px solid #00FF00;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00FF00;
-    }
-    .hover-box {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #000;
-      color: #00FF00;
-      border: 3px solid #00FF00;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00FF00;
-      z-index: 10001;
-      white-space: nowrap;
-      min-width: 150px;
-      margin-top: -5px;
-    }
-    .hover-box a {
-      transition: box-shadow 0.3s ease, color 0.3s ease;
-    }
-    .hover-box a:hover {
-      box-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00, 0 0 45px #00FF00;
-      color: #99ff99;
-      text-decoration: underline;
-    }
-    .hover-box a {
-      color: #00FF00;
-      text-decoration: none;
-      cursor: default;
-    }
-    .hover-box a:hover {
-      text-decoration: none;
-    }
-    .level-icon:hover .hover-box,
-    .hover-box:hover {
-      display: block;
-    }
-    #level1 .hover-box {
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    #level2 .hover-box {
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .ctf-input {
-      margin: 10px auto;
-      padding: 10px;
-      width: 300px;
-      background-color: #000;
-      border: 2px solid #00FF00;
-      border-radius: 5px;
-      color: #00FF00;
-      font-family: monospace;
-      font-size: 1rem;
-      box-shadow: 0 0 10px #00FF00;
-    }
-    .ctf-input:focus {
-      outline: none;
-      box-shadow: 0 0 20px #00FF00;
-    }
-    .submit-btn {
-      padding: 10px 20px;
-      background-color: #000;
-      border: 2px solid #00FF00;
-      border-radius: 5px;
-      color: #00FF00;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
-    }
-    .submit-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #00FF00;
-    }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px 0;
-      background-color: #000;
+    .back-link {
       position: fixed;
-      bottom: 10px;
-      left: 0;
-      right: 0;
-    }
-    .footer-link {
-      display: inline-block;
-      margin: 0 10px; /* Space between links */
+      top: 10px;
+      left: 10px;
       color: #00FF00;
       font-weight: bold;
       font-size: 0.85rem;
@@ -156,78 +44,96 @@
       border-radius: 5px;
       box-shadow: 0 0 12px #00FF00;
       transition: transform 0.2s, box-shadow 0.3s;
-      width: fit-content;
     }
-    .footer-link:hover {
+    .back-link:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px #00FF00;
       text-decoration: underline;
     }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 10vh;
+    }
+    .terminal-container {
+      margin-top: 10px;
+      width: 300px;
+    }
+    select, .submit-btn {
+      margin: 10px 0;
+      padding: 10px;
+      width: 300px;
+      background-color: #000;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      color: #00FF00;
+      font-family: monospace;
+      font-size: 1rem;
+      box-shadow: 0 0 10px #00FF00;
+      box-sizing: border-box;
+    }
+    select:focus, .submit-btn:focus {
+      outline: none;
+      box-shadow: 0 0 20px #00FF00;
+    }
+    .submit-btn {
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .submit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00FF00;
+    }
+    .hidden {
+      display: none;
+    }
     @media (max-width: 600px) {
-      .level-icon {
-        margin: 5px;
-      }
-      .level-group {
-        margin-bottom: 10px;
-      }
-      #other-certs {
-        margin-top: 10px;
-        flex-direction: column;
-      }
-      .ctf-input {
+      select, .submit-btn, .terminal-container {
         width: 200px;
       }
-      .footer-links {
-        flex-direction: column;
-        padding: 5px 0;
+      .container {
+        max-width: 200px;
+        margin-top: 5vh;
       }
-      .footer-link {
-        margin: 5px 0;
+      .back-link {
+        position: static;
+        margin-bottom: 10px;
       }
     }
   </style>
 </head>
 <body>
-  <h1>Hidden Files</h1>
-
-  <div class="level-group" id="level1">
-    <div class="level-icon" id="level1">
-      <img src="images/hidden.png" alt="Level 1 - Hidden Files" />
-      <div class="hover-box">
-        <a href="#" class="locked" data-url="level1/level1.html">Level 1 🔒</a>
-      </div>
+  <a href="index.html" class="back-link">Back</a>
+  <div class="container">
+    <h1>Capture the Flag Challenges</h1>
+    <select id="levelSelect" class="ctf-input" onchange="updateUI()">
+      <option value="" disabled selected>Select level...</option>
+      <option value="ctf1.html">Level 1</option>
+    </select>
+    <div class="terminal-container hidden" id="terminalContainer">
+      <button class="submit-btn" onclick="goToTerminal()">Start Terminal</button>
     </div>
-    <input type="text" id="ctfInput" class="ctf-input" placeholder="Paste your CTF code here..." />
-    <button class="submit-btn" onclick="checkCTF()">Submit</button>
-  </div>
-
-  <div class="level-group" id="level2" style="display: none;">
-    <div class="level-icon" id="level2">
-      <img src="images/locked.png" alt="Level 2" />
-      <div class="hover-box">
-        <a href="#" class="locked">Coming Soon</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer Links -->
-  <div class="footer-links">
-    <a href="/PrivacyPolicy/PrivacyPolicy.pdf" class="footer-link" target="_blank">Privacy Policy</a>
-    <a href="https://www.comptia.org/en-us/" class="footer-link" target="_blank">CompTIA</a>
-    <a href="https://www.lpi.org/" class="footer-link" target="_blank">Linux</a>
-    <a href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/index.html" class="footer-link" target="_blank">Cisco</a>
-    <a id="discordButton" class="footer-link" href="https://discord.gg/NXE4gU8nVe" style="opacity: 0.4; pointer-events: none;">Discord</a>
   </div>
 
   <script>
-    function checkCTF() {
-      const ctfInput = document.getElementById('ctfInput').value.trim();
-      const validCTF = "HIDDEN_FLAG_2025"; // Example CTF code; replace with your actual logic
-      if (ctfInput === validCTF) {
-        document.getElementById('level2').style.display = 'block';
-        document.querySelector('#level1 .hover-box a').textContent = 'Level 1';
-        document.querySelector('#level1 .hover-box a').classList.remove('locked');
-        document.querySelector('#level1 .hover-box a').href = '#';
+    function updateUI() {
+      const levelSelect = document.getElementById('levelSelect');
+      const terminalContainer = document.getElementById('terminalContainer');
+      if (levelSelect.value === 'ctf1.html') {
+        terminalContainer.classList.remove('hidden');
+      } else {
+        terminalContainer.classList.add('hidden');
+      }
+    }
+
+    function goToTerminal() {
+      const levelSelect = document.getElementById('levelSelect').value;
+      if (levelSelect === 'ctf1.html') {
+        window.location.href = 'terminal.html';
       }
     }
   </script>

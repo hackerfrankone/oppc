@@ -107,12 +107,12 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-link">Back</a>
+  <a href="../index.html" class="back-link">Back</a>
   <div class="container">
     <h1>Capture the Flag Challenges</h1>
     <select id="levelSelect" class="ctf-input" onchange="updateUI()">
       <option value="" disabled selected>Select level...</option>
-      <option value="ctf1.html">Level 1</option>
+      <option value="terminal-lvl-1.html">Level 1</option>
     </select>
     <div class="terminal-container hidden" id="terminalContainer">
       <button class="submit-btn" onclick="goToTerminal()">Start Terminal</button>
@@ -123,7 +123,7 @@
     function updateUI() {
       const levelSelect = document.getElementById('levelSelect');
       const terminalContainer = document.getElementById('terminalContainer');
-      if (levelSelect.value === 'ctf1.html') {
+      if (levelSelect.value) {
         terminalContainer.classList.remove('hidden');
       } else {
         terminalContainer.classList.add('hidden');
@@ -132,8 +132,8 @@
 
     function goToTerminal() {
       const levelSelect = document.getElementById('levelSelect').value;
-      if (levelSelect === 'ctf1.html') {
-        window.location.href = 'terminal.html';
+      if (levelSelect) {
+        window.location.href = levelSelect;
       }
     }
   </script>

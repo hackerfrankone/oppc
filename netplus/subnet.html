@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://hackerfrankone.github.io; 
+    script-src 'self' 'unsafe-inline'; 
+    style-src 'self' 'unsafe-inline'; 
+    img-src 'self' https://www.paypalobjects.com; 
+    frame-src 'self' https://hackerfrankone.github.io;
+    object-src 'self' https://hackerfrankone.github.io;
+    connect-src 'self' https://student-live.oppcus2025.workers.dev;" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+  <title>Simple Subnetting Guide</title>
+  <link rel="icon" type="image/png" href="images/oppcus.png" />
+  <style>
+    body {
+      background-color: #000;
+      color: #00FF00;
+      font-family: monospace;
+      text-align: center;
+      padding: 20px 30px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .back-link {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      color: #00FF00;
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-decoration: none;
+      background-color: #000;
+      padding: 10px;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .back-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00FF00;
+      text-decoration: underline;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin-top: 60px;
+    }
+    th, td {
+      border: 2px solid #00FF00;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #000;
+      color: #00FF00;
+      font-size: 1.2rem;
+    }
+    .note {
+      font-style: italic;
+      color: #ff0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="netplus.html" class="back-link">&lt;-- Back</a>
+  <div class="container">
+    <h1>Easy Subnetting Guide</h1>
+    <table>
+      <tr>
+        <th>Class</th>
+        <th>Bits Used</th>
+        <th>Max Devices</th>
+        <th>Usable Devices</th>
+        <th>Subnet Mask</th>
+        <th>Example Range</th>
+      </tr>
+      <tr><td>Class A</td><td>/8</td><td>16 Million</td><td>16 Million - 2</td><td>255.0.0.0</td><td>127.0.0.0 - 127.255.255.255</td></tr>
+      <tr><td colspan="6" class="note">For large networks. 127 is for loopback testing.</td></tr>
+      <tr><td>Class B</td><td>/16</td><td>65,000</td><td>65,000 - 2</td><td>255.255.0.0</td><td>128.0.0.0 - 191.255.255.255</td></tr>
+      <tr><td colspan="6" class="note">For medium networks.</td></tr>
+      <tr><td>Class C</td><td>/24</td><td>256</td><td>254</td><td>255.255.255.0</td><td>192.0.0.0 - 192.255.255.255</td></tr>
+      <tr><td colspan="6" class="note">For small networks, common in homes.</td></tr>
+      <tr><td>Point-to-Point</td><td>/30</td><td>4</td><td>2</td><td>255.255.255.252</td><td>N/A</td></tr>
+      <tr><td colspan="6" class="note">For direct device connections.</td></tr>
+    </table>
+  </div>
+</body>
+</html>

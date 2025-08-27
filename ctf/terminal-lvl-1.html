@@ -94,18 +94,16 @@
     let fileSystem = {
       "/home": ["student"],
       "/home/student": ["Desktop", "Documents", "Downloads"],
-      "/home/student/Desktop": ["READme.txt", ".malicious-contents.txt"],
+      "/home/student/Desktop": [".malicious-contents.txt"],
       "/home/student/Documents": [],
       "/home/student/Downloads": []
     };
 
     let fileContents = {
-      "/home/student/Desktop/READme.txt": "use following command: man ls",
       "/home/student/Desktop/.malicious-contents.txt": "FLAG: ctf_malicious_1337\nBeware! This file was hidden and protected for a reason."
     };
 
     let filePermissions = {
-      "/home/student/Desktop/READme.txt": { r: true, w: true, x: false },
       "/home/student/Desktop/.malicious-contents.txt": { r: false, w: true, x: true }
     };
 
@@ -174,8 +172,8 @@ DESCRIPTION
        Concatenate FILE(s) to standard output.
 
 EXAMPLES
-       cat READme.txt
-              Display the contents of READme.txt.
+       cat .malicious-contents.txt
+              Display the contents of .malicious-contents.txt.
 
 SEE ALSO
        man(1)`,
@@ -234,8 +232,8 @@ DESCRIPTION
        Determine the type of FILE(s).
 
 EXAMPLES
-       file READme.txt
-              Identify READme.txt as ASCII text or other type.
+       file .malicious-contents.txt
+              Identify .malicious-contents.txt as ASCII text or other type.
 
 SEE ALSO
        man(1)`,
@@ -255,8 +253,8 @@ DESCRIPTION
        +4     Add read permission (numeric mode).
 
 EXAMPLES
-       chmod +r READme.txt
-              Grant read permission to READme.txt.
+       chmod +r .malicious-contents.txt
+              Grant read permission to .malicious-contents.txt.
 
 SEE ALSO
        man(1)`,
@@ -377,7 +375,7 @@ SEE ALSO
             output = `${targetFile}: directory`;
           } else {
             let filePath = targetFile.startsWith("/") ? targetFile : (cwd === "/" ? "" : cwd) + "/" + targetFile;
-            if (fileSystem[pathToList]) {
+            if (fileSystem[filePath]) {
               output = `${targetFile}: directory`;
             } else if (fileContents[filePath]) {
               output = `${targetFile}: ASCII text`;

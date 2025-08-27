@@ -377,7 +377,7 @@ SEE ALSO
             output = `${targetFile}: directory`;
           } else {
             let filePath = targetFile.startsWith("/") ? targetFile : (cwd === "/" ? "" : cwd) + "/" + targetFile;
-            if (fileSystem[filePath]) {
+            if (fileSystem[pathToList]) {
               output = `${targetFile}: directory`;
             } else if (fileContents[filePath]) {
               output = `${targetFile}: ASCII text`;
@@ -440,7 +440,7 @@ SEE ALSO
         // Handle chmod with mode argument (e.g., chmod +r .)
         if (args[0] === "chmod" && args.length >= 2 && ["+r", "+4"].includes(args[1])) {
           prefix = args[0] + " " + args[1] + " ";
-          filePart = args[2] || "";
+          filePart = args.length > 2 ? args[2] : "";
         }
 
         // Handle paths like "Desktop/" or "Desktop/RE"
@@ -467,16 +467,16 @@ SEE ALSO
           if (filePart.includes("/")) {
             let parts = filePart.split("/");
             parts[parts.length - 1] = completion;
-            currentInput = prefix + parts.join("/");
+            currentInput = args.slice(0, -1).join(" ") + " " + parts.join("/");
           } else {
-            currentInput = prefix + completion;
+            currentInput = args.slice(0, -1).join(" ") + " " + completion;
           }
           cursorPos = currentInput.length;
         } else if (matches.length > 1 || last.endsWith("/")) {
           // Display all possible completions in history
           history.push(renderPrompt() + currentInput);
           history.push(matches.join("  "));
-          currentInput = prefix + (filePart.endsWith("/") ? filePart : filePart + " ");
+          currentInput = args.join(" ") + (last.endsWith("/") ? " " : "");
           cursorPos = currentInput.length;
         }
       } else {

@@ -32,23 +32,24 @@
     }
     .back-link {
       position: fixed;
-      top: 10px;
-      left: 10px;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: transparent;
       color: #00FF00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      text-decoration: none;
-      background-color: #000;
-      padding: 10px;
       border: 2px solid #00FF00;
+      padding: 0.6rem 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
       border-radius: 5px;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
     }
     .back-link:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #00FF00;
-      text-decoration: underline;
+      background-color: #00FF00;
+      color: black;
     }
     .container {
       display: flex;
@@ -107,7 +108,7 @@
   </style>
 </head>
 <body>
-  <a href="../index.html" class="back-link">Back</a>
+  <a href="../index.html" class="back-link">← Back</a>
   <div class="container">
     <h1>Capture the Flag Challenges</h1>
     <select id="levelSelect" class="ctf-input" onchange="updateUI()">

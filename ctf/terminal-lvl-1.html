@@ -20,6 +20,7 @@
       font-family: monospace;
       margin: 0;
       padding: 0;
+      position: relative;
     }
     #terminal {
       padding: 10px;
@@ -38,31 +39,74 @@
     @keyframes blink {
       50% { background: black; color: #33ff33; }
     }
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      color: #33ff33;
+      padding: 20px;
+      border: 2px solid #33ff33;
+      z-index: 1000;
+      text-align: center;
+      max-width: 400px;
+      font-size: 16px;
+    }
+    #flag-section {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #33ff33;
+    }
+    #flag-section input {
+      background: #111;
+      color: #33ff33;
+      border: 1px solid #33ff33;
+      font-family: monospace;
+      padding: 5px;
+    }
+    #flag-section button {
+      background: #33ff33;
+      color: black;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-family: monospace;
+    }
+    #flag-section button:hover {
+      background: #22cc22;
+    }
   </style>
 </head>
 <body>
+  <div id="popup">You've hacked into a criminal's computer who is a terrorist and is planning an attack. Download the malicious_contents and report it to the authorities</div>
+  <div id="flag-section">
+    <input type="text" id="flag-input" placeholder="Enter flag">
+    <button onclick="checkFlag()">Submit</button>
+  </div>
   <div id="terminal" tabindex="0"></div>
 
   <script>
     const terminal = document.getElementById("terminal");
+    const popup = document.getElementById("popup");
 
     let fileSystem = {
       "/home": ["student"],
       "/home/student": ["Desktop", "Documents", "Downloads"],
-      "/home/student/Desktop": [".hidden.txt", "notes.txt"],
+      "/home/student/Desktop": ["READme.txt", ".malicious-contents.txt"],
       "/home/student/Documents": [],
       "/home/student/Downloads": []
     };
 
     let fileContents = {
-      "/home/student/Desktop/.hidden.txt": "ctf_0001",
-      "/home/student/Desktop/notes.txt":
-        "Some things hide in plain sight...\n" +
-        "Not all treasures shout their name.\n\n" +
-        "Look closely, but remember:\n" +
-        "- A casual glance (`ls`) won’t show you everything.\n" +
-        "- Sometimes you must *ask for all* to see the unseen.\n" +
-        "Once revealed, only then can you read the truth."
+      "/home/student/Desktop/READme.txt": "use following command: man ls",
+      "/home/student/Desktop/.malicious-contents.txt": "FLAG: ctf_malicious_1337\nBeware! This file was hidden and protected for a reason."
+    };
+
+    let filePermissions = {
+      "/home/student/Desktop/READme.txt": { r: true, w: true, x: false },
+      "/home/student/Desktop/.malicious-contents.txt": { r: false, w: true, x: true }
     };
 
     let cwd = "/home/student";
@@ -70,7 +114,19 @@
     let currentInput = "";
     let cursorPos = 0;
 
-    const commandsList = ["ls", "ls -a", "cd", "cat", "pwd", "clear", "exit", "file"];
+    const commandsList = ["ls", "ls -a", "cd", "cat", "pwd", "clear", "exit", "file", "chmod", "man"];
+
+    const manPages = {
+      "ls": "ls: list directory contents\n\nOptions:\n  -a  do not ignore entries starting with .",
+      "cd": "cd: change the current working directory\n\nUsage: cd [directory]\nExamples:\n  cd Desktop\n  cd ..",
+      "cat": "cat: concatenate and print files\n\nUsage: cat [file]\nExample: cat READme.txt",
+      "pwd": "pwd: print name of current working directory",
+      "clear": "clear: clear the terminal screen",
+      "exit": "exit: exit the terminal and return to home",
+      "file": "file: determine file type\n\nUsage: file [file]\nExample: file READme.txt",
+      "chmod": "chmod: change file permissions\n\nUsage: chmod [mode] [file]\nExample: chmod +r READme.txt",
+      "man": "man: display manual page for a command\n\nUsage: man [command]\nExample: man ls"
+    };
 
     function renderPrompt() {
       return `student@oppcus:${cwd.replace("/home/student", "~")}$ `;
@@ -101,6 +157,8 @@
 
           let pathToList = cwd;
           if (pathArg) {
+            // Remove trailing slash for directory lookup
+            pathArg = pathArg.replace(/\/$/, "");
             pathToList = pathArg.startsWith("/") ? pathArg : (cwd === "/" ? "" : cwd) + "/" + pathArg;
             if (!fileSystem[pathToList]) {
               output = `ls: cannot access '${pathArg}': No such file or directory`;
@@ -117,6 +175,8 @@
 
         case "cd":
           let target = args[1] || "/home/student";
+          // Remove trailing slash for directory lookup
+          target = target.replace(/\/$/, "");
           if (target === "..") {
             if (cwd !== "/home/student") cwd = cwd.split("/").slice(0, -1).join("/") || "/";
           } else if (target === "~") cwd = "/home/student";
@@ -131,9 +191,16 @@
           let file = args[1];
           if (!file) output = "bash: cat: missing operand";
           else {
-            let filePath = (cwd === "/" ? "" : cwd) + "/" + file;
-            if (fileContents[filePath]) output = fileContents[filePath];
-            else output = `bash: cat: ${file}: No such file or directory`;
+            let filePath = file.startsWith("/") ? file : (cwd === "/" ? "" : cwd) + "/" + file;
+            if (fileContents[filePath]) {
+              if (filePermissions[filePath]?.r) {
+                output = fileContents[filePath];
+              } else {
+                output = `bash: cat: ${file}: Permission denied`;
+              }
+            } else {
+              output = `bash: cat: ${file}: No such file or directory`;
+            }
           }
           break;
 
@@ -169,6 +236,39 @@
           }
           break;
 
+        case "chmod":
+          let permArg = args[1];
+          let chmodFile = args[2];
+          if (!permArg || !chmodFile) {
+            output = "chmod: missing operand";
+          } else {
+            let filePath = chmodFile.startsWith("/") ? chmodFile : (cwd === "/" ? "" : cwd) + "/" + chmodFile;
+            if (!fileContents[filePath] && !fileSystem[filePath]) {
+              output = `chmod: cannot access '${chmodFile}': No such file or directory`;
+            } else if (permArg === "+r" || permArg === "+4") {
+              if (filePermissions[filePath]) {
+                filePermissions[filePath].r = true;
+                output = `Permissions updated for ${chmodFile}`;
+              } else {
+                output = `chmod: cannot modify permissions for ${chmodFile}: Not supported`;
+              }
+            } else {
+              output = `chmod: invalid mode: '${permArg}'`;
+            }
+          }
+          break;
+
+        case "man":
+          let command = args[1];
+          if (!command) {
+            output = "man: missing operand\nTry 'man man' for help";
+          } else if (manPages[command]) {
+            output = manPages[command];
+          } else {
+            output = `man: no manual entry for ${command}`;
+          }
+          break;
+
         default:
           output = `bash: ${cmd}: command not found`;
       }
@@ -177,25 +277,90 @@
     }
 
     function autocomplete() {
-      let args = currentInput.trim().split(" ");
+      let args = currentInput.trim().split(" ").filter(Boolean);
       let last = args[args.length - 1];
       let matches = [];
 
-      if (["ls", "ls -a", "cd", "cat", "file"].includes(args[0])) {
-        let files = fileSystem[cwd] || [];
-        matches = files.filter(f => f.startsWith(last));
-        if ([".", ".."].includes(last)) matches.push(last);
+      if (["ls", "ls -a", "cd", "cat", "file", "chmod"].includes(args[0])) {
+        let dirPath = cwd;
+        let filePart = last;
+        let prefix = args[0] === "ls -a" ? args[0] : args[0] + " ";
+
+        // Handle chmod with mode argument (e.g., chmod +r .)
+        if (args[0] === "chmod" && args.length >= 2 && ["+r", "+4"].includes(args[1])) {
+          prefix = args[0] + " " + args[1] + " ";
+          filePart = args[2] || "";
+        }
+
+        // Handle paths like "Desktop/" or "Desktop/RE"
+        if (filePart.includes("/")) {
+          let parts = filePart.split("/");
+          filePart = parts.pop();
+          let dir = parts.join("/");
+          dirPath = dir.startsWith("/") ? dir : (cwd === "/" ? "" : cwd) + "/" + dir;
+          // Remove trailing slash for directory lookup
+          dirPath = dirPath.replace(/\/$/, "");
+        }
+
+        let files = fileSystem[dirPath] || [];
+        // Include hidden files for commands that can handle them
+        matches = files.filter(f => f.startsWith(filePart));
+        if ([".", ".."].includes(filePart)) matches.push(filePart);
+
+        if (matches.length === 1) {
+          let completion = matches[0];
+          // Append '/' for directories
+          if (fileSystem[(dirPath === "/" ? "" : dirPath) + "/" + matches[0]]) {
+            completion += "/";
+          }
+          if (filePart.includes("/")) {
+            let parts = filePart.split("/");
+            parts[parts.length - 1] = completion;
+            currentInput = prefix + parts.join("/");
+          } else {
+            currentInput = prefix + completion;
+          }
+          cursorPos = currentInput.length;
+        } else if (matches.length > 1 || last.endsWith("/")) {
+          // Display all possible completions in history
+          history.push(renderPrompt() + currentInput);
+          history.push(matches.join("  "));
+          currentInput = prefix + (filePart.endsWith("/") ? filePart : filePart + " ");
+          cursorPos = currentInput.length;
+        }
       } else {
         matches = commandsList.filter(c => c.startsWith(last));
-      }
-
-      if (matches.length === 1) {
-        currentInput = args.slice(0, -1).join(" ") + " " + matches[0];
-        cursorPos = currentInput.length;
+        if (matches.length === 1) {
+          currentInput = matches[0];
+          cursorPos = currentInput.length;
+        } else if (matches.length > 1) {
+          history.push(renderPrompt() + currentInput);
+          history.push(matches.join("  "));
+          currentInput = args.join(" ") + " ";
+          cursorPos = currentInput.length;
+        }
       }
     }
 
+    function checkFlag() {
+      const flagInput = document.getElementById("flag-input").value.trim();
+      const correctFlag = "ctf_malicious_1337";
+      if (flagInput === correctFlag) {
+        alert("Correct flag!");
+        window.location.href = "select.html";
+      } else {
+        alert("Incorrect flag!");
+      }
+    }
+
+    function closePopup() {
+      popup.style.display = "none";
+    }
+
+    terminal.addEventListener("click", closePopup);
+
     document.addEventListener("keydown", (e) => {
+      closePopup();
       if (e.key === "Backspace") {
         currentInput = currentInput.slice(0, cursorPos - 1) + currentInput.slice(cursorPos);
         cursorPos = Math.max(0, cursorPos - 1);

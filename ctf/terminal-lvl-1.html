@@ -117,15 +117,166 @@
     const commandsList = ["ls", "ls -a", "cd", "cat", "pwd", "clear", "exit", "file", "chmod", "man"];
 
     const manPages = {
-      "ls": "ls: list directory contents\n\nOptions:\n  -a  do not ignore entries starting with .",
-      "cd": "cd: change the current working directory\n\nUsage: cd [directory]\nExamples:\n  cd Desktop\n  cd ..",
-      "cat": "cat: concatenate and print files\n\nUsage: cat [file]\nExample: cat READme.txt",
-      "pwd": "pwd: print name of current working directory",
-      "clear": "clear: clear the terminal screen",
-      "exit": "exit: exit the terminal and return to home",
-      "file": "file: determine file type\n\nUsage: file [file]\nExample: file READme.txt",
-      "chmod": "chmod: change file permissions\n\nUsage: chmod [mode] [file]\nExample: chmod +r READme.txt",
-      "man": "man: display manual page for a command\n\nUsage: man [command]\nExample: man ls"
+      "ls": `LS(1)                    User Commands                   LS(1)
+
+NAME
+       ls - list directory contents
+
+SYNOPSIS
+       ls [OPTION]... [FILE]...
+
+DESCRIPTION
+       List information about the FILEs (the current directory by default).
+
+OPTIONS
+       -a, --all
+              do not ignore entries starting with .
+
+EXAMPLES
+       ls
+              List non-hidden files in the current directory.
+       ls -a
+              List all files, including hidden ones starting with '.'.
+
+SEE ALSO
+       man(1)`,
+      "cd": `CD(1)                    User Commands                   CD(1)
+
+NAME
+       cd - change the shell working directory
+
+SYNOPSIS
+       cd [DIRECTORY]
+
+DESCRIPTION
+       Change the current directory to DIRECTORY. The default is the user's home directory.
+
+       ..     Move to the parent directory.
+       ~      Move to the home directory.
+
+EXAMPLES
+       cd Desktop
+              Change to the Desktop directory.
+       cd ..
+              Move up one directory level.
+
+SEE ALSO
+       pwd(1), man(1)`,
+      "cat": `CAT(1)                   User Commands                   CAT(1)
+
+NAME
+       cat - concatenate files and print on the standard output
+
+SYNOPSIS
+       cat [FILE]...
+
+DESCRIPTION
+       Concatenate FILE(s) to standard output.
+
+EXAMPLES
+       cat READme.txt
+              Display the contents of READme.txt.
+
+SEE ALSO
+       man(1)`,
+      "pwd": `PWD(1)                   User Commands                   PWD(1)
+
+NAME
+       pwd - print name of current/working directory
+
+SYNOPSIS
+       pwd
+
+DESCRIPTION
+       Print the full pathname of the current working directory.
+
+EXAMPLES
+       pwd
+              Output the current directory, e.g., /home/student
+
+SEE ALSO
+       cd(1), man(1)`,
+      "clear": `CLEAR(1)                 User Commands                   CLEAR(1)
+
+NAME
+       clear - clear the terminal screen
+
+SYNOPSIS
+       clear
+
+DESCRIPTION
+       Clear the terminal screen, removing all previous output.
+
+SEE ALSO
+       man(1)`,
+      "exit": `EXIT(1)                  User Commands                   EXIT(1)
+
+NAME
+       exit - exit the shell
+
+SYNOPSIS
+       exit
+
+DESCRIPTION
+       Exit the terminal, returning to the home interface.
+
+SEE ALSO
+       man(1)`,
+      "file": `FILE(1)                  User Commands                   FILE(1)
+
+NAME
+       file - determine file type
+
+SYNOPSIS
+       file [FILE]...
+
+DESCRIPTION
+       Determine the type of FILE(s).
+
+EXAMPLES
+       file READme.txt
+              Identify READme.txt as ASCII text or other type.
+
+SEE ALSO
+       man(1)`,
+      "chmod": `CHMOD(1)                 User Commands                   CHMOD(1)
+
+NAME
+       chmod - change file mode bits
+
+SYNOPSIS
+       chmod MODE FILE...
+
+DESCRIPTION
+       Change the permissions of FILE(s) according to MODE.
+
+       MODE can be:
+       +r     Add read permission.
+       +4     Add read permission (numeric mode).
+
+EXAMPLES
+       chmod +r READme.txt
+              Grant read permission to READme.txt.
+
+SEE ALSO
+       man(1)`,
+      "man": `MAN(1)                   User Commands                   MAN(1)
+
+NAME
+       man - an interface to the system reference manuals
+
+SYNOPSIS
+       man [COMMAND]
+
+DESCRIPTION
+       Display the manual page for COMMAND.
+
+EXAMPLES
+       man ls
+              Show the manual page for the ls command.
+
+SEE ALSO
+       ls(1), cd(1), cat(1), pwd(1), clear(1), exit(1), file(1), chmod(1)`
     };
 
     function renderPrompt() {
@@ -151,9 +302,9 @@
 
       switch(cmd) {
         case "ls":
-          let showHidden = args.includes("-a");
+          let showHidden = args.includes("-a") || args.includes("--all");
           let pathArg = args[1] && !args[1].startsWith("-") ? args[1] : null;
-          if (args[1] === "-a" && args[2]) pathArg = args[2];
+          if ((args[1] === "-a" || args[1] === "--all") && args[2]) pathArg = args[2];
 
           let pathToList = cwd;
           if (pathArg) {

@@ -14,86 +14,108 @@
   <title>Simple Subnetting Guide</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
   <style>
+    * { box-sizing: border-box; }
     body {
       background-color: #000;
       color: #00FF00;
       font-family: monospace;
-      text-align: center;
-      padding: 20px 30px;
       margin: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
+      padding: 20px;
     }
     h1 {
-      font-size: 2.5rem;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       margin-bottom: 20px;
+      text-align: center;
     }
     .back-link {
       position: fixed;
-      top: 10px;
-      left: 10px;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: transparent;
       color: #00FF00;
-      font-weight: bold;
-      font-size: 0.85rem;
-      text-decoration: none;
-      background-color: #000;
-      padding: 10px;
       border: 2px solid #00FF00;
+      padding: 0.6rem 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
       border-radius: 5px;
-      box-shadow: 0 0 12px #00FF00;
-      transition: transform 0.2s, box-shadow 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      z-index: 9999;
+      -webkit-tap-highlight-color: transparent;
     }
     .back-link:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #00FF00;
-      text-decoration: underline;
+      background-color: #00FF00;
+      color: black;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      flex-grow: 1;
     }
     table {
       border-collapse: collapse;
-      width: 80%;
-      margin-top: 60px;
+      width: 100%;
+      max-width: 800px;
+      margin: 20px 0;
     }
     th, td {
       border: 2px solid #00FF00;
-      padding: 10px;
+      padding: clamp(8px, 1.5vw, 10px);
       text-align: center;
+      font-size: clamp(0.8rem, 2vw, 1rem);
     }
     th {
       background-color: #000;
       color: #00FF00;
-      font-size: 1.2rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     }
     .note {
       font-style: italic;
       color: #ff0;
-      font-size: 0.9rem;
+      font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+    }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .container { max-width: 95%; }
+      table { width: 100%; }
+      th, td { padding: 6px; }
+      h1 { font-size: clamp(1.2rem, 3vw, 1.8rem); }
     }
   </style>
 </head>
 <body>
-  <a href="netplus.html" class="back-link">&lt;-- Back</a>
+  <a href="netplus.html" class="back-link">← Back</a>
   <div class="container">
-    <h1>Simple Subnetting Guide</h1>
-    <table>
-      <tr>
-        <th>Class</th>
-        <th>Bits Used</th>
-        <th>Max Devices</th>
-        <th>Usable Devices</th>
-        <th>Subnet Mask</th>
-        <th>Example Range</th>
-      </tr>
-      <tr><td>Class A</td><td>/8</td><td>16 Million</td><td>16 Million - 2</td><td>255.0.0.0</td><td>127.0.0.0 - 127.255.255.255</td></tr>
-      <tr><td colspan="6" class="note">For large networks. 127 is for loopback testing.</td></tr>
-      <tr><td>Class B</td><td>/16</td><td>65,000</td><td>65,000 - 2</td><td>255.255.0.0</td><td>128.0.0.0 - 191.255.255.255</td></tr>
-      <tr><td colspan="6" class="note">For medium networks.</td></tr>
-      <tr><td>Class C</td><td>/24</td><td>256</td><td>254</td><td>255.255.255.0</td><td>192.0.0.0 - 192.255.255.255</td></tr>
-      <tr><td colspan="6" class="note">For small networks, common in homes.</td></tr>
-      <tr><td>Point-to-Point</td><td>/30</td><td>4</td><td>2</td><td>255.255.255.252</td><td>N/A</td></tr>
-      <tr><td colspan="6" class="note">For direct device connections.</td></tr>
-    </table>
+    <div>
+      <h1>Simple Subnetting Guide</h1>
+      <table>
+        <tr>
+          <th>Class</th>
+          <th>Bits Used</th>
+          <th>Max Devices</th>
+          <th>Usable Devices</th>
+          <th>Subnet Mask</th>
+          <th>Example Range</th>
+        </tr>
+        <tr><td>Class A</td><td>/8</td><td>16 Million</td><td>16 Million - 2</td><td>255.0.0.0</td><td>127.0.0.0 - 127.255.255.255</td></tr>
+        <tr><td colspan="6" class="note">For large networks. 127 is for loopback testing.</td></tr>
+        <tr><td>Class B</td><td>/16</td><td>65,000</td><td>65,000 - 2</td><td>255.255.0.0</td><td>128.0.0.0 - 191.255.255.255</td></tr>
+        <tr><td colspan="6" class="note">For medium networks.</td></tr>
+        <tr><td>Class C</td><td>/24</td><td>256</td><td>254</td><td>255.255.255.0</td><td>192.0.0.0 - 192.255.255.255</td></tr>
+        <tr><td colspan="6" class="note">For small networks, common in homes.</td></tr>
+        <tr><td>Point-to-Point</td><td>/30</td><td>4</td><td>2</td><td>255.255.255.252</td><td>N/A</td></tr>
+        <tr><td colspan="6" class="note">For direct device connections.</td></tr>
+      </table>
+    </div>
   </div>
 </body>
 </html>

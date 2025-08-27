@@ -53,38 +53,10 @@
       max-width: 400px;
       font-size: 16px;
     }
-    #flag-section {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      color: #33ff33;
-    }
-    #flag-section input {
-      background: #111;
-      color: #33ff33;
-      border: 1px solid #33ff33;
-      font-family: monospace;
-      padding: 5px;
-    }
-    #flag-section button {
-      background: #33ff33;
-      color: black;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-family: monospace;
-    }
-    #flag-section button:hover {
-      background: #22cc22;
-    }
   </style>
 </head>
 <body>
-  <div id="popup">You've hacked into a criminal's computer who is a terrorist and is planning an attack. Download the malicious_contents and report it to the authorities</div>
-  <div id="flag-section">
-    <input type="text" id="flag-input" placeholder="Enter flag">
-    <button onclick="checkFlag()">Submit</button>
-  </div>
+  <div id="popup">You've hacked into a criminal's computer who is a terrorist and is planning an attack. Locate and download the malicious-contents and report it to the authorities</div>
   <div id="terminal" tabindex="0"></div>
 
   <script>
@@ -100,7 +72,7 @@
     };
 
     let fileContents = {
-      "/home/student/Desktop/.malicious-contents.txt": "FLAG: ctf_malicious_1337\nBeware! This file was hidden and protected for a reason."
+      "/home/student/Desktop/.malicious-contents.txt": "ctf_1010101010010101"
     };
 
     let filePermissions = {
@@ -112,7 +84,7 @@
     let currentInput = "";
     let cursorPos = 0;
 
-    const commandsList = ["ls", "ls -a", "cd", "cat", "pwd", "clear", "exit", "file", "chmod", "man"];
+    const commandsList = ["ls", "ls -a", "ls -l", "cd", "cat", "pwd", "clear", "exit", "file", "chmod", "man", "scp", "cp"];
 
     const manPages = {
       "ls": `LS(1)                    User Commands                   LS(1)
@@ -121,20 +93,28 @@ NAME
        ls - list directory contents
 
 SYNOPSIS
-       ls [OPTION]... [FILE]...
+       ls [OPTION]... [DIR]...
 
 DESCRIPTION
-       List information about the FILEs (the current directory by default).
+       List information about the contents of DIR (the current directory by default).
 
 OPTIONS
        -a, --all
               do not ignore entries starting with .
+       -l
+              use a long listing format, showing permissions, size, and date.
 
 EXAMPLES
        ls
               List non-hidden files in the current directory.
        ls -a
               List all files, including hidden ones starting with '.'.
+       ls -l
+              List files with permissions (e.g., -rwxr-xr-x), size, date, and name.
+       ls Desktop
+              List non-hidden files in the Desktop directory.
+       ls -l Desktop
+              List files in Desktop with permissions, size, date, and name.
 
 SEE ALSO
        man(1)`,
@@ -172,8 +152,8 @@ DESCRIPTION
        Concatenate FILE(s) to standard output.
 
 EXAMPLES
-       cat .malicious-contents.txt
-              Display the contents of .malicious-contents.txt.
+       cat file.txt
+              Display the contents of file.txt.
 
 SEE ALSO
        man(1)`,
@@ -232,8 +212,8 @@ DESCRIPTION
        Determine the type of FILE(s).
 
 EXAMPLES
-       file .malicious-contents.txt
-              Identify .malicious-contents.txt as ASCII text or other type.
+       file file.txt
+              Identify file.txt as ASCII text or other type.
 
 SEE ALSO
        man(1)`,
@@ -253,11 +233,45 @@ DESCRIPTION
        +4     Add read permission (numeric mode).
 
 EXAMPLES
-       chmod +r .malicious-contents.txt
-              Grant read permission to .malicious-contents.txt.
+       chmod +r file.txt
+              Grant read permission to file.txt.
 
 SEE ALSO
        man(1)`,
+      "scp": `SCP(1)                   User Commands                   SCP(1)
+
+NAME
+       scp - secure copy (remote file copy program)
+
+SYNOPSIS
+       scp [FILE]
+
+DESCRIPTION
+       Copy FILE to the local system securely. Requires read permissions on the file.
+
+EXAMPLES
+       scp file.txt
+              Copy file.txt to the local system.
+
+SEE ALSO
+       cat(1), chmod(1), cp(1), man(1)`,
+      "cp": `CP(1)                    User Commands                   CP(1)
+
+NAME
+       cp - copy files and directories
+
+SYNOPSIS
+       cp SOURCE DEST
+
+DESCRIPTION
+       Copy the SOURCE file to the DEST location within the file system. Requires read permissions on the source file.
+
+EXAMPLES
+       cp file.txt ../Downloads/
+              Copy file.txt to the Downloads directory.
+
+SEE ALSO
+       scp(1), cat(1), chmod(1), man(1)`,
       "man": `MAN(1)                   User Commands                   MAN(1)
 
 NAME
@@ -272,10 +286,38 @@ DESCRIPTION
 EXAMPLES
        man ls
               Show the manual page for the ls command.
+       man scp
+              Show the manual page for the scp command.
+       man cp
+              Show the manual page for the cp command.
 
 SEE ALSO
-       ls(1), cd(1), cat(1), pwd(1), clear(1), exit(1), file(1), chmod(1)`
+       ls(1), cd(1), cat(1), pwd(1), clear(1), exit(1), file(1), chmod(1), scp(1), cp(1)`
     };
+
+    function getPermissions(path, isDir) {
+      if (isDir) {
+        return "drwxr-xr-x"; // Default directory permissions
+      }
+      if (filePermissions[path]) {
+        let { r, w, x } = filePermissions[path];
+        return `${r ? "r" : "-"}w${x ? "x" : "-"}r-xr-x`; // Simplified: owner rwx, group/others r-x
+      }
+      return "-rwxr-xr-x"; // Default file permissions
+    }
+
+    function formatLongListing(files, dirPath) {
+      let output = [];
+      files.forEach(file => {
+        let fullPath = dirPath === "/" ? `/${file}` : `${dirPath}/${file}`;
+        let isDir = fileSystem[fullPath] !== undefined;
+        let perms = getPermissions(fullPath, isDir);
+        let size = fileContents[fullPath] ? fileContents[fullPath].length : 4096; // Simplified size: file content length or 4096 for dirs
+        let date = "Aug 27 16:32"; // Static date for simplicity
+        output.push(`${perms} ${size} ${date} ${file}`);
+      });
+      return output.join("\n");
+    }
 
     function renderPrompt() {
       return `student@oppcus:${cwd.replace("/home/student", "~")}$ `;
@@ -301,8 +343,9 @@ SEE ALSO
       switch(cmd) {
         case "ls":
           let showHidden = args.includes("-a") || args.includes("--all");
-          let pathArg = args[1] && !args[1].startsWith("-") ? args[1] : null;
-          if ((args[1] === "-a" || args[1] === "--all") && args[2]) pathArg = args[2];
+          let showLong = args.includes("-l");
+          // Find the path argument (first non-option argument after ls)
+          let pathArg = args.slice(1).find(arg => !arg.startsWith("-")) || null;
 
           let pathToList = cwd;
           if (pathArg) {
@@ -316,9 +359,14 @@ SEE ALSO
           }
           let files = fileSystem[pathToList] || [];
           if (showHidden) {
-            output = [".", "..", ...files].join("  ");
+            files = [".", "..", ...files];
           } else {
-            output = files.filter(f => !f.startsWith(".")).join("  ");
+            files = files.filter(f => !f.startsWith("."));
+          }
+          if (showLong) {
+            output = formatLongListing(files, pathToList);
+          } else {
+            output = files.join("  ");
           }
           break;
 
@@ -407,6 +455,65 @@ SEE ALSO
           }
           break;
 
+        case "scp":
+          let scpFile = args[1];
+          if (!scpFile) {
+            output = "scp: missing file operand";
+          } else if (scpFile !== "ctf" && scpFile !== ".malicious-contents.txt" && scpFile !== "ctf_1010101010010101") {
+            output = `scp: cannot access '${scpFile}': Only .malicious-contents.txt, ctf, or ctf_1010101010010101 is allowed`;
+          } else {
+            // Handle "ctf" or "ctf_1010101010010101" as aliases for ".malicious-contents.txt"
+            let targetFile = (scpFile === "ctf" || scpFile === "ctf_1010101010010101") ? ".malicious-contents.txt" : scpFile;
+            let filePath = targetFile.startsWith("/") ? targetFile : (cwd === "/" ? "" : cwd) + "/" + targetFile;
+            if (!fileContents[filePath]) {
+              output = `scp: cannot access '${scpFile}': No such file or directory`;
+            } else if (!filePermissions[filePath]?.r) {
+              output = `scp: cannot open '${scpFile}' for reading: Permission denied`;
+            } else if (fileSystem[filePath]) {
+              output = `scp: '${scpFile}' is a directory`;
+            } else {
+              const blob = new Blob([fileContents[filePath]], { type: "text/plain" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "ctf_1010101010010101";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              output = `Successfully downloaded`;
+            }
+          }
+          break;
+
+        case "cp":
+          let sourceFile = args[1];
+          let destPath = args[2];
+          if (!sourceFile || !destPath) {
+            output = "cp: missing file operand";
+          } else {
+            // Handle "ctf" as alias for ".malicious-contents.txt"
+            let targetSource = sourceFile === "ctf" ? ".malicious-contents.txt" : sourceFile;
+            let sourcePath = targetSource.startsWith("/") ? targetSource : (cwd === "/" ? "" : cwd) + "/" + targetSource;
+            let destFilePath = destPath.startsWith("/") ? destPath : (cwd === "/" ? "" : cwd) + "/" + destPath;
+            let destDir = destFilePath.split("/").slice(0, -1).join("/") || "/";
+            if (!fileContents[sourcePath]) {
+              output = `cp: cannot stat '${sourceFile}': No such file or directory`;
+            } else if (!filePermissions[sourcePath]?.r) {
+              output = `cp: cannot open '${sourceFile}' for reading: Permission denied`;
+            } else if (!fileSystem[destDir]) {
+              output = `cp: cannot create file '${destPath}': No such file or directory`;
+            } else if (fileSystem[sourcePath]) {
+              output = `cp: '${sourceFile}' is a directory`;
+            } else {
+              fileSystem[destDir].push(destFilePath.split("/").pop());
+              fileContents[destFilePath] = fileContents[sourcePath];
+              filePermissions[destFilePath] = { ...filePermissions[sourcePath] };
+              output = `Copied ${sourceFile} to ${destPath}`;
+            }
+          }
+          break;
+
         case "man":
           let command = args[1];
           if (!command) {
@@ -430,13 +537,19 @@ SEE ALSO
       let last = args[args.length - 1];
       let matches = [];
 
-      if (["ls", "ls -a", "cd", "cat", "file", "chmod"].includes(args[0])) {
+      if (["ls", "ls -a", "ls -l", "cd", "cat", "file", "chmod", "scp", "cp"].includes(args[0])) {
         let dirPath = cwd;
         let filePart = last;
-        let prefix = args[0] === "ls -a" ? args[0] : args[0] + " ";
+        let prefix = args[0] === "ls -a" || args[0] === "ls -l" ? args[0] : args[0] + " ";
 
         // Handle chmod with mode argument (e.g., chmod +r .)
         if (args[0] === "chmod" && args.length >= 2 && ["+r", "+4"].includes(args[1])) {
+          prefix = args[0] + " " + args[1] + " ";
+          filePart = args.length > 2 ? args[2] : "";
+        }
+
+        // Handle cp with source argument (e.g., cp .malicious-contents.txt ../)
+        if (args[0] ==="cp" && args.length >= 2 && !args[1].startsWith("-")) {
           prefix = args[0] + " " + args[1] + " ";
           filePart = args.length > 2 ? args[2] : "";
         }
@@ -455,6 +568,10 @@ SEE ALSO
         // Include hidden files for commands that can handle them
         matches = files.filter(f => f.startsWith(filePart));
         if ([".", ".."].includes(filePart)) matches.push(filePart);
+        // Allow "ctf" or "ctf_1010101010010101" or partial matches for scp and cp commands
+        if ((args[0] === "scp" || args[0] === "cp") && ("ctf".startsWith(filePart) || "ctf_1010101010010101".startsWith(filePart))) {
+          matches.push("ctf_1010101010010101");
+        }
 
         if (matches.length === 1) {
           let completion = matches[0];
@@ -488,17 +605,6 @@ SEE ALSO
           currentInput = args.join(" ") + " ";
           cursorPos = currentInput.length;
         }
-      }
-    }
-
-    function checkFlag() {
-      const flagInput = document.getElementById("flag-input").value.trim();
-      const correctFlag = "ctf_malicious_1337";
-      if (flagInput === correctFlag) {
-        alert("Correct flag!");
-        window.location.href = "select.html";
-      } else {
-        alert("Incorrect flag!");
       }
     }
 

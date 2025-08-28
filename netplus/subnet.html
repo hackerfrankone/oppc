@@ -34,24 +34,22 @@
     }
     .back-link {
       position: fixed;
-      top: 1.25rem;
-      left: 1.25rem;
-      background: transparent;
+      top: 10px;
+      left: 10px;
       color: #00FF00;
-      border: 2px solid #00FF00;
-      padding: 0.6rem 1.25rem;
-      font-family: 'Courier New', monospace;
-      font-size: clamp(1.1rem, 3vw, 1.3rem);
-      border-radius: 5px;
-      cursor: pointer;
+      font-weight: bold;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
       text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-      z-index: 9999;
-      -webkit-tap-highlight-color: transparent;
+      background-color: #000;
+      padding: 8px 12px;
+      border: 2px solid #00FF00;
+      border-radius: 5px;
+      box-shadow: 0 0 12px #00FF00;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
     .back-link:hover {
-      background-color: #00FF00;
-      color: black;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00FF00;
     }
     .container {
       display: flex;
@@ -93,7 +91,7 @@
   </style>
 </head>
 <body>
-  <a href="netplus.html" class="back-link">← Back</a>
+  <a href="netplus.html" class="back-link">&lt;-- Back</a>
   <div class="container">
     <div>
       <h1>Simple Subnetting Guide</h1>

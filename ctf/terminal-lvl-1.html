@@ -53,6 +53,20 @@
       max-width: 400px;
       font-size: 16px;
     }
+    #popup button {
+      background: black;
+      color: #33ff33;
+      border: 1px solid #33ff33;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 5px 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #popup button:hover {
+      background: #33ff33;
+      color: black;
+    }
   </style>
 </head>
 <body>
@@ -319,6 +333,14 @@ SEE ALSO
       return output.join("\n");
     }
 
+    function showSuccessPopup() {
+      popup.innerHTML = `
+        You have stopped the terrorist attack!<br>
+        <button onclick="window.location.href='select.html'">Return to Home</button>
+      `;
+      popup.style.display = "block";
+    }
+
     function renderPrompt() {
       return `student@oppcus:${cwd.replace("/home/student", "~")}$ `;
     }
@@ -472,16 +494,8 @@ SEE ALSO
             } else if (fileSystem[filePath]) {
               output = `scp: '${scpFile}' is a directory`;
             } else {
-              const blob = new Blob([fileContents[filePath]], { type: "text/plain" });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = "ctf_1010101010010101";
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              URL.revokeObjectURL(url);
               output = `Successfully downloaded`;
+              showSuccessPopup();
             }
           }
           break;
@@ -549,7 +563,7 @@ SEE ALSO
         }
 
         // Handle cp with source argument (e.g., cp .malicious-contents.txt ../)
-        if (args[0] ==="cp" && args.length >= 2 && !args[1].startsWith("-")) {
+        if (args[0] === "cp" && args.length >= 2 && !args[1].startsWith("-")) {
           prefix = args[0] + " " + args[1] + " ";
           filePart = args.length > 2 ? args[2] : "";
         }

@@ -19,15 +19,15 @@
       color: #00FF00;
       font-family: monospace;
       text-align: center;
-      padding: 20px 30px; /* Reduced top padding to pull content up */
+      padding: 20px 30px;
       margin: 0;
-      min-height: 100vh; /* Ensure full viewport height for positioning */
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 10px; /* Reduced spacing below header */
+      margin-bottom: 10px;
     }
     .highlight-message,
     .confidence-message,
@@ -37,16 +37,16 @@
       color: #66ff66;
       font-style: italic;
       opacity: 0.8;
-      margin-bottom: 5px; /* Reduced spacing below messages */
+      margin-bottom: 5px;
       background-color: #000;
     }
     .cert-group {
-      margin-bottom: 15px; /* Reduced spacing between groups */
+      margin-bottom: 15px;
       background-color: #000;
     }
     .cert-icon {
       display: inline-block;
-      margin: 10px; /* Reduced margin around icons */
+      margin: 10px;
       cursor: pointer;
       transition: transform 0.2s;
       position: relative;
@@ -68,33 +68,33 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: flex-start;
-      gap: 10px; /* Reduced gap between icons */
+      gap: 10px;
     }
     #other-certs {
-      margin-top: 15px; /* Reduced gap from CompTIA */
+      margin-top: 15px;
       background-color: #000;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px; /* Increased gap for spacing between icons */
+      gap: 20px;
     }
     #lpi {
-      order: 2; /* Move LPI to the right */
-      margin-right: 40px; /* Keep LPI shifted right */
+      order: 2;
+      margin-right: 40px;
     }
     #cisco {
-      order: 0; /* Move Cisco to the left */
-      margin-left: -20px; /* Keep Cisco shifted left */
+      order: 0;
+      margin-left: 0;
     }
     #ctf {
-      order: 1; /* Position CTF in the middle */
+      order: 1;
     }
     .lpi-cisco-group {
-      margin-bottom: 10px; /* Reduced spacing */
+      margin-bottom: 10px;
       background-color: #000;
     }
     .ctf-icon {
-      margin-top: 60px; /* Original position, untouched */
+      margin-top: 60px;
     }
     .footer-links {
       display: flex;
@@ -109,7 +109,7 @@
     }
     .footer-link {
       display: inline-block;
-      margin: 0 10px; /* Space between links */
+      margin: 0 10px;
       color: #00FF00;
       font-weight: bold;
       font-size: 0.85rem;
@@ -191,7 +191,7 @@
       justify-items: center;
       align-content: start;
       gap: 0.5rem;
-      margin-top: 10px; /* Reduced margin to pull PayPal up */
+      margin-top: 10px;
       background-color: #000;
     }
     #paypalContainer img {
@@ -228,46 +228,52 @@
       color: #000;
       border: none;
       padding: 10px 20px;
-      margin-top: 10px; /* Reduced margin in popup */
+      margin-top: 10px;
       border-radius: 5px;
       cursor: pointer;
       font-weight: bold;
     }
+
+    /* Hide dropdowns for specific icons after unlock */
+    body.unlocked .cert-icon.unlocked-hide-dropdown .hover-box {
+      display: none !important;
+    }
+
     @media (max-width: 600px) {
       #lpi {
-        order: 2; /* Keep LPI to the right on small screens */
-        margin-top: 5px; /* Further reduced margin on small screens */
-        margin-right: 20px; /* Adjust right margin for small screens */
+        order: 2;
+        margin-top: 5px;
+        margin-right: 20px;
       }
       #cisco {
-        order: 0; /* Keep Cisco to the left on small screens */
-        margin-left: -10px; /* Reduced left shift for small screens */
+        order: 0;
+        margin-left: 0;
       }
       #ctf {
-        order: 1; /* Keep CTF in the middle on small screens */
+        order: 1;
       }
       .cert-icon {
-        margin: 5px; /* Reduced margin on small screens */
+        margin: 5px;
       }
       .cert-group {
-        margin-bottom: 10px; /* Further reduced for mobile */
+        margin-bottom: 10px;
       }
       #other-certs {
-        margin-top: 10px; /* Further reduced for mobile */
-        flex-direction: column; /* Stack vertically on small screens */
+        margin-top: 10px;
+        flex-direction: column;
       }
       .lpi-cisco-group {
-        margin-bottom: 5px; /* Further reduced for mobile */
+        margin-bottom: 5px;
       }
       .ctf-icon {
-        margin-top: 60px; /* Original position, untouched */
+        margin-top: 60px;
       }
       .footer-links {
-        flex-direction: column; /* Stack vertically on small screens */
+        flex-direction: column;
         padding: 5px 0;
       }
       .footer-link {
-        margin: 5px 0; /* Adjust spacing for vertical stack */
+        margin: 5px 0;
       }
     }
   </style>
@@ -276,7 +282,7 @@
   <h1>OPPCUS</h1>
 
   <div class="upgrade-message" id="oneTimeMessage">
-    *Lifetime access* Just $2.49 | One-time payment, yours forever!
+    *Lifetime access* Just $1.99 | One-time payment, yours forever!
   </div>
 
   <!-- PayPal Button -->
@@ -309,21 +315,21 @@
     <div class="cert-icon" id="secplus">
       <img src="images/secplus.png" alt="Security+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="secplus/secplus.html">Study Guide 🔒</a>
+        <a href="#" class="locked" data-url="secplus/secplus.html">🔒</a>
       </div>
     </div>
 
     <div class="cert-icon" id="networkPlus">
       <img src="images/netplus.png" alt="Network+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="netplus/netplus.html">Study Guide 🔒</a>
+        <a href="#" class="locked" data-url="netplus/netplus.html">🔒</a>
       </div>
     </div>
 
     <div class="cert-icon" id="linuxPlus">
       <img src="images/linuxplus.jpg" alt="Linux+ Certification" />
       <div class="hover-box">
-        <a href="#" class="locked" data-url="linuxplus/linuxplus.html">Study Guide 🔒</a>
+        <a href="#" class="locked" data-url="linuxplus/linuxplus.html">🔒</a>
       </div>
     </div>
   </div>
@@ -332,13 +338,13 @@
     <div class="cert-icon" id="cisco">
       <img src="images/cisco.png" alt="Cisco Certification" />
       <div class="hover-box">
-        <a class="locked">Study Guide 🔒</a>
+        <a href="#" class="locked" data-url="cisco/cisco.html">🔒</a>
       </div>
     </div>
     <div class="cert-icon ctf-icon" id="ctf">
       <img src="../images/ctf.png" alt="Capture The Flag" />
       <div class="hover-box">
-        <a class="locked">CTF Games 🔒</a>
+        <a href="#" class="locked" data-url="ctf/select.html">🔒</a>
       </div>
     </div>
     <div class="cert-icon" id="lpi">
@@ -381,21 +387,62 @@
         }
 
         const isUnlocked = localStorage.getItem('unlocked') === 'paid';
+
         if (isUnlocked) {
+          document.body.classList.add('unlocked');
+
+          // Update all links except Cisco
           document.querySelectorAll('a.locked').forEach(link => {
-            // Special handling for Cisco and CTF
-            if (link.parentElement.parentElement.id === 'cisco' || link.parentElement.parentElement.id === 'ctf') {
-              link.textContent = 'Coming Soon';
-            } else {
-              link.textContent = link.textContent.replace(' 🔒', '');
-              link.href = link.dataset.url;
+            if (link.parentElement.parentElement.id !== 'cisco') {
+              link.textContent = link.textContent.replace(/ ?🔒/g, '');
+              link.href = link.dataset.url || '#';
               link.classList.remove('locked');
             }
           });
-          document.getElementById('discordButton').style.opacity = '1';
-          document.getElementById('discordButton').style.pointerEvents = 'auto';
-          document.getElementById('paypalContainer').style.display = 'none';
-          document.getElementById('oneTimeMessage').style.display = 'none';
+
+          // Handle Cisco separately
+          const ciscoIcon = document.getElementById('cisco');
+          if (ciscoIcon) {
+            const ciscoHoverBox = ciscoIcon.querySelector('.hover-box');
+            if (ciscoHoverBox) {
+              ciscoHoverBox.innerHTML = 'Coming Soon';
+              ciscoHoverBox.style.cursor = 'default';
+            }
+            // Remove cursor pointer to indicate non-clickable
+            ciscoIcon.style.cursor = 'default';
+          }
+
+          // Certifications to unlock (excluding Cisco)
+          const convert = [
+            { id: 'secplus', url: 'secplus/secplus.html' },
+            { id: 'networkPlus', url: 'netplus/netplus.html' },
+            { id: 'linuxPlus', url: 'linuxplus/linuxplus.html' },
+            { id: 'ctf', url: 'ctf/select.html' }
+          ];
+
+          convert.forEach(({ id, url }) => {
+            const icon = document.getElementById(id);
+            if (!icon) return;
+
+            icon.classList.add('unlocked-hide-dropdown');
+            const hb = icon.querySelector('.hover-box');
+            if (hb) hb.style.display = 'none';
+
+            icon.style.cursor = 'pointer';
+            icon.addEventListener('click', () => {
+              window.location.href = url;
+            });
+          });
+
+          const discordBtn = document.getElementById('discordButton');
+          if (discordBtn) {
+            discordBtn.style.opacity = '1';
+            discordBtn.style.pointerEvents = 'auto';
+          }
+          const paypal = document.getElementById('paypalContainer');
+          if (paypal) paypal.style.display = 'none';
+          const msg = document.getElementById('oneTimeMessage');
+          if (msg) msg.style.display = 'none';
         }
       } catch (err) {
         console.error('Unlock error:', err);

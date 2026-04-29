@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const status = document.getElementById("status");
 
-
-  const certs = document.querySelectorAll(".cert-icon");
+  // FIXED:
+  const certs = document.querySelectorAll(".cert");
   certs.forEach(el => {
     if (isUnlocked) {
       el.classList.remove("locked");

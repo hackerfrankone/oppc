@@ -3,10 +3,10 @@
 <head>  
   <meta charset="UTF-8" />
 
-  <!-- CSP -->
+  <!-- CSP (SAFE + STABLE) -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://www.paypal.com;
+    script-src 'self' https://www.paypal.com https://static.cloudflareinsights.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' https://www.paypalobjects.com data:;
     frame-src https://www.paypal.com;
@@ -15,77 +15,58 @@
     connect-src 'self' https://student-live.oppcus2025.workers.dev;
   " />
 
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
-
   <title>OPPCUS Home Page</title>
   <link rel="icon" type="image/png" href="images/oppcus.png" />
 
   <style>
     body {
-      background-color: #000;
-      color: #00FF00;
-      font-family: monospace;
-      text-align: center;
-      padding: 20px 30px;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background:#000;
+      color:#0F0;
+      font-family:monospace;
+      text-align:center;
+      margin:0;
+      padding:20px;
     }
 
-    h1 { font-size: 2.5rem; margin-bottom: 10px; }
-
-    .upgrade-message {
-      font-size: 1rem;
-      color: #66ff66;
-      font-style: italic;
-      opacity: 0.8;
-      margin-bottom: 5px;
+    .locked {
+      opacity: 0.4;
+      pointer-events: none;
     }
 
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #000;
-      color: #00FF00;
-      border: 3px solid #00FF00;
-      padding: 20px;
-      z-index: 10002;
-      text-align: center;
-    }
-
-    .popup button {
-      background-color: #FFD140;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      cursor: pointer;
+    .badge {
+      color:#66ff66;
+      font-size:14px;
+      margin-bottom:10px;
     }
   </style>
 </head>
 
 <body>
+
   <h1>OPPCUS</h1>
 
-  <div class="upgrade-message" id="oneTimeMessage">
-    *Lifetime access* Just $2.49 | One-time payment, yours forever!
+  <div class="badge" id="status">
+    Checking access...
   </div>
 
-  <!-- PayPal Button -->
+  <!-- ALWAYS VISIBLE PAYPAL -->
   <div id="paypalContainer">
     <form action="https://www.paypal.com/ncp/payment/5B76FJE8MKP2L" method="post" target="_blank">
       <input type="submit" value="Buy Now" />
     </form>
   </div>
-  
-  <div id="cachePopup" class="popup">
-    <p>*Don't delete oppc.us cache*</p>
-    <button id="ackBtn">I acknowledge</button>
+
+  <!-- CERTS (ALWAYS EXIST, ONLY LOCKED/UNLOCKED CHANGES) -->
+  <div id="content">
+
+    <div class="cert locked" id="secplus">Security+</div>
+    <div class="cert locked" id="netplus">Network+</div>
+    <div class="cert locked" id="linuxplus">Linux+</div>
+    <div class="cert locked" id="ctf">CTF</div>
+
   </div>
+
   <script src="app.js"></script>
+
 </body>
 </html>

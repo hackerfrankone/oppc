@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const status = document.getElementById("status");
 
-  // FIXED: separate querySelectorAll from forEach so certs is usable
+
   const certs = document.querySelectorAll(".cert-icon");
   certs.forEach(el => {
     if (isUnlocked) {
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       el.classList.add("locked");
     }
-    el.style.display = "block"; // FIXED: removed broken markdown link syntax
+    el.style.display = "block"; // FIXED
   });
 
   if (status) {
